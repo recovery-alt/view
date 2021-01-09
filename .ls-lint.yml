@@ -1,0 +1,18 @@
+# .ls-lint.yml
+
+ls:
+  src:
+    .js: kebab-case
+    .ts: kebab-case
+    .vue: kebab-case
+    .d.ts: kebab-case
+
+  scripts:
+    .js: kebab-case
+
+ignore:
+  - node_modules
+  - .git
+  - .circleci
+  - .github
+  - .vscode
