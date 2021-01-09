@@ -1,6 +1,14 @@
 <template>
-  <section class="main-left">
-    <el-button v-for="item in list" :key="item" type="primary">{{ item }}</el-button>
+  <section class="main-left" @dragstart="handleDragStart">
+    <button
+      draggable="true"
+      v-for="item in list"
+      :key="item.type"
+      type="primary"
+      :data-index="item.type"
+    >
+      {{ item.text }}
+    </button>
   </section>
 </template>
 
@@ -8,8 +16,14 @@
 import { defineComponent, ref } from 'vue';
 
 const setup = () => {
-  const list = ref(['文本', '按钮']);
-  return { list };
+  const list = ref([
+    { type: 'text', text: '文本' },
+    { type: 'button', text: '按钮' },
+  ]);
+  const handleDragStart = e => {
+    e.dataTransfer.setData('index', e.target.dataset.index);
+  };
+  return { list, handleDragStart };
 };
 
 export default defineComponent({ setup });

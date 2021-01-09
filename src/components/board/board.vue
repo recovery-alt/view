@@ -1,5 +1,5 @@
 <template>
-  <div class="board">
+  <div class="board" @drop="handleDrop" @dragover="handleDragOver">
     <component
       v-for="item in componentData"
       :key="item.component"
@@ -13,23 +13,18 @@
 import { computed, defineComponent, ref } from 'vue';
 
 const setup = () => {
-  const componentData = ref<Component[]>([
-    {
-      component: 'v-text',
-      style: {
-        width: '100px',
-        height: '100px',
-      },
-    },
-    {
-      component: 'v-button',
-      style: {
-        width: '100px',
-        height: '100px',
-      },
-    },
-  ]);
-  return { componentData };
+  const componentData = ref<Component[]>([]);
+
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const type = e.dataTransfer?.getData('index');
+    componentData.value.push({ component: `v-${type}` });
+  };
+  const handleDragOver = (e: Event) => {
+    e.preventDefault();
+  };
+  return { componentData, handleDragOver, handleDrop };
 };
 
 export default defineComponent({ setup });
@@ -40,5 +35,9 @@ export default defineComponent({ setup });
   position: relative;
   background-color: #fff;
   overflow: auto;
+
+  & > * {
+    position: absolute;
+  }
 }
 </style>

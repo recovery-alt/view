@@ -1,9 +1,7 @@
 <template>
-  <div>button</div>
+  <div draggable>button</div>
 </template>
 
 <script>
 export default {};
 </script>
-
-<style></style>
