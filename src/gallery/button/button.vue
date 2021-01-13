@@ -1,5 +1,5 @@
 <template>
-  <div draggable>button</div>
+  <div>button</div>
 </template>
 
 <script>

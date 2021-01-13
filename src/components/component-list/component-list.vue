@@ -5,14 +5,14 @@
       v-for="item in list"
       :key="item.type"
       type="primary"
-      :data-index="item.type"
+      :data-type="item.type"
     >
       {{ item.text }}
     </button>
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from 'vue';
 
 const setup = () => {
@@ -20,8 +20,13 @@ const setup = () => {
     { type: 'text', text: '文本' },
     { type: 'button', text: '按钮' },
   ]);
-  const handleDragStart = e => {
-    e.dataTransfer.setData('index', e.target.dataset.index);
+  const handleDragStart = (e: DragEvent) => {
+    const target = e.target as HTMLDataListElement;
+    if (target.dataset.type) {
+      e.dataTransfer?.setData('type', target.dataset.type);
+    }
+    e.dataTransfer?.setData('offsetX', e.offsetX + '');
+    e.dataTransfer?.setData('offsetY', e.offsetY + '');
   };
   return { list, handleDragStart };
 };

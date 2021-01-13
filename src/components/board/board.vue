@@ -1,33 +1,32 @@
 <template>
-  <div class="board" @drop="handleDrop" @dragover="handleDragOver">
-    <component
-      v-for="item in componentData"
-      :key="item.component"
-      :is="item.component"
-      :style="item.style"
-    />
+  <div class="board" @drop="handleDrop" @dragover="handleDragOver" @click="cancelSelected">
+    <shape
+      v-for="(item, index) in board.data"
+      :key="item.id"
+      :active="board.index === index"
+      :index="index"
+      v-bind="item.position"
+    >
+      <component :is="item.component" :style="item.style" />
+    </shape>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, toRefs } from 'vue';
+import { useBoard, useDragEvent } from '@/hooks';
+import Shape from '@/components/shape';
+
+const components = { Shape };
 
 const setup = () => {
-  const componentData = ref<Component[]>([]);
+  const { board, append, cancelSelected } = useBoard();
+  const { handleDrop, handleDragOver } = useDragEvent(append);
 
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const type = e.dataTransfer?.getData('index');
-    componentData.value.push({ component: `v-${type}` });
-  };
-  const handleDragOver = (e: Event) => {
-    e.preventDefault();
-  };
-  return { componentData, handleDragOver, handleDrop };
+  return { board, cancelSelected, handleDragOver, handleDrop };
 };
 
-export default defineComponent({ setup });
+export default defineComponent({ components, setup });
 </script>
 
 <style lang="scss" scoped>
@@ -35,9 +34,5 @@ export default defineComponent({ setup });
   position: relative;
   background-color: #fff;
   overflow: auto;
-
-  & > * {
-    position: absolute;
-  }
 }
 </style>

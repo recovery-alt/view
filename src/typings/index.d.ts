@@ -6,12 +6,21 @@ type ResponseData<T = any> = {
 
 type Data<T = unknown> = Record<string, T>;
 
+type Pos = {
+  top: number;
+  left: number;
+  right?: number;
+  bottom?: number;
+};
+
 type Component = {
+  id?: string;
   component: string;
   label?: string;
   propValue?: string;
   icon?: string;
   animations?: Array<any>;
   events?: Array<Event>;
-  style?: Data;
+  position: Pos;
+  style: Partial<CSSStyleDeclaration>;
 };
