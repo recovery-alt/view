@@ -24,3 +24,15 @@ type Component = {
   position: Pos;
   style: Partial<CSSStyleDeclaration>;
 };
+
+type Board = {
+  index: number;
+  data: Array<Component>;
+};
+
+type Snapshot = {
+  index: number;
+  data: Array<Board>;
+};
+
+type RootStateType = {};

@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.1-beta.23",
+    "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",
     "uuid": "^8.3.2",
     "vue": "^3.0.5",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.9.2",
     "@types/jest": "^24.0.19",
+    "@types/lodash": "^4.14.167",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",

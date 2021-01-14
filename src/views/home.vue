@@ -1,5 +1,7 @@
 <template>
   <header class="header">
+    <el-button @click="undo">撤销</el-button>
+    <el-button @click="redo">重做</el-button>
     <el-input v-model="width" size="small" />
     <el-input v-model="height" size="small" />
   </header>
@@ -19,10 +21,16 @@ import { computed, defineComponent, ref } from 'vue';
 import ComponentList from '@/components/component-list';
 import Board from '@/components/board';
 import { useResize } from '@/hooks';
+import { useStore } from 'vuex';
+import { SnapshotEnum } from '@/store/modules/snapshot';
 
 const setup = () => {
+  const store = useStore();
+  const undo = () => store.commit(SnapshotEnum.UNDO);
+  const redo = () => store.commit(SnapshotEnum.REDO);
   const data = useResize();
-  return { ...data };
+
+  return { ...data, undo, redo };
 };
 
 export default defineComponent({

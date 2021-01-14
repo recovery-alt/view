@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import { useBoard } from '@/hooks';
+import { useStore } from 'vuex';
 
 const name = 'shape';
 
@@ -35,7 +35,8 @@ const props = {
 
 const setup = (props: Props) => {
   const shape = ref<HTMLElement | null>(null);
-  const { board } = useBoard();
+
+  const store = useStore();
 
   const points = [
     'top-left',
@@ -52,13 +53,13 @@ const setup = (props: Props) => {
 
   const handleShapeClick = (e: Event) => {
     e.stopPropagation();
-    board.index = props.index;
+    store.commit('board/setIndex', props.index);
   };
 
   const handleMousedown = (e: MouseEvent) => {
     e.stopPropagation();
-    board.index = props.index;
-    const curComponent = board.data[board.index];
+    store.commit('board/setIndex', props.index);
+    const curComponent = store.getters['board/getCurComponent'];
     const startX = e.clientX;
     const startY = e.clientY;
     const { left, top } = curComponent.position;
@@ -81,9 +82,51 @@ const setup = (props: Props) => {
   const handleMousedowOnPoint = (e: MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (shape.value) {
-      const { width, height } = shape.value.getBoundingClientRect();
-    }
+
+    if (!shape.value) return;
+    const { className } = e.target as HTMLElement;
+    const hasLeft = className.includes('left');
+    const hasRight = className.includes('right');
+    const hasTop = className.includes('top');
+    const hasBottom = className.includes('bottom');
+    const curComponent = store.getters['board/getCurComponent'];
+    const { width, height } = shape.value.getBoundingClientRect();
+    const { top, left } = curComponent.position;
+    curComponent.style.width = width + 'px';
+    curComponent.style.height = height + 'px';
+    const startX = e.clientX;
+    const startY = e.clientY;
+
+    const mousemove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      if (!width || !height) return;
+      if (hasLeft) {
+        const diffX = clientX - startX;
+        curComponent.style.width = width - diffX + 'px';
+        curComponent.position.left = left + diffX;
+      }
+      if (hasRight) {
+        const diffX = clientX - startX;
+        curComponent.style.width = width + diffX + 'px';
+      }
+      if (hasTop) {
+        const diffY = clientY - startY;
+        curComponent.style.height = height - diffY + 'px';
+        curComponent.position.top = top + diffY;
+      }
+      if (hasBottom) {
+        const diffY = clientY - startY;
+        curComponent.style.height = height + diffY + 'px';
+      }
+    };
+
+    const mouseup = (e: MouseEvent) => {
+      document.removeEventListener('mouseup', mouseup);
+      document.removeEventListener('mousemove', mousemove);
+    };
+
+    document.addEventListener('mousemove', mousemove);
+    document.addEventListener('mouseup', mouseup);
   };
 
   return { handleShapeClick, handleMousedown, points, style, shape, handleMousedowOnPoint };
