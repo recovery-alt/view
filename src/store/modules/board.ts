@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { SnapshotEnum } from './snapshot';
 
 const state: Board = {
-  index: 0,
+  index: -1,
   data: [],
 };
 
@@ -28,8 +28,13 @@ const mutations: Data<Mutation<Board>> = {
   setIndex(state, index: number) {
     state.index = index;
   },
-  setBoard(state, board: Board) {
-    Object.assign(state, board);
+  setBoard(state, board: Board | null) {
+    if (board) {
+      Object.assign(state, board);
+    } else {
+      state.data = [];
+      state.index = -1;
+    }
   },
 };
 

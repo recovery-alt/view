@@ -4,7 +4,7 @@ import { BoardEnum } from './board';
 
 const state: Snapshot = {
   data: [],
-  index: 0,
+  index: -1,
 };
 
 const getters: Data<Getter<Snapshot, RootStateType>> = {};
@@ -22,13 +22,16 @@ const actions: Data<Action<Snapshot, RootStateType>> = {
   undo({ commit, state }) {
     if (state.index > -1) {
       state.index--;
-      commit(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]));
+      const board = state.index === -1 ? null : cloneDeep(state.data[state.index]);
+      commit(BoardEnum.SET_BOARD, board, {
+        root: true,
+      });
     }
   },
   redo({ commit, state }) {
     if (state.index < state.data.length - 1) {
       state.index++;
-      commit(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]));
+      commit(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), { root: true });
     }
   },
 };

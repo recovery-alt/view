@@ -26,8 +26,8 @@ import { SnapshotEnum } from '@/store/modules/snapshot';
 
 const setup = () => {
   const store = useStore();
-  const undo = () => store.commit(SnapshotEnum.UNDO);
-  const redo = () => store.commit(SnapshotEnum.REDO);
+  const undo = () => store.dispatch(SnapshotEnum.UNDO);
+  const redo = () => store.dispatch(SnapshotEnum.REDO);
   const data = useResize();
 
   return { ...data, undo, redo };
