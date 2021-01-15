@@ -1,35 +1,36 @@
 # view
 
-## Project setup
+## 提交代码规范
 
-```
-yarn install
-```
+以下是 angular 的提交规范，建议使用起来～
 
-### Compiles and hot-reloads for development
+- feat: 新功能
 
-```
-yarn serve
-```
+- fix: 修复问题
 
-### Compiles and minifies for production
+- docs: 修改文档
 
-```
-yarn build
-```
+- style: 修改代码格式(不影响逻辑功能，比如格式化、补充分号等等)
 
-### Run your unit tests
+- refactor: 重构代码(fix bug 或增加新功能不属于此范围)
 
-```
-yarn test:unit
-```
+- perf: 提升页面性能
 
-### Lints and fixes files
+- test: 增加/修改测试用例
 
-```
-yarn lint
-```
+- chore: 修改工具相关（包括但不限于文档、代码生成等, 比如修改了 README，webpack 配置文件等等）
 
-### Customize configuration
+- deps: 升级依赖
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- subject: 用一句话清楚的描述这次提交做了什么
+
+- body: 补充 subject，适当增加原因、目的等相关因素，可选
+
+## 五、命名规范
+
+- 文件和文件夹采用`product-center`这个方式命名，尽量不使用大写
+- 变量名采用驼峰命名，类名首字母大写
+- .vue 文件必须指明 name，小写，多个单词用`-`连接
+- 在 template 中使用的话用这个方式`<product-center />`
+- import 进来的组件，首字母大写
+- .env 文件采用这个方式`NODE_ENV=production`，变量名大写，多个单词用`_`隔开，等号两边不加空格

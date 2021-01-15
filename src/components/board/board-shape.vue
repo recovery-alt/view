@@ -22,7 +22,7 @@
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 
-const name = 'shape';
+const name = 'board-shape';
 
 type Props = { index: number; active: boolean; left: number; top: number };
 
@@ -57,6 +57,7 @@ const setup = (props: Props) => {
   };
 
   const handleMousedown = (e: MouseEvent) => {
+    if (e.buttons !== 1) return;
     e.stopPropagation();
     store.commit('board/setIndex', props.index);
     const curComponent = store.getters['board/getCurComponent'];
@@ -120,7 +121,7 @@ const setup = (props: Props) => {
       }
     };
 
-    const mouseup = (e: MouseEvent) => {
+    const mouseup = () => {
       document.removeEventListener('mouseup', mouseup);
       document.removeEventListener('mousemove', mousemove);
     };
@@ -143,7 +144,7 @@ $radius: 3px;
   cursor: move;
 
   &.active {
-    border: 1px solid #70c0ff;
+    outline: 1px solid #70c0ff;
   }
 }
 

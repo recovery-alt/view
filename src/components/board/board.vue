@@ -6,7 +6,7 @@
     @click="cancelSelected"
     @contextmenu="handleRightClick"
   >
-    <shape
+    <board-shape
       v-for="(item, index) in board.data"
       :key="item.id"
       :active="board.index === index"
@@ -14,21 +14,23 @@
       v-bind="item.position"
     >
       <component :is="item.component" :style="item.style" />
-    </shape>
+    </board-shape>
     <board-menu v-if="menu.show" :style="menu.style" v-bind="menu.position" />
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, Events, ref, toRefs } from 'vue';
-import Shape from '@/components/shape';
+import BoardMenu from './board-menu.vue';
+import BoardShape from './board-shape.vue';
 import { useStore } from 'vuex';
 import { BoardEnum } from '@/store/modules/board';
-import BoardMenu from '@/components/board-menu';
 import { useMenu } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
 
-const components = { Shape, BoardMenu };
+const name = 'board';
+
+const components = { BoardShape, BoardMenu };
 
 const setup = () => {
   const store = useStore();
@@ -60,14 +62,14 @@ const setup = () => {
   const handleRightClick = (e: any) => {
     e.preventDefault();
     const { layerX, layerY } = e;
-    setPosition({ left: layerX as number, top: layerY as number });
+    setPosition({ left: layerX, top: layerY });
     showMenu();
   };
 
   return { board, cancelSelected, handleDragOver, handleDrop, handleRightClick, menu };
 };
 
-export default defineComponent({ components, setup });
+export default defineComponent({ name, components, setup });
 </script>
 
 <style lang="scss" scoped>

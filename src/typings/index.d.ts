@@ -35,4 +35,7 @@ type Snapshot = {
   data: Array<Board>;
 };
 
-type RootStateType = {};
+type RootStateType = {
+  board: Board;
+  snapshot: Snapshot;
+};

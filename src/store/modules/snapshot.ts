@@ -10,7 +10,7 @@ const state: Snapshot = {
 const getters: Data<Getter<Snapshot, RootStateType>> = {};
 
 const mutations: Data<Mutation<Snapshot>> = {
-  pushSnapshot(state, board: Board) {
+  recordSnapshot(state, board: Board) {
     state.data[++state.index] = cloneDeep(board);
     if (state.index < state.data.length - 1) {
       state.data = state.data.slice(0, state.index + 1);
@@ -34,6 +34,9 @@ const actions: Data<Action<Snapshot, RootStateType>> = {
       commit(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), { root: true });
     }
   },
+  recordSnapshot({ rootState, commit }) {
+    commit('recordSnapshot', rootState.board);
+  },
 };
 
 const snapshot: Module<Snapshot, RootStateType> = {
@@ -45,7 +48,7 @@ const snapshot: Module<Snapshot, RootStateType> = {
 };
 
 export enum SnapshotEnum {
-  PUSH_SNAPSHOT = 'snapshot/pushSnapshot',
+  RECORD_SNAPSHOT = 'snapshot/recordSnapshot',
   UNDO = 'snapshot/undo',
   REDO = 'snapshot/redo',
 }

@@ -39,9 +39,9 @@ const mutations: Data<Mutation<Board>> = {
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ state, commit }, component: Component) {
+  append({ state, commit, dispatch }, component: Component) {
     commit('append', component);
-    commit(SnapshotEnum.PUSH_SNAPSHOT, state, { root: true });
+    dispatch(SnapshotEnum.RECORD_SNAPSHOT, state, { root: true });
   },
 };
 
