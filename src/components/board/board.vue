@@ -16,13 +16,15 @@
       <component :is="item.component" :style="item.style" />
     </board-shape>
     <board-menu v-if="menu.show" :style="menu.style" v-bind="menu.position" />
+    <board-markline />
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, Events, ref, toRefs } from 'vue';
-import BoardMenu from './board-menu.vue';
-import BoardShape from './board-shape.vue';
+import BoardMenu from './menu.vue';
+import BoardShape from './shape.vue';
+import BoardMarkline from './markline.vue';
 import { useStore } from 'vuex';
 import { BoardEnum } from '@/store/modules/board';
 import { useMenu } from '@/hooks';
@@ -30,7 +32,7 @@ import { EventEmitter } from 'element-plus/lib/utils/types';
 
 const name = 'board';
 
-const components = { BoardShape, BoardMenu };
+const components = { BoardShape, BoardMenu, BoardMarkline };
 
 const setup = () => {
   const store = useStore();
