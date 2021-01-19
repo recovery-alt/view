@@ -6,7 +6,7 @@
     :key="line.name"
     :class="line.name.includes('x') ? 'xline' : 'yline'"
     :style="line.style"
-  ></div>
+  />
 </template>
 
 <script lang="ts">

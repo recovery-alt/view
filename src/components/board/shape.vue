@@ -21,7 +21,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import { judgeLineShow } from '@/hooks';
+import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
@@ -88,7 +88,7 @@ const setup = (props: Props) => {
       const diffY = clientY - startY;
       curComponent.position.left = diffX + left;
       curComponent.position.top = diffY + top;
-      // TODO: 计算吸附情况
+      // 计算吸附情况
       const lineShow = throttle(judgeLineShow);
       lineShow(board, curComponent);
     };
@@ -96,6 +96,7 @@ const setup = (props: Props) => {
     const mouseup = () => {
       off('mousemove', mousemove);
       off('mouseup', mouseup);
+      hideAllLines();
     };
 
     on('mousemove', mousemove);
