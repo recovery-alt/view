@@ -21,21 +21,31 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
+import { judgeLineShow } from '@/hooks';
+import { BoardEnum } from '@/store/modules/board';
+import { on, off } from '@/utils';
 
 const name = 'board-shape';
 
-type Props = { index: number; active: boolean; left: number; top: number };
+type Props = {
+  index: number;
+  active: boolean;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
 
 const props = {
   index: { type: Number, default: () => 0 },
   active: { type: Boolean, default: () => false },
   left: { type: Number, default: () => 0 },
   top: { type: Number, default: () => 0 },
+  width: { type: Number, default: () => 0 },
+  height: { type: Number, default: () => 0 },
 };
 
 const setup = (props: Props) => {
-  const shape = ref<HTMLElement | null>(null);
-
   const store = useStore();
 
   const points = [
@@ -49,88 +59,94 @@ const setup = (props: Props) => {
     'bottom-right',
   ];
 
-  const style = computed(() => ({ top: `${props.top}px`, left: `${props.left}px` }));
+  const style = computed(() => ({
+    top: `${props.top}px`,
+    left: `${props.left}px`,
+    width: `${props.width}px`,
+    height: `${props.height}px`,
+  }));
 
   const handleShapeClick = (e: Event) => {
     e.stopPropagation();
-    store.commit('board/setIndex', props.index);
+    store.commit(BoardEnum.SET_INDEX, props.index);
   };
 
   const handleMousedown = (e: MouseEvent) => {
     if (e.buttons !== 1) return;
     e.stopPropagation();
-    store.commit('board/setIndex', props.index);
-    const curComponent = store.getters['board/getCurComponent'];
+    store.commit(BoardEnum.SET_INDEX, props.index);
+    const board = store.getters[BoardEnum.GET_BOARD];
+    const curComponent = store.getters[BoardEnum.GET_CUR_COMPONENT];
     const startX = e.clientX;
     const startY = e.clientY;
     const { left, top } = curComponent.position;
 
     const mousemove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      curComponent.position.left = clientX - startX + left;
-      curComponent.position.top = clientY - startY + top;
+      const diffX = clientX - startX;
+      const diffY = clientY - startY;
+      curComponent.position.left = diffX + left;
+      curComponent.position.top = diffY + top;
+      // TODO: 计算吸附情况
+      judgeLineShow(board, curComponent);
     };
 
     const mouseup = () => {
-      document.removeEventListener('mousemove', mousemove);
-      document.removeEventListener('mouseup', mouseup);
+      off('mousemove', mousemove);
+      off('mouseup', mouseup);
     };
 
-    document.addEventListener('mousemove', mousemove);
-    document.addEventListener('mouseup', mouseup);
+    on('mousemove', mousemove);
+    on('mouseup', mouseup);
   };
 
   const handleMousedowOnPoint = (e: MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!shape.value) return;
     const { className } = e.target as HTMLElement;
     const hasLeft = className.includes('left');
     const hasRight = className.includes('right');
     const hasTop = className.includes('top');
     const hasBottom = className.includes('bottom');
-    const curComponent = store.getters['board/getCurComponent'];
-    const { width, height } = shape.value.getBoundingClientRect();
-    const { top, left } = curComponent.position;
-    curComponent.style.width = width + 'px';
-    curComponent.style.height = height + 'px';
+    const curComponent = store.getters[BoardEnum.GET_CUR_COMPONENT];
+    const { top, left, width, height } = curComponent.position;
+
     const startX = e.clientX;
     const startY = e.clientY;
 
     const mousemove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      if (!width || !height) return;
       if (hasLeft) {
         const diffX = clientX - startX;
-        curComponent.style.width = width - diffX + 'px';
+        curComponent.position.width = width - diffX;
         curComponent.position.left = left + diffX;
       }
       if (hasRight) {
         const diffX = clientX - startX;
-        curComponent.style.width = width + diffX + 'px';
+        curComponent.position.width = width + diffX;
       }
       if (hasTop) {
         const diffY = clientY - startY;
-        curComponent.style.height = height - diffY + 'px';
+        curComponent.position.height = height - diffY;
         curComponent.position.top = top + diffY;
       }
       if (hasBottom) {
         const diffY = clientY - startY;
-        curComponent.style.height = height + diffY + 'px';
+        curComponent.position.height = height + diffY;
       }
     };
 
     const mouseup = () => {
-      document.removeEventListener('mouseup', mouseup);
-      document.removeEventListener('mousemove', mousemove);
+      off('mouseup', mouseup);
+      off('mousemove', mousemove);
     };
 
-    document.addEventListener('mousemove', mousemove);
-    document.addEventListener('mouseup', mouseup);
+    on('mousemove', mousemove);
+    on('mouseup', mouseup);
   };
 
-  return { handleShapeClick, handleMousedown, points, style, shape, handleMousedowOnPoint };
+  return { handleShapeClick, handleMousedown, points, style, handleMousedowOnPoint };
 };
 
 export default defineComponent({ name, props, setup });

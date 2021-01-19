@@ -12,8 +12,9 @@
       :active="board.index === index"
       :index="index"
       v-bind="item.position"
+      :style="item.style"
     >
-      <component :is="item.component" :style="item.style" />
+      <component :is="item.component" />
     </board-shape>
     <board-menu v-if="menu.show" :style="menu.style" v-bind="menu.position" />
     <board-markline />
@@ -29,6 +30,7 @@ import { useStore } from 'vuex';
 import { BoardEnum } from '@/store/modules/board';
 import { useMenu } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
+import { defaultStyleOption } from '@/options';
 
 const name = 'board';
 
@@ -37,7 +39,7 @@ const components = { BoardShape, BoardMenu, BoardMarkline };
 const setup = () => {
   const store = useStore();
 
-  const board = computed(() => store.state.board);
+  const board = store.getters[BoardEnum.GET_BOARD];
 
   const { menu, showMenu, hideMenu, setPosition } = useMenu();
 
@@ -53,7 +55,8 @@ const setup = () => {
     if (type && typeof offsetX !== undefined && typeof offsetY !== undefined) {
       const top = e.offsetY;
       const left = e.offsetX;
-      append({ component: `v-${type}`, position: { top, left }, style: {} });
+      const position = { top, left, ...defaultStyleOption } as Pos;
+      append({ component: `v-${type}`, position, style: {} });
     }
   };
 

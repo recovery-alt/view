@@ -1,6 +1,7 @@
 import { Module, Mutation, Getter, Action } from 'vuex';
 import { v4 } from 'uuid';
 import { SnapshotEnum } from './snapshot';
+import { defaultStyleOption } from '@/options';
 
 const state: Board = {
   index: -1,
@@ -10,6 +11,9 @@ const state: Board = {
 const getters: Data<Getter<Board, RootStateType>> = {
   getCurComponent(state) {
     return state.data[state.index];
+  },
+  getBoard(state) {
+    return state;
   },
 };
 
@@ -59,6 +63,8 @@ export enum BoardEnum {
   CANCEL_SELECTED = 'board/cancelSelected',
   SET_INDEX = 'board/setIndex',
   SET_BOARD = 'board/setBoard',
+  GET_CUR_COMPONENT = 'board/getCurComponent',
+  GET_BOARD = 'board/getBoard',
 }
 
 export default board;

@@ -9,6 +9,8 @@ type Data<T = unknown> = Record<string, T>;
 type Pos = {
   top: number;
   left: number;
+  width: number;
+  height: number;
   right?: number;
   bottom?: number;
 };

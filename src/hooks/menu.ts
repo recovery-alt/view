@@ -1,7 +1,9 @@
 import { reactive, ref } from 'vue';
 
+type Position = { top: number; left: number };
+
 type Menu = {
-  position: Pos;
+  position: Position;
   show: boolean;
   style: Partial<CSSStyleDeclaration>;
 };
@@ -25,7 +27,7 @@ export const useMenu = () => {
     menu.show = false;
   };
 
-  const setPosition = (position: Pos) => {
+  const setPosition = (position: Position) => {
     menu.position = position;
   };
 
