@@ -1,5 +1,5 @@
 <template>
-  <div><input v-model="value" /></div>
+  <div style="height: 100%;border: 1px solid #000;">aaaa</div>
 </template>
 
 <script>

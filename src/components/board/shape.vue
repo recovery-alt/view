@@ -24,6 +24,7 @@ import { useStore } from 'vuex';
 import { judgeLineShow } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
+import { throttle } from 'lodash';
 
 const name = 'board-shape';
 
@@ -88,7 +89,8 @@ const setup = (props: Props) => {
       curComponent.position.left = diffX + left;
       curComponent.position.top = diffY + top;
       // TODO: 计算吸附情况
-      judgeLineShow(board, curComponent);
+      const lineShow = throttle(judgeLineShow);
+      lineShow(board, curComponent);
     };
 
     const mouseup = () => {
