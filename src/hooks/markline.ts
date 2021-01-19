@@ -55,10 +55,11 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
   // 排除自己
   data.splice(board.index, 1);
   // 遍历除自己外的所有组件
-  data.forEach(component => {
-    const { width, height, left, top } = component.position;
+  for (let i = 0, len = data.length; i < len; i++) {
+    const { width, height, left, top } = data[i].position;
     // 遍历所有的markline
-    markline.lines.forEach((line, lineIndex) => {
+    for (let j = 0, len = markline.lines.length; j < len; j++) {
+      const line = markline.lines[j];
       const isX = line.name.includes('x');
       // 根据x/y轴判断所使用的遍历
       const key = isX ? 'top' : 'left';
@@ -66,12 +67,12 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
         ? [curTop, top, height, curHeight]
         : [curLeft, left, width, curWidth];
 
-      const remainder = lineIndex % 3;
-      for (let i = 0; i < 3; i++) {
+      const remainder = j % 3;
+      for (let k = 0; k < 3; k++) {
         // 线的位置
         const linePos = leftOrTop + (widthOrHeight * remainder) / 2;
         // 当前拖拽组件的高度/宽度差
-        const delta = (curWidthOrHeight * i) / 2;
+        const delta = (curWidthOrHeight * k) / 2;
         const needSorption = judgeNeedSorption(curPos + delta, linePos);
         // 如果找到了就实现吸附
         if (needSorption) {
@@ -80,10 +81,10 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
         }
         line.show = needSorption;
         // 匹配到了就直接不继续找了
-        if (needSorption) break;
+        if (needSorption) return;
       }
-    });
-  });
+    }
+  }
 };
 
 const hideAllLines = () => {

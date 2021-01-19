@@ -82,16 +82,15 @@ const setup = (props: Props) => {
     const startY = e.clientY;
     const { left, top } = curComponent.position;
 
-    const mousemove = (e: MouseEvent) => {
+    const mousemove = throttle((e: MouseEvent) => {
       const { clientX, clientY } = e;
       const diffX = clientX - startX;
       const diffY = clientY - startY;
       curComponent.position.left = diffX + left;
       curComponent.position.top = diffY + top;
       // 计算吸附情况
-      const lineShow = throttle(judgeLineShow);
-      lineShow(board, curComponent);
-    };
+      judgeLineShow(board, curComponent);
+    }, 30);
 
     const mouseup = () => {
       off('mousemove', mousemove);
@@ -118,7 +117,7 @@ const setup = (props: Props) => {
     const startX = e.clientX;
     const startY = e.clientY;
 
-    const mousemove = (e: MouseEvent) => {
+    const mousemove = throttle((e: MouseEvent) => {
       const { clientX, clientY } = e;
       if (hasLeft) {
         const diffX = clientX - startX;
@@ -138,7 +137,7 @@ const setup = (props: Props) => {
         const diffY = clientY - startY;
         curComponent.position.height = height + diffY;
       }
-    };
+    }, 30);
 
     const mouseup = () => {
       off('mouseup', mouseup);
