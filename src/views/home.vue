@@ -1,9 +1,14 @@
 <template>
   <header class="header">
-    <el-button @click="undo">撤销</el-button>
-    <el-button @click="redo">重做</el-button>
-    <el-input v-model="width" size="small" />
-    <el-input v-model="height" size="small" />
+    <el-button size="small" @click="undo">撤销</el-button>
+    <el-button size="small" @click="redo">重做</el-button>
+    <div class="header-input">
+      <el-input v-model="width" size="small" />
+    </div>
+    <span class="header-x">x</span>
+    <div class="header-input">
+      <el-input v-model="height" size="small" />
+    </div>
   </header>
   <main class="main">
     <component-list />
@@ -12,7 +17,12 @@
         <board :style="headStyle" />
       </div>
     </section>
-    <section class="main-right"></section>
+    <section class="main-right">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="属性" name="first">属性</el-tab-pane>
+        <el-tab-pane label="动画" name="second">动画</el-tab-pane>
+      </el-tabs>
+    </section>
   </main>
 </template>
 
@@ -29,7 +39,9 @@ const setup = () => {
   const undo = () => store.dispatch(SnapshotEnum.UNDO);
   const redo = () => store.dispatch(SnapshotEnum.REDO);
 
-  return { ...toRefs(headSize), headStyle, undo, redo };
+  const activeName = ref('');
+
+  return { ...toRefs(headSize), headStyle, undo, redo, activeName };
 };
 
 export default defineComponent({
@@ -45,6 +57,14 @@ export default defineComponent({
   flex-shrink: 0;
   display: flex;
   align-items: center;
+
+  &-input {
+    width: 60px;
+  }
+
+  &-x {
+    padding: 0 5px;
+  }
 }
 
 .main {
@@ -62,8 +82,10 @@ export default defineComponent({
   }
 
   &-right {
-    width: 260px;
+    width: 300px;
     border-left: 1px solid $el-border-1;
+    box-sizing: border-box;
+    padding: 5px 10px;
   }
 }
 
