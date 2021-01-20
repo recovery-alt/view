@@ -25,6 +25,7 @@ import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
+import { showMenu } from '@/hooks';
 
 const name = 'board-shape';
 
@@ -67,9 +68,16 @@ const setup = (props: Props) => {
     height: `${props.height}px`,
   }));
 
-  const handleShapeClick = (e: Event) => {
+  const handleRightClick = (e: MouseEvent) => {
+    showMenu(e);
+  };
+
+  const handleShapeClick = (e: MouseEvent) => {
     e.stopPropagation();
     store.commit(BoardEnum.SET_INDEX, props.index);
+    if (e.buttons === 2) {
+      handleRightClick(e);
+    }
   };
 
   const handleMousedown = (e: MouseEvent) => {

@@ -9,7 +9,7 @@
     <component-list />
     <section class="main-mid">
       <div class="mid-box">
-        <board :style="style" />
+        <board :style="headStyle" />
       </div>
     </section>
     <section class="main-right"></section>
@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, toRefs } from 'vue';
 import ComponentList from '@/components/component-list';
 import Board from '@/components/board';
-import { useResize } from '@/hooks';
+import { headSize, headStyle } from '@/hooks';
 import { useStore } from 'vuex';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 
@@ -28,9 +28,8 @@ const setup = () => {
   const store = useStore();
   const undo = () => store.dispatch(SnapshotEnum.UNDO);
   const redo = () => store.dispatch(SnapshotEnum.REDO);
-  const data = useResize();
 
-  return { ...data, undo, redo };
+  return { ...toRefs(headSize), headStyle, undo, redo };
 };
 
 export default defineComponent({

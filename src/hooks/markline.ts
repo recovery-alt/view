@@ -57,18 +57,19 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
   // 遍历除自己外的所有组件
   for (let i = 0, len = data.length; i < len; i++) {
     const { width, height, left, top } = data[i].position;
-    // 遍历所有的markline
-    for (let j = 0, len = markline.lines.length; j < len; j++) {
-      const line = markline.lines[j];
-      const isX = line.name.includes('x');
-      // 根据x/y轴判断所使用的遍历
-      const key = isX ? 'top' : 'left';
-      const [curPos, leftOrTop, widthOrHeight, curWidthOrHeight] = isX
-        ? [curTop, top, height, curHeight]
-        : [curLeft, left, width, curWidth];
+    for (let k = 0; k < 3; k++) {
+      // 遍历所有的markline
+      for (let j = 0, len = markline.lines.length; j < len; j++) {
+        const line = markline.lines[j];
+        const isX = line.name.includes('x');
+        // 根据x/y轴判断所使用的遍历
+        const key = isX ? 'top' : 'left';
+        const [curPos, leftOrTop, widthOrHeight, curWidthOrHeight] = isX
+          ? [curTop, top, height, curHeight]
+          : [curLeft, left, width, curWidth];
 
-      const remainder = j % 3;
-      for (let k = 0; k < 3; k++) {
+        const remainder = j % 3;
+
         // 线的位置
         const linePos = leftOrTop + (widthOrHeight * remainder) / 2;
         // 当前拖拽组件的高度/宽度差

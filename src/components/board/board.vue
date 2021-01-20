@@ -3,7 +3,7 @@
     class="board"
     @drop="handleDrop"
     @dragover="handleDragOver"
-    @click="cancelSelected"
+    @click="handleLeftClick"
     @contextmenu="handleRightClick"
   >
     <board-shape
@@ -28,7 +28,7 @@ import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
 import { useStore } from 'vuex';
 import { BoardEnum } from '@/store/modules/board';
-import { useMenu } from '@/hooks';
+import { menu, showMenu, hideMenu, setPosition } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
 import { defaultStyleOption } from '@/options';
 
@@ -41,10 +41,12 @@ const setup = () => {
 
   const board = store.getters[BoardEnum.GET_BOARD];
 
-  const { menu, showMenu, hideMenu, setPosition } = useMenu();
-
   const append = (component: Component) => store.dispatch(BoardEnum.APEEND, component);
-  const cancelSelected = () => store.commit(BoardEnum.CANCEL_SELECTED);
+
+  const handleLeftClick = (e: MouseEvent) => {
+    store.commit(BoardEnum.CANCEL_SELECTED);
+    hideMenu();
+  };
 
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
@@ -64,14 +66,12 @@ const setup = () => {
     e.preventDefault();
   };
 
-  const handleRightClick = (e: any) => {
+  const handleRightClick = (e: MouseEvent) => {
     e.preventDefault();
-    const { layerX, layerY } = e;
-    setPosition({ left: layerX, top: layerY });
-    showMenu();
+    showMenu(e);
   };
 
-  return { board, cancelSelected, handleDragOver, handleDrop, handleRightClick, menu };
+  return { board, handleLeftClick, handleDragOver, handleDrop, handleRightClick, menu };
 };
 
 export default defineComponent({ name, components, setup });
