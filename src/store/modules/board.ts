@@ -1,5 +1,5 @@
 import { Module, Mutation, Getter, Action } from 'vuex';
-import { v4 } from 'uuid';
+import { uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
 import { defaultStyleOption } from '@/options';
 
@@ -19,7 +19,7 @@ const getters: Data<Getter<Board, RootStateType>> = {
 
 const mutations: Data<Mutation<Board>> = {
   append(state, component: Component) {
-    component.id = v4();
+    component.id = uniqueId();
     state.data.push(component);
     state.index = state.data.length - 1;
   },

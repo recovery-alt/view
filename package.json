@@ -14,7 +14,6 @@
     "element-plus": "^1.0.1-beta.23",
     "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",
-    "uuid": "^8.3.2",
     "vue": "^3.0.5",
     "vue-router": "^4.0.2",
     "vuex": "^4.0.0-rc.2"
