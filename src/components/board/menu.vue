@@ -1,7 +1,7 @@
 <template>
   <div class="board-menu" :style="position">
     <ul>
-      <li v-for="item in data" :key="item.name">
+      <li v-for="item in data" :key="item.name" @click="item.event">
         <i :class="`el-icon-${item.icon}`"></i>
         <span>{{ item.name }}</span>
       </li>
@@ -37,18 +37,30 @@ const setup = (props: Props) => {
     {
       name: '剪切',
       icon: 'scissors',
+      event: (e: MouseEvent) => {
+        console.log('剪切');
+      },
     },
     {
       name: '复制',
       icon: 'document-copy',
+      event: (e: MouseEvent) => {
+        console.log('复制');
+      },
     },
     {
       name: '粘贴',
       icon: 'brush',
+      event: (e: MouseEvent) => {
+        console.log('粘贴');
+      },
     },
     {
       name: '删除',
       icon: 'delete',
+      event: (e: MouseEvent) => {
+        console.log('删除');
+      },
     },
   ];
 
@@ -70,9 +82,9 @@ li {
   position: absolute;
 
   ul {
-    background-color: #ebebeb;
+    background-color: $el-info-1;
     border-radius: 5px;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: $el-shadow-1;
     padding: 5px 0;
   }
 
@@ -83,8 +95,8 @@ li {
     cursor: default;
 
     &:hover {
-      background-color: #1b4ba5;
-      color: #fff;
+      background-color: $el-primary-1;
+      color: $el-white;
     }
   }
 

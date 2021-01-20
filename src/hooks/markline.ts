@@ -48,49 +48,62 @@ const judgeNeedSorption = (num1: number, num2: number) => {
   return Math.abs(num1 - num2) < markline.diff;
 };
 
+const hideAllLines = () => {
+  markline.lines.forEach(line => {
+    line.show = false;
+  });
+};
+
 // 判断线是否需要显示
 const judgeLineShow = (board: Board, curComponent: Component) => {
   const { width: curWidth, height: curHeight, left: curLeft, top: curTop } = curComponent.position;
   const data = [...board.data];
   // 排除自己
   data.splice(board.index, 1);
-  // 遍历除自己外的所有组件
-  for (let i = 0, len = data.length; i < len; i++) {
-    const { width, height, left, top } = data[i].position;
-    for (let k = 0; k < 3; k++) {
-      // 遍历所有的markline
-      for (let j = 0, len = markline.lines.length; j < len; j++) {
-        const line = markline.lines[j];
-        const isX = line.name.includes('x');
-        // 根据x/y轴判断所使用的遍历
-        const key = isX ? 'top' : 'left';
+
+  // 需要显示的线
+  const needShow = [];
+
+  // 上中下/左中右
+  for (let i = 0; i < 3; i++) {
+    // 遍历所有的markline
+    for (let j = 0, len = markline.lines.length; j < len; j++) {
+      let needSorption = false;
+      const line = markline.lines[j];
+      // 重置markline状态
+      line.show = false;
+      const isX = line.name.includes('x');
+      const remainder = j % 3;
+      // 根据x/y轴判断所使用的遍历
+      const key = isX ? 'top' : 'left';
+      // 遍历除自己外的所有组件
+      for (let k = 0, len = data.length; k < len; k++) {
+        const { width, height, left, top } = data[k].position;
         const [curPos, leftOrTop, widthOrHeight, curWidthOrHeight] = isX
           ? [curTop, top, height, curHeight]
           : [curLeft, left, width, curWidth];
 
-        const remainder = j % 3;
-
         // 线的位置
         const linePos = leftOrTop + (widthOrHeight * remainder) / 2;
         // 当前拖拽组件的高度/宽度差
-        const delta = (curWidthOrHeight * k) / 2;
-        const needSorption = judgeNeedSorption(curPos + delta, linePos);
-        // 如果找到了就实现吸附
+        const delta = (curWidthOrHeight * i) / 2;
+        needSorption = judgeNeedSorption(curPos + delta, linePos);
+        // 如果找到了就推到数组里，跳出循环
         if (needSorption) {
           curComponent.position[key] = linePos - delta;
           line.style[key] = linePos + 'px';
+          needShow.push(j);
+          break;
         }
-        line.show = needSorption;
-        // 匹配到了就直接不继续找了
-        if (needSorption) return;
       }
+      // 优化性能，找到了就跳出循环
+      if (needSorption) break;
     }
   }
-};
 
-const hideAllLines = () => {
-  markline.lines.forEach(line => {
-    line.show = false;
+  // 需要显示的数据统一设置显示
+  needShow.forEach(val => {
+    markline.lines[val].show = true;
   });
 };
 

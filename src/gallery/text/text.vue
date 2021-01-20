@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;border: 1px solid #000;">aaaa</div>
+  <div class="text">aaaa</div>
 </template>
 
 <script>
@@ -12,4 +12,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.text {
+  height: 100%;
+  border: 1px solid $el-border-2;
+}
+</style>

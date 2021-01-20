@@ -25,7 +25,7 @@ export default defineComponent({ name, setup });
 <style lang="scss" scoped>
 .board-markline {
   position: absolute;
-  background-color: #59c7f9;
+  background-color: $el-primary-1;
   z-index: 1000;
 }
 

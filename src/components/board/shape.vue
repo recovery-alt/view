@@ -90,7 +90,7 @@ const setup = (props: Props) => {
     const startY = e.clientY;
     const { left, top } = curComponent.position;
 
-    const mousemove = throttle((e: MouseEvent) => {
+    const mousemove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       const diffX = clientX - startX;
       const diffY = clientY - startY;
@@ -98,7 +98,7 @@ const setup = (props: Props) => {
       curComponent.position.top = diffY + top;
       // 计算吸附情况
       judgeLineShow(board, curComponent);
-    }, 30);
+    };
 
     const mouseup = () => {
       off('mousemove', mousemove);
@@ -163,14 +163,14 @@ export default defineComponent({ name, props, setup });
 </script>
 
 <style lang="scss" scoped>
-$radius: 3px;
+$radius: 5px;
 
 .shape {
   position: absolute;
   cursor: move;
 
   &.active {
-    outline: 1px solid #70c0ff;
+    outline: 1px solid $el-primary-2;
   }
 }
 
@@ -178,10 +178,10 @@ $radius: 3px;
   position: absolute;
   width: $radius * 2;
   height: $radius * 2;
-  border: 1px solid #59c7f9;
+  border: 1px solid $el-primary-2;
   box-sizing: border-box;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: $el-white;
 }
 
 .top {

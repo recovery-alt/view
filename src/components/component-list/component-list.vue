@@ -39,6 +39,6 @@ export default defineComponent({ setup });
   width: 200px;
   box-sizing: border-box;
   padding: 15px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid $el-border-1;
 }
 </style>

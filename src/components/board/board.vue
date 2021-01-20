@@ -80,7 +80,7 @@ export default defineComponent({ name, components, setup });
 <style lang="scss" scoped>
 .board {
   position: relative;
-  background-color: #fff;
+  background-color: $el-white;
   overflow: auto;
 }
 </style>

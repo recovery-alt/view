@@ -41,7 +41,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .header {
   height: 60px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $el-border-1;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -55,7 +55,7 @@ export default defineComponent({
     flex: 1;
     flex-shrink: 0;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: $el-info-3;
     overflow: auto;
     box-sizing: border-box;
     padding: 20px;
@@ -63,7 +63,7 @@ export default defineComponent({
 
   &-right {
     width: 260px;
-    border-left: 1px solid #eee;
+    border-left: 1px solid $el-border-1;
   }
 }
 
