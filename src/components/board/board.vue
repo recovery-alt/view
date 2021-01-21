@@ -12,7 +12,7 @@
       :active="board.index === index"
       :index="index"
       v-bind="item.position"
-      :style="item.style"
+      :style="patchUnit(item.style)"
     >
       <component :is="item.component" />
     </board-shape>
@@ -31,6 +31,8 @@ import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu, setPosition } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
 import { defaultComponentSize, presetComponentAttr } from '@/options';
+import { uniqueId } from 'lodash';
+import { patchUnit } from '@/utils';
 
 const name = 'board';
 
@@ -51,7 +53,8 @@ const setup = () => {
     const position = { top, left, ...defaultComponentSize };
     const component = `v-${type}`;
     const attr = presetComponentAttr;
-    append({ component, attr, position, style: {} });
+    const id = uniqueId();
+    append({ id, component, attr, position, style: {} });
   };
 
   const handleDrop = (e: DragEvent) => {
@@ -72,7 +75,7 @@ const setup = () => {
     showMenu(e);
   };
 
-  return { board, handleLeftClick, handleDragOver, handleDrop, handleRightClick, menu };
+  return { board, handleLeftClick, handleDragOver, handleDrop, handleRightClick, menu, patchUnit };
 };
 
 export default defineComponent({ name, components, setup });

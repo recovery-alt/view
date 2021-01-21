@@ -11,10 +11,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.text {
-  height: 100%;
-  border: 1px solid $el-border-2;
-}
-</style>

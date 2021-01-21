@@ -1,3 +1,14 @@
+declare enum FormEnum {
+  RADIO = 'radio',
+  CHECKBOX = 'checkbox',
+  INPUT = 'input',
+  INPUT_NUMBER = 'input-number',
+  SELECT = 'select',
+  SWITCH = 'switch',
+  SLIDER = 'slider',
+  COLOR_PICKER = 'color-picker',
+}
+
 type ResponseData<T = any> = {
   code: number;
   data: T;
@@ -15,8 +26,20 @@ type Pos = {
   bottom?: number;
 };
 
+type CSSStyleFilter =
+  | number
+  | 'parentRule'
+  | 'length'
+  | 'getPropertyPriority'
+  | 'getPropertyValue'
+  | 'item'
+  | 'removeProperty'
+  | 'setProperty';
+
+type CSSStyleKey = Exclude<keyof CSSStyleDeclaration, CSSStyleFilter>;
+
 type ComponentAttr = {
-  key: keyof CSSStyleDeclaration;
+  key: CSSStyleKey;
   type: FormEnum;
   label: string;
   config?: Data;
@@ -24,7 +47,7 @@ type ComponentAttr = {
 };
 
 type Component = {
-  id?: string;
+  id: string;
   component: string;
   label?: string;
   propValue?: string;
@@ -50,14 +73,3 @@ type RootStateType = {
   board: Board;
   snapshot: Snapshot;
 };
-
-enum FormEnum {
-  RADIO = 'radio',
-  CHECKBOX = 'checkbox',
-  INPUT = 'input',
-  INPUT_NUMBER = 'input-number',
-  SELECT = 'select',
-  SWITCH = 'switch',
-  SLIDER = 'slider',
-  COLOR_PICKER = 'color-picker',
-}

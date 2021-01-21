@@ -1,3 +1,5 @@
+import { FormEnum } from '@/enum';
+
 export const defaultComponentSize = {
   width: 100,
   height: 100,
@@ -5,9 +7,9 @@ export const defaultComponentSize = {
 
 export const presetComponentAttr: Array<ComponentAttr> = [
   {
-    key: 'borderWidth',
+    key: 'borderRadius',
     type: FormEnum.INPUT_NUMBER,
-    label: '边框',
+    label: '圆角',
   },
   {
     key: 'backgroundColor',

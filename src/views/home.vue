@@ -14,7 +14,7 @@
     <component-list />
     <section class="main-mid">
       <div class="mid-box">
-        <board :style="headStyle" />
+        <board :style="patchUnit(headSize)" />
       </div>
     </section>
     <section class="main-right">
@@ -32,10 +32,11 @@
 import { computed, defineComponent, ref, toRefs } from 'vue';
 import ComponentList from '@/components/component-list';
 import Board from '@/components/board';
-import { headSize, headStyle } from '@/hooks';
+import { headSize } from '@/hooks';
 import { useStore } from '@/store';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 import AttrPanel from '@/components/attr-panel';
+import { patchUnit } from '@/utils';
 
 const components = { ComponentList, Board, AttrPanel };
 
@@ -46,7 +47,7 @@ const setup = () => {
 
   const activeName = ref('');
 
-  return { ...toRefs(headSize), headStyle, undo, redo, activeName };
+  return { headSize, undo, redo, activeName, patchUnit };
 };
 
 export default defineComponent({

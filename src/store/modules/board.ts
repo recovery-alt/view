@@ -9,7 +9,6 @@ const state: Board = {
 
 const mutations: Data<Mutation<Board>> = {
   append(state, component: Component) {
-    component.id = uniqueId();
     state.data.push(component);
     state.index = state.data.length - 1;
   },
