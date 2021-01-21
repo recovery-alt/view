@@ -1,4 +1,5 @@
-import { createStore, ModuleTree } from 'vuex';
+import { createStore, ModuleTree, Store, useStore as baseUseStore } from 'vuex';
+import { InjectionKey } from 'vue';
 const context = require.context('./modules/', true, /\.ts$/);
 const modules: ModuleTree<{}> = {};
 
@@ -10,9 +11,8 @@ context.keys().forEach(key => {
   }
 });
 
-export default createStore({
-  modules,
-  state: {},
-  mutations: {},
-  actions: {},
-});
+export const key: InjectionKey<Store<RootStateType>> = Symbol();
+
+export const store = createStore({ modules });
+
+export const useStore = () => baseUseStore(key);

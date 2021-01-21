@@ -19,7 +19,9 @@
     </section>
     <section class="main-right">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="属性" name="first">属性</el-tab-pane>
+        <el-tab-pane label="样式" name="first">
+          <attr-panel></attr-panel>
+        </el-tab-pane>
         <el-tab-pane label="动画" name="second">动画</el-tab-pane>
       </el-tabs>
     </section>
@@ -31,8 +33,11 @@ import { computed, defineComponent, ref, toRefs } from 'vue';
 import ComponentList from '@/components/component-list';
 import Board from '@/components/board';
 import { headSize, headStyle } from '@/hooks';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { SnapshotEnum } from '@/store/modules/snapshot';
+import AttrPanel from '@/components/attr-panel';
+
+const components = { ComponentList, Board, AttrPanel };
 
 const setup = () => {
   const store = useStore();
@@ -45,8 +50,8 @@ const setup = () => {
 };
 
 export default defineComponent({
+  components,
   setup,
-  components: { ComponentList, Board },
 });
 </script>
 

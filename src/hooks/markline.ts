@@ -96,8 +96,6 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
           break;
         }
       }
-      // 优化性能，找到了就跳出循环
-      if (needSorption) break;
     }
   }
 

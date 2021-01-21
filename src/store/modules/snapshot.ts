@@ -7,8 +7,6 @@ const state: Snapshot = {
   index: -1,
 };
 
-const getters: Data<Getter<Snapshot, RootStateType>> = {};
-
 const mutations: Data<Mutation<Snapshot>> = {
   recordSnapshot(state, board: Board) {
     state.data[++state.index] = cloneDeep(board);
@@ -41,7 +39,6 @@ const actions: Data<Action<Snapshot, RootStateType>> = {
 
 const snapshot: Module<Snapshot, RootStateType> = {
   state,
-  getters,
   mutations,
   actions,
   namespaced: true,

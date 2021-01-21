@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
@@ -84,8 +84,8 @@ const setup = (props: Props) => {
     if (e.buttons !== 1) return;
     e.stopPropagation();
     store.commit(BoardEnum.SET_INDEX, props.index);
-    const board = store.getters[BoardEnum.GET_BOARD];
-    const curComponent = store.getters[BoardEnum.GET_CUR_COMPONENT];
+    const board = store.state.board;
+    const curComponent = board.data[board.index];
     const startX = e.clientX;
     const startY = e.clientY;
     const { left, top } = curComponent.position;
@@ -119,7 +119,8 @@ const setup = (props: Props) => {
     const hasRight = className.includes('right');
     const hasTop = className.includes('top');
     const hasBottom = className.includes('bottom');
-    const curComponent = store.getters[BoardEnum.GET_CUR_COMPONENT];
+    const { index, data } = store.state.board;
+    const curComponent = data[index];
     const { top, left, width, height } = curComponent.position;
 
     const startX = e.clientX;

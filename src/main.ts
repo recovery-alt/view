@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './app.vue';
 import router from './router';
-import store from './store';
+import { store, key } from './store';
 import { useElement } from './plugins';
 import useGallery from './gallery';
 import 'normalize.css';
@@ -12,6 +12,6 @@ useElement(app);
 useGallery(app);
 
 app
-  .use(store)
+  .use(store, key)
   .use(router)
   .mount('#app');

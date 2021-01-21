@@ -26,11 +26,11 @@ import { computed, defineComponent, Events, ref, toRefs } from 'vue';
 import BoardMenu from './menu.vue';
 import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu, setPosition } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
-import { defaultStyleOption } from '@/options';
+import { defaultComponentSize, presetComponentAttr } from '@/options';
 
 const name = 'board';
 
@@ -38,8 +38,7 @@ const components = { BoardShape, BoardMenu, BoardMarkline };
 
 const setup = () => {
   const store = useStore();
-
-  const board = store.getters[BoardEnum.GET_BOARD];
+  const { board } = store.state;
 
   const append = (component: Component) => store.dispatch(BoardEnum.APEEND, component);
 
@@ -48,18 +47,20 @@ const setup = () => {
     hideMenu();
   };
 
+  const newComponent = (type: string, left: number, top: number) => {
+    const position = { top, left, ...defaultComponentSize };
+    const component = `v-${type}`;
+    const attr = presetComponentAttr;
+    append({ component, attr, position, style: {} });
+  };
+
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     const type = e.dataTransfer?.getData('type');
-    const offsetX = e.dataTransfer?.getData('offsetX');
-    const offsetY = e.dataTransfer?.getData('offsetY');
-    if (type && typeof offsetX !== undefined && typeof offsetY !== undefined) {
-      const top = e.offsetY;
-      const left = e.offsetX;
-      const position = { top, left, ...defaultStyleOption } as Pos;
-      append({ component: `v-${type}`, position, style: {} });
-    }
+    if (!type) return;
+    const { offsetX, offsetY } = e;
+    newComponent(type, offsetX, offsetY);
   };
 
   const handleDragOver = (e: DragEvent) => {

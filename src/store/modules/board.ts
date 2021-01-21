@@ -1,20 +1,10 @@
 import { Module, Mutation, Getter, Action } from 'vuex';
 import { uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
-import { defaultStyleOption } from '@/options';
 
 const state: Board = {
   index: -1,
   data: [],
-};
-
-const getters: Data<Getter<Board, RootStateType>> = {
-  getCurComponent(state) {
-    return state.data[state.index];
-  },
-  getBoard(state) {
-    return state;
-  },
 };
 
 const mutations: Data<Mutation<Board>> = {
@@ -51,7 +41,6 @@ const actions: Data<Action<Board, RootStateType>> = {
 
 const board: Module<Board, RootStateType> = {
   state,
-  getters,
   mutations,
   actions,
   namespaced: true,
@@ -63,8 +52,6 @@ export enum BoardEnum {
   CANCEL_SELECTED = 'board/cancelSelected',
   SET_INDEX = 'board/setIndex',
   SET_BOARD = 'board/setBoard',
-  GET_CUR_COMPONENT = 'board/getCurComponent',
-  GET_BOARD = 'board/getBoard',
 }
 
 export default board;
