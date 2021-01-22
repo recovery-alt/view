@@ -10,77 +10,54 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
-
-type Props = {
-  left: number;
-  top: number;
-};
+import { useStore } from '@/store';
+import { BoardEnum } from '@/store/modules/board';
+import { defineComponent } from 'vue';
+import { getMenuPosition } from '@/utils';
 
 const name = 'board-menu';
 
-const props = {
-  left: {
-    type: Number,
-    default: () => 0,
-  },
-  top: {
-    type: Number,
-    default: () => 0,
-  },
-};
-
-const setup = (props: Props) => {
+const setup = () => {
+  const store = useStore();
   const data = [
     {
       name: '剪切',
       icon: 'scissors',
-      event: (e: MouseEvent) => {
-        console.log('剪切');
-      },
+      event: () => store.dispatch(BoardEnum.CUT),
     },
     {
       name: '复制',
       icon: 'document-copy',
-      event: (e: MouseEvent) => {
-        console.log('复制');
-      },
+      event: () => store.dispatch(BoardEnum.COPY),
     },
     {
       name: '粘贴',
       icon: 'brush',
-      event: (e: MouseEvent) => {
-        console.log('粘贴');
+      event: () => {
+        const menuPosition = getMenuPosition();
+        if (!menuPosition) return;
+        store.dispatch(BoardEnum.PASTE, menuPosition);
       },
     },
     {
       name: '删除',
       icon: 'delete',
-      event: (e: MouseEvent) => {
-        console.log('删除');
-      },
+      event: () => store.dispatch(BoardEnum.DEL),
     },
   ];
 
   return { data };
 };
 
-export default defineComponent({ name, props, setup });
+export default defineComponent({ name, setup });
 </script>
 
 <style lang="scss" scoped>
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .board-menu {
   position: absolute;
 
   ul {
-    background-color: $el-info-1;
+    background-color: $el-info-3;
     border-radius: 5px;
     box-shadow: $el-shadow-1;
     padding: 5px 0;

@@ -1,54 +1,41 @@
 <template>
-  <el-form v-if="componentId">
-    <el-form-item v-for="item in items" :key="item.key" :label="item.label">
-      <component :is="`el-${item.type}`" v-model="form[componentId][item.key]" />
+  <el-form v-if="board.index > -1" value="left" label-width="80px">
+    <el-form-item v-for="item in patchSizeInfoAttr" :key="item.key" :label="item.label">
+      <component :is="`el-${item.type}`" v-model="curComponent.style[item.key]" />
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, ref, reactive, watch, onMounted, computed } from 'vue';
+import { defineComponent, watchEffect, computed } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
+import { presetSizeInfo } from '@/options';
 
 const name = 'attr-panel';
 
 const setup = () => {
   const store = useStore();
   const { board } = store.state;
-
-  const items = ref<Array<ComponentAttr>>([]);
-
-  const form = reactive<Data<CSSStyleData>>({});
-
-  const componentId = computed(() => {
-    const curComponent = board.data[board.index];
-    return curComponent && curComponent.id;
-  });
+  // 当前选中组件
+  const curComponent = computed(() => board.data[board.index]);
+  // 添加位置大小信息
+  const patchSizeInfoAttr = computed(() => [...presetSizeInfo, ...curComponent.value.attr]);
 
   watchEffect(() => {
     // 初始化form & 写入form值
     if (board.index > -1) {
-      const { attr, id } = board.data[board.index];
-      items.value = attr;
-      const style: CSSStyleData = {};
-      attr.forEach(val => {
+      const { style } = board.data[board.index];
+      patchSizeInfoAttr.value.forEach(val => {
         const { key, type } = val;
         const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
-        style[key] = form[id] ? form[id][key] : empty;
+        // 不存在的话就赋空值
+        style[key] = style[key] || (empty as any);
       });
-      form[id] = style;
     }
   });
 
-  watchEffect(() => {
-    if (board.index > -1) {
-      const { style, id } = board.data[board.index];
-      Object.assign(style, form[id]);
-    }
-  });
-
-  return { items, form, componentId };
+  return { board, curComponent, patchSizeInfoAttr };
 };
 
 export default defineComponent({ name, setup });

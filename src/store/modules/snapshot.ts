@@ -17,19 +17,19 @@ const mutations: Data<Mutation<Snapshot>> = {
 };
 
 const actions: Data<Action<Snapshot, RootStateType>> = {
-  undo({ commit, state }) {
+  undo({ dispatch, state }) {
     if (state.index > -1) {
       state.index--;
       const board = state.index === -1 ? null : cloneDeep(state.data[state.index]);
-      commit(BoardEnum.SET_BOARD, board, {
+      dispatch(BoardEnum.SET_BOARD, board, {
         root: true,
       });
     }
   },
-  redo({ commit, state }) {
+  redo({ dispatch, state }) {
     if (state.index < state.data.length - 1) {
       state.index++;
-      commit(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), { root: true });
+      dispatch(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), { root: true });
     }
   },
   recordSnapshot({ rootState, commit }) {

@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
@@ -58,7 +58,7 @@ const setup = (props: Props) => {
 
   const handleShapeClick = (e: MouseEvent) => {
     e.stopPropagation();
-    store.commit(BoardEnum.SET_INDEX, props.index);
+    store.dispatch(BoardEnum.SET_INDEX, props.index);
     if (e.buttons === 2) {
       handleRightClick(e);
     }
@@ -67,7 +67,7 @@ const setup = (props: Props) => {
   const handleMousedown = (e: MouseEvent) => {
     if (e.buttons !== 1) return;
     e.stopPropagation();
-    store.commit(BoardEnum.SET_INDEX, props.index);
+    store.dispatch(BoardEnum.SET_INDEX, props.index);
     const board = store.state.board;
     const curComponent = board.data[board.index];
     const startX = e.clientX;
@@ -148,14 +148,14 @@ export default defineComponent({ name, props, setup });
 </script>
 
 <style lang="scss" scoped>
-$radius: 5px;
+$radius: 3px;
 
 .shape {
   position: absolute;
   cursor: move;
 
   &.active {
-    outline: 1px solid $el-primary-2;
+    outline: 1px dashed $el-primary-2;
   }
 }
 

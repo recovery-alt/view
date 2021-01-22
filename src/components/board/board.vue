@@ -15,22 +15,19 @@
     >
       <component :is="item.component" />
     </board-shape>
-    <board-menu v-if="menu.show" :style="patchUnit(menu.style)" />
+    <board-menu v-show="menu.show" :style="patchUnit(menu.style)" />
     <board-markline />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Events, ref, toRefs } from 'vue';
+import { defineComponent } from 'vue';
 import BoardMenu from './menu.vue';
 import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu } from '@/hooks';
-import { EventEmitter } from 'element-plus/lib/utils/types';
-import { defaultComponentSize, presetComponentAttr } from '@/options';
-import { uniqueId } from 'lodash';
 import { patchUnit } from '@/utils';
 
 const name = 'board';
@@ -41,8 +38,8 @@ const setup = () => {
   const store = useStore();
   const { board } = store.state;
 
-  const handleLeftClick = (e: MouseEvent) => {
-    store.commit(BoardEnum.CANCEL_SELECTED);
+  const handleLeftClick = () => {
+    store.dispatch(BoardEnum.CANCEL_SELECTED);
     hideMenu();
   };
 

@@ -8,6 +8,7 @@ import {
   ElFormItem,
   ElInputNumber,
   ElColorPicker,
+  ElTree,
 } from 'element-plus';
 
 export const useElement = (app: App) => {
@@ -19,4 +20,5 @@ export const useElement = (app: App) => {
   app.use(ElFormItem);
   app.use(ElInputNumber);
   app.use(ElColorPicker);
+  app.use(ElTree);
 };

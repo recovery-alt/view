@@ -2,6 +2,7 @@
   <header class="header">
     <el-button size="small" @click="undo">撤销</el-button>
     <el-button size="small" @click="redo">重做</el-button>
+    <el-button size="small" @click="del">删除</el-button>
     <div class="header-input">
       <el-input v-model="headSize.width" size="small" />
     </div>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref, toRefs } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ComponentList from '@/components/component-list';
 import Board from '@/components/board';
 import { headSize } from '@/hooks';
@@ -37,6 +38,7 @@ import { useStore } from '@/store';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 import AttrPanel from '@/components/attr-panel';
 import { patchUnit } from '@/utils';
+import { BoardEnum } from '@/store/modules/board';
 
 const components = { ComponentList, Board, AttrPanel };
 
@@ -44,10 +46,11 @@ const setup = () => {
   const store = useStore();
   const undo = () => store.dispatch(SnapshotEnum.UNDO);
   const redo = () => store.dispatch(SnapshotEnum.REDO);
+  const del = () => store.dispatch(BoardEnum.DEL);
 
-  const activeName = ref('');
+  const activeName = ref('first');
 
-  return { headSize, undo, redo, activeName, patchUnit };
+  return { headSize, undo, redo, activeName, patchUnit, del };
 };
 
 export default defineComponent({

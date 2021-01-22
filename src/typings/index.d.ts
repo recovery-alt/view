@@ -49,7 +49,7 @@ type ComponentAttr = {
 type Component = {
   id: string;
   component: string;
-  label?: string;
+  label: string;
   propValue?: string;
   icon?: string;
   attr: Array<ComponentAttr>;
@@ -61,6 +61,7 @@ type Component = {
 type Board = {
   index: number;
   data: Array<Component>;
+  copy?: Component;
 };
 
 type Snapshot = {

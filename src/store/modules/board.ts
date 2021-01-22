@@ -1,7 +1,9 @@
-import { Module, Mutation, Getter, Action } from 'vuex';
-import { uniqueId } from 'lodash';
+import { Module, Mutation, Action } from 'vuex';
+import { cloneDeep, uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
 import { defaultComponentSize, presetComponentAttr } from '@/options';
+import { getGalleryList } from '@/gallery';
+import { ElMessage } from 'element-plus';
 
 const state: Board = {
   index: -1,
@@ -15,6 +17,7 @@ const mutations: Data<Mutation<Board>> = {
   },
   del(state, index: number) {
     state.data.splice(index, 1);
+    state.index = -1;
   },
   cancelSelected(state) {
     state.index = -1;
@@ -30,6 +33,9 @@ const mutations: Data<Mutation<Board>> = {
       state.index = -1;
     }
   },
+  setCopy(state) {
+    state.copy = cloneDeep(state.data[state.index]);
+  },
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
@@ -38,8 +44,55 @@ const actions: Data<Action<Board, RootStateType>> = {
     const component = `v-${type}`;
     const attr = presetComponentAttr;
     const id = uniqueId();
-    commit('append', { id, component, attr, style });
+    const gallery = getGalleryList();
+    const componentConfig = gallery.find(val => val.type === type);
+    if (!componentConfig) throw new Error('获取不到组件配置');
+    const label = componentConfig.name;
+    commit('append', { id, label, component, attr, style });
     dispatch(SnapshotEnum.RECORD_SNAPSHOT, state, { root: true });
+  },
+  del({ state, commit }) {
+    if (state.index > -1) {
+      commit('del');
+      ElMessage.success('删除成功！');
+    } else {
+      ElMessage.error('尚未选中任何组件！');
+    }
+  },
+  cancelSelected({ commit }) {
+    commit('cancelSelected');
+  },
+  setIndex({ commit }, index: number) {
+    commit('setIndex', index);
+  },
+  setBoard({ commit }, board: Board | null) {
+    commit('setBoard', board);
+  },
+  cut({ state, commit }) {
+    if (state.index > -1) {
+      commit('setCopy');
+      commit('del');
+      ElMessage.success('剪切成功！');
+    } else {
+      ElMessage.error('尚未选中任何组件！');
+    }
+  },
+  copy({ commit }) {
+    if (state.index > -1) {
+      commit('setCopy');
+      ElMessage.success('复制成功！');
+    } else {
+      ElMessage.error('尚未选中任何组件！');
+    }
+  },
+  paste({ commit, state }, position) {
+    if (state.copy) {
+      state.copy.id = uniqueId();
+      Object.assign(state.copy.style, position);
+      commit('append', cloneDeep(state.copy));
+    } else {
+      ElMessage.error('请先进行剪切/复制操作！');
+    }
   },
 };
 
@@ -56,6 +109,9 @@ export enum BoardEnum {
   CANCEL_SELECTED = 'board/cancelSelected',
   SET_INDEX = 'board/setIndex',
   SET_BOARD = 'board/setBoard',
+  CUT = 'board/cut',
+  COPY = 'board/copy',
+  PASTE = 'board/paste',
 }
 
 export default board;

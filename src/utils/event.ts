@@ -1,5 +1,3 @@
-import { countBy } from 'lodash';
-
 export const on = <K extends keyof DocumentEventMap>(
   name: K,
   listener: (this: Document, ev: DocumentEventMap[K]) => any,
@@ -13,5 +11,5 @@ export const off = <K extends keyof DocumentEventMap>(
   listener: (this: Document, ev: DocumentEventMap[K]) => any,
   options?: boolean | EventListenerOptions
 ) => {
-  document.removeEventListener(name, listener);
+  document.removeEventListener(name, listener, options);
 };
