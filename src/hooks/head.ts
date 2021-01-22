@@ -5,9 +5,4 @@ const headSize = reactive({
   height: 667,
 });
 
-const headStyle = computed(() => ({
-  width: headSize.width + 'px',
-  height: headSize.height + 'px',
-}));
-
-export { headSize, headStyle };
+export { headSize };

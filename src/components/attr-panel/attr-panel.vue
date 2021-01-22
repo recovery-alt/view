@@ -19,7 +19,7 @@ const setup = () => {
 
   const items = ref<Array<ComponentAttr>>([]);
 
-  const form = reactive<Data<CSSStyleData<string | number>>>({});
+  const form = reactive<Data<CSSStyleData>>({});
 
   const componentId = computed(() => {
     const curComponent = board.data[board.index];
@@ -31,7 +31,7 @@ const setup = () => {
     if (board.index > -1) {
       const { attr, id } = board.data[board.index];
       items.value = attr;
-      const style: CSSStyleData<string | number> = {};
+      const style: CSSStyleData = {};
       attr.forEach(val => {
         const { key, type } = val;
         const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';

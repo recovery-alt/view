@@ -1,20 +1,16 @@
 import { nextTick, reactive } from 'vue';
 
-type Position = { top: number; left: number };
-
 type Menu = {
-  position: Position;
   show: boolean;
-  style: Partial<CSSStyleDeclaration>;
+  style: CSSStyleData;
 };
 
 const menu = reactive<Menu>({
-  position: { top: 0, left: 0 },
   show: false,
   style: {},
 });
 
-const setStyle = (style: Partial<CSSStyleDeclaration>) => {
+const setStyle = (style: CSSStyleData) => {
   menu.style = style;
 };
 
@@ -28,8 +24,8 @@ const showMenu = (e: MouseEvent) => {
     const menuGap = 10;
     const { width, height } = menuDom.getBoundingClientRect();
     const boardRec = boardDom.getBoundingClientRect();
-    menu.position.left = Math.min(pageX - boardRec.left, boardRec.width - width - menuGap);
-    menu.position.top = Math.min(pageY - boardRec.top, boardRec.height - height - menuGap);
+    menu.style.left = Math.min(pageX - boardRec.left, boardRec.width - width - menuGap);
+    menu.style.top = Math.min(pageY - boardRec.top, boardRec.height - height - menuGap);
   });
 };
 
@@ -37,8 +33,4 @@ const hideMenu = () => {
   menu.show = false;
 };
 
-const setPosition = (position: Position) => {
-  menu.position = position;
-};
-
-export { menu, setStyle, showMenu, hideMenu, setPosition };
+export { menu, setStyle, showMenu, hideMenu };

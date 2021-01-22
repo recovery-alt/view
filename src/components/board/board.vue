@@ -11,12 +11,11 @@
       :key="item.id"
       :active="board.index === index"
       :index="index"
-      v-bind="item.position"
       :style="patchUnit(item.style)"
     >
       <component :is="item.component" />
     </board-shape>
-    <board-menu v-if="menu.show" :style="menu.style" v-bind="menu.position" />
+    <board-menu v-if="menu.show" :style="patchUnit(menu.style)" />
     <board-markline />
   </div>
 </template>
@@ -28,7 +27,7 @@ import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
-import { menu, showMenu, hideMenu, setPosition } from '@/hooks';
+import { menu, showMenu, hideMenu } from '@/hooks';
 import { EventEmitter } from 'element-plus/lib/utils/types';
 import { defaultComponentSize, presetComponentAttr } from '@/options';
 import { uniqueId } from 'lodash';

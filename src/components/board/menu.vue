@@ -1,5 +1,5 @@
 <template>
-  <div class="board-menu" :style="position">
+  <div class="board-menu">
     <ul>
       <li v-for="item in data" :key="item.name" @click="item.event">
         <i :class="`el-icon-${item.icon}`"></i>
@@ -31,8 +31,6 @@ const props = {
 };
 
 const setup = (props: Props) => {
-  const position = computed(() => ({ top: props.top + 'px', left: props.left + 'px' }));
-
   const data = [
     {
       name: '剪切',
@@ -64,7 +62,7 @@ const setup = (props: Props) => {
     },
   ];
 
-  return { position, data };
+  return { data };
 };
 
 export default defineComponent({ name, props, setup });

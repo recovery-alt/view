@@ -5,18 +5,19 @@
     v-show="line.show"
     :key="line.name"
     :class="line.name.includes('x') ? 'xline' : 'yline'"
-    :style="line.style"
+    :style="patchUnit(line.style)"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { markline } from '@/hooks';
+import { patchUnit } from '@/utils';
 
 const name = 'board-markline';
 
 const setup = () => {
-  return { markline };
+  return { markline, patchUnit };
 };
 
 export default defineComponent({ name, setup });

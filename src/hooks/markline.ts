@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 
-type Line = { name: string; show: boolean; style: Partial<CSSStyleDeclaration> };
+type Line = { name: string; show: boolean; style: CSSStyleData };
 
 type Markline = {
   diff: number;
@@ -56,7 +56,7 @@ const hideAllLines = () => {
 
 // 判断线是否需要显示
 const judgeLineShow = (board: Board, curComponent: Component) => {
-  const { width: curWidth, height: curHeight, left: curLeft, top: curTop } = curComponent.position;
+  const { width: curWidth, height: curHeight, left: curLeft, top: curTop } = curComponent.style;
   const data = [...board.data];
   // 排除自己
   data.splice(board.index, 1);
@@ -78,7 +78,7 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
       const key = isX ? 'top' : 'left';
       // 遍历除自己外的所有组件
       for (let k = 0, len = data.length; k < len; k++) {
-        const { width, height, left, top } = data[k].position;
+        const { width, height, left, top } = data[k].style;
         const [curPos, leftOrTop, widthOrHeight, curWidthOrHeight] = isX
           ? [curTop, top, height, curHeight]
           : [curLeft, left, width, curWidth];
@@ -90,8 +90,8 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
         needSorption = judgeNeedSorption(curPos + delta, linePos);
         // 如果找到了就推到数组里，跳出循环
         if (needSorption) {
-          curComponent.position[key] = linePos - delta;
-          line.style[key] = linePos + 'px';
+          curComponent.style[key] = linePos - delta;
+          line.style[key] = linePos;
           needShow.push(j);
           break;
         }

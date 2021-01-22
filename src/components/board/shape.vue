@@ -3,7 +3,6 @@
     :class="`shape${active ? ' active' : ''}`"
     @click="handleShapeClick"
     @mousedown="handleMousedown"
-    :style="style"
     ref="shape"
   >
     <slot />
@@ -32,19 +31,11 @@ const name = 'board-shape';
 type Props = {
   index: number;
   active: boolean;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
 };
 
 const props = {
   index: { type: Number, default: () => 0 },
   active: { type: Boolean, default: () => false },
-  left: { type: Number, default: () => 0 },
-  top: { type: Number, default: () => 0 },
-  width: { type: Number, default: () => 0 },
-  height: { type: Number, default: () => 0 },
 };
 
 const setup = (props: Props) => {
@@ -60,13 +51,6 @@ const setup = (props: Props) => {
     'bottom-mid',
     'bottom-right',
   ];
-
-  const style = computed(() => ({
-    top: `${props.top}px`,
-    left: `${props.left}px`,
-    width: `${props.width}px`,
-    height: `${props.height}px`,
-  }));
 
   const handleRightClick = (e: MouseEvent) => {
     showMenu(e);
@@ -88,14 +72,14 @@ const setup = (props: Props) => {
     const curComponent = board.data[board.index];
     const startX = e.clientX;
     const startY = e.clientY;
-    const { left, top } = curComponent.position;
+    const { left, top } = curComponent.style;
 
     const mousemove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       const diffX = clientX - startX;
       const diffY = clientY - startY;
-      curComponent.position.left = diffX + left;
-      curComponent.position.top = diffY + top;
+      curComponent.style.left = diffX + left;
+      curComponent.style.top = diffY + top;
       // 计算吸附情况
       judgeLineShow(board, curComponent);
     };
@@ -121,7 +105,7 @@ const setup = (props: Props) => {
     const hasBottom = className.includes('bottom');
     const { index, data } = store.state.board;
     const curComponent = data[index];
-    const { top, left, width, height } = curComponent.position;
+    const { top, left, width, height } = curComponent.style;
 
     const startX = e.clientX;
     const startY = e.clientY;
@@ -130,21 +114,21 @@ const setup = (props: Props) => {
       const { clientX, clientY } = e;
       if (hasLeft) {
         const diffX = clientX - startX;
-        curComponent.position.width = width - diffX;
-        curComponent.position.left = left + diffX;
+        curComponent.style.width = width - diffX;
+        curComponent.style.left = left + diffX;
       }
       if (hasRight) {
         const diffX = clientX - startX;
-        curComponent.position.width = width + diffX;
+        curComponent.style.width = width + diffX;
       }
       if (hasTop) {
         const diffY = clientY - startY;
-        curComponent.position.height = height - diffY;
-        curComponent.position.top = top + diffY;
+        curComponent.style.height = height - diffY;
+        curComponent.style.top = top + diffY;
       }
       if (hasBottom) {
         const diffY = clientY - startY;
-        curComponent.position.height = height + diffY;
+        curComponent.style.height = height + diffY;
       }
     }, 30);
 
@@ -157,7 +141,7 @@ const setup = (props: Props) => {
     on('mouseup', mouseup);
   };
 
-  return { handleShapeClick, handleMousedown, points, style, handleMousedowOnPoint };
+  return { handleShapeClick, handleMousedown, points, handleMousedowOnPoint };
 };
 
 export default defineComponent({ name, props, setup });

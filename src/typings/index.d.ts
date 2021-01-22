@@ -17,15 +17,6 @@ type ResponseData<T = any> = {
 
 type Data<T = unknown> = Record<string, T>;
 
-type Pos = {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-  right?: number;
-  bottom?: number;
-};
-
 type CSSStyleFilter =
   | number
   | 'parentRule'
@@ -38,7 +29,14 @@ type CSSStyleFilter =
 
 type CSSStyleKey = Exclude<keyof CSSStyleDeclaration, CSSStyleFilter>;
 
-type CSSStyleData<T = string> = { [key in CSSStyleKey]?: T };
+type CSSStyleData<T = string | number> = { [key in CSSStyleKey]?: T };
+
+interface CSSStyleDataWithSize extends CSSStyleData {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
 
 type ComponentAttr = {
   key: CSSStyleKey;
@@ -57,8 +55,7 @@ type Component = {
   attr: Array<ComponentAttr>;
   animations?: Array<any>;
   events?: Array<Event>;
-  position: Pos;
-  style: Partial<CSSStyleDeclaration>;
+  style: CSSStyleDataWithSize;
 };
 
 type Board = {
