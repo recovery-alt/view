@@ -1,5 +1,4 @@
 import { nextTick, reactive } from 'vue';
-import { headSize } from './head';
 
 type Position = { top: number; left: number };
 
@@ -23,12 +22,14 @@ const showMenu = (e: MouseEvent) => {
   const { pageX, pageY } = e;
   menu.show = true;
   nextTick(() => {
-    const dom = document.querySelector('.board-menu');
-    if (!dom) return;
+    const menuDom = document.querySelector('.board-menu');
+    const boardDom = document.querySelector('.board');
+    if (!menuDom || !boardDom) return;
     const menuGap = 10;
-    const { width, height } = dom.getBoundingClientRect();
-    menu.position.left = Math.min(pageX - 220, headSize.width - width - menuGap);
-    menu.position.top = Math.min(pageY - 80, headSize.height - height - menuGap);
+    const { width, height } = menuDom.getBoundingClientRect();
+    const boardRec = boardDom.getBoundingClientRect();
+    menu.position.left = Math.min(pageX - boardRec.left, boardRec.width - width - menuGap);
+    menu.position.top = Math.min(pageY - boardRec.top, boardRec.height - height - menuGap);
   });
 };
 

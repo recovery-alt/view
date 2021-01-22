@@ -3,11 +3,11 @@
     <el-button size="small" @click="undo">撤销</el-button>
     <el-button size="small" @click="redo">重做</el-button>
     <div class="header-input">
-      <el-input v-model="width" size="small" />
+      <el-input v-model="headSize.width" size="small" />
     </div>
     <span class="header-x">x</span>
     <div class="header-input">
-      <el-input v-model="height" size="small" />
+      <el-input v-model="headSize.height" size="small" />
     </div>
   </header>
   <main class="main">

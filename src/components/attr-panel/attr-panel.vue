@@ -1,7 +1,7 @@
 <template>
   <el-form v-if="componentId">
     <el-form-item v-for="item in items" :key="item.key" :label="item.label">
-      <component :is="`el-${item.type}`" v-model="form[componentId][item.key]"></component>
+      <component :is="`el-${item.type}`" v-model="form[componentId][item.key]" />
     </el-form-item>
   </el-form>
 </template>
@@ -19,21 +19,23 @@ const setup = () => {
 
   const items = ref<Array<ComponentAttr>>([]);
 
-  const form = reactive<Data<Partial<CSSStyleDeclaration>>>({});
+  const form = reactive<Data<CSSStyleData<string | number>>>({});
 
   const componentId = computed(() => {
     const curComponent = board.data[board.index];
-    return curComponent ? curComponent.id : '';
+    return curComponent && curComponent.id;
   });
 
   watchEffect(() => {
+    // 初始化form & 写入form值
     if (board.index > -1) {
       const { attr, id } = board.data[board.index];
       items.value = attr;
-      const style: Partial<CSSStyleDeclaration> = {};
+      const style: CSSStyleData<string | number> = {};
       attr.forEach(val => {
-        const { key } = val;
-        style[key] = form[id] ? form[id][key] : '';
+        const { key, type } = val;
+        const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
+        style[key] = form[id] ? form[id][key] : empty;
       });
       form[id] = style;
     }
@@ -51,5 +53,3 @@ const setup = () => {
 
 export default defineComponent({ name, setup });
 </script>
-
-<style></style>

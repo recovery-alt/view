@@ -42,19 +42,9 @@ const setup = () => {
   const store = useStore();
   const { board } = store.state;
 
-  const append = (component: Component) => store.dispatch(BoardEnum.APEEND, component);
-
   const handleLeftClick = (e: MouseEvent) => {
     store.commit(BoardEnum.CANCEL_SELECTED);
     hideMenu();
-  };
-
-  const newComponent = (type: string, left: number, top: number) => {
-    const position = { top, left, ...defaultComponentSize };
-    const component = `v-${type}`;
-    const attr = presetComponentAttr;
-    const id = uniqueId();
-    append({ id, component, attr, position, style: {} });
   };
 
   const handleDrop = (e: DragEvent) => {
@@ -62,8 +52,8 @@ const setup = () => {
     e.stopPropagation();
     const type = e.dataTransfer?.getData('type');
     if (!type) return;
-    const { offsetX, offsetY } = e;
-    newComponent(type, offsetX, offsetY);
+    const { offsetX: left, offsetY: top } = e;
+    store.dispatch(BoardEnum.APEEND, { type, left, top });
   };
 
   const handleDragOver = (e: DragEvent) => {

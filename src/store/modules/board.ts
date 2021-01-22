@@ -1,6 +1,7 @@
 import { Module, Mutation, Getter, Action } from 'vuex';
 import { uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
+import { defaultComponentSize, presetComponentAttr } from '@/options';
 
 const state: Board = {
   index: -1,
@@ -32,8 +33,12 @@ const mutations: Data<Mutation<Board>> = {
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ state, commit, dispatch }, component: Component) {
-    commit('append', component);
+  append({ state, commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
+    const position = { top, left, ...defaultComponentSize };
+    const component = `v-${type}`;
+    const attr = presetComponentAttr;
+    const id = uniqueId();
+    commit('append', { id, component, attr, position, style: {} });
     dispatch(SnapshotEnum.RECORD_SNAPSHOT, state, { root: true });
   },
 };

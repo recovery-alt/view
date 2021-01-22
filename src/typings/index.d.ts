@@ -38,6 +38,8 @@ type CSSStyleFilter =
 
 type CSSStyleKey = Exclude<keyof CSSStyleDeclaration, CSSStyleFilter>;
 
+type CSSStyleData<T = string> = { [key in CSSStyleKey]?: T };
+
 type ComponentAttr = {
   key: CSSStyleKey;
   type: FormEnum;
