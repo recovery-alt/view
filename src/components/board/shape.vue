@@ -1,16 +1,18 @@
 <template>
   <div
-    :class="`shape${active ? ' active' : ''}`"
+    class="shape"
+    :class="{ active }"
     @click="handleShapeClick"
-    @mousedown="handleMousedown"
-    ref="shape"
+    @mousedown.stop="handleMousedown"
+    @mouseup="handleMouseup"
   >
     <slot />
     <template v-if="active">
       <div
+        class="point"
+        :class="point"
         v-for="point in points"
         :key="point"
-        :class="`point ${point}`"
         @mousedown="handleMousedowOnPoint"
       ></div>
     </template>
@@ -21,7 +23,7 @@
 import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
-import { BoardEnum } from '@/store/modules/board';
+import board, { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
 import { showMenu } from '@/hooks';
@@ -41,6 +43,8 @@ const props = {
 const setup = (props: Props) => {
   const store = useStore();
 
+  const board = store.state.board;
+
   const points = [
     'top-left',
     'top-mid',
@@ -58,7 +62,6 @@ const setup = (props: Props) => {
 
   const handleShapeClick = (e: MouseEvent) => {
     e.stopPropagation();
-    store.dispatch(BoardEnum.SET_INDEX, props.index);
     if (e.buttons === 2) {
       handleRightClick(e);
     }
@@ -66,51 +69,62 @@ const setup = (props: Props) => {
 
   const handleMousedown = (e: MouseEvent) => {
     if (e.buttons !== 1) return;
-    e.stopPropagation();
-    store.dispatch(BoardEnum.SET_INDEX, props.index);
-    const board = store.state.board;
-    const curComponent = board.data[board.index];
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const { left, top } = curComponent.style;
+    // 没有按住ctrl的情况
+    if (!e.ctrlKey && !e.metaKey) {
+      store.dispatch(BoardEnum.SET_INDEX, props.index);
+      const curComponent = board.data[board.selected[0]];
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const { left, top } = curComponent.style;
 
-    const mousemove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const diffX = clientX - startX;
-      const diffY = clientY - startY;
-      curComponent.style.left = diffX + left;
-      curComponent.style.top = diffY + top;
-      // 计算吸附情况
-      judgeLineShow(board, curComponent);
-    };
+      const mousemove = (e: MouseEvent) => {
+        const { clientX, clientY } = e;
+        const diffX = clientX - startX;
+        const diffY = clientY - startY;
+        curComponent.style.left = diffX + left;
+        curComponent.style.top = diffY + top;
+        // 计算吸附情况
+        judgeLineShow(board, curComponent);
+      };
 
-    const mouseup = () => {
-      off('mousemove', mousemove);
-      off('mouseup', mouseup);
-      hideAllLines();
-    };
+      const mouseup = (e: MouseEvent) => {
+        e.stopPropagation();
+        off('mousemove', mousemove);
+        off('mouseup', mouseup);
+        hideAllLines();
+      };
 
-    on('mousemove', mousemove);
-    on('mouseup', mouseup);
+      on('mousemove', mousemove);
+      on('mouseup', mouseup);
+    }
+  };
+
+  const handleMouseup = (e: MouseEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      store.dispatch(BoardEnum.CHANGE_SELECTED, props.index);
+    }
   };
 
   const handleMousedowOnPoint = (e: MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    // 多选情况下，强制改变为单选
+    store.dispatch(BoardEnum.SET_INDEX, props.index);
 
     const { className } = e.target as HTMLElement;
     const hasLeft = className.includes('left');
     const hasRight = className.includes('right');
     const hasTop = className.includes('top');
     const hasBottom = className.includes('bottom');
-    const { index, data } = store.state.board;
-    const curComponent = data[index];
+    const { selected, data } = store.state.board;
+    const curComponent = data[selected[0]];
     const { top, left, width, height } = curComponent.style;
 
     const startX = e.clientX;
     const startY = e.clientY;
 
     const mousemove = throttle((e: MouseEvent) => {
+      e.stopPropagation();
       const { clientX, clientY } = e;
       if (hasLeft) {
         const diffX = clientX - startX;
@@ -132,7 +146,8 @@ const setup = (props: Props) => {
       }
     }, 30);
 
-    const mouseup = () => {
+    const mouseup = (e: MouseEvent) => {
+      e.stopPropagation();
       off('mouseup', mouseup);
       off('mousemove', mousemove);
     };
@@ -141,7 +156,7 @@ const setup = (props: Props) => {
     on('mouseup', mouseup);
   };
 
-  return { handleShapeClick, handleMousedown, points, handleMousedowOnPoint };
+  return { handleShapeClick, handleMousedown, points, handleMousedowOnPoint, handleMouseup };
 };
 
 export default defineComponent({ name, props, setup });

@@ -59,9 +59,9 @@ type Component = {
 };
 
 type Board = {
-  index: number;
+  selected: Array<number>;
   data: Array<Component>;
-  copy?: Component;
+  copy?: Array<Component>;
 };
 
 type Snapshot = {

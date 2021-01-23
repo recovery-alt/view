@@ -59,7 +59,7 @@ const judgeLineShow = (board: Board, curComponent: Component) => {
   const { width: curWidth, height: curHeight, left: curLeft, top: curTop } = curComponent.style;
   const data = [...board.data];
   // 排除自己
-  data.splice(board.index, 1);
+  data.splice(board.selected[0], 1);
 
   // 需要显示的线
   const needShow = [];

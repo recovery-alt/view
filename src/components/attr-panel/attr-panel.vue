@@ -1,5 +1,5 @@
 <template>
-  <el-form v-if="board.index > -1" value="left" label-width="80px" size="mini">
+  <el-form v-if="curComponent" value="left" label-width="80px" size="mini">
     <el-form-item v-for="item in patchSizeInfoAttr" :key="item.key" :label="item.label">
       <component :is="item.parent" v-model="curComponent.style[item.key]">
         <template v-if="item.child === 'el-option'">
@@ -28,9 +28,13 @@ const setup = () => {
   const store = useStore();
   const { board } = store.state;
   // 当前选中组件
-  const curComponent = computed(() => board.data[board.index]);
+  const curComponent = computed(() => {
+    return board.selected.length === 1 ? board.data[board.selected[0]] : null;
+  });
   // 添加位置大小信息
-  const patchSizeInfoAttr = computed(() => [...presetSizeInfo, ...curComponent.value.attr]);
+  const patchSizeInfoAttr = computed(() => {
+    return curComponent.value && [...presetSizeInfo, ...curComponent.value.attr];
+  });
 
   const getType = (parentType: FormEnum) => {
     let parent, child;
@@ -56,8 +60,9 @@ const setup = () => {
 
   watchEffect(() => {
     // 初始化form & 写入form值
-    if (board.index > -1) {
-      const { style } = board.data[board.index];
+    if (board.selected.length === 1) {
+      const { style } = board.data[board.selected[0]];
+      if (!patchSizeInfoAttr.value) return;
       patchSizeInfoAttr.value.map(val => {
         const { key, type } = val;
         const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';

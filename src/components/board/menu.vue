@@ -1,7 +1,7 @@
 <template>
-  <div class="board-menu">
+  <div class="board-menu" @mousedown.stop @mouseup.stop>
     <ul>
-      <li v-for="item in data" :key="item.name" @click="item.event">
+      <li v-for="item in data" :key="item.name" @click="e => handleClick(e, item.event)">
         <i :class="`el-icon-${item.icon}`"></i>
         <span>{{ item.name }}</span>
       </li>
@@ -15,61 +15,73 @@ import { BoardEnum } from '@/store/modules/board';
 import { defineComponent } from 'vue';
 import { getMenuPosition } from '@/utils';
 
-const name = 'board-menu';
-
-const setup = () => {
-  const store = useStore();
-  const data = [
-    {
-      name: '剪切',
-      icon: 'scissors',
-      event: () => store.dispatch(BoardEnum.CUT),
+export default defineComponent({
+  name: 'board-menu',
+  props: {
+    modelValue: {
+      type: Boolean,
     },
-    {
-      name: '复制',
-      icon: 'document-copy',
-      event: () => store.dispatch(BoardEnum.COPY),
-    },
-    {
-      name: '粘贴',
-      icon: 'brush',
-      event: () => {
-        const menuPosition = getMenuPosition();
-        if (!menuPosition) return;
-        store.dispatch(BoardEnum.PASTE, menuPosition);
+  },
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const store = useStore();
+    const data = [
+      {
+        name: '剪切',
+        icon: 'scissors',
+        event: () => store.dispatch(BoardEnum.CUT),
       },
-    },
-    {
-      name: '删除',
-      icon: 'delete',
-      event: () => store.dispatch(BoardEnum.DEL),
-    },
-    {
-      name: '置顶',
-      icon: 'arrow-up',
-      event: () => store.dispatch(BoardEnum.MOVE_UP, true),
-    },
-    {
-      name: '置底',
-      icon: 'arrow-down',
-      event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
-    },
-    {
-      name: '上移一层',
-      icon: 'top',
-      event: () => store.dispatch(BoardEnum.MOVE_UP),
-    },
-    {
-      name: '下移一层',
-      icon: 'bottom',
-      event: () => store.dispatch(BoardEnum.MOVE_DOWN),
-    },
-  ];
+      {
+        name: '复制',
+        icon: 'document-copy',
+        event: () => store.dispatch(BoardEnum.COPY),
+      },
+      {
+        name: '粘贴',
+        icon: 'brush',
+        event: () => {
+          const menuPosition = getMenuPosition();
+          if (!menuPosition) return;
+          store.dispatch(BoardEnum.PASTE, menuPosition);
+        },
+      },
+      {
+        name: '删除',
+        icon: 'delete',
+        event: () => store.dispatch(BoardEnum.DEL),
+      },
+      {
+        name: '置顶',
+        icon: 'arrow-up',
+        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+      },
+      {
+        name: '置底',
+        icon: 'arrow-down',
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+      },
+      {
+        name: '上移一层',
+        icon: 'top',
+        event: () => store.dispatch(BoardEnum.MOVE_UP),
+      },
+      {
+        name: '下移一层',
+        icon: 'bottom',
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+      },
+    ];
 
-  return { data };
-};
+    // 处理菜单消失
+    const handleClick = (e: MouseEvent, cb: () => void) => {
+      e.stopPropagation();
+      emit('update:modelValue', false);
+      cb();
+    };
 
-export default defineComponent({ name, setup });
+    return { data, handleClick };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

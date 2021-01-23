@@ -13,9 +13,9 @@
       <li
         v-for="(item, index) in board.data"
         class="component-list_item"
-        :class="{ active: index === board.index }"
+        :class="{ active: board.selected.includes(index) }"
         :key="item.id"
-        @click="changeSelected(index)"
+        @click="e => changeSelected(e, index)"
       >
         <i class="el-icon-folder"></i>
         <span>
@@ -46,9 +46,12 @@ const setup = () => {
 
   const gallery = getGalleryList();
 
-  const changeSelected = (index: number) => {
-    const val = board.index === index ? -1 : index;
-    store.dispatch(BoardEnum.SET_INDEX, val);
+  const changeSelected = (e: MouseEvent, index: number) => {
+    if (e.ctrlKey || e.metaKey) {
+      store.dispatch(BoardEnum.CHANGE_SELECTED, index);
+    } else {
+      store.dispatch(BoardEnum.SET_INDEX, index);
+    }
   };
 
   return { gallery, handleDragStart, board, changeSelected };
