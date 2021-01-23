@@ -68,7 +68,7 @@ export default defineComponent({
   align-items: center;
 
   &-input {
-    width: 60px;
+    width: 65px;
   }
 
   &-x {

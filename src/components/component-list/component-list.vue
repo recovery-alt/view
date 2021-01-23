@@ -69,10 +69,12 @@ export default defineComponent({ setup });
   &_item {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     border-radius: 2px;
     margin-top: 10px;
     height: 50px;
+    box-sizing: border-box;
+    padding: 0 10px;
     cursor: pointer;
 
     @mixin active {
@@ -88,7 +90,7 @@ export default defineComponent({ setup });
     }
 
     i {
-      border: 1px solid $el-border-2;
+      font-size: 20px;
     }
   }
 }

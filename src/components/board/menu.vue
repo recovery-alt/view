@@ -44,6 +44,26 @@ const setup = () => {
       icon: 'delete',
       event: () => store.dispatch(BoardEnum.DEL),
     },
+    {
+      name: '置顶',
+      icon: 'arrow-up',
+      event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+    },
+    {
+      name: '置底',
+      icon: 'arrow-down',
+      event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+    },
+    {
+      name: '上移一层',
+      icon: 'top',
+      event: () => store.dispatch(BoardEnum.MOVE_UP),
+    },
+    {
+      name: '下移一层',
+      icon: 'bottom',
+      event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+    },
   ];
 
   return { data };

@@ -94,6 +94,31 @@ const actions: Data<Action<Board, RootStateType>> = {
       ElMessage.error('请先进行剪切/复制操作！');
     }
   },
+  moveUp({ state }, moveTop = false) {
+    const { data, index } = state;
+    const len = data.length;
+    if (index === -1) {
+      ElMessage.error('尚未选中任何组件！');
+    } else if (index === len - 1) {
+      ElMessage.error('已经是最顶层！');
+    } else {
+      const exchangeIndex = moveTop ? len - 1 : index + 1;
+      [data[index], data[exchangeIndex]] = [data[exchangeIndex], data[index]];
+      state.index = exchangeIndex;
+    }
+  },
+  moveDown({ state }, moveBottom = false) {
+    const { data, index } = state;
+    if (index === -1) {
+      ElMessage.error('尚未选中任何组件！');
+    } else if (index === 0) {
+      ElMessage.error('已经是最底层！');
+    } else {
+      const exchangeIndex = moveBottom ? 0 : index - 1;
+      [data[index], data[exchangeIndex]] = [data[exchangeIndex], data[index]];
+      state.index = exchangeIndex;
+    }
+  },
 };
 
 const board: Module<Board, RootStateType> = {
@@ -112,6 +137,8 @@ export enum BoardEnum {
   CUT = 'board/cut',
   COPY = 'board/copy',
   PASTE = 'board/paste',
+  MOVE_UP = 'board/moveUp',
+  MOVE_DOWN = 'board/moveDown',
 }
 
 export default board;

@@ -11,6 +11,7 @@
       :key="item.id"
       :active="board.index === index"
       :index="index"
+      :zIndex="index"
       :style="patchUnit(item.style)"
     >
       <component :is="item.component" />

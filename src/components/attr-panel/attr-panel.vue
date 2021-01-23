@@ -1,7 +1,17 @@
 <template>
-  <el-form v-if="board.index > -1" value="left" label-width="80px">
+  <el-form v-if="board.index > -1" value="left" label-width="80px" size="mini">
     <el-form-item v-for="item in patchSizeInfoAttr" :key="item.key" :label="item.label">
-      <component :is="`el-${item.type}`" v-model="curComponent.style[item.key]" />
+      <component :is="item.parent" v-model="curComponent.style[item.key]">
+        <template v-if="item.child === 'el-option'">
+          <component
+            :is="item.child"
+            v-for="option in item.data"
+            :key="option.id"
+            :label="option.label"
+            :value="option.id"
+          ></component>
+        </template>
+      </component>
     </el-form-item>
   </el-form>
 </template>
@@ -22,15 +32,38 @@ const setup = () => {
   // 添加位置大小信息
   const patchSizeInfoAttr = computed(() => [...presetSizeInfo, ...curComponent.value.attr]);
 
+  const getType = (parentType: FormEnum) => {
+    let parent, child;
+    switch (parentType) {
+      case FormEnum.RADIO:
+        parent = 'el-radio-group';
+        child = `el-${parentType}`;
+        break;
+      case FormEnum.CHECKBOX:
+        parent = 'el-checkbox-group';
+        child = `el-${parentType}`;
+        break;
+      case FormEnum.SELECT:
+        parent = `el-${parentType}`;
+        child = `el-option`;
+        break;
+      default:
+        parent = `el-${parentType}`;
+        child = '';
+    }
+    return { parent, child };
+  };
+
   watchEffect(() => {
     // 初始化form & 写入form值
     if (board.index > -1) {
       const { style } = board.data[board.index];
-      patchSizeInfoAttr.value.forEach(val => {
+      patchSizeInfoAttr.value.map(val => {
         const { key, type } = val;
         const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
         // 不存在的话就赋空值
         style[key] = style[key] || (empty as any);
+        Object.assign(val, getType(type));
       });
     }
   });

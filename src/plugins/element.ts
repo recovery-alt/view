@@ -9,6 +9,8 @@ import {
   ElInputNumber,
   ElColorPicker,
   ElTree,
+  ElSelect,
+  ElOption,
 } from 'element-plus';
 
 export const useElement = (app: App) => {
@@ -21,4 +23,6 @@ export const useElement = (app: App) => {
   app.use(ElInputNumber);
   app.use(ElColorPicker);
   app.use(ElTree);
+  app.use(ElSelect);
+  app.use(ElOption as any);
 };
