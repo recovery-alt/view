@@ -4,7 +4,11 @@ import { BoardEnum } from '@/store/modules/board';
 import { Store } from 'vuex';
 
 export const useSelectMask = (store: Store<RootStateType>) => {
-  const selectMask = reactive<{ show: boolean; style: CSSStyleDataWithSize }>({
+  const selectMask = reactive<{
+    show: boolean;
+    style: CSSStyleDataWithSize;
+    mousemoved: boolean;
+  }>({
     show: false,
     style: {
       width: 0,
@@ -12,6 +16,7 @@ export const useSelectMask = (store: Store<RootStateType>) => {
       top: 0,
       left: 0,
     },
+    mousemoved: false,
   });
 
   const handleMousedown = (e: MouseEvent) => {
@@ -23,6 +28,9 @@ export const useSelectMask = (store: Store<RootStateType>) => {
       selectMask.style = { ...selectMask.style, ...mousePosition, width: 0, height: 0 };
 
       const mousemove = (e: MouseEvent) => {
+        if (!selectMask.mousemoved) {
+          selectMask.mousemoved = true;
+        }
         const { pageX, pageY } = e;
         const diffX = pageX - startX;
         const diffY = pageY - startY;
@@ -34,12 +42,16 @@ export const useSelectMask = (store: Store<RootStateType>) => {
         }
         selectMask.style.width = Math.abs(diffX);
         selectMask.style.height = Math.abs(diffY);
+        store.dispatch(BoardEnum.CALC_SELECTED_BY_RECT, selectMask.style);
       };
 
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
         selectMask.show = false;
-        store.dispatch(BoardEnum.CALC_SELECTED_BY_RECT, selectMask.style);
+        // 先推入宏任务队列，等click执行完再重置状态
+        setTimeout(() => {
+          selectMask.mousemoved = false;
+        });
         off('mousemove', mousemove);
         off('mouseup', mouseup);
       };

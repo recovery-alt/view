@@ -1,4 +1,4 @@
-import { Module, Mutation, Getter, Action } from 'vuex';
+import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
 import { BoardEnum } from './board';
 

@@ -5,6 +5,7 @@ import { store, key } from './store';
 import { useElement } from './plugins';
 import useGallery from './gallery';
 import 'normalize.css';
+import 'animate.css';
 
 const app = createApp(App);
 

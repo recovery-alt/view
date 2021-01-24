@@ -9,7 +9,5 @@ export const getMenuPosition = () => {
   const menuDom = document.querySelector('.board-menu');
   if (!menuDom) return;
   const { top, left } = menuDom.getBoundingClientRect();
-  const boardRec = getBoardReletedPosition(left, top);
-  if (!boardRec) return;
-  return { top: top - boardRec.top, left: left - boardRec.left };
+  return getBoardReletedPosition(left, top);
 };

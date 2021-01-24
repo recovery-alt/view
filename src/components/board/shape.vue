@@ -23,7 +23,7 @@
 import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
-import board, { BoardEnum } from '@/store/modules/board';
+import { BoardEnum } from '@/store/modules/board';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
 import { showMenu } from '@/hooks';
@@ -71,20 +71,28 @@ const setup = (props: Props) => {
     if (e.buttons !== 1) return;
     // 没有按住ctrl的情况
     if (!e.ctrlKey && !e.metaKey) {
-      store.dispatch(BoardEnum.SET_INDEX, props.index);
-      const curComponent = board.data[board.selected[0]];
+      if (!board.selected.includes(props.index)) {
+        store.dispatch(BoardEnum.SET_INDEX, props.index);
+      }
+      const curComponents = board.selected.map(index => board.data[index]);
       const startX = e.clientX;
       const startY = e.clientY;
-      const { left, top } = curComponent.style;
+      const curPositions = curComponents.map(component => {
+        const { left, top } = component.style;
+        return { left, top };
+      });
 
       const mousemove = (e: MouseEvent) => {
         const { clientX, clientY } = e;
         const diffX = clientX - startX;
         const diffY = clientY - startY;
-        curComponent.style.left = diffX + left;
-        curComponent.style.top = diffY + top;
+        curComponents.forEach((component, index) => {
+          const { left, top } = curPositions[index];
+          component.style.left = diffX + left;
+          component.style.top = diffY + top;
+        });
         // 计算吸附情况
-        judgeLineShow(board, curComponent);
+        judgeLineShow(board, curComponents);
       };
 
       const mouseup = (e: MouseEvent) => {

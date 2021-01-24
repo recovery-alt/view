@@ -4,7 +4,7 @@
     @drop="handleDrop"
     @dragover.prevent
     @mousedown="handleMousedown"
-    @mouseup="handleMouseup"
+    @click="handleLeftClick"
     @contextmenu="handleRightClick"
   >
     <board-shape
@@ -24,14 +24,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent } from 'vue';
 import BoardMenu from './menu.vue';
 import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu } from '@/hooks';
-import { patchUnit, on, getBoardReletedPosition, off } from '@/utils';
+import { patchUnit } from '@/utils';
 import { useSelectMask } from '@/hooks';
 
 const name = 'board';
@@ -43,11 +43,11 @@ const setup = () => {
   const { board } = store.state;
   const { selectMask, handleMousedown } = useSelectMask(store);
 
-  const handleMouseup = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.classList && [...target.classList].includes('shape')) return;
-    store.dispatch(BoardEnum.CANCEL_SELECTED);
-    hideMenu();
+  const handleLeftClick = () => {
+    if (!selectMask.mousemoved) {
+      store.dispatch(BoardEnum.CANCEL_SELECTED);
+      hideMenu();
+    }
   };
 
   const handleDrop = (e: DragEvent) => {
@@ -66,7 +66,7 @@ const setup = () => {
 
   return {
     board,
-    handleMouseup,
+    handleLeftClick,
     handleMousedown,
     handleDrop,
     handleRightClick,
