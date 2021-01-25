@@ -14,6 +14,7 @@
       :index="index"
       :zIndex="index"
       :style="patchUnit(item.style)"
+      :ref="el => (item.ref = el.$el)"
     >
       <component :is="item.component" />
     </board-shape>

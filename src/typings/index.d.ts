@@ -52,10 +52,11 @@ type Component = {
   label: string;
   propValue?: string;
   icon?: string;
-  attr: Array<ComponentAttr>;
-  animations?: Array<any>;
+  attr: Array<{ title: string; data: Array<ComponentAttr> }>;
+  animations?: Array<string>;
   events?: Array<Event>;
   style: CSSStyleDataWithSize;
+  ref?: HTMLElement;
 };
 
 type Board = {

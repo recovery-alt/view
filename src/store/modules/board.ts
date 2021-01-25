@@ -1,9 +1,10 @@
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep, uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
-import { defaultComponentSize, presetComponentAttr } from '@/options';
+import { presetComponentAttr } from '@/options';
 import { getGalleryList } from '@/gallery';
 import { ElMessage } from 'element-plus';
+import config from '@/config';
 
 const state: Board = {
   selected: [],
@@ -62,7 +63,7 @@ const mutations: Data<Mutation<Board>> = {
 
 const actions: Data<Action<Board, RootStateType>> = {
   append({ state, commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
-    const style = { top, left, ...defaultComponentSize };
+    const style = { top, left, ...config.defaultComponentSize };
     const component = `v-${type}`;
     const attr = presetComponentAttr;
     const id = uniqueId();
@@ -71,11 +72,12 @@ const actions: Data<Action<Board, RootStateType>> = {
     if (!componentConfig) throw new Error('获取不到组件配置');
     const label = componentConfig.name;
     commit('append', { id, label, component, attr, style });
-    dispatch(SnapshotEnum.RECORD_SNAPSHOT, state, { root: true });
+    dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
   },
-  del({ state, commit }) {
+  del({ state, commit, dispatch }) {
     if (state.selected.length > 0) {
       commit('del');
+      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
       ElMessage.success('删除成功！');
     } else {
       ElMessage.error('尚未选中任何组件！');
@@ -95,10 +97,11 @@ const actions: Data<Action<Board, RootStateType>> = {
   setBoard({ commit }, board: Board | null) {
     commit('setBoard', board);
   },
-  cut({ state, commit }) {
+  cut({ state, commit, dispatch }) {
     if (state.selected.length > 0) {
       commit('setCopy');
       commit('del');
+      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
       ElMessage.success('剪切成功！');
     } else {
       ElMessage.error('尚未选中任何组件！');
@@ -112,7 +115,7 @@ const actions: Data<Action<Board, RootStateType>> = {
       ElMessage.error('尚未选中任何组件！');
     }
   },
-  paste({ commit, state }, position: { top: number; left: number }) {
+  paste({ commit, state, dispatch }, position: { top: number; left: number }) {
     if (state.copy) {
       const minPos = state.copy.reduce(
         (acc, val) => ({
@@ -132,11 +135,12 @@ const actions: Data<Action<Board, RootStateType>> = {
         return val;
       });
       commit('append', newCopy);
+      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     } else {
       ElMessage.error('请先进行剪切/复制操作！');
     }
   },
-  moveUp({ state }, moveTop = false) {
+  moveUp({ state, dispatch }, moveTop = false) {
     const { data, selected } = state;
     const len = data.length;
     if (selected.length === 0) {
@@ -148,9 +152,10 @@ const actions: Data<Action<Board, RootStateType>> = {
     } else {
       const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     }
   },
-  moveDown({ state }, moveBottom = false) {
+  moveDown({ state, dispatch }, moveBottom = false) {
     const { data, selected } = state;
     if (selected.length === 0) {
       ElMessage.error('尚未选中任何组件！');
@@ -161,6 +166,7 @@ const actions: Data<Action<Board, RootStateType>> = {
     } else {
       const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     }
   },
   // 根据矩形计算选中的组件

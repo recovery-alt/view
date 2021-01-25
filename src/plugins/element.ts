@@ -16,6 +16,8 @@ import {
   ElOption,
   ElButtonGroup,
   ElDrawer,
+  ElCollapse,
+  ElCollapseItem,
 } from 'element-plus';
 
 export const useElement = (app: App) => {
@@ -33,4 +35,6 @@ export const useElement = (app: App) => {
   app.use(ElOption as any);
   app.use(ElButtonGroup);
   app.use(ElDrawer);
+  app.use(ElCollapse);
+  app.use(ElCollapseItem);
 };

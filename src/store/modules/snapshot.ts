@@ -1,6 +1,7 @@
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
 import { BoardEnum } from './board';
+import config from '@/config';
 
 const state: Snapshot = {
   data: [],
@@ -12,6 +13,10 @@ const mutations: Data<Mutation<Snapshot>> = {
     state.data[++state.index] = cloneDeep(board);
     if (state.index < state.data.length - 1) {
       state.data = state.data.slice(0, state.index + 1);
+    }
+    // 最大记录步数
+    if (state.data.length > config.maxSnapshot) {
+      state.data.shift();
     }
   },
 };

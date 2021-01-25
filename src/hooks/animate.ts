@@ -1,6 +1,8 @@
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
+import { useStore } from '@/store';
+import { Store } from 'vuex';
 
-export const useAnimation = () => {
+export const useAnimation = (store: Store<RootStateType>) => {
   const animations = [
     {
       title: '强调',
@@ -56,7 +58,7 @@ export const useAnimation = () => {
       ],
     },
     {
-      title: '延迟进入',
+      title: '延迟',
       data: [
         {
           name: 'backInDown',
@@ -74,11 +76,6 @@ export const useAnimation = () => {
           name: 'backInUp',
           label: '延迟下方进入',
         },
-      ],
-    },
-    {
-      title: '延迟退出',
-      data: [
         {
           name: 'backOutDown',
           label: '延迟下方退出',
@@ -98,7 +95,7 @@ export const useAnimation = () => {
       ],
     },
     {
-      title: '跳跃进入',
+      title: '跳跃',
       data: [
         {
           name: 'bounceIn',
@@ -120,11 +117,6 @@ export const useAnimation = () => {
           name: 'bounceInUp',
           label: '下方跳跃进入',
         },
-      ],
-    },
-    {
-      title: '跳跃退出',
-      data: [
         {
           name: 'bounceOut',
           label: '跳跃退出',
@@ -148,7 +140,7 @@ export const useAnimation = () => {
       ],
     },
     {
-      title: '淡入',
+      title: '淡入/淡出',
       data: [
         {
           name: 'fadeIn',
@@ -202,11 +194,6 @@ export const useAnimation = () => {
           name: 'fadeInBottomRight',
           label: '右下淡入',
         },
-      ],
-    },
-    {
-      title: '淡出',
-      data: [
         {
           name: 'fadeOut',
           label: '淡出',
@@ -262,7 +249,7 @@ export const useAnimation = () => {
       ],
     },
     {
-      title: '旋转',
+      title: '翻转',
       data: [
         {
           name: 'flip',
@@ -308,7 +295,7 @@ export const useAnimation = () => {
       ],
     },
     {
-      title: '旋转进入',
+      title: '旋转',
       data: [
         {
           name: 'rotateIn',
@@ -330,11 +317,6 @@ export const useAnimation = () => {
           name: 'rotateInUpRight',
           label: '左下旋转进入',
         },
-      ],
-    },
-    {
-      title: '旋转退出',
-      data: [
         {
           name: 'rotateOut',
           label: '旋转退出',
@@ -354,6 +336,88 @@ export const useAnimation = () => {
         {
           name: 'rotateOutUpRight',
           label: '右上旋转退出',
+        },
+      ],
+    },
+    {
+      title: '放缩',
+      data: [
+        {
+          name: 'zoomIn',
+          label: '放缩进入',
+        },
+        {
+          name: 'zoomInDown',
+          label: '上方放缩进入',
+        },
+        {
+          name: 'zoomInLeft',
+          label: '左侧放缩进入',
+        },
+        {
+          name: 'zoomInRight',
+          label: '右侧放缩进入',
+        },
+        {
+          name: 'zoomInUp',
+          label: '下方放缩进入',
+        },
+        {
+          name: 'zoomOut',
+          label: '放缩退出',
+        },
+        {
+          name: 'zoomOutDown',
+          label: '下方放缩退出',
+        },
+        {
+          name: 'zoomOutLeft',
+          label: '左侧放缩退出',
+        },
+        {
+          name: 'zoomOutRight',
+          label: '右侧放缩退出',
+        },
+        {
+          name: 'zoomOutUp',
+          label: '上方放缩退出',
+        },
+      ],
+    },
+    {
+      title: '滑动',
+      data: [
+        {
+          name: 'slideInDown',
+          label: '上方滑入',
+        },
+        {
+          name: 'slideInLeft',
+          label: '左侧滑入',
+        },
+        {
+          name: 'slideInRight',
+          label: '右侧滑入',
+        },
+        {
+          name: 'slideInUp',
+          label: '下方滑入',
+        },
+        {
+          name: 'slideOutDown',
+          label: '下方滑出',
+        },
+        {
+          name: 'slideOutLeft',
+          label: '左侧滑出',
+        },
+        {
+          name: 'slideOutRight',
+          label: '右侧滑出',
+        },
+        {
+          name: 'slideOutUp',
+          label: '上方滑出',
         },
       ],
     },
@@ -378,98 +442,6 @@ export const useAnimation = () => {
         },
       ],
     },
-    {
-      title: '放缩进入',
-      data: [
-        {
-          name: 'zoomIn',
-          label: '放缩进入',
-        },
-        {
-          name: 'zoomInDown',
-          label: '上方放缩进入',
-        },
-        {
-          name: 'zoomInLeft',
-          label: '左侧放缩进入',
-        },
-        {
-          name: 'zoomInRight',
-          label: '右侧放缩进入',
-        },
-        {
-          name: 'zoomInUp',
-          label: '下方放缩进入',
-        },
-      ],
-    },
-    {
-      title: '放缩退出',
-      data: [
-        {
-          name: 'zoomOut',
-          label: '放缩退出',
-        },
-        {
-          name: 'zoomOutDown',
-          label: '下方放缩退出',
-        },
-        {
-          name: 'zoomOutLeft',
-          label: '左侧放缩退出',
-        },
-        {
-          name: 'zoomOutRight',
-          label: '右侧放缩退出',
-        },
-        {
-          name: 'zoomOutUp',
-          label: '上方放缩退出',
-        },
-      ],
-    },
-    {
-      title: '滑动进入',
-      data: [
-        {
-          name: 'slideInDown',
-          label: '上方滑入',
-        },
-        {
-          name: 'slideInLeft',
-          label: '左侧滑入',
-        },
-        {
-          name: 'slideInRight',
-          label: '右侧滑入',
-        },
-        {
-          name: 'slideInUp',
-          label: '下方滑入',
-        },
-      ],
-    },
-    {
-      title: '滑动退出',
-      data: [
-        {
-          name: 'slideOutDown',
-          label: '下方滑出',
-        },
-        {
-          name: 'slideOutLeft',
-          label: '左侧滑出',
-        },
-        {
-          name: 'slideOutRight',
-          label: '右侧滑出',
-        },
-        {
-          name: 'slideOutUp',
-          label: '上方滑出',
-        },
-      ],
-    },
   ];
 
   const drawer = reactive({
@@ -479,12 +451,71 @@ export const useAnimation = () => {
     previewAnimation: '',
   });
 
+  const getAnimationClass = (name: string) => {
+    const animation = name === drawer.previewAnimation ? ` animate__animated animate__${name}` : '';
+    return `animation-block${animation}`;
+  };
+
   const handleMouseover = (name: string) => {
     drawer.previewAnimation = name;
   };
 
-  const getAnimationClass = (name: string) =>
-    `animate-block${name === drawer.previewAnimation ? ` animate__animated animate__${name}` : ''}`;
+  const handleMouseleave = () => {
+    drawer.previewAnimation = '';
+  };
 
-  return { animations, drawer, handleMouseover, getAnimationClass };
+  const addAnimation = (name: string) => {
+    const { board } = store.state;
+
+    // 当前选中组件
+    const curComponent = computed(() => {
+      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
+    });
+    if (curComponent.value) {
+      if (!curComponent.value.animations) {
+        curComponent.value.animations = [];
+      }
+      if (!curComponent.value.animations.includes(name)) {
+        curComponent.value.animations.push(name);
+      }
+      drawer.show = false;
+    }
+  };
+
+  const previewAnimation = async (curComponent: Component) => {
+    const { ref } = curComponent;
+    if (!ref) return;
+    const play = (animation: string) => {
+      return new Promise<void>(resolve => {
+        const animated = 'animate__animated';
+        const name = `animate__${animation}`;
+        ref.classList.add(animated, name);
+        const removeAnimation = () => {
+          ref.removeEventListener('animationend', removeAnimation);
+          ref.removeEventListener('animationcancel', removeAnimation);
+          ref.classList.remove(animated, name);
+          resolve();
+        };
+
+        ref.addEventListener('animationend', removeAnimation);
+        ref.addEventListener('animationcancel', removeAnimation);
+      });
+    };
+
+    if (curComponent.animations) {
+      for (let i = 0; i < animations.length; i++) {
+        await play(curComponent.animations[i]);
+      }
+    }
+  };
+
+  return {
+    animations,
+    drawer,
+    handleMouseover,
+    handleMouseleave,
+    getAnimationClass,
+    addAnimation,
+    previewAnimation,
+  };
 };

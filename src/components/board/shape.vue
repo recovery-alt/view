@@ -24,6 +24,7 @@ import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
+import { SnapshotEnum } from '@/store/modules/snapshot';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
 import { showMenu } from '@/hooks';
@@ -97,6 +98,7 @@ const setup = (props: Props) => {
 
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
+        store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
         off('mousemove', mousemove);
         off('mouseup', mouseup);
         hideAllLines();
@@ -156,6 +158,7 @@ const setup = (props: Props) => {
 
     const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
+      store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
       off('mouseup', mouseup);
       off('mousemove', mousemove);
     };

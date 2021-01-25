@@ -1,8 +1,6 @@
 import { reactive } from 'vue';
+import config from '@/config';
 
-const headSize = reactive({
-  width: 1000,
-  height: 1000,
-});
+const headSize = reactive({ ...config.defaultBoardSize });
 
 export { headSize };
