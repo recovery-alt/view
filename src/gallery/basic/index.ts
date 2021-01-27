@@ -1,6 +1,6 @@
-import button from './button';
+import text from './text';
 
 const name = '基础';
-const components = { button };
+const components = { text };
 
 export { name, components };

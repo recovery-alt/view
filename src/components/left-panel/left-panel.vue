@@ -30,13 +30,7 @@
             {{ tab.groupName }}
           </div>
         </template>
-        <button
-          draggable="true"
-          v-for="item in tab.list"
-          :key="item.type"
-          type="primary"
-          :data-type="item.type"
-        >
+        <button draggable="true" v-for="item in tab.list" :key="item.type" :data-type="item.type">
           {{ item.name }}
         </button>
       </el-tab-pane>
@@ -51,18 +45,18 @@ import { getGalleryGroup } from '@/gallery';
 import { BoardEnum } from '@/store/modules/board';
 
 const setup = () => {
+  const store = useStore();
+
+  const board = store.state.board;
+
+  const galleryGroup = getGalleryGroup();
+
   const handleDragStart = (e: DragEvent) => {
     const target = e.target as HTMLDataListElement;
     if (target.dataset.type) {
       e.dataTransfer?.setData('type', target.dataset.type);
     }
   };
-
-  const store = useStore();
-
-  const board = store.state.board;
-
-  const galleryGroup = getGalleryGroup();
 
   const changeSelected = (e: MouseEvent, index: number) => {
     if (e.ctrlKey || e.metaKey) {
@@ -94,8 +88,6 @@ export default defineComponent({ setup });
     border-radius: 2px;
     margin-top: 10px;
     height: 50px;
-    box-sizing: border-box;
-    padding: 0 10px;
     cursor: pointer;
 
     @mixin active {
@@ -116,7 +108,7 @@ export default defineComponent({ setup });
   }
 }
 
-::v-deep {
+:deep {
   .el-tabs--left {
     height: 100%;
   }

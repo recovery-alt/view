@@ -6,19 +6,21 @@ import { Store } from 'vuex';
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
 export const useSelectMask = (store: Store<RootStateType>) => {
-  const selectMask = reactive<{
+  type SelectMask = {
     show: boolean;
-    style: CSSStyleDataWithSize;
     mousemoved: boolean;
-  }>({
+    style: CSSStyleDataWithSize;
+  };
+
+  const selectMask = reactive<SelectMask>({
     show: false,
+    mousemoved: false,
     style: {
       width: 0,
       height: 0,
       top: 0,
       left: 0,
     },
-    mousemoved: false,
   });
 
   const handleMousedown = (e: MouseEvent) => {

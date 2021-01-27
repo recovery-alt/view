@@ -15,7 +15,7 @@ export default (app: App) => {
     const matcher = key.match(reg);
     const module = packages(key);
     if (matcher && matcher[1] && module) {
-      const groupName: string = module;
+      const groupName: string = module.name;
       const components: Data<{ cName: string; component: Component }> = module.components;
       const list: Array<Gallery> = [];
 

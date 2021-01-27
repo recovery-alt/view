@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
+    "echarts": "^5.0.1",
     "element-plus": "^1.0.1-beta.23",
     "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="shape"
+    class="board-shape"
     :class="{ active }"
     @click="handleShapeClick"
     @mousedown.stop="handleMousedown"
@@ -27,7 +27,8 @@ import { BoardEnum } from '@/store/modules/board';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
-import { showMenu } from '@/hooks';
+import { showMenu, useBoardRefs } from '@/hooks';
+import { getInstanceByDom } from 'echarts';
 
 const name = 'board-shape';
 
@@ -156,8 +157,18 @@ const setup = (props: Props) => {
       }
     }, 30);
 
+    const handleEchartsResize = () => {
+      const { boardRefs } = useBoardRefs();
+      const selector = '[_echarts_instance_]:not([_echarts_instance_=""])';
+      const dom = boardRefs[board.selected[0]].querySelector(selector) as HTMLElement;
+      if (dom) {
+        getInstanceByDom(dom).resize();
+      }
+    };
+
     const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
+      handleEchartsResize();
       store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
       off('mouseup', mouseup);
       off('mousemove', mousemove);
@@ -176,7 +187,7 @@ export default defineComponent({ name, props, setup });
 <style lang="scss" scoped>
 $radius: 3px;
 
-.shape {
+.board-shape {
   position: absolute;
   cursor: move;
 
