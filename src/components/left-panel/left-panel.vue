@@ -4,11 +4,11 @@
       <el-tab-pane>
         <template #label>
           <div class="tab-label">
-            <i class="el-icon-house"></i>
-            列表
+            <i class="el-icon-s-order"></i>
+            <span>列表</span>
           </div>
         </template>
-        <ul class="component-list">
+        <ul class="component-list" v-if="board.data.length > 0">
           <li
             v-for="(item, index) in board.data"
             class="component-list_item"
@@ -22,17 +22,26 @@
             </span>
           </li>
         </ul>
+        <el-empty v-else description="尚未添加任何组件" />
       </el-tab-pane>
       <el-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
         <template #label>
           <div class="tab-label">
-            <i class="el-icon-house"></i>
-            {{ tab.groupName }}
+            <i :class="`el-icon-${tab.icon}`"></i>
+            <span>{{ tab.groupName }}</span>
           </div>
         </template>
-        <button draggable="true" v-for="item in tab.list" :key="item.type" :data-type="item.type">
-          {{ item.name }}
-        </button>
+        <ul class="tab-list">
+          <li
+            draggable="true"
+            class="tab-list_item"
+            v-for="item in tab.list"
+            :key="item.type"
+            :data-type="item.type"
+          >
+            <div>{{ item.name }}</div>
+          </li>
+        </ul>
       </el-tab-pane>
     </el-tabs>
   </section>
@@ -74,13 +83,14 @@ export default defineComponent({ setup });
 
 <style lang="scss" scoped>
 .main-left {
-  flex-basis: 200px;
+  flex-basis: 300px;
   flex-shrink: 0;
   box-sizing: border-box;
   border-right: 1px solid $el-border-1;
 }
 
 .component-list {
+  margin-right: 10px;
   &_item {
     display: flex;
     align-items: center;
@@ -89,6 +99,9 @@ export default defineComponent({ setup });
     margin-top: 10px;
     height: 50px;
     cursor: pointer;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 3px;
 
     @mixin active {
       background-color: $el-primary-8;
@@ -113,7 +126,52 @@ export default defineComponent({ setup });
     height: 100%;
   }
   .el-tabs__item {
-    padding: 0 10px;
+    height: auto;
+    padding: 0;
+  }
+}
+
+.tab-label {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    margin-top: 15px;
+    font-size: 18px;
+  }
+
+  span {
+    display: block;
+    height: 30px;
+  }
+}
+
+.tab-list {
+  display: flex;
+  padding: 10px;
+  &_item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 70px;
+    height: 70px;
+
+    &::before {
+      display: block;
+      content: '';
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background-color: $el-primary-7;
+    }
+
+    div {
+      text-align: center;
+    }
   }
 }
 </style>

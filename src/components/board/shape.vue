@@ -190,6 +190,7 @@ $radius: 3px;
 .board-shape {
   position: absolute;
   cursor: move;
+  box-sizing: border-box;
 
   &.active {
     outline: 1px dashed $el-primary-2;

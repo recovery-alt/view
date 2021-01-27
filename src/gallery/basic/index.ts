@@ -1,6 +1,7 @@
 import text from './text';
 
 const name = '基础';
+const icon = 'document';
 const components = { text };
 
-export { name, components };
+export { name, icon, components };

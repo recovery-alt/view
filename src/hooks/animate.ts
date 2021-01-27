@@ -2,7 +2,7 @@ import { reactive, computed } from 'vue';
 import { Store } from 'vuex';
 import { useBoardRefs } from '@/hooks';
 
-export const useAnimation = (store: Store<RootStateType>) => {
+export const useAnimation = (store?: Store<RootStateType>) => {
   const animations = [
     {
       title: '强调',
@@ -453,7 +453,7 @@ export const useAnimation = (store: Store<RootStateType>) => {
 
   const getAnimationClass = (name: string) => {
     const animation = name === drawer.previewAnimation ? ` animate__animated animate__${name}` : '';
-    return `animation-block${animation}`;
+    return `${animation}`;
   };
 
   const handleMouseover = (name: string) => {
@@ -465,6 +465,7 @@ export const useAnimation = (store: Store<RootStateType>) => {
   };
 
   const addAnimation = (name: string) => {
+    if (!store) return;
     const { board } = store.state;
 
     // 当前选中组件
@@ -482,30 +483,31 @@ export const useAnimation = (store: Store<RootStateType>) => {
     }
   };
 
+  const play = (animation: string, ref: HTMLElement) => {
+    return new Promise<void>(resolve => {
+      const animated = 'animate__animated';
+      const name = `animate__${animation}`;
+      ref.classList.add(animated, name);
+      const removeAnimation = () => {
+        ref.removeEventListener('animationend', removeAnimation);
+        ref.removeEventListener('animationcancel', removeAnimation);
+        ref.classList.remove(animated, name);
+        resolve();
+      };
+
+      ref.addEventListener('animationend', removeAnimation);
+      ref.addEventListener('animationcancel', removeAnimation);
+    });
+  };
+
   const previewAnimation = async (curComponent: Component, index: number) => {
     const { boardRefs } = useBoardRefs();
     const ref = boardRefs[index];
     if (!ref) return;
-    const play = (animation: string) => {
-      return new Promise<void>(resolve => {
-        const animated = 'animate__animated';
-        const name = `animate__${animation}`;
-        ref.classList.add(animated, name);
-        const removeAnimation = () => {
-          ref.removeEventListener('animationend', removeAnimation);
-          ref.removeEventListener('animationcancel', removeAnimation);
-          ref.classList.remove(animated, name);
-          resolve();
-        };
-
-        ref.addEventListener('animationend', removeAnimation);
-        ref.addEventListener('animationcancel', removeAnimation);
-      });
-    };
 
     if (curComponent.animations) {
       for (let i = 0; i < animations.length; i++) {
-        await play(curComponent.animations[i]);
+        await play(curComponent.animations[i], ref);
       }
     }
   };
@@ -518,5 +520,6 @@ export const useAnimation = (store: Store<RootStateType>) => {
     getAnimationClass,
     addAnimation,
     previewAnimation,
+    play,
   };
 };

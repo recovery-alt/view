@@ -1,5 +1,5 @@
 <template>
-  <el-collapse v-if="curComponent" v-model="activeName">
+  <el-collapse v-model="activeName">
     <el-collapse-item
       v-for="val in patchSizeInfoAttr"
       :key="val.title"
@@ -23,7 +23,6 @@
       </el-form>
     </el-collapse-item>
   </el-collapse>
-  <el-form v-if="curComponent" value="left" label-width="80px" size="mini"> </el-form>
 </template>
 
 <script lang="ts">
@@ -45,6 +44,9 @@ const setup = () => {
   });
   // 添加位置大小信息
   const patchSizeInfoAttr = computed(() => {
+    if (curComponent.value) {
+      activeName.value = curComponent.value.attr[0].title;
+    }
     return curComponent.value && [...curComponent.value.attr];
   });
 
@@ -75,7 +77,6 @@ const setup = () => {
     if (board.selected.length === 1) {
       const { style } = board.data[board.selected[0]];
       if (!patchSizeInfoAttr.value) return;
-      activeName.value = patchSizeInfoAttr.value[0].title;
       patchSizeInfoAttr.value.forEach(val => {
         const { data } = val;
         data.forEach(item => {

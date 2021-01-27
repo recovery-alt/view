@@ -1,15 +1,18 @@
 <template>
   <header class="header">
-    <el-button-group>
-      <el-button
-        size="small"
+    <div class="logo-box">
+      <img width="40" height="40" src="~@/assets/img/logo.svg" />
+    </div>
+    <div>
+      <el-tooltip
+        placement="bottom"
         v-for="item in buttonGroup"
         :key="item.name"
-        :icon="item.icon"
-        @click="item.event"
-        >{{ item.name }}
-      </el-button>
-    </el-button-group>
+        :content="item.name"
+      >
+        <i class="header-icon" :class="item.icon" @click="item.event"></i>
+      </el-tooltip>
+    </div>
     <div class="header-size">
       页面尺寸：
       <div class="header-input">
@@ -59,6 +62,8 @@ const setup = () => {
     { name: '剪切', icon: 'el-icon-scissors', event: cut },
     { name: '复制', icon: 'el-icon-document-copy', event: copy },
     { name: '删除', icon: 'el-icon-delete', event: del },
+    { name: '保存', icon: 'el-icon-document-checked', event: del },
+    { name: '预览', icon: 'el-icon-view', event: del },
   ];
 
   return { headSize, patchUnit, buttonGroup };
@@ -69,7 +74,7 @@ export default defineComponent({ components, setup });
 
 <style lang="scss" scoped>
 .header {
-  height: 60px;
+  height: 48px;
   border-bottom: 1px solid $el-border-1;
   flex-shrink: 0;
   display: flex;
@@ -91,6 +96,15 @@ export default defineComponent({ components, setup });
   &-x {
     padding: 0 10px;
   }
+
+  &-icon {
+    font-size: 20px;
+    margin-left: 20px;
+    color: $el-primary-1;
+    &:hover {
+      color: $el-success-1;
+    }
+  }
 }
 
 .main {
@@ -110,5 +124,17 @@ export default defineComponent({ components, setup });
 .mid-box {
   height: 100%;
   overflow: auto;
+}
+
+.logo {
+  margin-left: 5px;
+  font-size: 20px;
+  color: $el-primary-1;
+  font-weight: bold;
+
+  &-box {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>

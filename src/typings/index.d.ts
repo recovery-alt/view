@@ -56,7 +56,6 @@ type Component = {
   animations?: Array<string>;
   events?: Array<Event>;
   style: CSSStyleDataWithSize;
-  ref?: HTMLElement;
 };
 
 type Board = {

@@ -6,7 +6,7 @@ const packages = require.context('.', true, /(?<!\.)\/index\.ts/);
 
 const reg = /\.\/([\d\w-_]*)\/index\.ts/;
 
-const galleryGroup: Array<{ groupName: string; list: Array<Gallery> }> = [];
+const galleryGroup: Array<{ groupName: string; icon: string; list: Array<Gallery> }> = [];
 
 const galleryList: Array<Gallery> = [];
 
@@ -16,6 +16,7 @@ export default (app: App) => {
     const module = packages(key);
     if (matcher && matcher[1] && module) {
       const groupName: string = module.name;
+      const icon = module.icon;
       const components: Data<{ cName: string; component: Component }> = module.components;
       const list: Array<Gallery> = [];
 
@@ -26,7 +27,7 @@ export default (app: App) => {
         list.push({ type, name });
         galleryList.push({ type, name });
       }
-      galleryGroup.push({ groupName, list });
+      galleryGroup.push({ groupName, icon, list });
     }
   });
 };

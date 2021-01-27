@@ -18,6 +18,8 @@ import {
   ElDrawer,
   ElCollapse,
   ElCollapseItem,
+  ElTooltip,
+  ElEmpty,
 } from 'element-plus';
 
 export const useElement = (app: App) => {
@@ -37,4 +39,6 @@ export const useElement = (app: App) => {
   app.use(ElDrawer);
   app.use(ElCollapse);
   app.use(ElCollapseItem);
+  app.use(ElTooltip as any);
+  app.use(ElEmpty);
 };

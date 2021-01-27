@@ -1,3 +1,3 @@
 import Text from './text.vue';
 
-export default { cName: '按钮', component: Text };
+export default { cName: '文本', component: Text };
