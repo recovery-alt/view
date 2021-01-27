@@ -42,7 +42,6 @@ import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
-import leftPanel from '@/components/left-panel/left-panel.vue';
 
 const components = { LeftPanel, Board, RightPanel };
 
@@ -100,7 +99,6 @@ export default defineComponent({ components, setup });
 
   &-mid {
     flex: 1;
-    flex-shrink: 0;
     height: 100%;
     background-color: $el-info-3;
     overflow: auto;

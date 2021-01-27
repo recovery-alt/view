@@ -14,7 +14,7 @@
       :index="index"
       :zIndex="index"
       :style="patchUnit(item.style)"
-      :ref="el => (item.ref = el.$el)"
+      :ref="el => el && setBoardRef(el.$el, index)"
     >
       <component :is="item.component" />
     </board-shape>
@@ -33,7 +33,7 @@ import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu } from '@/hooks';
 import { patchUnit } from '@/utils';
-import { useSelectMask } from '@/hooks';
+import { useSelectMask, useBoardRefs } from '@/hooks';
 
 const name = 'board';
 
@@ -43,6 +43,8 @@ const setup = () => {
   const store = useStore();
   const { board } = store.state;
   const { selectMask, handleMousedown } = useSelectMask(store);
+
+  const { setBoardRef } = useBoardRefs();
 
   const handleLeftClick = () => {
     if (!selectMask.mousemoved) {
@@ -74,6 +76,7 @@ const setup = () => {
     menu,
     patchUnit,
     selectMask,
+    setBoardRef,
   };
 };
 

@@ -3,6 +3,8 @@ import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import { Store } from 'vuex';
 
+const boardRefs = reactive<Record<number, HTMLElement>>({});
+
 export const useSelectMask = (store: Store<RootStateType>) => {
   const selectMask = reactive<{
     show: boolean;
@@ -62,4 +64,14 @@ export const useSelectMask = (store: Store<RootStateType>) => {
   };
 
   return { selectMask, handleMousedown };
+};
+
+export const useBoardRefs = () => {
+  const setBoardRef = (el: HTMLElement, index: number) => {
+    if (el) {
+      boardRefs[index] = el;
+    }
+  };
+
+  return { boardRefs, setBoardRef };
 };

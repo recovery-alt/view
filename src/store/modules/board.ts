@@ -62,7 +62,7 @@ const mutations: Data<Mutation<Board>> = {
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ state, commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
+  append({ commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
     const style = { top, left, ...config.defaultComponentSize };
     const component = `v-${type}`;
     const attr = presetComponentAttr;

@@ -1,6 +1,6 @@
 import { reactive, computed } from 'vue';
-import { useStore } from '@/store';
 import { Store } from 'vuex';
+import { useBoardRefs } from '@/hooks';
 
 export const useAnimation = (store: Store<RootStateType>) => {
   const animations = [
@@ -482,8 +482,9 @@ export const useAnimation = (store: Store<RootStateType>) => {
     }
   };
 
-  const previewAnimation = async (curComponent: Component) => {
-    const { ref } = curComponent;
+  const previewAnimation = async (curComponent: Component, index: number) => {
+    const { boardRefs } = useBoardRefs();
+    const ref = boardRefs[index];
     if (!ref) return;
     const play = (animation: string) => {
       return new Promise<void>(resolve => {

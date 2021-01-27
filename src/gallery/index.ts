@@ -1,27 +1,36 @@
-import { App } from 'vue';
+import { App, Component } from 'vue';
+
+type Gallery = { type: string; name: string };
+
 const packages = require.context('.', true, /(?<!\.)\/index\.ts/);
 
-const reg = /\.\/(.*)\/index\.ts/;
+const reg = /\.\/([\d\w-_]*)\/index\.ts/;
 
-const gallery: Array<{ type: string; name: string }> = [];
+const galleryGroup: Array<{ groupName: string; list: Array<Gallery> }> = [];
+
+const galleryList: Array<Gallery> = [];
 
 export default (app: App) => {
   packages.keys().forEach(key => {
     const matcher = key.match(reg);
-    if (matcher && matcher[1]) {
-      app.component(`v-${matcher[1]}`, packages(key).default);
+    const module = packages(key);
+    if (matcher && matcher[1] && module) {
+      const groupName: string = module;
+      const components: Data<{ cName: string; component: Component }> = module.components;
+      const list: Array<Gallery> = [];
+
+      for (const [key, value] of Object.entries(components)) {
+        const type = value.component.name || key;
+        const name = value.cName;
+        app.component(`v-${type}`, value.component);
+        list.push({ type, name });
+        galleryList.push({ type, name });
+      }
+      galleryGroup.push({ groupName, list });
     }
   });
 };
 
-export const getGalleryList = () => {
-  if (gallery.length === 0) {
-    packages.keys().forEach(key => {
-      const matcher = key.match(reg);
-      if (matcher && matcher[1]) {
-        gallery.push({ type: matcher[1], name: packages(key).name || matcher[1] });
-      }
-    });
-  }
-  return gallery;
-};
+export const getGalleryGroup = () => galleryGroup;
+
+export const getGalleryList = () => galleryList;

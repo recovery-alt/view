@@ -7,7 +7,7 @@
       <el-tab-pane label="动画" name="animation">
         <template v-if="curComponent">
           <el-button @click="drawer.show = true">添加</el-button>
-          <el-button @click="previewAnimation(curComponent)">预览</el-button>
+          <el-button @click="previewAnimation(curComponent, board.selected[0])">预览</el-button>
           <ul class="animation-list">
             <li v-for="item in curComponent.animations" :key="item">{{ item }}</li>
           </ul>
@@ -60,14 +60,15 @@ export default defineComponent({
     const activeName = ref('style');
     const animation = useAnimation(store);
 
-    return { curComponent, activeName, ...animation };
+    return { board, curComponent, activeName, ...animation };
   },
 });
 </script>
 
 <style lang="scss" scoped>
 .main-right {
-  width: 300px;
+  flex-basis: 300px;
+  flex-shrink: 0;
   border-left: 1px solid $el-border-1;
   box-sizing: border-box;
   padding: 5px 10px;
