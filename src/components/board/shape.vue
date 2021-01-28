@@ -28,7 +28,6 @@ import { SnapshotEnum } from '@/store/modules/snapshot';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
 import { showMenu, useBoardRefs } from '@/hooks';
-import { getInstanceByDom } from 'echarts';
 
 const name = 'board-shape';
 
@@ -46,6 +45,8 @@ const setup = (props: Props) => {
   const store = useStore();
 
   const board = store.state.board;
+
+  const { handleEchartsResize } = useBoardRefs();
 
   const points = [
     'top-left',
@@ -157,18 +158,9 @@ const setup = (props: Props) => {
       }
     }, 30);
 
-    const handleEchartsResize = () => {
-      const { boardRefs } = useBoardRefs();
-      const selector = '[_echarts_instance_]:not([_echarts_instance_=""])';
-      const dom = boardRefs[board.selected[0]].querySelector(selector) as HTMLElement;
-      if (dom) {
-        getInstanceByDom(dom).resize();
-      }
-    };
-
     const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
-      handleEchartsResize();
+      handleEchartsResize(board.selected[0]);
       store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
       off('mouseup', mouseup);
       off('mousemove', mousemove);

@@ -5,6 +5,8 @@ import { presetComponentAttr } from '@/options';
 import { getGalleryList } from '@/gallery';
 import { ElMessage } from 'element-plus';
 import config from '@/config';
+import { useBoardRefs } from '@/hooks';
+import { nextTick } from 'vue';
 
 const state: Board = {
   selected: [],
@@ -94,8 +96,12 @@ const actions: Data<Action<Board, RootStateType>> = {
     const mutation = exist ? 'spliceSelected' : 'appendSelected';
     commit(mutation, index);
   },
-  setBoard({ commit }, board: Board | null) {
+  setBoard({ commit, state }, board: Board | null) {
     commit('setBoard', board);
+    nextTick(() => {
+      const { handleAllEchartsResize } = useBoardRefs();
+      handleAllEchartsResize(state);
+    });
   },
   cut({ state, commit, dispatch }) {
     if (state.selected.length > 0) {

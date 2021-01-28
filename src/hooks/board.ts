@@ -2,6 +2,7 @@ import { reactive } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import { Store } from 'vuex';
+import { getInstanceByDom } from 'echarts';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -75,5 +76,18 @@ export const useBoardRefs = () => {
     }
   };
 
-  return { boardRefs, setBoardRef };
+  const handleEchartsResize = (index: number) => {
+    const dom = boardRefs[index];
+    if (dom) {
+      getInstanceByDom(dom).resize();
+    }
+  };
+
+  const handleAllEchartsResize = (board: Board) => {
+    for (let i = 0, len = board.data.length; i < len; i++) {
+      handleEchartsResize(i);
+    }
+  };
+
+  return { boardRefs, setBoardRef, handleEchartsResize, handleAllEchartsResize };
 };

@@ -1,23 +1,32 @@
 <template>
-  <div ref="dom" class="bar"></div>
+  <div class="bar"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useBoardRefs } from '@/hooks';
+
+type Props = { index: number };
 
 export default defineComponent({
   name: 'bar',
-  setup() {
-    const dom = ref<HTMLElement | null>(null);
+  props: {
+    index: {
+      type: Number,
+      default: () => 0,
+    },
+  },
+  setup(props: Props) {
     use([GridComponent, BarChart, CanvasRenderer]);
 
     onMounted(() => {
-      if (!dom.value) return;
-      const chart = init(dom.value);
+      const { boardRefs } = useBoardRefs();
+      const dom = boardRefs[props.index];
+      const chart = init(dom);
       const option = {
         xAxis: {
           type: 'category',
@@ -39,8 +48,6 @@ export default defineComponent({
       };
       chart.setOption(option);
     });
-
-    return { dom };
   },
 });
 </script>

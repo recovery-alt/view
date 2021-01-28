@@ -1,6 +1,25 @@
 <template>
   <section class="main-left" @dragstart="handleDragStart">
     <el-tabs tab-position="left">
+      <el-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
+        <template #label>
+          <div class="tab-label">
+            <i :class="`el-icon-${tab.icon}`"></i>
+            <span>{{ tab.groupName }}</span>
+          </div>
+        </template>
+        <ul class="tab-list">
+          <li
+            draggable="true"
+            class="tab-list_item"
+            v-for="item in tab.list"
+            :key="item.type"
+            :data-type="item.type"
+          >
+            <div>{{ item.name }}</div>
+          </li>
+        </ul>
+      </el-tab-pane>
       <el-tab-pane>
         <template #label>
           <div class="tab-label">
@@ -23,25 +42,6 @@
           </li>
         </ul>
         <el-empty v-else description="尚未添加任何组件" />
-      </el-tab-pane>
-      <el-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
-        <template #label>
-          <div class="tab-label">
-            <i :class="`el-icon-${tab.icon}`"></i>
-            <span>{{ tab.groupName }}</span>
-          </div>
-        </template>
-        <ul class="tab-list">
-          <li
-            draggable="true"
-            class="tab-list_item"
-            v-for="item in tab.list"
-            :key="item.type"
-            :data-type="item.type"
-          >
-            <div>{{ item.name }}</div>
-          </li>
-        </ul>
       </el-tab-pane>
     </el-tabs>
   </section>

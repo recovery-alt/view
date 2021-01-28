@@ -21,7 +21,7 @@
         <animate-panel />
       </el-tab-pane>
     </el-tabs>
-    <el-empty v-else description="请选中你的组件" />
+    <el-empty v-else-if="!isFold" description="请选中你的组件" />
     <div class="main-right_fold" @click="toggle">
       <i :class="`el-icon-d-arrow-${isFold ? 'left' : 'right'}`"></i>
     </div>

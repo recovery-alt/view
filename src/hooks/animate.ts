@@ -484,19 +484,20 @@ export const useAnimation = (store?: Store<RootStateType>) => {
   };
 
   const play = (animation: string, ref: HTMLElement) => {
+    const dom = ref.parentElement || ref;
     return new Promise<void>(resolve => {
       const animated = 'animate__animated';
       const name = `animate__${animation}`;
-      ref.classList.add(animated, name);
+      dom.classList.add(animated, name);
       const removeAnimation = () => {
-        ref.removeEventListener('animationend', removeAnimation);
-        ref.removeEventListener('animationcancel', removeAnimation);
-        ref.classList.remove(animated, name);
+        dom.removeEventListener('animationend', removeAnimation);
+        dom.removeEventListener('animationcancel', removeAnimation);
+        dom.classList.remove(animated, name);
         resolve();
       };
 
-      ref.addEventListener('animationend', removeAnimation);
-      ref.addEventListener('animationcancel', removeAnimation);
+      dom.addEventListener('animationend', removeAnimation);
+      dom.addEventListener('animationcancel', removeAnimation);
     });
   };
 

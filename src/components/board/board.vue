@@ -14,9 +14,13 @@
       :index="index"
       :zIndex="index"
       :style="patchUnit(item.style)"
-      :ref="el => el && setBoardRef(el.$el, index)"
     >
-      <component :is="item.component" />
+      <component
+        :index="index"
+        :key="item.id"
+        :ref="el => el && setBoardRef(el.$el, index)"
+        :is="item.component"
+      />
     </board-shape>
     <board-menu v-model="menu.show" v-show="menu.show" :style="patchUnit(menu.style)" />
     <board-markline />

@@ -26,11 +26,11 @@
 
 - body: 补充 subject，适当增加原因、目的等相关因素，可选
 
-## 五、命名规范
+## 命名规范
 
-- 文件和文件夹采用`product-center`这个方式命名，尽量不使用大写
+- 文件和文件夹采用`left-panel`这个方式命名，尽量不使用大写
 - 变量名采用驼峰命名，类名首字母大写
 - .vue 文件必须指明 name，小写，多个单词用`-`连接
-- 在 template 中使用的话用这个方式`<product-center />`
+- 在 template 中使用的话用这个方式`<left-panel />`
 - import 进来的组件，首字母大写
 - .env 文件采用这个方式`NODE_ENV=production`，变量名大写，多个单词用`_`隔开，等号两边不加空格

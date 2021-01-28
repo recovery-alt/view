@@ -45,6 +45,7 @@ import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
+import { ElMessage } from 'element-plus';
 
 const components = { LeftPanel, Board, RightPanel };
 
@@ -62,8 +63,22 @@ const setup = () => {
     { name: '剪切', icon: 'el-icon-scissors', event: cut },
     { name: '复制', icon: 'el-icon-document-copy', event: copy },
     { name: '删除', icon: 'el-icon-delete', event: del },
-    { name: '保存', icon: 'el-icon-document-checked', event: del },
-    { name: '预览', icon: 'el-icon-view', event: del },
+    {
+      name: '保存',
+      icon: 'el-icon-document-checked',
+      event: () => {
+        // TODO: 保存功能
+        ElMessage.warning('开发中...');
+      },
+    },
+    {
+      name: '预览',
+      icon: 'el-icon-view',
+      event: () => {
+        // TODO: 预览
+        ElMessage.warning('开发中...');
+      },
+    },
   ];
 
   return { headSize, patchUnit, buttonGroup };
