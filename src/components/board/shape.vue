@@ -177,7 +177,7 @@ export default defineComponent({ name, props, setup });
 </script>
 
 <style lang="scss" scoped>
-$radius: 3px;
+$radius: 4px;
 
 .board-shape {
   position: absolute;
@@ -207,7 +207,7 @@ $radius: 3px;
   }
 
   &-mid {
-    top: -$radius;
+    top: -$radius - 1px;
     left: 50%;
     margin-left: -$radius;
     cursor: s-resize;
@@ -245,7 +245,7 @@ $radius: 3px;
 
   &-mid {
     left: 50%;
-    bottom: -$radius;
+    bottom: -$radius - 1px;
     margin-left: -$radius;
     cursor: s-resize;
   }

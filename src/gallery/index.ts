@@ -1,4 +1,5 @@
 import { App, Component } from 'vue';
+import { ChartGroup, Components } from '@/typings';
 
 type Gallery = { type: string; name: string };
 
@@ -13,17 +14,15 @@ const galleryList: Array<Gallery> = [];
 export default (app: App) => {
   packages.keys().forEach(key => {
     const matcher = key.match(reg);
-    const module = packages(key);
+    const module = packages(key) as ChartGroup;
     if (matcher && matcher[1] && module) {
-      const groupName: string = module.name;
-      const icon = module.icon;
-      const components: Data<{ cName: string; component: Component }> = module.components;
+      const { icon, components, name: groupName } = module;
       const list: Array<Gallery> = [];
 
       for (const [key, value] of Object.entries(components)) {
         const type = value.component.name || key;
         const name = value.cName;
-        app.component(`v-${type}`, value.component);
+        app.component(`cq-${type}`, value.component);
         list.push({ type, name });
         galleryList.push({ type, name });
       }
