@@ -1,5 +1,5 @@
-import { App, Component } from 'vue';
-import { ChartGroup, Components } from '@/typings';
+import { App } from 'vue';
+import { ChartGroup } from '@/typings';
 
 type Gallery = { type: string; name: string };
 

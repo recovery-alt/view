@@ -156,7 +156,7 @@ const setup = (props: Props) => {
         const diffY = clientY - startY;
         curComponent.style.height = height + diffY;
       }
-    }, 30);
+    }, 16);
 
     const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
