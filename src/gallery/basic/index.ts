@@ -4,4 +4,4 @@ const name = '基础';
 const icon = 'document';
 const components = { text };
 
-export { name, icon, components };
+export default { name, icon, components };

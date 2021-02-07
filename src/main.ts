@@ -12,7 +12,4 @@ const app = createApp(App);
 useElement(app);
 useGallery(app);
 
-app
-  .use(store, key)
-  .use(router)
-  .mount('#app');
+app.use(store, key).use(router).mount('#app');

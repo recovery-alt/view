@@ -34,7 +34,9 @@ const actions: Data<Action<Snapshot, RootStateType>> = {
   redo({ dispatch, state }) {
     if (state.index < state.data.length - 1) {
       state.index++;
-      dispatch(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), { root: true });
+      dispatch(BoardEnum.SET_BOARD, cloneDeep(state.data[state.index]), {
+        root: true,
+      });
     }
   },
   recordSnapshot({ rootState, commit }) {

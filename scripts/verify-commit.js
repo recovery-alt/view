@@ -1,10 +1,7 @@
-// 提交代码时候的钩子
-// eslint-disable-next-line
+/* eslint-disable */
 const chalk = require('chalk');
-const msgPath = process.env.GIT_PARAMS;
-const msg = require('fs')
-  .readFileSync(msgPath, 'utf-8')
-  .trim();
+const msgPath = process.env.HUSKY_GIT_PARAMS;
+const msg = require('fs').readFileSync(msgPath, 'utf-8').trim();
 
 const commitRE = /^(feat|fix|docs|style|refactor|perf|test|chore|deps|subject|body)(\(.+\))?: .{1,50}/;
 

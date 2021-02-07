@@ -1,6 +1,9 @@
 import { FormEnum } from '@/enum';
 
-export const presetComponentAttr: Array<{ title: string; data: Array<ComponentAttr> }> = [
+export const presetComponentAttr: Array<{
+  title: string;
+  data: Array<ComponentAttr>;
+}> = [
   {
     title: '尺寸&位置',
     data: [

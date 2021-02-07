@@ -46,7 +46,7 @@ export default defineComponent({
     const { board } = store.state;
 
     // 当前选中组件
-    const curComponent = computed<Component | null>(() => {
+    const curComponent = computed(() => {
       return board.selected.length === 1 ? board.data[board.selected[0]] : null;
     });
 

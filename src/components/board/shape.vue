@@ -170,7 +170,13 @@ const setup = (props: Props) => {
     on('mouseup', mouseup);
   };
 
-  return { handleShapeClick, handleMousedown, points, handleMousedowOnPoint, handleMouseup };
+  return {
+    handleShapeClick,
+    handleMousedown,
+    points,
+    handleMousedowOnPoint,
+    handleMouseup,
+  };
 };
 
 export default defineComponent({ name, props, setup });

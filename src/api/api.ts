@@ -9,7 +9,7 @@ const apiErrorHandler = (message?: unknown) => {
   // 错误抛到业务代码
   return Promise.resolve({ result: -10000, msg });
 };
-const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/v1/' : '/';
+const baseURL = import.meta.env.NODE_ENV === 'development' ? 'http://localhost:3000/v1/' : '/';
 
 // 策略模式生产状态码
 const statusStrategy = (status: number) => {

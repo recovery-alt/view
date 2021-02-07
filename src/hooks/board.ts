@@ -30,7 +30,12 @@ export const useSelectMask = (store: Store<RootStateType>) => {
       const { pageX: startX, pageY: startY } = e;
       const mousePosition = getBoardReletedPosition(startX, startY);
       if (!mousePosition) return;
-      selectMask.style = { ...selectMask.style, ...mousePosition, width: 0, height: 0 };
+      selectMask.style = {
+        ...selectMask.style,
+        ...mousePosition,
+        width: 0,
+        height: 0,
+      };
 
       const mousemove = (e: MouseEvent) => {
         if (!selectMask.mousemoved) {
@@ -88,5 +93,10 @@ export const useBoardRefs = () => {
     }
   };
 
-  return { boardRefs, setBoardRef, handleEchartsResize, handleAllEchartsResize };
+  return {
+    boardRefs,
+    setBoardRef,
+    handleEchartsResize,
+    handleAllEchartsResize,
+  };
 };

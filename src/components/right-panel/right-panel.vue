@@ -81,7 +81,15 @@ export default defineComponent({
 
     const width = computed(() => (isFold.value ? '0' : '300px'));
 
-    return { board, curComponent, activeName, isFold, toggle, width, ...animation };
+    return {
+      board,
+      curComponent,
+      activeName,
+      isFold,
+      toggle,
+      width,
+      ...animation,
+    };
   },
 });
 </script>
