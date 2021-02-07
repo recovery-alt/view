@@ -5,8 +5,8 @@
     </div>
     <div>
       <el-tooltip
-        placement="bottom"
         v-for="item in buttonGroup"
+        placement="bottom"
         :key="item.name"
         :content="item.name"
       >

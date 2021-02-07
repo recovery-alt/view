@@ -10,9 +10,9 @@
         </template>
         <ul class="tab-list">
           <li
+            v-for="item in tab.list"
             draggable="true"
             class="tab-list_item"
-            v-for="item in tab.list"
             :key="item.type"
             :data-type="item.type"
           >
@@ -27,7 +27,7 @@
             <span>列表</span>
           </div>
         </template>
-        <ul class="component-list" v-if="board.data.length > 0">
+        <ul v-if="board.data.length > 0" class="component-list">
           <li
             v-for="(item, index) in board.data"
             class="component-list_item"

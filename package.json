@@ -1,8 +1,8 @@
 {
   "name": "view",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
+    "serve": "vite",
     "build": "vuedx-typecheck . && vite build",
     "lint": "eslint --fix --ext .js{x},.ts{x},.vue ./src",
     "test": "jest"
@@ -16,11 +16,12 @@
     "normalize.css": "^8.0.1",
     "vue": "^3.0.5",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.0-rc.2"
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.9.2",
     "@types/jest": "^26.0.14",
+    "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
     "@vitejs/plugin-vue": "^1.1.2",
@@ -56,13 +57,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "ls-lint & lint-staged",
+      "pre-commit": "ls-lint && lint-staged",
       "commit-msg": "node scripts/verify-commit.js"
-    },
-    "browserslist": [
-      "> 1%",
-      "last 2 versions",
-      "not dead"
-    ]
+    }
   }
 }

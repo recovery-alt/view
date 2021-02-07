@@ -9,12 +9,12 @@
     <slot />
     <template v-if="active">
       <div
+        v-for="point in points"
         class="point"
         :class="point"
-        v-for="point in points"
         :key="point"
         @mousedown="handleMousedowOnPoint"
-      ></div>
+      />
     </template>
   </div>
 </template>

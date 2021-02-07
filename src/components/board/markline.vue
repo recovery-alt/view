@@ -1,8 +1,8 @@
 <template>
   <div
-    class="board-markline"
     v-for="line in markline.lines"
     v-show="line.show"
+    class="board-markline"
     :key="line.name"
     :class="line.name.includes('x') ? 'xline' : 'yline'"
     :style="patchUnit(line.style)"

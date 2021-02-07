@@ -36,8 +36,8 @@
       >
         <ul class="animation-box">
           <li
-            class="animation-box_item"
             v-for="animation in item.data"
+            class="animation-box_item"
             :key="animation.name"
             @mouseover="handleMouseover(animation.name)"
             @mouseleave="handleMouseleave"
