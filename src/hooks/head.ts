@@ -3,4 +3,9 @@ import config from '@/config';
 
 const headSize = reactive({ ...config.defaultBoardSize });
 
-export { headSize };
+const setHeadSize = (width: number, height: number) => {
+  headSize.width = width;
+  headSize.height = height;
+};
+
+export { headSize, setHeadSize };

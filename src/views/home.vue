@@ -39,52 +39,59 @@
 import { defineComponent } from 'vue';
 import LeftPanel from '@/components/left-panel';
 import Board from '@/components/board';
-import { headSize } from '@/hooks';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
 import { ElMessage } from 'element-plus';
+import { loadPage, savePage, headSize } from '@/hooks';
 
 const components = { LeftPanel, Board, RightPanel };
 
-const setup = () => {
-  const store = useStore();
-  const undo = () => store.dispatch(SnapshotEnum.UNDO);
-  const redo = () => store.dispatch(SnapshotEnum.REDO);
-  const cut = () => store.dispatch(BoardEnum.CUT);
-  const copy = () => store.dispatch(BoardEnum.COPY);
-  const del = () => store.dispatch(BoardEnum.DEL);
+type Props = { id: string };
 
-  const buttonGroup = [
-    { name: '上一步', icon: 'el-icon-back', event: undo },
-    { name: '下一步', icon: 'el-icon-right', event: redo },
-    { name: '剪切', icon: 'el-icon-scissors', event: cut },
-    { name: '复制', icon: 'el-icon-document-copy', event: copy },
-    { name: '删除', icon: 'el-icon-delete', event: del },
-    {
-      name: '保存',
-      icon: 'el-icon-document-checked',
-      event: () => {
-        // TODO: 保存功能
-        ElMessage.warning('开发中...');
-      },
-    },
-    {
-      name: '预览',
-      icon: 'el-icon-view',
-      event: () => {
-        // TODO: 预览
-        ElMessage.warning('开发中...');
-      },
-    },
-  ];
-
-  return { headSize, patchUnit, buttonGroup };
+const props = {
+  id: { type: String, default: () => '' },
 };
 
-export default defineComponent({ components, setup });
+export default defineComponent({
+  components,
+  props,
+  setup(props: Props) {
+    const store = useStore();
+    const undo = () => store.dispatch(SnapshotEnum.UNDO);
+    const redo = () => store.dispatch(SnapshotEnum.REDO);
+    const cut = () => store.dispatch(BoardEnum.CUT);
+    const copy = () => store.dispatch(BoardEnum.COPY);
+    const del = () => store.dispatch(BoardEnum.DEL);
+
+    const buttonGroup = [
+      { name: '上一步', icon: 'el-icon-back', event: undo },
+      { name: '下一步', icon: 'el-icon-right', event: redo },
+      { name: '剪切', icon: 'el-icon-scissors', event: cut },
+      { name: '复制', icon: 'el-icon-document-copy', event: copy },
+      { name: '删除', icon: 'el-icon-delete', event: del },
+      {
+        name: '保存',
+        icon: 'el-icon-document-checked',
+        event: () => savePage(store),
+      },
+      {
+        name: '预览',
+        icon: 'el-icon-view',
+        event: () => {
+          // TODO: 预览
+          ElMessage.warning('开发中...');
+        },
+      },
+    ];
+
+    loadPage(store, props.id);
+
+    return { headSize, patchUnit, buttonGroup };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

@@ -67,13 +67,13 @@ const actions: Data<Action<Board, RootStateType>> = {
   append({ commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
     const style = { top, left, ...config.defaultComponentSize };
     const component = `cq-${type}`;
-    const attr = presetComponentAttr;
+    // const attr = presetComponentAttr;
     const id = uniqueId();
     const gallery = getGalleryList();
     const componentConfig = gallery.find(val => val.type === type);
     if (!componentConfig) throw new Error('获取不到组件配置');
     const label = componentConfig.name;
-    commit('append', { id, label, component, attr, style });
+    commit('append', { id, label, component, style });
     dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
   },
   del({ state, commit, dispatch }) {

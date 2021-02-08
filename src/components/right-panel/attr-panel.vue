@@ -1,7 +1,7 @@
 <template>
   <el-collapse v-model="activeName">
     <el-collapse-item
-      v-for="val in patchSizeInfoAttr"
+      v-for="val in presetComponentAttr"
       :key="val.title"
       :title="val.title"
       :name="val.title"
@@ -29,6 +29,7 @@
 import { defineComponent, watchEffect, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
+import { presetComponentAttr } from '@/options';
 
 const name = 'attr-panel';
 
@@ -36,18 +37,11 @@ const setup = () => {
   const store = useStore();
   const { board } = store.state;
 
-  const activeName = ref('');
+  const activeName = ref(presetComponentAttr[0].title);
 
   // 当前选中组件
   const curComponent = computed(() => {
     return board.selected.length === 1 ? board.data[board.selected[0]] : null;
-  });
-  // 添加位置大小信息
-  const patchSizeInfoAttr = computed(() => {
-    if (curComponent.value) {
-      activeName.value = curComponent.value.attr[0].title;
-    }
-    return curComponent.value && [...curComponent.value.attr];
   });
 
   const getType = (parentType: FormEnum) => {
@@ -76,8 +70,7 @@ const setup = () => {
     // 初始化form & 写入form值
     if (board.selected.length === 1) {
       const { style } = board.data[board.selected[0]];
-      if (!patchSizeInfoAttr.value) return;
-      patchSizeInfoAttr.value.forEach(val => {
+      presetComponentAttr.forEach(val => {
         const { data } = val;
         data.forEach(item => {
           const { type, key } = item;
@@ -90,7 +83,7 @@ const setup = () => {
     }
   });
 
-  return { board, curComponent, patchSizeInfoAttr, activeName };
+  return { board, curComponent, presetComponentAttr, activeName };
 };
 
 export default defineComponent({ name, setup });

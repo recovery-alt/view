@@ -3,14 +3,20 @@ import Home from '@/views/home.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'home',
-    component: Home,
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login'),
+  },
+  {
+    path: '/',
+    name: 'manage',
+    component: () => import('@/views/manage'),
+  },
+  {
+    path: '/board/:id',
+    name: 'board',
+    props: true,
+    component: Home,
   },
 ];
 

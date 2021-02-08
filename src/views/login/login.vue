@@ -1,22 +1,44 @@
 <template>
-  <div>{{ data }}</div>
+  <div class="login">
+    <div class="login-box">
+      <el-form ref="form" label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="name"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="password"></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-import { getUser } from '@/api';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'login',
   setup() {
-    const data = ref<Array<unknown> | null>(null);
-
-    onMounted(async () => {
-      const res = await getUser<Array<{ name: string; password: string }>>();
-      data.value = res.data;
-    });
-
-    return { data };
+    const name = ref('');
+    const password = ref('');
+    return { name, password };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.login {
+  height: 100%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-box {
+    width: 480px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: #fff;
+  }
+}
+</style>

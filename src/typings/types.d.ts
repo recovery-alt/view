@@ -52,7 +52,7 @@ type Component = {
   label: string;
   propValue?: string;
   icon?: string;
-  attr: Array<{ title: string; data: Array<ComponentAttr> }>;
+  attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;
   events?: Array<Event>;
   style: CSSStyleDataWithSize;
@@ -67,6 +67,17 @@ type Board = {
 type Snapshot = {
   index: number;
   data: Array<Board>;
+};
+
+type Page = {
+  _id: string;
+  title: string;
+  description: string;
+  author: string;
+  width: number;
+  height: number;
+  pageMode: number;
+  config: Array<Component>;
 };
 
 type RootStateType = {

@@ -38,6 +38,7 @@ import {
   ElCollapseItem,
   ElTooltip,
   ElEmpty,
+  ElTable,
 } from 'element-plus';
 
 export const useElement = (app: App) => {
@@ -58,4 +59,5 @@ export const useElement = (app: App) => {
   app.use(ElCollapseItem);
   app.use(ElTooltip as any);
   app.use(ElEmpty);
+  app.use(ElTable);
 };

@@ -3,14 +3,14 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 // 默认提示
 const TIP = '连接出错了~';
 
-// 接口请求报错的时候，伪装成正常错误，由业务提示toast
+// 接口请求报错的时候，伪装成正常错误，由业务代码处理
 const apiErrorHandler = (message?: unknown) => {
   const msg = typeof message === 'string' ? message : TIP;
   // 错误抛到业务代码
   return Promise.resolve({ code: -10000, msg });
 };
 
-const baseURL = import.meta.env.DEV ? 'http://localhost:3000/v1/' : '/';
+const baseURL = import.meta.env.DEV ? 'http://localhost:3000/api/v1/' : '/';
 
 // 策略模式生产状态码
 const statusStrategy = (status: number) => {
@@ -36,6 +36,9 @@ const service = axios.create({
   // 联调
   baseURL,
   timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
   transformResponse: [
     (data: unknown) => {
       if (typeof data === 'string' && data.startsWith('{')) {
@@ -66,7 +69,7 @@ const get = <T>(url: string, params?: Data, config?: Data) =>
   service.get<T, ResponseData<T>>(url, { ...config, params });
 
 // post请求
-const post = async <T>(url: string, params?: Data | string[], config?: Data) =>
+const post = <T>(url: string, params?: Data | string[], config?: Data) =>
   service.post<T, ResponseData<T>>(url, params, config);
 
 // put请求
