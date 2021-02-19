@@ -1,7 +1,6 @@
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep, uniqueId } from 'lodash';
 import { SnapshotEnum } from './snapshot';
-import { presetComponentAttr } from '@/options';
 import { getGalleryList } from '@/gallery';
 import { ElMessage } from 'element-plus';
 import config from '@/config';

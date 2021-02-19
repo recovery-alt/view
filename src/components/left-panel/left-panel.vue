@@ -4,16 +4,16 @@
       <el-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
         <template #label>
           <div class="tab-label">
-            <i :class="`el-icon-${tab.icon}`"></i>
+            <i :class="`el-icon-${tab.icon}`" />
             <span>{{ tab.groupName }}</span>
           </div>
         </template>
         <ul class="tab-list">
           <li
             v-for="item in tab.list"
+            :key="item.type"
             draggable="true"
             class="tab-list_item"
-            :key="item.type"
             :data-type="item.type"
           >
             <div>{{ item.name }}</div>
@@ -23,19 +23,19 @@
       <el-tab-pane>
         <template #label>
           <div class="tab-label">
-            <i class="el-icon-s-order"></i>
+            <i class="el-icon-s-order" />
             <span>列表</span>
           </div>
         </template>
         <ul v-if="board.data.length > 0" class="component-list">
           <li
             v-for="(item, index) in board.data"
+            :key="item.id"
             class="component-list_item"
             :class="{ active: board.selected.includes(index) }"
-            :key="item.id"
             @click="e => changeSelected(e, index)"
           >
-            <i class="el-icon-folder"></i>
+            <i class="el-icon-folder" />
             <span>
               {{ item.label }}
             </span>
@@ -49,7 +49,6 @@
 
 <script lang="ts">
 import { useStore } from '@/store';
-import { defineComponent } from 'vue';
 import { getGalleryGroup } from '@/gallery';
 import { BoardEnum } from '@/store/modules/board';
 
@@ -78,7 +77,7 @@ const setup = () => {
   return { handleDragStart, board, changeSelected, galleryGroup };
 };
 
-export default defineComponent({ setup });
+export default { setup };
 </script>
 
 <style lang="scss" scoped>

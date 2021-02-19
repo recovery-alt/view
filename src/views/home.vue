@@ -6,11 +6,11 @@
     <div>
       <el-tooltip
         v-for="item in buttonGroup"
-        placement="bottom"
         :key="item.name"
+        placement="bottom"
         :content="item.name"
       >
-        <i class="header-icon" :class="item.icon" @click="item.event"></i>
+        <i class="header-icon" :class="item.icon" @click="item.event" />
       </el-tooltip>
     </div>
     <div class="header-size">
@@ -36,7 +36,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import LeftPanel from '@/components/left-panel';
 import Board from '@/components/board';
 import { SnapshotEnum } from '@/store/modules/snapshot';
@@ -55,7 +54,7 @@ const props = {
   id: { type: String, default: () => '' },
 };
 
-export default defineComponent({
+export default {
   components,
   props,
   setup(props: Props) {
@@ -91,7 +90,7 @@ export default defineComponent({
 
     return { headSize, patchUnit, buttonGroup };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

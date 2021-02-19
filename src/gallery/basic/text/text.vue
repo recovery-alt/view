@@ -3,7 +3,5 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({ name: 'text' });
+export default { name: 'Text' };
 </script>

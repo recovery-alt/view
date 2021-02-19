@@ -11,12 +11,10 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "types": ["vite/client", "jest"],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],

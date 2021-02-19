@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
   plugins: [vue()],
   server: { port: 8080 },
-  alias: { '@': '/src' },
+  resolve: { alias: { '@': '/src' } },
   build: { sourcemap: false },
   css: {
     preprocessorOptions: {

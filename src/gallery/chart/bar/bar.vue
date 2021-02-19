@@ -1,9 +1,9 @@
 <template>
-  <div class="bar"></div>
+  <div class="bar" />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
@@ -12,8 +12,8 @@ import { useBoardRefs } from '@/hooks';
 
 type Props = { index: number };
 
-export default defineComponent({
-  name: 'bar',
+export default {
+  name: 'Bar',
   props: {
     index: {
       type: Number,
@@ -49,7 +49,7 @@ export default defineComponent({
       chart.setOption(option);
     });
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

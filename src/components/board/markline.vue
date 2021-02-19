@@ -2,15 +2,14 @@
   <div
     v-for="line in markline.lines"
     v-show="line.show"
-    class="board-markline"
     :key="line.name"
+    class="board-markline"
     :class="line.name.includes('x') ? 'xline' : 'yline'"
     :style="patchUnit(line.style)"
   />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import { markline } from '@/hooks';
 import { patchUnit } from '@/utils';
 
@@ -20,7 +19,7 @@ const setup = () => {
   return { markline, patchUnit };
 };
 
-export default defineComponent({ name, setup });
+export default { name, setup };
 </script>
 
 <style lang="scss" scoped>

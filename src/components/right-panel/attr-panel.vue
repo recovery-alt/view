@@ -11,8 +11,8 @@
           <component :is="item.parent" v-model="curComponent.style[item.key]">
             <template v-if="item.child === 'el-option'">
               <component
-                v-for="option in item.data"
                 :is="item.child"
+                v-for="option in item.data"
                 :key="option.id"
                 :label="option.label"
                 :value="option.id"
@@ -26,10 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, computed, ref } from 'vue';
+import { watchEffect, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
-import { presetComponentAttr } from '@/options';
+import { presetComponentAttr } from '@/config';
 
 const name = 'attr-panel';
 
@@ -86,5 +86,5 @@ const setup = () => {
   return { board, curComponent, presetComponentAttr, activeName };
 };
 
-export default defineComponent({ name, setup });
+export default { name, setup };
 </script>

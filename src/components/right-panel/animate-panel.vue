@@ -1,7 +1,7 @@
 <template>
   <el-collapse
-    v-model="active"
     v-if="curComponent.animations && curComponent.animations.length > 0"
+    v-model="active"
   >
     <el-collapse-item
       v-for="animation in curComponent.animations"
@@ -21,8 +21,8 @@
             <el-button
               size="mini"
               type="primary"
-              @click.stop="del(animation)"
               icon="el-icon-delete"
+              @click.stop="del(animation)"
             />
           </div>
         </div>
@@ -33,12 +33,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, useBoardRefs } from '@/hooks';
 
-export default defineComponent({
-  name: 'animate-panel',
+export default {
+  name: 'AnimatePanel',
   setup() {
     const active = ref('');
 
@@ -66,7 +66,7 @@ export default defineComponent({
 
     return { active, curComponent, preview, board, del };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

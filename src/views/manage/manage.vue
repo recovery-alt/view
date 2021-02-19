@@ -7,22 +7,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-import { getPages } from '@/api';
 import { useRouter } from 'vue-router';
+import { useManage } from '@/hooks';
 
-export default defineComponent({
+export default {
   setup() {
-    /* eslint-disable no-undef */
-    const pages = ref<Array<Page>>([]);
-
+    const { pages } = useManage();
     const router = useRouter();
-
-    onMounted(async () => {
-      /* eslint-disable no-undef */
-      const res = await getPages<Array<Page>>();
-      pages.value = res.data;
-    });
 
     const toEdit = (id: string) => {
       router.push({ path: `/board/${id}`, params: { id } });
@@ -30,7 +21,5 @@ export default defineComponent({
 
     return { pages, toEdit };
   },
-});
+};
 </script>
-
-<style></style>

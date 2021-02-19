@@ -10,9 +10,9 @@
     <template v-if="active">
       <div
         v-for="point in points"
+        :key="point"
         class="point"
         :class="point"
-        :key="point"
         @mousedown="handleMousedowOnPoint"
       />
     </template>
@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
 import { BoardEnum } from '@/store/modules/board';
@@ -179,7 +178,7 @@ const setup = (props: Props) => {
   };
 };
 
-export default defineComponent({ name, props, setup });
+export default { name, props, setup };
 </script>
 
 <style lang="scss" scoped>

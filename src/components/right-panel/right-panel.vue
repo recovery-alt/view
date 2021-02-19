@@ -1,6 +1,6 @@
 <template>
   <section class="main-right">
-    <el-tabs v-model="activeName" v-if="curComponent">
+    <el-tabs v-if="curComponent" v-model="activeName">
       <el-tab-pane label="样式" name="style">
         <attr-panel />
       </el-tab-pane>
@@ -23,7 +23,7 @@
     </el-tabs>
     <el-empty v-else-if="!isFold" description="请选中你的组件" />
     <div class="main-right_fold" @click="toggle">
-      <i :class="`el-icon-d-arrow-${isFold ? 'left' : 'right'}`"></i>
+      <i :class="`el-icon-d-arrow-${isFold ? 'left' : 'right'}`" />
     </div>
   </section>
   <el-drawer v-model="drawer.show" direction="rtl">
@@ -37,8 +37,8 @@
         <ul class="animation-box">
           <li
             v-for="animation in item.data"
-            class="animation-box_item"
             :key="animation.name"
+            class="animation-box_item"
             @mouseover="handleMouseover(animation.name)"
             @mouseleave="handleMouseleave"
             @click="addAnimation(animation.name)"
@@ -53,13 +53,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import AttrPanel from './attr-panel.vue';
 import { useAnimation } from '@/hooks';
 import { useStore } from '@/store';
 import AnimatePanel from './animate-panel.vue';
 
-export default defineComponent({
+export default {
   components: { AttrPanel, AnimatePanel },
   setup() {
     const store = useStore();
@@ -91,7 +91,7 @@ export default defineComponent({
       ...animation,
     };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

@@ -3,10 +3,10 @@
     <div class="login-box">
       <el-form ref="form" label-width="80px">
         <el-form-item label="用户名">
-          <el-input v-model="name"></el-input>
+          <el-input v-model="name" />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="password"></el-input>
+          <el-input v-model="password" />
         </el-form-item>
       </el-form>
     </div>
@@ -14,16 +14,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 
-export default defineComponent({
-  name: 'login',
+export default {
+  name: 'Login',
   setup() {
     const name = ref('');
     const password = ref('');
     return { name, password };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

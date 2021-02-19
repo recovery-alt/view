@@ -2,7 +2,7 @@
   <div class="board-menu" @mousedown.stop @mouseup.stop>
     <ul>
       <li v-for="item in data" :key="item.name" @click="e => handleClick(e, item.event)">
-        <i :class="`el-icon-${item.icon}`"></i>
+        <i :class="`el-icon-${item.icon}`" />
         <span>{{ item.name }}</span>
       </li>
     </ul>
@@ -12,11 +12,10 @@
 <script lang="ts">
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
-import { defineComponent } from 'vue';
 import { getMenuPosition } from '@/utils';
 
-export default defineComponent({
-  name: 'board-menu',
+export default {
+  name: 'BoardMenu',
   props: {
     modelValue: {
       type: Boolean,
@@ -81,7 +80,7 @@ export default defineComponent({
 
     return { data, handleClick };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

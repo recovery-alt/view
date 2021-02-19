@@ -12,24 +12,23 @@
       :key="item.id"
       :active="board.selected.includes(index)"
       :index="index"
-      :zIndex="index"
+      :z-index="index"
       :style="patchUnit(item.style)"
     >
       <component
-        :index="index"
+        :is="item.component"
         :key="item.id"
         :ref="el => el && setBoardRef(el.$el, index)"
-        :is="item.component"
+        :index="index"
       />
     </board-shape>
-    <board-menu v-model="menu.show" v-show="menu.show" :style="patchUnit(menu.style)" />
+    <board-menu v-show="menu.show" v-model="menu.show" :style="patchUnit(menu.style)" />
     <board-markline />
-    <div class="board-mask" v-show="selectMask.show" :style="patchUnit(selectMask.style)" />
+    <div v-show="selectMask.show" class="board-mask" :style="patchUnit(selectMask.style)" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import BoardMenu from './menu.vue';
 import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
@@ -84,7 +83,7 @@ const setup = () => {
   };
 };
 
-export default defineComponent({ name, components, setup });
+export default { name, components, setup };
 </script>
 
 <style lang="scss" scoped>
