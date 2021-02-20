@@ -1,3 +1,7 @@
-import Bar from './bar.vue';
+import { defineAsyncComponent } from 'vue';
 
-export default { cName: '柱状图', component: Bar };
+export default {
+  type: 'bar',
+  name: '柱状图',
+  component: defineAsyncComponent(() => import('./bar.vue')),
+};

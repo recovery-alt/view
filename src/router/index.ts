@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '@/views/home.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/board/:id?',
     name: 'board',
     props: true,
-    component: Home,
+    component: () => import('@/views/home.vue'),
   },
 ];
 

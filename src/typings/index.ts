@@ -1,5 +1,19 @@
 import { Component } from 'vue';
 
-export type Components = Data<{ cName: string; component: Component }>;
+export type Gallery = {
+  name: string;
+  type: string;
+  component: Component;
+};
 
-export type ChartGroup = { name: string; icon: string; components: Components };
+export type Group = {
+  name: string;
+  icon: string;
+  components: Data<Gallery>;
+};
+
+export type GalleryGroup = Array<{
+  groupName: string;
+  icon: string;
+  list: Array<Gallery>;
+}>;

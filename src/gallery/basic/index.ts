@@ -1,7 +1,7 @@
-import text from './text';
+import box from './box';
 
-const name = '基础';
-const icon = 'document';
-const components = { text };
-
-export default { name, icon, components };
+export default {
+  name: '基础',
+  icon: 'document',
+  components: { box },
+};

@@ -63,7 +63,7 @@ const mutations: Data<Mutation<Board>> = {
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ commit, dispatch }, { top = 0, left = 0, type = 'text' }) {
+  append({ commit, dispatch }, { top = 0, left = 0, type = 'area' }) {
     const style = { top, left, ...config.defaultComponentSize };
     const component = `cq-${type}`;
     // const attr = presetComponentAttr;
@@ -71,7 +71,7 @@ const actions: Data<Action<Board, RootStateType>> = {
     const gallery = getGalleryList();
     const componentConfig = gallery.find(val => val.type === type);
     if (!componentConfig) throw new Error('获取不到组件配置');
-    const label = componentConfig.name;
+    const label = componentConfig.type;
     commit('append', { id, label, component, style });
     dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
   },

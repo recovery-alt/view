@@ -259,5 +259,9 @@ $radius: 4px;
 .shape-rotate {
   position: absolute;
   color: $el-primary-2;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: move;
 }
 </style>

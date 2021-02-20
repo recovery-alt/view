@@ -1,7 +1,7 @@
 <template>
-  <div>text</div>
+  <div>box</div>
 </template>
 
 <script lang="ts">
-export default { name: 'text' };
+export default { name: 'box' };
 </script>
