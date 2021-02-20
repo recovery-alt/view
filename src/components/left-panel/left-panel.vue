@@ -52,32 +52,33 @@ import { useStore } from '@/store';
 import { getGalleryGroup } from '@/gallery';
 import { BoardEnum } from '@/store/modules/board';
 
-const setup = () => {
-  const store = useStore();
+export default {
+  name: 'left-panel',
+  setup() {
+    const store = useStore();
 
-  const board = store.state.board;
+    const board = store.state.board;
 
-  const galleryGroup = getGalleryGroup();
+    const galleryGroup = getGalleryGroup();
 
-  const handleDragStart = (e: DragEvent) => {
-    const target = e.target as HTMLDataListElement;
-    if (target.dataset.type) {
-      e.dataTransfer?.setData('type', target.dataset.type);
-    }
-  };
+    const handleDragStart = (e: DragEvent) => {
+      const target = e.target as HTMLDataListElement;
+      if (target.dataset.type) {
+        e.dataTransfer?.setData('type', target.dataset.type);
+      }
+    };
 
-  const changeSelected = (e: MouseEvent, index: number) => {
-    if (e.ctrlKey || e.metaKey) {
-      store.dispatch(BoardEnum.CHANGE_SELECTED, index);
-    } else {
-      store.dispatch(BoardEnum.SET_INDEX, index);
-    }
-  };
+    const changeSelected = (e: MouseEvent, index: number) => {
+      if (e.ctrlKey || e.metaKey) {
+        store.dispatch(BoardEnum.CHANGE_SELECTED, index);
+      } else {
+        store.dispatch(BoardEnum.SET_INDEX, index);
+      }
+    };
 
-  return { handleDragStart, board, changeSelected, galleryGroup };
+    return { handleDragStart, board, changeSelected, galleryGroup };
+  },
 };
-
-export default { setup };
 </script>
 
 <style lang="scss" scoped>

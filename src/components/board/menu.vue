@@ -15,7 +15,7 @@ import { BoardEnum } from '@/store/modules/board';
 import { getMenuPosition } from '@/utils';
 
 export default {
-  name: 'BoardMenu',
+  name: 'board-menu',
   props: {
     modelValue: {
       type: Boolean,

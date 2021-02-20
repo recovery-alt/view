@@ -38,7 +38,7 @@ import { useStore } from '@/store';
 import { useAnimation, useBoardRefs } from '@/hooks';
 
 export default {
-  name: 'AnimatePanel',
+  name: 'animate-panel',
   setup() {
     const active = ref('');
 

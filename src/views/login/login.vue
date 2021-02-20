@@ -17,7 +17,7 @@
 import { ref } from 'vue';
 
 export default {
-  name: 'Login',
+  name: 'login',
   setup() {
     const name = ref('');
     const password = ref('');

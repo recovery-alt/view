@@ -1,5 +1,5 @@
 <template>
-  <section class="main-right">
+  <section class="main-right" :style="{ width: width }">
     <el-tabs v-if="curComponent" v-model="activeName">
       <el-tab-pane label="样式" name="style">
         <attr-panel />
@@ -60,6 +60,7 @@ import { useStore } from '@/store';
 import AnimatePanel from './animate-panel.vue';
 
 export default {
+  name: 'right-panel',
   components: { AttrPanel, AnimatePanel },
   setup() {
     const store = useStore();
@@ -71,7 +72,14 @@ export default {
     });
 
     const activeName = ref('style');
-    const animation = useAnimation(store);
+    const {
+      drawer,
+      handleMouseover,
+      handleMouseleave,
+      getAnimationClass,
+      addAnimation,
+      previewAnimation,
+    } = useAnimation(store);
 
     const isFold = ref(false);
 
@@ -88,7 +96,12 @@ export default {
       isFold,
       toggle,
       width,
-      ...animation,
+      drawer,
+      handleMouseover,
+      handleMouseleave,
+      getAnimationClass,
+      addAnimation,
+      previewAnimation,
     };
   },
 };
@@ -97,7 +110,6 @@ export default {
 <style lang="scss" scoped>
 .main-right {
   position: relative;
-  width: v-bind(width);
   border-left: 1px solid $el-border-1;
   box-sizing: border-box;
   padding: 5px 0;

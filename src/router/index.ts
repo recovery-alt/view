@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/manage'),
   },
   {
-    path: '/board/:id',
+    path: '/board/:id?',
     name: 'board',
     props: true,
     component: Home,

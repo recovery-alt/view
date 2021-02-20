@@ -38,52 +38,50 @@ import { menu, showMenu, hideMenu } from '@/hooks';
 import { patchUnit } from '@/utils';
 import { useSelectMask, useBoardRefs } from '@/hooks';
 
-const name = 'board';
+export default {
+  name: 'board',
+  components: { BoardShape, BoardMenu, BoardMarkline },
+  setup() {
+    const store = useStore();
+    const { board } = store.state;
+    const { selectMask, handleMousedown } = useSelectMask(store);
 
-const components = { BoardShape, BoardMenu, BoardMarkline };
+    const { setBoardRef } = useBoardRefs();
 
-const setup = () => {
-  const store = useStore();
-  const { board } = store.state;
-  const { selectMask, handleMousedown } = useSelectMask(store);
+    const handleLeftClick = () => {
+      if (!selectMask.mousemoved) {
+        store.dispatch(BoardEnum.CANCEL_SELECTED);
+        hideMenu();
+      }
+    };
 
-  const { setBoardRef } = useBoardRefs();
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const type = e.dataTransfer?.getData('type');
+      if (!type) return;
+      const { offsetX: left, offsetY: top } = e;
+      store.dispatch(BoardEnum.APEEND, { type, left, top });
+    };
 
-  const handleLeftClick = () => {
-    if (!selectMask.mousemoved) {
-      store.dispatch(BoardEnum.CANCEL_SELECTED);
-      hideMenu();
-    }
-  };
+    const handleRightClick = (e: MouseEvent) => {
+      e.preventDefault();
+      showMenu(e);
+    };
 
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const type = e.dataTransfer?.getData('type');
-    if (!type) return;
-    const { offsetX: left, offsetY: top } = e;
-    store.dispatch(BoardEnum.APEEND, { type, left, top });
-  };
-
-  const handleRightClick = (e: MouseEvent) => {
-    e.preventDefault();
-    showMenu(e);
-  };
-
-  return {
-    board,
-    handleLeftClick,
-    handleMousedown,
-    handleDrop,
-    handleRightClick,
-    menu,
-    patchUnit,
-    selectMask,
-    setBoardRef,
-  };
+    return {
+      board,
+      handleLeftClick,
+      handleMousedown,
+      handleDrop,
+      handleRightClick,
+      menu,
+      patchUnit,
+      selectMask,
+      setBoardRef,
+    };
+  },
 };
-
-export default { name, components, setup };
 </script>
 
 <style lang="scss" scoped>

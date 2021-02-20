@@ -13,13 +13,12 @@
 import { markline } from '@/hooks';
 import { patchUnit } from '@/utils';
 
-const name = 'board-markline';
-
-const setup = () => {
-  return { markline, patchUnit };
+export default {
+  name: 'board-markline',
+  setup() {
+    return { markline, patchUnit };
+  },
 };
-
-export default { name, setup };
 </script>
 
 <style lang="scss" scoped>

@@ -10,17 +10,15 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useBoardRefs } from '@/hooks';
 
-type Props = { index: number };
-
 export default {
-  name: 'Bar',
+  name: 'bar',
   props: {
     index: {
       type: Number,
       default: () => 0,
     },
   },
-  setup(props: Props) {
+  setup(props) {
     use([GridComponent, BarChart, CanvasRenderer]);
 
     onMounted(() => {

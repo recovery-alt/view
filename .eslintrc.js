@@ -14,6 +14,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    'vue/name-property-casing': ['error', 'kebab-case'],
+    'vue/component-definition-name-casing': ['error', 'kebab-case'],
   },
   overrides: [
     {

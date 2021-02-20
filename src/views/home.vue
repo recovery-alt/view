@@ -46,25 +46,17 @@ import { useStore } from '@/store';
 import { ElMessage } from 'element-plus';
 import { loadPage, savePage, headSize } from '@/hooks';
 
-const components = { LeftPanel, Board, RightPanel };
-
-type Props = { id: string };
-
-const props = {
-  id: { type: String, default: () => '' },
-};
-
 export default {
-  components,
-  props,
-  setup(props: Props) {
+  name: 'home',
+  components: { LeftPanel, Board, RightPanel },
+  props: { id: String },
+  setup(props) {
     const store = useStore();
     const undo = () => store.dispatch(SnapshotEnum.UNDO);
     const redo = () => store.dispatch(SnapshotEnum.REDO);
     const cut = () => store.dispatch(BoardEnum.CUT);
     const copy = () => store.dispatch(BoardEnum.COPY);
     const del = () => store.dispatch(BoardEnum.DEL);
-
     const buttonGroup = [
       { name: '上一步', icon: 'el-icon-back', event: undo },
       { name: '下一步', icon: 'el-icon-right', event: redo },

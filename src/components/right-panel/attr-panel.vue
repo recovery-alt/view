@@ -31,60 +31,59 @@ import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
 
-const name = 'attr-panel';
+export default {
+  name: 'attr-panel',
+  setup() {
+    const store = useStore();
+    const { board } = store.state;
 
-const setup = () => {
-  const store = useStore();
-  const { board } = store.state;
+    const activeName = ref(presetComponentAttr[0].title);
 
-  const activeName = ref(presetComponentAttr[0].title);
+    // 当前选中组件
+    const curComponent = computed(() => {
+      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
+    });
 
-  // 当前选中组件
-  const curComponent = computed(() => {
-    return board.selected.length === 1 ? board.data[board.selected[0]] : null;
-  });
+    const getType = (parentType: FormEnum) => {
+      let parent, child;
+      switch (parentType) {
+        case FormEnum.RADIO:
+          parent = 'el-radio-group';
+          child = `el-${parentType}`;
+          break;
+        case FormEnum.CHECKBOX:
+          parent = 'el-checkbox-group';
+          child = `el-${parentType}`;
+          break;
+        case FormEnum.SELECT:
+          parent = `el-${parentType}`;
+          child = `el-option`;
+          break;
+        default:
+          parent = `el-${parentType}`;
+          child = '';
+      }
+      return { parent, child };
+    };
 
-  const getType = (parentType: FormEnum) => {
-    let parent, child;
-    switch (parentType) {
-      case FormEnum.RADIO:
-        parent = 'el-radio-group';
-        child = `el-${parentType}`;
-        break;
-      case FormEnum.CHECKBOX:
-        parent = 'el-checkbox-group';
-        child = `el-${parentType}`;
-        break;
-      case FormEnum.SELECT:
-        parent = `el-${parentType}`;
-        child = `el-option`;
-        break;
-      default:
-        parent = `el-${parentType}`;
-        child = '';
-    }
-    return { parent, child };
-  };
-
-  watchEffect(() => {
-    // 初始化form & 写入form值
-    if (board.selected.length === 1) {
-      const { style } = board.data[board.selected[0]];
-      presetComponentAttr.forEach(val => {
-        const { data } = val;
-        data.forEach(item => {
-          const { type, key } = item;
-          const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
-          // 不存在的话就赋空值
-          style[key] = style[key] || (empty as any);
-          Object.assign(item, getType(type));
+    watchEffect(() => {
+      // 初始化form & 写入form值
+      if (board.selected.length === 1) {
+        const { style } = board.data[board.selected[0]];
+        presetComponentAttr.forEach(val => {
+          const { data } = val;
+          data.forEach(item => {
+            const { type, key } = item;
+            const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
+            // 不存在的话就赋空值
+            style[key] = style[key] || (empty as any);
+            Object.assign(item, getType(type));
+          });
         });
-      });
-    }
-  });
+      }
+    });
 
-  return { board, curComponent, presetComponentAttr, activeName };
+    return { board, curComponent, presetComponentAttr, activeName };
+  },
 };
-
-export default { name, setup };
 </script>

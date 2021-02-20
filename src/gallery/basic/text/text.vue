@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts">
-export default { name: 'Text' };
+export default { name: 'text' };
 </script>

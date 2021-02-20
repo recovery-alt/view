@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router';
 import { useManage } from '@/hooks';
 
 export default {
+  name: 'manage',
   setup() {
     const { pages } = useManage();
     const router = useRouter();
