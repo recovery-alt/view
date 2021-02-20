@@ -12,10 +12,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/manage'),
   },
   {
-    path: '/board/:id?',
-    name: 'board',
+    path: '/editor/:id?',
+    name: 'editor',
     props: true,
-    component: () => import('@/views/home.vue'),
+    component: () => import('@/views/editor'),
   },
 ];
 

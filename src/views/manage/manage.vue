@@ -17,7 +17,7 @@ export default {
     const router = useRouter();
 
     const toEdit = (id: string) => {
-      router.push({ path: `/board/${id}`, params: { id } });
+      router.push({ path: `/editor/${id}`, params: { id } });
     };
 
     return { pages, toEdit };

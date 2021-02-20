@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="logo-box">
-      <img width="40" height="40" src="../assets/img/logo.svg" />
+      <img width="40" height="40" src="../../assets/img/logo.svg" />
     </div>
     <div>
       <el-tooltip
@@ -47,7 +47,7 @@ import { ElMessage } from 'element-plus';
 import { loadPage, savePage, headSize } from '@/hooks';
 
 export default {
-  name: 'home',
+  name: 'editor',
   components: { LeftPanel, Board, RightPanel },
   props: { id: String },
   setup(props) {
