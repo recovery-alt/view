@@ -38,6 +38,10 @@ interface CSSStyleDataWithSize extends CSSStyleData {
   height: number;
 }
 
+interface CSSStyleDataWithRotate extends CSSStyleDataWithSize {
+  rotate: number;
+}
+
 type ComponentAttr = {
   key: CSSStyleKey;
   type: FormEnum;
@@ -55,7 +59,7 @@ type Component = {
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;
   events?: Array<Event>;
-  style: CSSStyleDataWithSize;
+  style: CSSStyleDataWithRotate;
 };
 
 type Board = {

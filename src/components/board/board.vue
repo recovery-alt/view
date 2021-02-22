@@ -4,9 +4,9 @@
     @drop="handleDrop"
     @dragover.prevent
     @mousedown="handleMousedown"
-    @click="handleLeftClick"
     @contextmenu="handleRightClick"
   >
+    <board-grid />
     <board-shape
       v-for="(item, index) in board.data"
       :key="item.id"
@@ -32,6 +32,7 @@
 import BoardMenu from './menu.vue';
 import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
+import BoardGrid from './grid.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
 import { menu, showMenu, hideMenu } from '@/hooks';
@@ -40,20 +41,13 @@ import { useSelectMask, useBoardRefs } from '@/hooks';
 
 export default {
   name: 'board',
-  components: { BoardShape, BoardMenu, BoardMarkline },
+  components: { BoardShape, BoardMenu, BoardMarkline, BoardGrid },
   setup() {
     const store = useStore();
     const { board } = store.state;
     const { selectMask, handleMousedown } = useSelectMask(store);
 
     const { setBoardRef } = useBoardRefs();
-
-    const handleLeftClick = () => {
-      if (!selectMask.mousemoved) {
-        store.dispatch(BoardEnum.CANCEL_SELECTED);
-        hideMenu();
-      }
-    };
 
     const handleDrop = (e: DragEvent) => {
       e.preventDefault();
@@ -71,7 +65,6 @@ export default {
 
     return {
       board,
-      handleLeftClick,
       handleMousedown,
       handleDrop,
       handleRightClick,

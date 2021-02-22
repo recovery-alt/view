@@ -11,8 +11,13 @@ export const patchUnit = (style: Data) => {
     'borderRadius',
   ];
   const result: Data = {};
-  Object.keys(style).forEach(key => {
-    result[key] = needAddPixelList.includes(key) ? style[key] + 'px' : style[key];
-  });
+  for (const [key, value] of Object.entries(style)) {
+    // rotate特殊处理
+    if (key === 'rotate') {
+      result.transform = `rotate(${value}deg)`;
+      continue;
+    }
+    result[key] = needAddPixelList.includes(key) ? value + 'px' : value;
+  }
   return result;
 };

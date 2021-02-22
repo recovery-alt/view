@@ -8,13 +8,13 @@
   >
     <slot />
     <template v-if="active">
-      <i class="shape-rotate el-icon-refresh-right" />
+      <!-- <i class="shape-rotate el-icon-refresh-right" @mousedown="handleMousedownOnRotate" /> -->
       <div
         v-for="point in points"
         :key="point"
         class="point"
         :class="point"
-        @mousedown="handleMousedowOnPoint"
+        @mousedown="handleMousedownOnPoint"
       />
     </template>
   </div>
@@ -111,7 +111,7 @@ export default {
       }
     };
 
-    const handleMousedowOnPoint = (e: MouseEvent) => {
+    const handleMousedownOnPoint = (e: MouseEvent) => {
       e.stopPropagation();
       e.preventDefault();
       // 多选情况下，强制改变为单选
@@ -164,12 +164,47 @@ export default {
       on('mouseup', mouseup);
     };
 
+    const handleMousedownOnRotate = (e: MouseEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+      // 多选情况下，强制改变为单选
+      store.dispatch(BoardEnum.SET_INDEX, props.index);
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const curComponent = board.data[board.selected[0]];
+      const { rotate: startRotate } = curComponent.style;
+      const { boardRefs } = useBoardRefs();
+      const { left, top, width, height } = boardRefs[props.index].getBoundingClientRect();
+      const centerX = left + width / 2;
+      const centerY = top + height / 2;
+      // 旋转前的角度
+      const startAngle = Math.atan2(startY - centerY, startX - centerX) / (Math.PI / 180);
+
+      const mousemove = throttle((e: MouseEvent) => {
+        const { clientX, clientY } = e;
+        const curAngle = Math.atan2(clientY - centerY, clientX - centerX) / (Math.PI / 180);
+        curComponent.style.rotate = startRotate + curAngle - startAngle;
+      }, 16);
+
+      const mouseup = (e: MouseEvent) => {
+        e.stopPropagation();
+        store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
+        off('mouseup', mouseup);
+        off('mousemove', mousemove);
+      };
+
+      on('mousemove', mousemove);
+      on('mouseup', mouseup);
+    };
+
     return {
       handleShapeClick,
       handleMousedown,
       points,
-      handleMousedowOnPoint,
+      handleMousedownOnPoint,
       handleMouseup,
+      handleMousedownOnRotate,
     };
   },
 };
@@ -256,12 +291,12 @@ $radius: 4px;
   }
 }
 
-.shape-rotate {
-  position: absolute;
-  color: $el-primary-2;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: move;
-}
+// .shape-rotate {
+//   position: absolute;
+//   color: $el-primary-2;
+//   top: -30px;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   cursor: grab;
+// }
 </style>

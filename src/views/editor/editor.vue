@@ -49,7 +49,7 @@ import { loadPage, savePage, headSize } from '@/hooks';
 export default {
   name: 'editor',
   components: { LeftPanel, Board, RightPanel },
-  props: { id: String },
+  props: { id: { type: String, default: () => '' } },
   setup(props) {
     const store = useStore();
     const undo = () => store.dispatch(SnapshotEnum.UNDO);

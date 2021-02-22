@@ -3,19 +3,18 @@ import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
+import { hideMenu } from '.';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
 export const useSelectMask = (store: Store<RootStateType>) => {
   type SelectMask = {
     show: boolean;
-    mousemoved: boolean;
     style: CSSStyleDataWithSize;
   };
 
   const selectMask = reactive<SelectMask>({
     show: false,
-    mousemoved: false,
     style: {
       width: 0,
       height: 0,
@@ -38,9 +37,6 @@ export const useSelectMask = (store: Store<RootStateType>) => {
       };
 
       const mousemove = (e: MouseEvent) => {
-        if (!selectMask.mousemoved) {
-          selectMask.mousemoved = true;
-        }
         const { pageX, pageY } = e;
         const diffX = pageX - startX;
         const diffY = pageY - startY;
@@ -57,13 +53,14 @@ export const useSelectMask = (store: Store<RootStateType>) => {
 
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
-        selectMask.show = false;
-        // 先推入宏任务队列，等click执行完再重置状态
-        setTimeout(() => {
-          selectMask.mousemoved = false;
-        });
         off('mousemove', mousemove);
         off('mouseup', mouseup);
+        selectMask.show = false;
+        // 如果重合的话，代表点击事件
+        if (e.clientX == startX && e.clientY == startY) {
+          store.dispatch(BoardEnum.CANCEL_SELECTED);
+          hideMenu();
+        }
       };
 
       on('mousemove', mousemove);

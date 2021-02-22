@@ -64,7 +64,8 @@ const mutations: Data<Mutation<Board>> = {
 
 const actions: Data<Action<Board, RootStateType>> = {
   append({ commit, dispatch }, { top = 0, left = 0, type = 'area' }) {
-    const style = { top, left, ...config.defaultComponentSize };
+    const rotate = 0;
+    const style = { top, left, rotate, ...config.defaultComponentSize };
     const component = `cq-${type}`;
     // const attr = presetComponentAttr;
     const id = uniqueId();
