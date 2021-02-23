@@ -80,8 +80,10 @@ export const useBoardRefs = () => {
 
   const handleEchartsResize = (index: number) => {
     const dom = boardRefs[index];
-    const chart = getInstanceByDom(dom);
-    dom && chart && chart.resize();
+    if (dom) {
+      const chart = getInstanceByDom(dom);
+      chart && chart.resize();
+    }
   };
 
   const handleAllEchartsResize = (board: Board) => {

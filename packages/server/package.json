@@ -1,0 +1,23 @@
+{
+  "name": "view-server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^10.0.0",
+    "@types/koa": "^2.11.7",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa__cors": "^3.0.2",
+    "@types/koa__router": "^8.0.4",
+    "@types/mongoose": "^5.7.36",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-logger": "^3.2.1",
+    "mongoose": "^5.11.14"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.1",
+    "tsconfig-paths": "^3.9.0"
+  }
+}

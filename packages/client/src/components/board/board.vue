@@ -35,7 +35,7 @@ import BoardMarkline from './markline.vue';
 import BoardGrid from './grid.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store/modules/board';
-import { menu, showMenu, hideMenu } from '@/hooks';
+import { menu, showMenu } from '@/hooks';
 import { patchUnit } from '@/utils';
 import { useSelectMask, useBoardRefs } from '@/hooks';
 

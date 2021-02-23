@@ -4,17 +4,17 @@
 
 以下是 angular 的提交规范，建议使用起来～
 
-- build: 构建打包
-- ci: 持续集成相关
-- chore: 修改工具相关（包括但不限于文档、代码生成等, 比如修改了 README，webpack 配置文件等等）
-- docs: 修改文档
 - feat: 新功能
 - fix: 修复问题
-- perf: 提升页面性能
-- refactor: 重构代码(fix bug 或增加新功能不属于此范围)
-- revert: 回滚版本
+- docs: 修改文档
 - style: 修改代码格式(不影响逻辑功能，比如格式化、补充分号等等)
+- refactor: 重构代码(fix bug 或增加新功能不属于此范围)
+- perf: 提升页面性能
 - test: 增加/修改测试用例
+- chore: 修改工具相关（包括但不限于文档、代码生成等, 比如修改了 README，webpack 配置文件等等）
+- deps: 升级依赖
+- subject: 用一句话清楚的描述这次提交做了什么
+- body: 补充 subject，适当增加原因、目的等相关因素，可选
 
 ## 命名规范
 

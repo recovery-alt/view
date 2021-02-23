@@ -1,13 +1,14 @@
 module.exports = {
   root: true,
   env: { node: true },
-  parserOptions: { ecmaVersion: 2020 },
+  parser: 'vue-eslint-parser',
+  parserOptions: { ecmaVersion: 2020, parser: '@typescript-eslint/parser' },
   extends: [
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
-    '@vue/typescript/recommended',
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -21,6 +22,12 @@ module.exports = {
     {
       files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
       env: { jest: true },
+    },
+    {
+      files: ['src/**/*.vue'],
+      rules: {
+        'no-undef': 'off',
+      },
     },
   ],
 };
