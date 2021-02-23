@@ -10,8 +10,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "packages/*/src/**/*.vue"],
