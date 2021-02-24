@@ -7,6 +7,9 @@ import { initMongoose } from '@/mongoose';
 import logger from 'koa-logger';
 import cors from '@koa/cors';
 import parser from 'koa-bodyparser';
+import server from 'koa-static';
+import { resolve } from 'path';
+import historyApiFallback from 'koa2-connect-history-api-fallback';
 
 const app = new Koa();
 
@@ -14,10 +17,14 @@ const app = new Koa();
 app.use(logger());
 // 路由中间件
 useRouter(app);
+// 静态资源中间件
+app.use(server(resolve(__dirname, './public')));
 // cors中间件
 app.use(cors({ origin: '*', credentials: true }));
 // 包裹response
 app.use(wrapResponse);
+// 处理history模式中间件
+app.use(historyApiFallback({ whiteList: ['/api'] }));
 // 处理请求体内容中间件
 app.use(parser());
 // 初始化连接mongoose

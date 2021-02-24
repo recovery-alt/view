@@ -24,7 +24,7 @@ module.exports = {
       env: { jest: true },
     },
     {
-      files: ['src/**/*.vue'],
+      files: ['packages/*/src/**/*.vue'],
       rules: {
         'no-undef': 'off',
       },

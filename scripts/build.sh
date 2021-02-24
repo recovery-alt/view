@@ -13,12 +13,16 @@ wait
 
 mv dist ../../
 
+cp -r ./src/public ../../dist
+
 cd ../client
 
 yarn vuedx-typecheck . && yarn vite build
 
 wait
 
-mv dist ../../dist
+cp -r ./dist/* ../../dist/public
+
+rm -rf ./dist
 
 cd -

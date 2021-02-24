@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="logo-box">
-      <img width="40" height="40" src="../../assets/img/logo.svg" />
+      <img width="40" height="40" src="/src/assets/img/logo.svg" />
     </div>
     <div>
       <el-tooltip

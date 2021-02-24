@@ -8,12 +8,15 @@
     "@types/koa": "^2.11.7",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-logger": "^3.1.1",
+    "@types/koa-static": "^4.0.1",
     "@types/koa__cors": "^3.0.2",
     "@types/koa__router": "^8.0.4",
     "@types/mongoose": "^5.7.36",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-logger": "^3.2.1",
+    "koa-static": "^5.0.0",
+    "koa2-connect-history-api-fallback": "^0.1.3",
     "mongoose": "^5.11.14"
   },
   "devDependencies": {
