@@ -1,11 +1,12 @@
 import { Module, Mutation, Action } from 'vuex';
-import { cloneDeep, uniqueId } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { SnapshotEnum } from './snapshot';
 import { getGalleryList } from '@/gallery';
 import { ElMessage } from 'element-plus';
 import config from '@/config';
 import { useBoardRefs } from '@/hooks';
 import { nextTick } from 'vue';
+import { v4 as uuid } from 'uuid';
 
 const state: Board = {
   selected: [],
@@ -68,7 +69,7 @@ const actions: Data<Action<Board, RootStateType>> = {
     const style = { top, left, rotate, ...config.defaultComponentSize };
     const component = `cq-${type}`;
     // const attr = presetComponentAttr;
-    const id = uniqueId();
+    const id = uuid();
     const gallery = getGalleryList();
     const componentConfig = gallery.find(val => val.type === type);
     if (!componentConfig) throw new Error('获取不到组件配置');
@@ -135,7 +136,7 @@ const actions: Data<Action<Board, RootStateType>> = {
       const diffY = position.top - minPos.top;
 
       const newCopy = cloneDeep(state.copy).map(val => {
-        val.id = uniqueId();
+        val.id = uuid();
         val.style.left += diffX;
         val.style.top += diffY;
         return val;
