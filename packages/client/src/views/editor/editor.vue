@@ -33,11 +33,12 @@
     </section>
     <right-panel />
   </main>
+  <board-preview v-model="modalOpen" />
 </template>
 
 <script lang="ts">
 import LeftPanel from '@/components/left-panel';
-import Board from '@/components/board';
+import Board, { BoardPreview } from '@/components/board';
 import { SnapshotEnum } from '@/store/modules/snapshot';
 import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
@@ -45,10 +46,11 @@ import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
 import { ElMessage } from 'element-plus';
 import { loadPage, savePage, headSize } from '@/hooks';
+import { ref } from 'vue';
 
 export default {
   name: 'editor',
-  components: { LeftPanel, Board, RightPanel },
+  components: { LeftPanel, Board, RightPanel, BoardPreview },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
     const store = useStore();
@@ -57,6 +59,9 @@ export default {
     const cut = () => store.dispatch(BoardEnum.CUT);
     const copy = () => store.dispatch(BoardEnum.COPY);
     const del = () => store.dispatch(BoardEnum.DEL);
+
+    const modalOpen = ref(false);
+
     const buttonGroup = [
       { name: '上一步', icon: 'el-icon-back', event: undo },
       { name: '下一步', icon: 'el-icon-right', event: redo },
@@ -72,15 +77,14 @@ export default {
         name: '预览',
         icon: 'el-icon-view',
         event: () => {
-          // TODO: 预览
-          ElMessage.warning('开发中...');
+          modalOpen.value = true;
         },
       },
     ];
 
     loadPage(store, props.id);
 
-    return { headSize, patchUnit, buttonGroup };
+    return { headSize, patchUnit, buttonGroup, modalOpen };
   },
 };
 </script>

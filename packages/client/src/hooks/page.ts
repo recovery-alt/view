@@ -22,6 +22,10 @@ const loadPage = (store: Store<RootStateType>, id?: string) => {
 
 const savePage = async (store: Store<RootStateType>) => {
   const { board } = store.state;
+  if (board.data.length === 0) {
+    ElMessage.error('尚未添加任何组件！');
+    return;
+  }
   const title = '标题';
   const description = '描述';
   const author = '作者';

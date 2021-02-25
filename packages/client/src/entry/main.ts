@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
-import App from './app.vue';
-import router from './router';
-import { store, key } from './store';
-import { useElement } from './plugins';
-import useGallery from './gallery';
+import App from '../app.vue';
+import router from '../router';
+import { store, key } from '../store';
+import { useElement } from '../plugins';
+import useGallery from '../gallery';
 import 'normalize.css';
 import 'animate.css';
 
