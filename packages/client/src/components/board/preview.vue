@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { headSize } from '@/hooks';
 import BoardWrapper from './wrapper.vue';
 import { useStore } from '@/store';

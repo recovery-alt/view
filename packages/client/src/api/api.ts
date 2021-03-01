@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { local } from '@/utils';
 
 // 默认提示
 const TIP = '连接出错了~';
@@ -14,7 +15,7 @@ const baseURL = 'http://localhost:3000/api/v1/';
 
 // 策略模式生产状态码
 const statusStrategy = (status: number) => {
-  const statusEnum: { [propName: number]: string } = {
+  const statusEnum: Record<number, string> = {
     400: '请求错误(400)',
     401: '未授权，请重新登录(401)',
     403: '拒绝访问(403)',
@@ -50,7 +51,11 @@ const service = axios.create({
 });
 
 // 请求拦截器
-service.interceptors.request.use((config: AxiosRequestConfig) => {
+service.interceptors.request.use(config => {
+  const authorization = local.get('authorization');
+  if (authorization) {
+    config.headers.authorization = authorization;
+  }
   return config;
 }, apiErrorHandler);
 

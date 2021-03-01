@@ -44,7 +44,6 @@ import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
-import { ElMessage } from 'element-plus';
 import { loadPage, savePage, headSize } from '@/hooks';
 import { ref } from 'vue';
 

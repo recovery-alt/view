@@ -12,7 +12,7 @@ export default {
   props: {
     data: { type: Array, default: () => [] },
   },
-  setup(props) {
+  setup() {
     return { patchUnit };
   },
 };

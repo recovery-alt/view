@@ -8,8 +8,8 @@
     "@": "dist"
   },
   "scripts": {
-    "dev:client": "sh scripts/dev-client.sh",
     "dev:server": "sh scripts/dev-server.sh",
+    "dev:client": "sh scripts/dev-client.sh",
     "build": "sh scripts/build.sh",
     "start": "pm2 start dist/app.js",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
@@ -20,12 +20,14 @@
   },
   "dependencies": {
     "module-alias": "^2.2.2",
+    "node-forge": "^0.10.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@ls-lint/ls-lint": "^1.9.2",
+    "@types/node-forge": "^0.9.7",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",

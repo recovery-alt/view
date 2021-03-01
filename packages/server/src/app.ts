@@ -1,7 +1,7 @@
 process.env.TS_NODE_DEV || require('module-alias/register');
 import Koa from 'koa';
 import { port } from '@/config';
-import { useRouter, wrapResponse } from '@/middleware';
+import { useRouter, wrapResponse, verifyToken } from '@/middleware';
 import chalk from 'chalk';
 import { initMongoose } from '@/mongoose';
 import logger from 'koa-logger';
@@ -21,6 +21,8 @@ useRouter(app);
 app.use(server(resolve(__dirname, './public')));
 // cors中间件
 app.use(cors({ origin: '*', credentials: true }));
+// 验证token的中间件
+app.use(verifyToken);
 // 包裹response
 app.use(wrapResponse);
 // 处理history模式中间件
