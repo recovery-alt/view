@@ -1,4 +1,4 @@
-# (2021-02-24)
+## 0.1.1 (2021-03-02)
 
 ### Bug Fixes
 
@@ -18,6 +18,7 @@
 - 属性可以单独修改 ([e8063e9](https://gitee.com/cq360/view/commits/e8063e99abfd3540c3913b81592951c68fd3738a))
 - 属性面板 ([6ee879d](https://gitee.com/cq360/view/commits/6ee879db608fbec89e8e3f953948a99b1fcdc23e))
 - 添加 drag 功能 ([d8b31f5](https://gitee.com/cq360/view/commits/d8b31f556d27a05512f6d59978883b1467b89c86))
+- 文档更新 & 登录权限 ([1f5bcfa](https://gitee.com/cq360/view/commits/1f5bcfa9b244d3f4b8247d4c924eb42318b244f4))
 - 新增基本结构 & ls-lint ([81f8296](https://gitee.com/cq360/view/commits/81f8296889d0ad9dab8f7aa2c586aedf4f9bbcba))
 - 新增网格 & 优化点击取消 ([2464719](https://gitee.com/cq360/view/commits/24647194a828652910f8e221119756f240226d62))
 - 新增 echarts 组件 ([05eae9a](https://gitee.com/cq360/view/commits/05eae9aa779f26ade9f568c93dd3059fde1d4d61))
@@ -28,10 +29,12 @@
 - 优化页面样式 ([7ebb83b](https://gitee.com/cq360/view/commits/7ebb83b5cc7ff243556e0267570033cf4720638e))
 - 右键菜单 ([e037587](https://gitee.com/cq360/view/commits/e03758743ac87b85a5ec954e1c9e393d600c6264))
 - 右键菜单位置功能 ([43f404a](https://gitee.com/cq360/view/commits/43f404a4b328f4890a1955f8fc94eeb748e8e470))
+- 预览 & 发布 ([7ad5df1](https://gitee.com/cq360/view/commits/7ad5df17821528c14de8d729395ecc81aa055b67))
 - 增改查功能 ([a50274a](https://gitee.com/cq360/view/commits/a50274ad96748bed3975d2497daa64df165b4a8c))
 - 组件动态引入 ([85aec70](https://gitee.com/cq360/view/commits/85aec707e086029b134fdb46928ec342423faab8))
 - 组件可移动 & 可控制大小按钮 ([64f3464](https://gitee.com/cq360/view/commits/64f3464f889efd7310deb1c001f441eaf116b11e))
 - 组件可移动 & 可控制大小按钮 ([3cb654b](https://gitee.com/cq360/view/commits/3cb654b0ac567d575af241a9b3f2ec5c9e033128))
+- changelog ([9a34d86](https://gitee.com/cq360/view/commits/9a34d869a385309a5d08b2d25f2f4ca335b3bc64))
 - markline 功能初版 ([d070b59](https://gitee.com/cq360/view/commits/d070b59ecdfadde1df72067f77060c9d2948d9c0))
 - markline 完整功能 ([9c85562](https://gitee.com/cq360/view/commits/9c8556284d7eee6336107d9e138a4e07b3044810))
 - markline 组件 ([ee29343](https://gitee.com/cq360/view/commits/ee293430c94a8deb9c309f22c5c822d817f60adb))

@@ -2,6 +2,6 @@ import box from './box';
 
 export default {
   name: '基础',
-  icon: 'document',
+  icon: 'bank-outlined',
   components: { box },
 };

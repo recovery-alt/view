@@ -2,27 +2,23 @@
   <div class="login">
     <div class="login-box">
       <span>用户登录</span>
-      <el-form ref="formRef" label-width="80px" hide-required-asterisk :model="form">
-        <el-form-item
-          prop="name"
-          label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]"
-        >
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item
-          prop="password"
-          label="密码"
-          placeholder="密码"
-          :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]"
-        >
-          <el-input v-model="form.password" />
-        </el-form-item>
-        <el-form-item>
-          <el-button style="width: 100%" @click="submitLogin">登录</el-button>
-        </el-form-item>
-      </el-form>
+      <a-form
+        hide-required-mark
+        label-align="left"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        :model="form"
+      >
+        <a-form-item name="name" label="用户名" :rules="rules.name">
+          <a-input v-model:value="form.name" placeholder="用户名" />
+        </a-form-item>
+        <a-form-item name="password" label="密码" :rules="rules.password">
+          <a-input v-model:value="form.password" placeholder="密码" />
+        </a-form-item>
+        <a-form-item :wrapper-col="{ span: 8, offset: 8 }">
+          <a-button type="primary" @click="submitLogin">登录</a-button>
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
@@ -30,7 +26,8 @@
 <script lang="ts">
 import { reactive, ref } from 'vue';
 import { login } from '@/api';
-import { ElMessage } from 'element-plus';
+import { message } from 'ant-design-vue';
+import { useForm } from '@ant-design-vue/use';
 import { encrypt } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';
@@ -39,32 +36,33 @@ export default {
   name: 'login',
   setup() {
     const form = reactive({ name: 'ccq', password: '123456' });
-    const formRef = ref<any>(null);
+    const rules = reactive({
+      name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+      password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    });
     const router = useRouter();
+    const { resetFields, validate, validateField } = useForm(form, rules);
 
     const submitLogin = () => {
-      if (!formRef.value) return;
-      formRef.value.validate(async valid => {
-        if (valid) {
-          const { name, password } = form;
-          const res = await login<string>({ name, password: encrypt(password) });
-          if (res.code === 0) {
-            local.set('authorization', res.data);
-            ElMessage.success('登录成功！');
-            router.push('/');
-          } else {
-            ElMessage.error('登录失败！');
-          }
+      validate().then(async () => {
+        const { name, password } = form;
+        const res = await login<string>({ name, password: encrypt(password) });
+        if (res.code === 0) {
+          local.set('authorization', res.data);
+          message.success('登录成功！');
+          router.push('/');
+        } else {
+          message.error('登录失败！');
         }
       });
     };
 
-    return { form, formRef, submitLogin };
+    return { form, rules, submitLogin };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .login {
   height: 100%;
   background-color: #eee;

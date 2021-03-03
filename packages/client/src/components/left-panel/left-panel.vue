@@ -1,10 +1,10 @@
 <template>
   <section class="main-left" @dragstart="handleDragStart">
-    <el-tabs tab-position="left">
-      <el-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
-        <template #label>
+    <a-tabs v-model:activeKey="activeTab" tab-position="left">
+      <a-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
+        <template #tab>
           <div class="tab-label">
-            <i :class="`el-icon-${tab.icon}`" />
+            <component :is="tab.icon" />
             <span>{{ tab.groupName }}</span>
           </div>
         </template>
@@ -19,11 +19,11 @@
             <div>{{ item.name }}</div>
           </li>
         </ul>
-      </el-tab-pane>
-      <el-tab-pane>
-        <template #label>
+      </a-tab-pane>
+      <a-tab-pane>
+        <template #tab>
           <div class="tab-label">
-            <i class="el-icon-s-order" />
+            <database-outlined />
             <span>列表</span>
           </div>
         </template>
@@ -35,15 +35,15 @@
             :class="{ active: board.selected.includes(index) }"
             @click="e => changeSelected(e, index)"
           >
-            <i class="el-icon-folder" />
+            <folder-outlined />
             <span>
               {{ item.label }}
             </span>
           </li>
         </ul>
-        <el-empty v-else description="尚未添加任何组件" />
-      </el-tab-pane>
-    </el-tabs>
+        <a-empty v-else description="尚未添加任何组件" />
+      </a-tab-pane>
+    </a-tabs>
   </section>
 </template>
 
@@ -51,13 +51,23 @@
 import { useStore } from '@/store';
 import { getGalleryGroup } from '@/gallery';
 import { BoardEnum } from '@/store/modules/board';
+import { ref } from 'vue';
+import {
+  DatabaseOutlined,
+  FolderOutlined,
+  LineChartOutlined,
+  BankOutlined,
+} from '@ant-design/icons-vue';
 
 export default {
   name: 'left-panel',
+  components: { DatabaseOutlined, FolderOutlined, LineChartOutlined, BankOutlined },
   setup() {
     const store = useStore();
 
     const board = store.state.board;
+
+    const activeTab = ref('基础');
 
     const galleryGroup = getGalleryGroup();
 
@@ -76,17 +86,17 @@ export default {
       }
     };
 
-    return { handleDragStart, board, changeSelected, galleryGroup };
+    return { handleDragStart, board, changeSelected, galleryGroup, activeTab };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .main-left {
   flex-basis: 300px;
   flex-shrink: 0;
   box-sizing: border-box;
-  border-right: 1px solid $el-border-1;
+  border-right: 1px solid @border-color-base;
 }
 
 .component-list {
@@ -103,16 +113,16 @@ export default {
     padding: 0 10px;
     border-radius: 3px;
 
-    @mixin active {
-      background-color: $el-primary-8;
+    .active {
+      background-color: @primary-1;
     }
 
     &.active {
-      @include active;
+      .active;
     }
 
     &:hover {
-      @include active;
+      .active;
     }
 
     i {
@@ -121,31 +131,15 @@ export default {
   }
 }
 
-:deep {
-  .el-tabs--left {
-    height: 100%;
-  }
-  .el-tabs__item {
-    height: auto;
-    padding: 0;
-  }
-}
-
 .tab-label {
-  width: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  i {
-    margin-top: 15px;
-    font-size: 18px;
-  }
-
   span {
-    display: block;
-    height: 30px;
+    margin-top: 10px;
+    font-size: 16px;
   }
 }
 
@@ -166,7 +160,7 @@ export default {
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background-color: $el-primary-7;
+      background-color: @primary-2;
     }
 
     div {

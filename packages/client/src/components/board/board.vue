@@ -77,17 +77,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .board {
   position: relative;
-  background-color: $el-white;
+  background-color: @white;
   overflow: auto;
 
   &-mask {
     position: absolute;
     opacity: 0.5;
-    background-color: $el-primary-8;
-    border: 1px solid $el-primary-1;
+    background-color: @primary-1;
+    border: 1px solid @primary-8;
   }
 }
 </style>

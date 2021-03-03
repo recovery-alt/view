@@ -1,44 +1,33 @@
 <template>
-  <el-collapse
-    v-if="curComponent.animations && curComponent.animations.length > 0"
-    v-model="active"
-  >
-    <el-collapse-item
-      v-for="animation in curComponent.animations"
-      :key="animation"
-      :name="animation"
-    >
-      <template #title>
+  <a-collapse v-if="curComponent.animations && curComponent.animations.length > 0" v-model="active">
+    <a-collapse-panel v-for="animation in curComponent.animations" :key="animation">
+      <template #header>
         <div class="animation-title">
           <span>{{ animation }}</span>
-          <div>
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-video-play"
-              @click.stop="preview(animation)"
-            />
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-delete"
-              @click.stop="del(animation)"
-            />
+          <div class="animation-title_right">
+            <a-button size="small" type="primary" @click.stop="preview(animation)">
+              <template #icon><play-circle-outlined /></template>
+            </a-button>
+            <a-button size="small" type="primary" @click.stop="del(animation)">
+              <template #icon><delete-outlined /></template>
+            </a-button>
           </div>
         </div>
       </template>
-    </el-collapse-item>
-  </el-collapse>
-  <el-empty v-else description="尚未选择任何动画" />
+    </a-collapse-panel>
+  </a-collapse>
+  <a-empty v-else description="尚未选择任何动画" />
 </template>
 
 <script lang="ts">
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, useBoardRefs } from '@/hooks';
+import { PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 export default {
   name: 'animate-panel',
+  components: { PlayCircleOutlined, DeleteOutlined },
   setup() {
     const active = ref('');
 
@@ -69,10 +58,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .animation-title {
   width: 100%;
   display: flex;
   justify-content: space-around;
+
+  &_right button:first-child {
+    margin-right: 10px;
+  }
 }
 </style>

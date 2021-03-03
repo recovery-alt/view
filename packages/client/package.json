@@ -1,11 +1,13 @@
 {
   "name": "view",
+  "private": true,
   "version": "0.1.0",
   "dependencies": {
+    "@ant-design/icons-vue": "^6.0.1",
     "animate.css": "^4.1.1",
+    "ant-design-vue": "^2.0.1",
     "axios": "^0.21.1",
     "echarts": "^5.0.1",
-    "element-plus": "^1.0.2-beta.31",
     "lodash": "^4.17.20",
     "normalize.css": "^8.0.1",
     "vue": "^3.0.5",
@@ -20,8 +22,7 @@
     "@vuedx/typecheck": "^0.6.0",
     "@vuedx/typescript-plugin-vue": "^0.6.3",
     "jest": "^26.6.3",
-    "sass": "^1.32.5",
-    "sass-loader": "^10.1.1",
+    "less": "^4.1.1",
     "vite": "^2.0.3"
   }
 }

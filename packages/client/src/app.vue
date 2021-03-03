@@ -1,12 +1,20 @@
 <template>
-  <router-view />
+  <a-config-provider :locale="locale">
+    <router-view />
+  </a-config-provider>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import ZhCN from 'ant-design-vue/es/locale/zh_CN';
+
+export default {
+  setup() {
+    return { locale: ZhCN };
+  },
+};
 </script>
 
-<style lang="scss">
+<style lang="less">
 html,
 body {
   height: 100%;

@@ -83,14 +83,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .board-menu {
   position: absolute;
 
   ul {
-    background-color: $el-info-3;
+    background-color: @info-color;
     border-radius: 5px;
-    box-shadow: $el-shadow-1;
+    box-shadow: @shadow-color;
     padding: 5px 0;
   }
 
@@ -101,8 +101,8 @@ export default {
     cursor: default;
 
     &:hover {
-      background-color: $el-primary-1;
-      color: $el-white;
+      background-color: @primary-8;
+      color: @white;
     }
   }
 

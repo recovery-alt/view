@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
+import { getThemeVariables } from 'ant-design-vue/dist/theme';
 
 export default defineConfig({
   plugins: [vue()],
@@ -17,7 +18,10 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: { additionalData: '@import "@/assets/style/color.scss";' },
+      less: {
+        javascriptEnabled: true,
+        modifyVars: getThemeVariables(),
+      },
     },
   },
 });

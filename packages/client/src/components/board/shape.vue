@@ -210,8 +210,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-$radius: 4px;
+<style lang="less" scoped>
+@radius: 4px;
 
 .board-shape {
   position: absolute;
@@ -219,81 +219,81 @@ $radius: 4px;
   box-sizing: border-box;
 
   &.active {
-    outline: 1px dashed $el-primary-2;
+    outline: 1px dashed @primary-7;
   }
 }
 
 .point {
   position: absolute;
-  width: $radius * 2;
-  height: $radius * 2;
-  border: 1px solid $el-primary-2;
+  width: @radius * 2;
+  height: @radius * 2;
+  border: 1px solid @primary-7;
   box-sizing: border-box;
   border-radius: 50%;
-  background-color: $el-white;
+  background-color: @white;
 }
 
 .top {
   &-left {
-    left: -$radius;
-    top: -$radius;
+    left: -@radius;
+    top: -@radius;
     cursor: se-resize;
   }
 
   &-mid {
-    top: -$radius - 1px;
+    top: -@radius - 1px;
     left: 50%;
-    margin-left: -$radius;
+    margin-left: -@radius;
     cursor: s-resize;
   }
 
   &-right {
-    top: -$radius;
-    right: -$radius;
+    top: -@radius;
+    right: -@radius;
     cursor: ne-resize;
   }
 }
 
 .mid {
   &-left {
-    left: -$radius;
+    left: -@radius;
     top: 50%;
-    margin-top: -$radius;
+    margin-top: -@radius;
     cursor: w-resize;
   }
 
   &-right {
-    right: -$radius;
+    right: -@radius;
     top: 50%;
-    margin-top: -$radius;
+    margin-top: -@radius;
     cursor: w-resize;
   }
 }
 
 .bottom {
   &-left {
-    left: -$radius;
-    bottom: -$radius;
+    left: -@radius;
+    bottom: -@radius;
     cursor: ne-resize;
   }
 
   &-mid {
     left: 50%;
-    bottom: -$radius - 1px;
-    margin-left: -$radius;
+    bottom: -@radius - 1px;
+    margin-left: -@radius;
     cursor: s-resize;
   }
 
   &-right {
-    right: -$radius;
-    bottom: -$radius;
+    right: -@radius;
+    bottom: -@radius;
     cursor: se-resize;
   }
 }
 
 // .shape-rotate {
 //   position: absolute;
-//   color: $el-primary-2;
+//   color: @primary-7;
 //   top: -30px;
 //   left: 50%;
 //   transform: translateX(-50%);

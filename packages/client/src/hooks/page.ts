@@ -4,7 +4,7 @@ import { headSize, setHeadSize } from '@/hooks';
 import { Store } from 'vuex';
 import { BoardEnum } from '@/store/modules/board';
 import { cloneDeep } from 'lodash';
-import { ElMessage } from 'element-plus';
+import { message } from 'ant-design-vue';
 
 const cachePage = ref<Partial<Page>>({});
 
@@ -23,7 +23,7 @@ const loadPage = (store: Store<RootStateType>, id?: string) => {
 const savePage = async (store: Store<RootStateType>) => {
   const { board } = store.state;
   if (board.data.length === 0) {
-    ElMessage.error('尚未添加任何组件！');
+    message.error('尚未添加任何组件！');
     return;
   }
   const title = '标题';
@@ -43,7 +43,7 @@ const savePage = async (store: Store<RootStateType>) => {
     ...toRaw(headSize),
   });
   if (res.code === 0) {
-    ElMessage.success('保存成功！');
+    message.success('保存成功！');
   }
 };
 

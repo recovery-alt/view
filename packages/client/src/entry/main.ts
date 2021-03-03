@@ -2,14 +2,13 @@ import { createApp } from 'vue';
 import App from '../app.vue';
 import router from '../router';
 import { store, key } from '../store';
-import { useElement } from '../plugins';
+import { useAntDesign } from '../plugins';
 import useGallery from '../gallery';
 import 'normalize.css';
 import 'animate.css';
 
 const app = createApp(App);
-
-useElement(app);
+useAntDesign(app);
 useGallery(app);
 
 app.use(store, key).use(router).mount('#app');

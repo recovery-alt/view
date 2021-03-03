@@ -1,28 +1,29 @@
 <template>
-  <el-collapse v-model="activeName">
-    <el-collapse-item
+  <a-collapse v-model="activeName">
+    <a-collapse-panel
       v-for="val in presetComponentAttr"
       :key="val.title"
       :title="val.title"
-      :name="val.title"
+      :header="val.title"
     >
-      <el-form value="left" label-width="80px" size="mini">
-        <el-form-item v-for="item in val.data" :key="item.key" :label="item.label">
-          <component :is="item.parent" v-model="curComponent.style[item.key]">
-            <template v-if="item.child === 'el-option'">
-              <component
-                :is="item.child"
-                v-for="option in item.data"
-                :key="option.id"
-                :label="option.label"
-                :value="option.id"
-              />
+      <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
+        <a-form-item v-for="item in val.data" :key="item.key" :label="item.label">
+          <input
+            v-if="item.type === FormEnum.COLOR_PICKER"
+            v-model="curComponent.style[item.key]"
+            type="color"
+          />
+          <component :is="`a-${item.type}`" v-else v-model:value="curComponent.style[item.key]">
+            <template v-if="item.type === 'select'">
+              <a-select-option v-for="option in item.data" :key="option.id" :value="option.id">
+                {{ option.label }}
+              </a-select-option>
             </template>
           </component>
-        </el-form-item>
-      </el-form>
-    </el-collapse-item>
-  </el-collapse>
+        </a-form-item>
+      </a-form>
+    </a-collapse-panel>
+  </a-collapse>
 </template>
 
 <script lang="ts">
@@ -44,28 +45,6 @@ export default {
       return board.selected.length === 1 ? board.data[board.selected[0]] : null;
     });
 
-    const getType = (parentType: FormEnum) => {
-      let parent, child;
-      switch (parentType) {
-        case FormEnum.RADIO:
-          parent = 'el-radio-group';
-          child = `el-${parentType}`;
-          break;
-        case FormEnum.CHECKBOX:
-          parent = 'el-checkbox-group';
-          child = `el-${parentType}`;
-          break;
-        case FormEnum.SELECT:
-          parent = `el-${parentType}`;
-          child = `el-option`;
-          break;
-        default:
-          parent = `el-${parentType}`;
-          child = '';
-      }
-      return { parent, child };
-    };
-
     watchEffect(() => {
       // 初始化form & 写入form值
       if (board.selected.length === 1) {
@@ -76,14 +55,13 @@ export default {
             const { type, key } = item;
             const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
             // 不存在的话就赋空值
-            style[key] = style[key] || (empty as any);
-            Object.assign(item, getType(type));
+            style[key] = style[key] || empty;
           });
         });
       }
     });
 
-    return { board, curComponent, presetComponentAttr, activeName };
+    return { board, curComponent, presetComponentAttr, activeName, FormEnum };
   },
 };
 </script>

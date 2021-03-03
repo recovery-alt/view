@@ -21,10 +21,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .board-markline {
   position: absolute;
-  background-color: $el-primary-1;
+  background-color: @primary-8;
   z-index: 1000;
 }
 

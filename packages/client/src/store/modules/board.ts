@@ -2,7 +2,7 @@ import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
 import { SnapshotEnum } from './snapshot';
 import { getGalleryList } from '@/gallery';
-import { ElMessage } from 'element-plus';
+import { message } from 'ant-design-vue';
 import config from '@/config';
 import { useBoardRefs } from '@/hooks';
 import { nextTick } from 'vue';
@@ -81,9 +81,9 @@ const actions: Data<Action<Board, RootStateType>> = {
     if (state.selected.length > 0) {
       commit('del');
       dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
-      ElMessage.success('删除成功！');
+      message.success('删除成功！');
     } else {
-      ElMessage.error('尚未选中任何组件！');
+      message.error('尚未选中任何组件！');
     }
   },
   cancelSelected({ commit }) {
@@ -109,17 +109,17 @@ const actions: Data<Action<Board, RootStateType>> = {
       commit('setCopy');
       commit('del');
       dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
-      ElMessage.success('剪切成功！');
+      message.success('剪切成功！');
     } else {
-      ElMessage.error('尚未选中任何组件！');
+      message.error('尚未选中任何组件！');
     }
   },
   copy({ commit }) {
     if (state.selected.length > 0) {
       commit('setCopy');
-      ElMessage.success('复制成功！');
+      message.success('复制成功！');
     } else {
-      ElMessage.error('尚未选中任何组件！');
+      message.error('尚未选中任何组件！');
     }
   },
   paste({ commit, state, dispatch }, position: { top: number; left: number }) {
@@ -144,18 +144,18 @@ const actions: Data<Action<Board, RootStateType>> = {
       commit('append', newCopy);
       dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     } else {
-      ElMessage.error('请先进行剪切/复制操作！');
+      message.error('请先进行剪切/复制操作！');
     }
   },
   moveUp({ state, dispatch }, moveTop = false) {
     const { data, selected } = state;
     const len = data.length;
     if (selected.length === 0) {
-      ElMessage.error('尚未选中任何组件！');
+      message.error('尚未选中任何组件！');
     } else if (selected.length > 1) {
-      ElMessage.error('多选无法移动');
+      message.error('多选无法移动');
     } else if (selected[0] === len - 1) {
-      ElMessage.error('已经是最顶层！');
+      message.error('已经是最顶层！');
     } else {
       const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
@@ -165,11 +165,11 @@ const actions: Data<Action<Board, RootStateType>> = {
   moveDown({ state, dispatch }, moveBottom = false) {
     const { data, selected } = state;
     if (selected.length === 0) {
-      ElMessage.error('尚未选中任何组件！');
+      message.error('尚未选中任何组件！');
     } else if (selected.length > 1) {
-      ElMessage.error('多选无法移动');
+      message.error('多选无法移动');
     } else if (selected[0] === 0) {
-      ElMessage.error('已经是最底层！');
+      message.error('已经是最底层！');
     } else {
       const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];

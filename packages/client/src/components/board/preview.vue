@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .modal-mask {
   position: absolute;
   top: 0;
@@ -70,7 +70,7 @@ export default {
   cursor: pointer;
 
   &:hover {
-    color: $el-primary-1;
+    color: @primary-8;
   }
 }
 </style>

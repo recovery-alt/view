@@ -1,39 +1,39 @@
 <template>
   <section class="main-right" :style="{ width: width }">
-    <el-tabs v-if="curComponent" v-model="activeName">
-      <el-tab-pane label="样式" name="style">
+    <a-tabs v-if="curComponent" v-model="activeName">
+      <a-tab-pane key="style">
+        <template #tab>
+          <span>样式</span>
+        </template>
         <attr-panel />
-      </el-tab-pane>
-      <el-tab-pane label="动画" name="animation">
+      </a-tab-pane>
+      <a-tab-pane key="animation">
+        <template #tab>
+          <span>动画</span>
+        </template>
         <div class="animation-btn_group">
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="drawer.show = true">
+          <a-button type="primary" @click="drawer.show = true">
+            <template #icon><plus-outlined /></template>
             添加
-          </el-button>
-          <el-button
-            type="primary"
-            size="small"
-            icon="el-icon-video-play"
-            @click="previewAnimation(curComponent, board.selected[0])"
-          >
+          </a-button>
+          <a-button type="primary" @click="previewAnimation(curComponent, board.selected[0])">
+            <template #icon><play-circle-outlined /></template>
             预览
-          </el-button>
+          </a-button>
         </div>
         <animate-panel />
-      </el-tab-pane>
-    </el-tabs>
-    <el-empty v-else-if="!isFold" description="请选中你的组件" />
+      </a-tab-pane>
+    </a-tabs>
+    <a-empty v-else-if="!isFold" description="请选中你的组件" />
     <div class="main-right_fold" @click="toggle">
-      <i :class="`el-icon-d-arrow-${isFold ? 'left' : 'right'}`" />
+      <double-left-outlined v-if="isFold" />
+      <double-right-outlined v-else />
     </div>
   </section>
-  <el-drawer v-model="drawer.show" direction="rtl">
-    <el-tabs v-model="drawer.selected">
-      <el-tab-pane
-        v-for="item in drawer.data"
-        :key="item.title"
-        :label="item.title"
-        :name="item.title"
-      >
+  <a-drawer v-model:visible="drawer.show" placement="right" :width="400">
+    <a-tabs v-model="drawer.selected">
+      <a-tab-pane v-for="item in drawer.data" :key="item.title" :label="item.title">
+        <template #tab>{{ item.title }}</template>
         <ul class="animation-box">
           <li
             v-for="animation in item.data"
@@ -47,9 +47,9 @@
             {{ animation.label }}
           </li>
         </ul>
-      </el-tab-pane>
-    </el-tabs>
-  </el-drawer>
+      </a-tab-pane>
+    </a-tabs>
+  </a-drawer>
 </template>
 
 <script lang="ts">
@@ -58,10 +58,23 @@ import AttrPanel from './attr-panel.vue';
 import { useAnimation } from '@/hooks';
 import { useStore } from '@/store';
 import AnimatePanel from './animate-panel.vue';
+import {
+  PlusOutlined,
+  PlayCircleOutlined,
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+} from '@ant-design/icons-vue';
 
 export default {
   name: 'right-panel',
-  components: { AttrPanel, AnimatePanel },
+  components: {
+    AttrPanel,
+    AnimatePanel,
+    PlusOutlined,
+    PlayCircleOutlined,
+    DoubleRightOutlined,
+    DoubleLeftOutlined,
+  },
   setup() {
     const store = useStore();
     const { board } = store.state;
@@ -107,13 +120,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .main-right {
   position: relative;
-  border-left: 1px solid $el-border-1;
+  border-left: 1px solid @border-color-base;
   box-sizing: border-box;
   padding: 5px 0;
-  box-shadow: $el-shadow-3;
+  box-shadow: @shadow-color;
   transition: all 0.3s ease-in-out;
 
   &_fold {
@@ -123,7 +136,7 @@ export default {
     width: 20px;
     height: 100px;
     margin-top: -50px;
-    box-shadow: $el-shadow-3;
+    box-shadow: @shadow-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -153,7 +166,7 @@ export default {
         height: 0;
         border-left: 20px solid transparent;
         border-right: 20px solid transparent;
-        border-bottom: 40px solid $el-primary-1;
+        border-bottom: 40px solid @primary-8;
         margin-bottom: 10px;
       }
     }
@@ -174,12 +187,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-}
 
-:deep {
-  .el-tabs {
-    margin: 5px 10px;
+    button:first-child {
+      margin-right: 10px;
+    }
   }
 }
 </style>

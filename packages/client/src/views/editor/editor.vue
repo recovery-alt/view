@@ -4,23 +4,18 @@
       <img width="40" height="40" src="/src/assets/img/logo.svg" />
     </div>
     <div>
-      <el-tooltip
-        v-for="item in buttonGroup"
-        :key="item.name"
-        placement="bottom"
-        :content="item.name"
-      >
-        <i class="header-icon" :class="item.icon" @click="item.event" />
-      </el-tooltip>
+      <a-tooltip v-for="item in buttonGroup" :key="item.name" placement="bottom" :title="item.name">
+        <component :is="item.icon" class="header-icon" @click="item.event" />
+      </a-tooltip>
     </div>
     <div class="header-size">
       页面尺寸：
       <div class="header-input">
-        <el-input v-model="headSize.width" size="small" />
+        <a-input v-model:value="headSize.width" size="small" />
       </div>
       <div class="header-x">x</div>
       <div class="header-input">
-        <el-input v-model="headSize.height" size="small" />
+        <a-input v-model:value="headSize.height" size="small" />
       </div>
     </div>
   </header>
@@ -46,10 +41,31 @@ import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
 import { loadPage, savePage, headSize } from '@/hooks';
 import { ref } from 'vue';
+import {
+  LeftOutlined,
+  RightOutlined,
+  ScissorOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  FileDoneOutlined,
+  PlaySquareOutlined,
+} from '@ant-design/icons-vue';
 
 export default {
   name: 'editor',
-  components: { LeftPanel, Board, RightPanel, BoardPreview },
+  components: {
+    LeftPanel,
+    Board,
+    RightPanel,
+    BoardPreview,
+    LeftOutlined,
+    RightOutlined,
+    ScissorOutlined,
+    CopyOutlined,
+    DeleteOutlined,
+    FileDoneOutlined,
+    PlaySquareOutlined,
+  },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
     const store = useStore();
@@ -62,19 +78,19 @@ export default {
     const modalOpen = ref(false);
 
     const buttonGroup = [
-      { name: '上一步', icon: 'el-icon-back', event: undo },
-      { name: '下一步', icon: 'el-icon-right', event: redo },
-      { name: '剪切', icon: 'el-icon-scissors', event: cut },
-      { name: '复制', icon: 'el-icon-document-copy', event: copy },
-      { name: '删除', icon: 'el-icon-delete', event: del },
+      { name: '上一步', icon: 'left-outlined', event: undo },
+      { name: '下一步', icon: 'right-outlined', event: redo },
+      { name: '剪切', icon: 'scissor-outlined', event: cut },
+      { name: '复制', icon: 'copy-outlined', event: copy },
+      { name: '删除', icon: 'delete-outlined', event: del },
       {
         name: '保存',
-        icon: 'el-icon-document-checked',
+        icon: 'file-done-outlined',
         event: () => savePage(store),
       },
       {
         name: '预览',
-        icon: 'el-icon-view',
+        icon: 'play-square-outlined',
         event: () => {
           modalOpen.value = true;
         },
@@ -88,10 +104,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .header {
   height: 48px;
-  border-bottom: 1px solid $el-border-1;
+  border-bottom: 1px solid @border-color-base;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -116,9 +132,9 @@ export default {
   &-icon {
     font-size: 20px;
     margin-left: 20px;
-    color: $el-primary-1;
+    color: @primary-8;
     &:hover {
-      color: $el-success-1;
+      color: @success-color;
     }
   }
 }
@@ -130,7 +146,7 @@ export default {
   &-mid {
     flex: 1;
     height: 100%;
-    background-color: $el-info-3;
+    background-color: @descriptions-bg;
     overflow: auto;
     box-sizing: border-box;
     padding: 20px;
@@ -145,7 +161,7 @@ export default {
 .logo {
   margin-left: 5px;
   font-size: 20px;
-  color: $el-primary-1;
+  color: @primary-8;
   font-weight: bold;
 
   &-box {
