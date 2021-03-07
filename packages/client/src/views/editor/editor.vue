@@ -8,22 +8,40 @@
         <component :is="item.icon" class="header-icon" @click="item.event" />
       </a-tooltip>
     </div>
-    <div class="header-size">
-      页面尺寸：
-      <div class="header-input">
-        <a-input v-model:value="headSize.width" size="small" />
-      </div>
-      <div class="header-x">x</div>
-      <div class="header-input">
-        <a-input v-model:value="headSize.height" size="small" />
-      </div>
+    <div class="header-right">
+      <a-popover v-model:visible="showPageConfig" title="页面设置" trigger="click">
+        <template #content>
+          <a-form :model="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+            <a-form-item label="标题" :rules="rules.title">
+              <a-input v-model:value="form.title" size="small" />
+            </a-form-item>
+            <a-form-item label="描述">
+              <a-textarea v-model:value="form.description" size="small"></a-textarea>
+            </a-form-item>
+            <a-form-item label="宽" :rules="rules.width">
+              <a-input v-model:value="form.width" size="small" />
+            </a-form-item>
+            <a-form-item label="高" :rules="rules.height">
+              <a-input v-model:value="form.height" size="small" />
+            </a-form-item>
+            <a-form-item label="背景色">
+              <input type="color" />
+            </a-form-item>
+            <a-form-item :wrapper-col="{ span: 8, offset: 8 }">
+              <a-button type="primary" @click="savePageConfig">保存</a-button>
+            </a-form-item>
+          </a-form>
+        </template>
+        <a-button type="primary">页面设置</a-button>
+      </a-popover>
+      <exit-dropdown />
     </div>
   </header>
   <main class="main">
     <left-panel />
     <section class="main-mid">
       <div class="mid-box">
-        <board :style="patchUnit(headSize)" />
+        <board :style="patchUnit({ width: pageConfig.width, height: pageConfig.height })" />
       </div>
     </section>
     <right-panel />
@@ -39,8 +57,9 @@ import { patchUnit } from '@/utils';
 import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
-import { loadPage, savePage, headSize } from '@/hooks';
+import { usePage, usePageConfig } from '@/hooks';
 import { ref } from 'vue';
+import ExitDropdown from '@/components/exit-dropdown';
 import {
   LeftOutlined,
   RightOutlined,
@@ -65,6 +84,7 @@ export default {
     DeleteOutlined,
     FileDoneOutlined,
     PlaySquareOutlined,
+    ExitDropdown,
   },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
@@ -76,6 +96,8 @@ export default {
     const del = () => store.dispatch(BoardEnum.DEL);
 
     const modalOpen = ref(false);
+    const { pageConfig, showPageConfig, form, rules, savePageConfig } = usePageConfig();
+    const { savePage } = usePage(store, props.id);
 
     const buttonGroup = [
       { name: '上一步', icon: 'left-outlined', event: undo },
@@ -86,7 +108,7 @@ export default {
       {
         name: '保存',
         icon: 'file-done-outlined',
-        event: () => savePage(store),
+        event: () => savePage(),
       },
       {
         name: '预览',
@@ -97,9 +119,16 @@ export default {
       },
     ];
 
-    loadPage(store, props.id);
-
-    return { headSize, patchUnit, buttonGroup, modalOpen };
+    return {
+      patchUnit,
+      buttonGroup,
+      modalOpen,
+      showPageConfig,
+      pageConfig,
+      form,
+      rules,
+      savePageConfig,
+    };
   },
 };
 </script>
@@ -115,20 +144,6 @@ export default {
   box-sizing: border-box;
   padding: 0 20px;
 
-  &-size {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-  }
-
-  &-input {
-    width: 65px;
-  }
-
-  &-x {
-    padding: 0 10px;
-  }
-
   &-icon {
     font-size: 20px;
     margin-left: 20px;
@@ -136,6 +151,11 @@ export default {
     &:hover {
       color: @success-color;
     }
+  }
+
+  &-right {
+    display: flex;
+    align-items: center;
   }
 }
 

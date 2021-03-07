@@ -8,3 +8,8 @@ export enum FormEnum {
   SLIDER = 'slider',
   COLOR_PICKER = 'color-picker',
 }
+
+export enum LocalKeys {
+  USER_INFO = 'user-info',
+  AUTHORIZATION = 'authorization',
+}

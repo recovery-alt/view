@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { sign } from 'jsonwebtoken';
 import { decrypt } from '@/utils';
+import { ResponseEnum } from '@/enum';
 
 const router = new Router();
 
@@ -13,12 +14,12 @@ router.get('/', async ctx => {
   const record = await loginService.checkPassword(name, password);
   if (record) {
     const privateKey = readFileSync(resolve(__dirname, '../../key/rsa-private-key.pem'));
-    const data = record._id;
+    const { _id: data, name } = record;
     const exp = Math.floor(Date.now() / 1000) + 86400;
     const token = sign({ data, exp }, privateKey, { algorithm: 'RS256' });
-    ctx.body = token;
+    ctx.body = { token, name };
   } else {
-    ctx.body = '用户名或密码错误！';
+    ctx.body = ResponseEnum.PASSWORD_ERROR;
   }
 });
 

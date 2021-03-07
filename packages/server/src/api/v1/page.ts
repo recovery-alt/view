@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import { pageService } from '@/service';
 import { Page } from '@/mongoose';
+import { ResponseEnum } from '@/enum';
 
 const router = new Router();
 
@@ -16,17 +17,17 @@ router.get('/:id', async ctx => {
 router.post('/', async ctx => {
   const body = ctx.request.body as Page;
   await pageService.add(body);
-  ctx.body = 'success';
+  ctx.body = ResponseEnum.SUCCESS;
 });
 
 router.put('/', async ctx => {
   const body = ctx.request.body as Page;
   await pageService.update(body);
-  ctx.body = 'success';
+  ctx.body = ResponseEnum.SUCCESS;
 });
 
 router.delete('/', async ctx => {
-  ctx.body = 'delete';
+  ctx.body = ResponseEnum.SUCCESS;
 });
 
 export default router;

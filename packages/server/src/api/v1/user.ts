@@ -1,15 +1,15 @@
 import Router from '@koa/router';
 import { userService } from '@/service';
+import { ResponseEnum } from '@/enum';
 
 const router = new Router();
 
 router.get('/', async ctx => {
-  const data = await userService.get();
-  ctx.body = data;
+  ctx.body = await userService.get();
 });
 
 router.get('/add', async ctx => {
-  ctx.body = 'success';
+  ctx.body = ResponseEnum.SUCCESS;
 });
 
 export default router;

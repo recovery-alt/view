@@ -1,8 +1,12 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { pki } from 'node-forge';
+import { tips } from '@/config';
+import { ResponseEnum } from '@/enum';
 
-export const wrapResponse = (data: unknown) => ({ data, code: 0 });
+export const wrapResponse = (data: unknown, code = 0) => ({ data, code });
+
+export const wrapError = (code: ResponseEnum) => ({ data: tips[code], code });
 
 // 包裹async/await错误处理
 export const to = <T>(promise: Promise<T>) =>

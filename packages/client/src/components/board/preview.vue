@@ -2,7 +2,7 @@
   <teleport to="#modal">
     <div v-if="modelValue" class="modal-mask">
       <div class="modal-box" :style="style">
-        <i class="modal-close el-icon-circle-close" @click="handleClose" />
+        <close-square-outlined class="modal-close" @click="handleClose" />
         <board-wrapper :data="board.data" />
       </div>
     </div>
@@ -11,12 +11,13 @@
 
 <script lang="ts">
 import { computed } from 'vue';
-import { headSize } from '@/hooks';
+import { usePageConfig } from '@/hooks';
 import BoardWrapper from './wrapper.vue';
 import { useStore } from '@/store';
+import { CloseSquareOutlined } from '@ant-design/icons-vue';
 
 export default {
-  components: { BoardWrapper },
+  components: { BoardWrapper, CloseSquareOutlined },
   props: {
     modelValue: Boolean,
   },
@@ -26,9 +27,11 @@ export default {
 
     const { board } = store.state;
 
+    const { pageConfig } = usePageConfig();
+
     const style = computed(() => ({
-      width: headSize.width + 'px',
-      height: headSize.height + 'px',
+      width: pageConfig.width + 'px',
+      height: pageConfig.height + 'px',
     }));
 
     const handleClose = () => {

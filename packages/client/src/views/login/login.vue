@@ -31,10 +31,12 @@ import { useForm } from '@ant-design-vue/use';
 import { encrypt } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';
+import { LocalKeys } from '@/enum';
 
 export default {
   name: 'login',
-  setup() {
+  props: { redirect: { type: String, default: () => '' } },
+  setup(props) {
     const form = reactive({ name: 'ccq', password: '123456' });
     const rules = reactive({
       name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -46,11 +48,13 @@ export default {
     const submitLogin = () => {
       validate().then(async () => {
         const { name, password } = form;
-        const res = await login<string>({ name, password: encrypt(password) });
+        const res = await login<UserInfo>({ name, password: encrypt(password) });
         if (res.code === 0) {
-          local.set('authorization', res.data);
+          const { token, name } = res.data;
+          local.set(LocalKeys.AUTHORIZATION, token);
+          local.set(LocalKeys.USER_INFO, { name });
           message.success('登录成功！');
-          router.push('/');
+          router.push(props.redirect || '/');
         } else {
           message.error('登录失败！');
         }

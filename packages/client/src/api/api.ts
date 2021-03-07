@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { local } from '@/utils';
+import { LocalKeys } from '@/enum';
 
 // 默认提示
 const TIP = '连接出错了~';
@@ -52,7 +53,7 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(config => {
-  const authorization = local.get('authorization');
+  const authorization = local.get(LocalKeys.AUTHORIZATION);
   if (authorization) {
     config.headers.authorization = authorization;
   }

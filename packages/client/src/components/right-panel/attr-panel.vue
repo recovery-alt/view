@@ -1,5 +1,5 @@
 <template>
-  <a-collapse v-model="activeName">
+  <a-collapse v-model:activeKey="activeName">
     <a-collapse-panel
       v-for="val in presetComponentAttr"
       :key="val.title"

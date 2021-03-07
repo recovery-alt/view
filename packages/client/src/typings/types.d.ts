@@ -88,3 +88,9 @@ type RootStateType = {
   board: Board;
   snapshot: Snapshot;
 };
+
+type PageConfig = Omit<Page, '_id' | 'config'>;
+
+type UserInfo = { token: string; name: string };
+
+type ColumnConfig = { key: string; title: string; dataIndex?: string };
