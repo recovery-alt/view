@@ -16,6 +16,7 @@ export interface Page extends Document {
   author: string;
   width: number;
   height: number;
+  bgColor: string;
   pageMode: number;
   config: Array<{
     id: string;

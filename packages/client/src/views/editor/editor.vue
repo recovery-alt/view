@@ -25,7 +25,7 @@
               <a-input v-model:value="form.height" size="small" />
             </a-form-item>
             <a-form-item label="背景色">
-              <input type="color" />
+              <color-picker v-model="form.bgColor" />
             </a-form-item>
             <a-form-item :wrapper-col="{ span: 8, offset: 8 }">
               <a-button type="primary" @click="savePageConfig">保存</a-button>
@@ -60,6 +60,7 @@ import { useStore } from '@/store';
 import { usePage, usePageConfig } from '@/hooks';
 import { ref } from 'vue';
 import ExitDropdown from '@/components/exit-dropdown';
+import ColorPicker from '@/components/color-picker';
 import {
   LeftOutlined,
   RightOutlined,
@@ -69,6 +70,7 @@ import {
   FileDoneOutlined,
   PlaySquareOutlined,
 } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'editor',
@@ -85,10 +87,12 @@ export default {
     FileDoneOutlined,
     PlaySquareOutlined,
     ExitDropdown,
+    ColorPicker,
   },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
     const store = useStore();
+    const router = useRouter();
     const undo = () => store.dispatch(SnapshotEnum.UNDO);
     const redo = () => store.dispatch(SnapshotEnum.REDO);
     const cut = () => store.dispatch(BoardEnum.CUT);
@@ -97,7 +101,7 @@ export default {
 
     const modalOpen = ref(false);
     const { pageConfig, showPageConfig, form, rules, savePageConfig } = usePageConfig();
-    const { savePage } = usePage(store, props.id);
+    const { savePage } = usePage(store, router, props.id);
 
     const buttonGroup = [
       { name: '上一步', icon: 'left-outlined', event: undo },

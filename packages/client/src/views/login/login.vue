@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { login } from '@/api';
 import { message } from 'ant-design-vue';
 import { useForm } from '@ant-design-vue/use';
@@ -43,7 +43,7 @@ export default {
       password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
     });
     const router = useRouter();
-    const { resetFields, validate, validateField } = useForm(form, rules);
+    const { validate } = useForm(form, rules);
 
     const submitLogin = () => {
       validate().then(async () => {

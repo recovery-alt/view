@@ -8,10 +8,9 @@
     >
       <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
         <a-form-item v-for="item in val.data" :key="item.key" :label="item.label">
-          <input
+          <color-picker
             v-if="item.type === FormEnum.COLOR_PICKER"
             v-model="curComponent.style[item.key]"
-            type="color"
           />
           <component :is="`a-${item.type}`" v-else v-model:value="curComponent.style[item.key]">
             <template v-if="item.type === 'select'">
@@ -31,22 +30,22 @@ import { watchEffect, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
+import ColorPicker from '@/components/color-picker';
 
 export default {
   name: 'attr-panel',
+  components: { ColorPicker },
   setup() {
     const store = useStore();
     const { board } = store.state;
 
     const activeName = ref(presetComponentAttr[0].title);
 
-    // 当前选中组件
     const curComponent = computed(() => {
       return board.selected.length === 1 ? board.data[board.selected[0]] : null;
     });
 
     watchEffect(() => {
-      // 初始化form & 写入form值
       if (board.selected.length === 1) {
         const { style } = board.data[board.selected[0]];
         presetComponentAttr.forEach(val => {
@@ -54,7 +53,6 @@ export default {
           data.forEach(item => {
             const { type, key } = item;
             const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
-            // 不存在的话就赋空值
             style[key] = style[key] || empty;
           });
         });

@@ -128,6 +128,7 @@ export default {
   padding: 5px 0;
   box-shadow: @shadow-color;
   transition: all 0.3s ease-in-out;
+  overflow: auto;
 
   &_fold {
     position: absolute;

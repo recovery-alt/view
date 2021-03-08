@@ -16,8 +16,7 @@ router.get('/:id', async ctx => {
 
 router.post('/', async ctx => {
   const body = ctx.request.body as Page;
-  await pageService.add(body);
-  ctx.body = ResponseEnum.SUCCESS;
+  ctx.body = await pageService.add(body);
 });
 
 router.put('/', async ctx => {
