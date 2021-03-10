@@ -21,6 +21,7 @@ import 'ant-design-vue/lib/divider/style/index.css';
 import 'ant-design-vue/lib/avatar/style/index.css';
 import 'ant-design-vue/lib/dropdown/style/index.css';
 import 'ant-design-vue/lib/popover/style/index.css';
+import 'ant-design-vue/lib/modal/style/index.css';
 import {
   Button,
   Input,
@@ -41,6 +42,7 @@ import {
   Avatar,
   Dropdown,
   Popover,
+  Modal,
 } from 'ant-design-vue';
 
 export const useAntDesign = (app: App) => {
@@ -63,4 +65,5 @@ export const useAntDesign = (app: App) => {
   app.use(Avatar);
   app.use(Dropdown);
   app.use(Popover);
+  app.use(Modal);
 };

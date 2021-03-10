@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^1.1.2",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^2.0.1",
     "axios": "^0.21.1",
