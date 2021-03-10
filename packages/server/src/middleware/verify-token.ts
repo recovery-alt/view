@@ -1,11 +1,11 @@
-import { Context, Next } from 'koa';
+import { Middleware } from 'koa';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import { verify } from 'jsonwebtoken';
 import { ResponseEnum } from '@/enum';
 import { wrapError } from '@/utils';
 
-export const verifyToken = async (ctx: Context, next: Next) => {
+export const verifyToken: Middleware = async (ctx, next) => {
   const token = ctx.request.header.authorization;
   if (!token) {
     if (ctx.url.includes('api/v1/login')) {
