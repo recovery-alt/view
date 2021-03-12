@@ -24,6 +24,7 @@ const setPageConfig = async (config: PageConfig) => {
 
 const usePageConfig = () => {
   const showPageConfig = ref(false);
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const { _id, config, ...page } = pageConfig;
   const form = reactive({ ...page });
   const rules = {
@@ -34,6 +35,7 @@ const usePageConfig = () => {
 
   const savePageConfig = async () => {
     setPageConfig(form);
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const { config, ...page } = pageConfig;
     const res = await updatePage({ ...page });
     if (res.code === 0) {
@@ -81,6 +83,7 @@ const usePage = (store: Store<RootStateType>, router: Router, id?: string) => {
     const res = await getPage<Page>(id);
     if (res.code !== 0) return;
     Object.assign(pageConfig, res.data);
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const { _id, config, ...remain } = res.data;
     setPageConfig(remain);
     store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });

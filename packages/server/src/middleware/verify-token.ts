@@ -18,13 +18,14 @@ export const verifyToken: Middleware = async (ctx, next) => {
   try {
     const publicKey = readFileSync(resolve(__dirname, '../key/rsa-public-key.pem'));
     const result = verify(token, publicKey, { algorithms: ['RS256'] });
-    const { exp } = result as { exp: number };
+    const { exp, data } = result as { exp: number; data: string };
     const now = Math.floor(Date.now() / 1000);
-    // 有效期内
+    // 不在有效期内
     if (now >= exp) {
       ctx.body = wrapError(ResponseEnum.UNAUTHORIZED);
       return;
     }
+    ctx.state.userId = data;
     await next();
   } catch (e) {
     throw new Error(e);

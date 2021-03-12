@@ -19,7 +19,7 @@ router.get('/', async ctx => {
     const token = sign({ data, exp }, privateKey, { algorithm: 'RS256' });
     ctx.body = { token, name };
   } else {
-    ctx.body = ResponseEnum.PASSWORD_ERROR;
+    ctx.body = ResponseEnum.USER_OR_PASSWORD_ERROR;
   }
 });
 

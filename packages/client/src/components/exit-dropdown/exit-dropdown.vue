@@ -29,28 +29,36 @@
       </template>
     </a-dropdown>
   </div>
-  <a-modal v-model:visible="visible" title="修改密码">
+  <a-modal
+    v-model:visible="visible"
+    title="修改密码"
+    :after-close="resetFields"
+    @ok="submitPasswordChange"
+  >
     <a-form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
-      <a-form-item label="原密码" :rules="rules.password">
+      <a-form-item label="原密码" v-bind="validateInfos.password">
         <a-input v-model:value="form.password" type="password" />
       </a-form-item>
-      <a-form-item label="新密码" :rules="rules.newPassword">
+      <a-form-item label="新密码" v-bind="validateInfos.newPassword">
         <a-input v-model:value="form.newPassword" type="password" />
       </a-form-item>
-      <a-form-item label="确认密码" :rules="rules.confirmPassword">
+      <a-form-item label="确认密码" v-bind="validateInfos.confirmPassword">
         <a-input v-model:value="form.confirmPassword" type="password" />
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import { UserOutlined, BgColorsOutlined } from '@ant-design/icons-vue';
-import { local } from '@/utils';
+import { local, to, encrypt } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
+import { useForm } from '@ant-design-vue/use';
+import { changePassword } from '@/api';
+import { RuleType } from 'ant-design-vue/lib/form/interface';
 
 export default {
   name: 'exit-dropdown',
@@ -69,10 +77,51 @@ export default {
       confirmPassword: '',
     });
 
-    const rules = {
-      password: [{ required: true, message: '请填写原密码', trigger: 'blur' }],
-      newPassword: [{ required: true, message: '请填写新密码', trigger: 'blur' }],
-      confirmPassword: [{ required: true, message: '请填写确认密码', trigger: 'blur' }],
+    const checkPassword = async (rule: RuleType, value: string) => {
+      if (/S+/.test(value)) {
+        return Promise.reject('密码不能为空。');
+      }
+
+      if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
+        return Promise.reject('密码需以字母开头，长度在6~18之间。');
+      }
+
+      return Promise.resolve();
+    };
+
+    const checkPasswordSync = async (rule: RuleType, value: string) => {
+      const [err] = await to(checkPassword(rule, value));
+      if (err) {
+        return Promise.reject(err);
+      }
+
+      if (value !== form.newPassword) {
+        return Promise.reject('两次输入不一致。');
+      }
+
+      return Promise.resolve();
+    };
+
+    const rules = reactive({
+      password: [{ required: true, validator: checkPassword, trigger: 'blur' }],
+      newPassword: [{ required: true, validator: checkPassword, trigger: 'blur' }],
+      confirmPassword: [{ required: true, validator: checkPasswordSync, trigger: 'blur' }],
+    });
+
+    const { resetFields, validate, validateInfos } = useForm(form, rules);
+
+    const submitPasswordChange = async () => {
+      const [err] = await to(validate());
+      if (err) return;
+      const password = encrypt(form.password);
+      const newPassword = encrypt(form.newPassword);
+      const res = await changePassword({ password, newPassword });
+      if (res.code === 0) {
+        visible.value = false;
+        message.success('修改成功！');
+      } else {
+        message.error(res.msg);
+      }
     };
 
     const logout = () => {
@@ -81,7 +130,16 @@ export default {
       message.success('已退出登录！');
     };
 
-    return { userInfo, logout, visible, form, rules };
+    return {
+      userInfo,
+      logout,
+      visible,
+      form,
+      resetFields,
+      validateInfos,
+      validate,
+      submitPasswordChange,
+    };
   },
 };
 </script>
