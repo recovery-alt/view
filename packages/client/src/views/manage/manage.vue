@@ -6,27 +6,27 @@
       </div>
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-menu-item key="1">
-          <user-outlined />
+          <UserOutlined />
           <span>nav 1</span>
         </a-menu-item>
         <a-menu-item key="2">
-          <video-camera-outlined />
+          <VideoCameraOutlined />
           <span>nav 2</span>
         </a-menu-item>
         <a-menu-item key="3">
-          <upload-outlined />
+          <UploadOutlined />
           <span>nav 3</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="layout-header">
-        <menu-unfold-outlined
+        <MenuUnfoldOutlined
           v-if="collapsed"
           class="trigger"
           @click="() => (collapsed = !collapsed)"
         />
-        <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <MenuFoldOutlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
         <exit-dropdown />
       </a-layout-header>
       <a-layout-content class="layout-content">
@@ -132,9 +132,9 @@ export default {
 }
 
 .layout-content {
+  background: #fff;
   margin: 24px 16px;
   padding: 24px;
-  background: #fff;
   min-height: 280px;
 }
 

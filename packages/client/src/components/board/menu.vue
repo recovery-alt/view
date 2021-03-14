@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { useStore } from '@/store';
-import { BoardEnum } from '@/store/modules/board';
+import { BoardEnum } from '@/store';
 import { getMenuPosition } from '@/utils';
 import {
   ScissorOutlined,
@@ -47,17 +47,17 @@ export default {
     const data = [
       {
         name: '剪切',
-        icon: 'scissor-outlined',
+        icon: 'ScissorOutlined',
         event: () => store.dispatch(BoardEnum.CUT),
       },
       {
         name: '复制',
-        icon: 'copy-outlined',
+        icon: 'CopyOutlined',
         event: () => store.dispatch(BoardEnum.COPY),
       },
       {
         name: '粘贴',
-        icon: 'diff-outlined',
+        icon: 'DiffOutlined',
         event: () => {
           const menuPosition = getMenuPosition();
           if (!menuPosition) return;
@@ -66,27 +66,27 @@ export default {
       },
       {
         name: '删除',
-        icon: 'delete-outlined',
+        icon: 'DeleteOutlined',
         event: () => store.dispatch(BoardEnum.DEL),
       },
       {
         name: '置顶',
-        icon: 'arrow-up-outlined',
+        icon: 'ArrowUpOutlined',
         event: () => store.dispatch(BoardEnum.MOVE_UP, true),
       },
       {
         name: '置底',
-        icon: 'arrow-down-outlined',
+        icon: 'ArrowDownOutlined',
         event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
       },
       {
         name: '上移一层',
-        icon: 'up-outlined',
+        icon: 'UpOutlined',
         event: () => store.dispatch(BoardEnum.MOVE_UP),
       },
       {
         name: '下移一层',
-        icon: 'down-outlined',
+        icon: 'DownOutlined',
         event: () => store.dispatch(BoardEnum.MOVE_DOWN),
       },
     ];

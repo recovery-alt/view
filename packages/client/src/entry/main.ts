@@ -6,6 +6,7 @@ import { useAntDesign } from '../plugins';
 import useGallery from '../gallery';
 import 'normalize.css';
 import 'animate.css';
+import '@/assets/style/index.less';
 
 const app = createApp(App);
 useAntDesign(app);

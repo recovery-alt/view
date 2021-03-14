@@ -1,11 +1,12 @@
 import { reactive, ref, onMounted, toRaw, watchEffect } from 'vue';
 import { addPage, getPage, updatePage } from '@/api';
 import { Store } from 'vuex';
-import { BoardEnum } from '@/store/modules/board';
+import { BoardEnum } from '@/store';
 import { cloneDeep } from 'lodash';
 import { message } from 'ant-design-vue';
 import config from '@/config';
 import { Router } from 'vue-router';
+import { useForm } from '@ant-design-vue/use';
 
 const pageConfig = reactive<Page>({
   _id: '',
@@ -27,11 +28,13 @@ const usePageConfig = () => {
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const { _id, config, ...page } = pageConfig;
   const form = reactive({ ...page });
-  const rules = {
+  const rules = reactive({
     title: [{ required: true, message: '标题为必填项' }],
     width: [{ required: true, message: '页面宽为必填项' }],
     height: [{ required: true, message: '页面高为必填项' }],
-  };
+  });
+
+  const { resetFields, validate, validateInfos } = useForm(form, rules);
 
   const savePageConfig = async () => {
     setPageConfig(form);
@@ -50,7 +53,7 @@ const usePageConfig = () => {
     showPageConfig.value && Object.assign(form, pageConfig);
   });
 
-  return { pageConfig, showPageConfig, form, rules, savePageConfig };
+  return { pageConfig, showPageConfig, form, resetFields, validate, validateInfos, savePageConfig };
 };
 
 const usePage = (store: Store<RootStateType>, router: Router, id?: string) => {

@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
-import { BoardEnum } from '@/store/modules/board';
+import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
 import { hideMenu } from '.';

@@ -1,47 +1,52 @@
 <template>
   <header class="header">
-    <div class="logo-box">
-      <img width="40" height="40" src="/src/assets/img/logo.svg" />
+    <img width="40" height="40" src="/src/assets/img/logo.svg" />
+    <div class="header__wrapper">
+      <div class="header__panel-box">
+        <a-button
+          v-for="item in panelStatus"
+          :key="item.key"
+          class="header__button"
+          size="small"
+          :type="item.checked ? 'primary' : 'default'"
+          @click="switchPanelShow(item.key)"
+        >
+          <template #icon>
+            <component :is="item.icon" />
+          </template>
+        </a-button>
+      </div>
+      <div class="header__publish">
+        <a-tooltip v-for="item in buttonGroup" :key="item.icon" placement="bottom">
+          <template #title>
+            {{ item.name }}
+          </template>
+          <a-button class="header__button" size="small">
+            <template #icon>
+              <component :is="item.icon" />
+            </template>
+          </a-button>
+        </a-tooltip>
+      </div>
     </div>
-    <div>
-      <a-tooltip v-for="item in buttonGroup" :key="item.name" placement="bottom" :title="item.name">
-        <component :is="item.icon" class="header-icon" @click="item.event" />
-      </a-tooltip>
-    </div>
-    <div class="header-right">
-      <a-popover v-model:visible="showPageConfig" title="页面设置" trigger="click">
-        <template #content>
-          <a-form :model="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-            <a-form-item label="标题" :rules="rules.title">
-              <a-input v-model:value="form.title" size="small" />
-            </a-form-item>
-            <a-form-item label="描述">
-              <a-textarea v-model:value="form.description" size="small"></a-textarea>
-            </a-form-item>
-            <a-form-item label="宽" :rules="rules.width">
-              <a-input v-model:value="form.width" size="small" />
-            </a-form-item>
-            <a-form-item label="高" :rules="rules.height">
-              <a-input v-model:value="form.height" size="small" />
-            </a-form-item>
-            <a-form-item label="背景色">
-              <color-picker v-model="form.bgColor" />
-            </a-form-item>
-            <a-form-item :wrapper-col="{ span: 8, offset: 8 }">
-              <a-button type="primary" @click="savePageConfig">保存</a-button>
-            </a-form-item>
-          </a-form>
-        </template>
-        <a-button type="primary">页面设置</a-button>
-      </a-popover>
-      <exit-dropdown />
+
+    <div class="header__title">
+      <FundProjectionScreenOutlined />
+      <span>title</span>
     </div>
   </header>
   <main class="main">
-    <left-panel />
-    <section class="main-mid">
-      <div class="mid-box">
-        <board :style="patchUnit({ width: pageConfig.width, height: pageConfig.height })" />
+    <layer-panel />
+    <component-panel />
+    <section class="mid-panel">
+      <header class="mid-panel__toolbar">
+        <span>aaa</span>
+        <span>bbb</span>
+      </header>
+      <div class="mid-panel__wrapper">
+        <section class="canvas-main">
+          <board />
+        </section>
       </div>
     </section>
     <right-panel />
@@ -50,17 +55,15 @@
 </template>
 
 <script lang="ts">
-import LeftPanel from '@/components/left-panel';
+import ComponentPanel from '@/components/component-panel';
 import Board, { BoardPreview } from '@/components/board';
-import { SnapshotEnum } from '@/store/modules/snapshot';
 import { patchUnit } from '@/utils';
-import { BoardEnum } from '@/store/modules/board';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
-import { usePage, usePageConfig } from '@/hooks';
-import { ref } from 'vue';
+import { usePage, usePageConfig, pageConfig, panel } from '@/hooks';
+import { computed, ref } from 'vue';
 import ExitDropdown from '@/components/exit-dropdown';
-import ColorPicker from '@/components/color-picker';
+import LayerPanel from '@/components/layer-panel';
 import {
   LeftOutlined,
   RightOutlined,
@@ -69,13 +72,23 @@ import {
   DeleteOutlined,
   FileDoneOutlined,
   PlaySquareOutlined,
+  LayoutOutlined,
+  UnorderedListOutlined,
+  InsertRowRightOutlined,
+  FundProjectionScreenOutlined,
+  SaveOutlined,
+  RestOutlined,
+  CameraOutlined,
+  SendOutlined,
+  DesktopOutlined,
 } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 
 export default {
   name: 'editor',
   components: {
-    LeftPanel,
+    LayerPanel,
+    ComponentPanel,
     Board,
     RightPanel,
     BoardPreview,
@@ -87,36 +100,59 @@ export default {
     FileDoneOutlined,
     PlaySquareOutlined,
     ExitDropdown,
-    ColorPicker,
+    LayoutOutlined,
+    UnorderedListOutlined,
+    InsertRowRightOutlined,
+    FundProjectionScreenOutlined,
+    SaveOutlined,
+    RestOutlined,
+    CameraOutlined,
+    SendOutlined,
+    DesktopOutlined,
   },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
     const store = useStore();
     const router = useRouter();
-    const undo = () => store.dispatch(SnapshotEnum.UNDO);
-    const redo = () => store.dispatch(SnapshotEnum.REDO);
-    const cut = () => store.dispatch(BoardEnum.CUT);
-    const copy = () => store.dispatch(BoardEnum.COPY);
-    const del = () => store.dispatch(BoardEnum.DEL);
 
     const modalOpen = ref(false);
-    const { pageConfig, showPageConfig, form, rules, savePageConfig } = usePageConfig();
-    const { savePage } = usePage(store, router, props.id);
+
+    const icons = [
+      { key: 'layer', icon: 'LayoutOutlined' },
+      { key: 'component', icon: 'UnorderedListOutlined' },
+      { key: 'config', icon: 'FileDoneOutlined' },
+      { key: 'util', icon: 'InsertRowRightOutlined' },
+    ];
+    const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[item.key] })));
+
+    const switchPanelShow = (key: string) => {
+      panel[key] = !panel[key];
+    };
 
     const buttonGroup = [
-      { name: '上一步', icon: 'left-outlined', event: undo },
-      { name: '下一步', icon: 'right-outlined', event: redo },
-      { name: '剪切', icon: 'scissor-outlined', event: cut },
-      { name: '复制', icon: 'copy-outlined', event: copy },
-      { name: '删除', icon: 'delete-outlined', event: del },
+      {
+        name: '组件删除备份',
+        icon: 'RestOutlined',
+      },
+      {
+        name: '生成快照',
+        icon: 'CameraOutlined',
+      },
       {
         name: '保存',
-        icon: 'file-done-outlined',
+        icon: 'SaveOutlined',
         event: () => savePage(),
       },
       {
+        name: '发布',
+        icon: 'SendOutlined',
+        event: () => {
+          modalOpen.value = true;
+        },
+      },
+      {
         name: '预览',
-        icon: 'play-square-outlined',
+        icon: 'DesktopOutlined',
         event: () => {
           modalOpen.value = true;
         },
@@ -127,11 +163,9 @@ export default {
       patchUnit,
       buttonGroup,
       modalOpen,
-      showPageConfig,
       pageConfig,
-      form,
-      rules,
-      savePageConfig,
+      panelStatus,
+      switchPanelShow,
     };
   },
 };
@@ -139,14 +173,46 @@ export default {
 
 <style lang="less" scoped>
 .header {
-  height: 48px;
+  height: 41px;
   border-bottom: 1px solid @border-color-base;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   box-sizing: border-box;
   padding: 0 20px;
+  position: relative;
+  z-index: 100;
+  background-color: @white;
+  user-select: none;
+
+  &__wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__panel-box {
+    margin-left: 40px;
+  }
+
+  &__button {
+    margin-left: 5px;
+    width: 40px;
+  }
+
+  &__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+
+    span:before {
+      margin-left: 5px;
+      content: '-';
+    }
+  }
 
   &-icon {
     font-size: 20px;
@@ -164,33 +230,41 @@ export default {
 }
 
 .main {
-  height: calc(100% - 60px);
+  height: calc(100% - 41px);
   display: flex;
+  user-select: none;
+}
 
-  &-mid {
+.mid {
+  &-panel {
     flex: 1;
     height: 100%;
     background-color: @descriptions-bg;
-    overflow: auto;
     box-sizing: border-box;
-    padding: 20px;
+    overflow: hidden;
+
+    &__toolbar {
+      position: relative;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding-left: 30px;
+      border-bottom: 1px solid @border-color-base;
+      z-index: 10;
+      background-color: @white;
+    }
+
+    &__wrapper {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
   }
 }
 
-.mid-box {
+.canvas-main {
+  position: relative;
   height: 100%;
-  overflow: auto;
-}
-
-.logo {
-  margin-left: 5px;
-  font-size: 20px;
-  color: @primary-8;
-  font-weight: bold;
-
-  &-box {
-    display: flex;
-    align-items: center;
-  }
 }
 </style>

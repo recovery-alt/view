@@ -8,3 +8,7 @@ export const key: InjectionKey<Store<RootStateType>> = Symbol();
 export const store = createStore({ modules: { board, snapshot } });
 
 export const useStore = () => baseUseStore(key);
+
+export { BoardEnum } from './modules/board';
+
+export { SnapshotEnum } from './modules/snapshot';

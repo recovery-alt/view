@@ -2,7 +2,7 @@
   <teleport to="#modal">
     <div v-if="modelValue" class="modal-mask">
       <div class="modal-box" :style="style">
-        <close-square-outlined class="modal-close" @click="handleClose" />
+        <CloseSquareOutlined class="modal-close" @click="handleClose" />
         <board-wrapper :data="board.data" />
       </div>
     </div>

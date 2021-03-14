@@ -11,32 +11,7 @@ export const presetComponentAttr: Array<{
   data: Array<ComponentAttr>;
 }> = [
   {
-    title: '尺寸&位置',
-    data: [
-      {
-        key: 'width',
-        type: FormEnum.INPUT_NUMBER,
-        label: '宽',
-      },
-      {
-        key: 'height',
-        type: FormEnum.INPUT_NUMBER,
-        label: '高',
-      },
-      {
-        key: 'left',
-        type: FormEnum.INPUT_NUMBER,
-        label: '距离左侧',
-      },
-      {
-        key: 'top',
-        type: FormEnum.INPUT_NUMBER,
-        label: '距离上方',
-      },
-    ],
-  },
-  {
-    title: '边框&边距',
+    title: '边框&圆角',
     data: [
       {
         key: 'borderRadius',

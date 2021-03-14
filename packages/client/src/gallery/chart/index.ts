@@ -2,6 +2,6 @@ import bar from './bar';
 
 export default {
   name: '图表',
-  icon: 'line-chart-outlined',
+  icon: 'LineChartOutlined',
   components: { bar },
 };

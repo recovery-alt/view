@@ -4,7 +4,7 @@
       <div class="exit-dropdown">
         <a-avatar>
           <template #icon>
-            <user-outlined />
+            <UserOutlined />
           </template>
         </a-avatar>
         <span class="header-right_span">{{ userInfo.name }}</span>
@@ -20,7 +20,7 @@
       </template>
     </a-dropdown>
     <a-dropdown>
-      <bg-colors-outlined class="theme-change" />
+      <BgColorsOutlined class="theme-change" />
       <template #overlay>
         <a-menu>
           <a-menu-item key="0">明亮主题</a-menu-item>
@@ -148,7 +148,7 @@ export default {
 .exit-dropdown {
   padding: 0 8px;
   font-size: 16px;
-  color: #000000d9;
+  color: @text-color;
   cursor: pointer;
   margin-left: 20px;
 

@@ -6,10 +6,10 @@
           <span>{{ animation }}</span>
           <div class="animation-title_right">
             <a-button size="small" type="primary" @click.stop="preview(animation)">
-              <template #icon><play-circle-outlined /></template>
+              <template #icon><PlayCircleOutlined /></template>
             </a-button>
             <a-button size="small" type="primary" @click.stop="del(animation)">
-              <template #icon><delete-outlined /></template>
+              <template #icon><DeleteOutlined /></template>
             </a-button>
           </div>
         </div>

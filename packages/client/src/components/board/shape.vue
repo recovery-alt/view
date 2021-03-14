@@ -23,8 +23,8 @@
 <script lang="ts">
 import { useStore } from '@/store';
 import { judgeLineShow, hideAllLines } from '@/hooks';
-import { BoardEnum } from '@/store/modules/board';
-import { SnapshotEnum } from '@/store/modules/snapshot';
+import { BoardEnum } from '@/store';
+import { SnapshotEnum } from '@/store';
 import { on, off } from '@/utils';
 import { throttle } from 'lodash';
 import { showMenu, useBoardRefs } from '@/hooks';

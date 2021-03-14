@@ -1,5 +1,55 @@
 <template>
-  <a-collapse v-model:activeKey="activeName">
+  <h2 class="attr-panel__title">基本柱状图</h2>
+  <h3 class="attr-panel__subtitle">v3.1.0 | 基本柱状图</h3>
+
+  <a-form label-align="left" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
+    <a-form-item label="图表尺寸">
+      <a-row>
+        <a-col span="8">
+          <a-input-number v-model:value="curComponent.style.width" size="small" />
+        </a-col>
+        <a-col span="8" offset="4">
+          <a-input-number v-model:value="curComponent.style.height" size="small" />
+        </a-col>
+      </a-row>
+      <template #extra>
+        <div class="attr-panel__extra">
+          <span>宽度</span>
+          <span>高度</span>
+        </div>
+      </template>
+    </a-form-item>
+    <a-form-item label="图表位置">
+      <a-row>
+        <a-col span="8">
+          <a-input-number v-model:value="curComponent.style.left" size="small" />
+        </a-col>
+        <a-col span="8" offset="4">
+          <a-input-number v-model:value="curComponent.style.top" size="small" />
+        </a-col>
+      </a-row>
+      <template #extra>
+        <div class="attr-panel__extra">
+          <span>x轴</span>
+          <span>y轴</span>
+        </div>
+      </template>
+    </a-form-item>
+    <a-form-item label="透明度">
+      <a-row>
+        <a-col span="8">
+          <a-slider size="small" />
+        </a-col>
+        <a-col span="8" offset="4">
+          <a-input-number size="small"></a-input-number>
+        </a-col>
+      </a-row>
+    </a-form-item>
+    <a-form-item label="旋转角度">
+      <a-input-number size="small"></a-input-number>
+    </a-form-item>
+  </a-form>
+  <a-collapse v-model:activeKey="activeName" size="small">
     <a-collapse-panel
       v-for="val in presetComponentAttr"
       :key="val.title"
@@ -63,3 +113,33 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+.attr-panel {
+  &__title {
+    font-size: 14px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-bottom: 0;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    color: #647279;
+    font-weight: normal;
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-bottom: 0;
+  }
+
+  &__extra {
+    width: 100%;
+    display: flex;
+
+    span {
+      flex: 1;
+    }
+  }
+}
+</style>

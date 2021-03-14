@@ -1,6 +1,6 @@
 <template>
-  <section class="main-right" :style="{ width: width }">
-    <a-tabs v-if="curComponent" v-model="activeName">
+  <section class="right-panel" :style="{ width }">
+    <a-tabs v-if="curComponent" v-model="activeName" size="small">
       <a-tab-pane key="style">
         <template #tab>
           <span>样式</span>
@@ -13,25 +13,21 @@
         </template>
         <div class="animation-btn_group">
           <a-button type="primary" @click="drawer.show = true">
-            <template #icon><plus-outlined /></template>
+            <template #icon><PlusOutlined /></template>
             添加
           </a-button>
           <a-button type="primary" @click="previewAnimation(curComponent, board.selected[0])">
-            <template #icon><play-circle-outlined /></template>
+            <template #icon><PlayCircleOutlined /></template>
             预览
           </a-button>
         </div>
         <animate-panel />
       </a-tab-pane>
     </a-tabs>
-    <a-empty v-else-if="!isFold" description="请选中你的组件" />
-    <div class="main-right_fold" @click="toggle">
-      <double-left-outlined v-if="isFold" />
-      <double-right-outlined v-else />
-    </div>
+    <page-config v-else-if="panel.config" />
   </section>
   <a-drawer v-model:visible="drawer.show" placement="right" :width="400">
-    <a-tabs v-model="drawer.selected">
+    <a-tabs v-model="drawer.selected" size="small">
       <a-tab-pane v-for="item in drawer.data" :key="item.title" :label="item.title">
         <template #tab>{{ item.title }}</template>
         <ul class="animation-box">
@@ -58,12 +54,9 @@ import AttrPanel from './attr-panel.vue';
 import { useAnimation } from '@/hooks';
 import { useStore } from '@/store';
 import AnimatePanel from './animate-panel.vue';
-import {
-  PlusOutlined,
-  PlayCircleOutlined,
-  DoubleRightOutlined,
-  DoubleLeftOutlined,
-} from '@ant-design/icons-vue';
+import { PlusOutlined, PlayCircleOutlined } from '@ant-design/icons-vue';
+import { panel } from '@/hooks';
+import PageConfig from './page-config.vue';
 
 export default {
   name: 'right-panel',
@@ -72,17 +65,16 @@ export default {
     AnimatePanel,
     PlusOutlined,
     PlayCircleOutlined,
-    DoubleRightOutlined,
-    DoubleLeftOutlined,
+    PageConfig,
   },
   setup() {
     const store = useStore();
     const { board } = store.state;
 
     // 当前选中组件
-    const curComponent = computed(() => {
-      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
-    });
+    const curComponent = computed(() =>
+      board.selected.length === 1 ? board.data[board.selected[0]] : null
+    );
 
     const activeName = ref('style');
     const {
@@ -94,19 +86,16 @@ export default {
       previewAnimation,
     } = useAnimation(store);
 
-    const isFold = ref(false);
-
     const toggle = () => {
-      isFold.value = !isFold.value;
+      panel.config = !panel.config;
     };
 
-    const width = computed(() => (isFold.value ? '0' : '300px'));
+    const width = computed(() => (panel.config ? '332px' : '0'));
 
     return {
       board,
       curComponent,
       activeName,
-      isFold,
       toggle,
       width,
       drawer,
@@ -115,36 +104,22 @@ export default {
       getAnimationClass,
       addAnimation,
       previewAnimation,
+      panel,
     };
   },
 };
 </script>
 
 <style lang="less" scoped>
-.main-right {
+.right-panel {
   position: relative;
   border-left: 1px solid @border-color-base;
   box-sizing: border-box;
-  padding: 5px 0;
   box-shadow: @shadow-color;
-  transition: all 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out;
   overflow: auto;
-
-  &_fold {
-    position: absolute;
-    top: 50%;
-    left: -20px;
-    width: 20px;
-    height: 100px;
-    margin-top: -50px;
-    box-shadow: @shadow-color;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #fff;
-    font-size: 18px;
-  }
+  z-index: 90;
+  user-select: none;
 }
 
 .animation {
