@@ -120,8 +120,8 @@ export default {
 .layer-panel {
   width: 200px;
   height: 100%;
-  border-right: 1px solid @border-color-base;
-  transition: width ease-in-out 0.3s;
+  border-right: 1px solid var(--border-color-base);
+  transition: width 0.3s var(--ease-in-out);
   z-index: 4;
   overflow: hidden;
   white-space: nowrap;
@@ -134,7 +134,7 @@ export default {
 
   &__header {
     height: 30px;
-    background-color: @table-header-sort-bg;
+    background-color: var(--normal-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -151,7 +151,7 @@ export default {
       font-size: 16px;
 
       &.active {
-        color: @primary-8;
+        color: var(--primary-8);
       }
     }
   }
@@ -167,16 +167,16 @@ export default {
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0 27px;
-    border-bottom: 1px solid @border-color-base;
-    background-color: @white;
+    border-bottom: 1px solid var(--border-color-base);
+    background-color: var(--component-background);
 
     span {
       padding: 3px;
       cursor: pointer;
 
       &:hover {
-        background-color: @primary-8;
-        color: @white;
+        background-color: var(--primary-8);
+        color: var(--component-background);
       }
     }
   }
@@ -191,11 +191,11 @@ export default {
       cursor: pointer;
 
       &:hover {
-        background-color: @table-selected-row-bg;
+        background-color: var(--primary-8);
       }
 
       &.active {
-        background-color: @primary-1;
+        background-color: var(--primary-1);
       }
     }
 
@@ -226,7 +226,7 @@ export default {
 
   &__footer {
     height: 30px;
-    border-top: 1px solid @border-color-base;
+    border-top: 1px solid var(--border-color-base);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -238,8 +238,8 @@ export default {
       cursor: pointer;
 
       &:hover {
-        background-color: @primary-8;
-        color: @white;
+        background-color: var(--primary-8);
+        color: var(--component-background);
       }
     }
   }

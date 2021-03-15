@@ -23,8 +23,13 @@
       <BgColorsOutlined class="theme-change" />
       <template #overlay>
         <a-menu>
-          <a-menu-item key="0">明亮主题</a-menu-item>
-          <a-menu-item key="1">暗黑主题</a-menu-item>
+          <a-menu-item
+            v-for="(item, index) in ['明亮主题', '暗黑主题']"
+            :key="item"
+            @click="changeTheme(index)"
+          >
+            {{ item }}
+          </a-menu-item>
         </a-menu>
       </template>
     </a-dropdown>
@@ -124,6 +129,10 @@ export default {
       }
     };
 
+    const changeTheme = (dark: 0 | 1) => {
+      document.documentElement.setAttribute('theme', dark ? 'dark' : 'light');
+    };
+
     const logout = () => {
       local.remove(LocalKeys.AUTHORIZATION);
       router.push(`/login?redirect=${route.path}`);
@@ -139,6 +148,7 @@ export default {
       validateInfos,
       validate,
       submitPasswordChange,
+      changeTheme,
     };
   },
 };
@@ -148,12 +158,12 @@ export default {
 .exit-dropdown {
   padding: 0 8px;
   font-size: 16px;
-  color: @text-color;
+  color: var(--text-color);
   cursor: pointer;
   margin-left: 20px;
 
   &:hover {
-    background-color: @item-hover-bg;
+    background-color: var(--item-hover-bg);
   }
 }
 
@@ -170,7 +180,7 @@ export default {
 .theme-change {
   margin-left: 10px;
   &:hover {
-    color: @primary-7;
+    color: var(--primary-7);
   }
 }
 </style>

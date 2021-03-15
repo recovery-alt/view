@@ -33,7 +33,7 @@ export default {
       // drawLine([0, 40], [width, 40]);
       const canvasUnitPerCell = 2 * pxPerCell;
       const len = width / canvasUnitPerCell - 5;
-      console.log(len);
+
       for (let i = 0; i < len; i++) {
         const start = i % 20 === 0 ? 0 : i % 10 === 0 ? 30 : 35;
         const x = 80 + i * canvasUnitPerCell;

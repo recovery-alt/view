@@ -24,7 +24,7 @@ export default {
 <style lang="less" scoped>
 .board-markline {
   position: absolute;
-  background-color: @primary-8;
+  background-color: var(--primary-8);
   z-index: 1000;
 }
 

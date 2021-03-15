@@ -34,13 +34,14 @@
           :active="board.selected.includes(index)"
           :index="index"
           :z-index="index"
-          :style="patchUnit(item.style)"
+          :style="splitStyleAndPatch(item.style)"
         >
           <component
             :is="item.component"
             :key="item.id"
             :ref="el => el && setBoardRef(el.$el, index)"
             :index="index"
+            :style="splitStyleAndPatch(item.style, false)"
           />
         </board-shape>
 
@@ -70,7 +71,7 @@ import BoardRuler from './ruler.vue';
 import { useStore } from '@/store';
 import { BoardEnum } from '@/store';
 import { menu, showMenu, pageConfig } from '@/hooks';
-import { patchUnit } from '@/utils';
+import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { useSelectMask, useBoardRefs } from '@/hooks';
 import { EyeInvisibleOutlined } from '@ant-design/icons-vue';
 import { reactive, ref } from 'vue';
@@ -127,6 +128,7 @@ export default {
       pageConfig,
       handleScroll,
       position,
+      splitStyleAndPatch,
     };
   },
 };
@@ -135,7 +137,7 @@ export default {
 <style lang="less" scoped>
 .board {
   position: absolute;
-  background-color: @modal-content-bg;
+  background-color: var(--component-background);
   overflow: auto;
   top: 60px;
   left: 60px;
@@ -143,8 +145,8 @@ export default {
   &-mask {
     position: absolute;
     opacity: 0.5;
-    background-color: @primary-1;
-    border: 1px solid @primary-8;
+    background-color: var(--primary-1);
+    border: 1px solid var(--border-color-base);
   }
 }
 
@@ -173,8 +175,8 @@ export default {
 
 .guide-line {
   &__controller {
-    border-right: 1px solid @black;
-    border-bottom: 1px solid @black;
+    border-right: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
     width: 20px;
     height: 20px;
     font-size: 14px;
@@ -184,12 +186,12 @@ export default {
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: @white;
+    background-color: var(--component-background);
   }
 }
 
 .edit-slider {
-  background: @table-header-sort-bg;
+  background: var(--normal-color);
   height: 30px;
   width: 100%;
   display: flex;
@@ -212,7 +214,7 @@ export default {
   right: 5px;
   bottom: 70px;
   user-select: none;
-  transition: 0.3s transform cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: 0.3s transform var(--ease-in-out);
 
   &__canvas {
     width: 190px;
@@ -222,7 +224,7 @@ export default {
 
   span {
     position: absolute;
-    border: 1px solid @primary-1;
+    border: 1px solid var(--primary-1);
     z-index: 2;
     top: 0;
     left: 0;

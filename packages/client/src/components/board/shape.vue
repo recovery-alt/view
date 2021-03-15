@@ -219,18 +219,23 @@ export default {
   box-sizing: border-box;
 
   &.active {
-    outline: 1px dashed @primary-7;
+    outline: 1px solid var(--primary-7);
   }
+}
+
+:deep.board-shape > * {
+  width: 100%;
+  height: 100%;
 }
 
 .point {
   position: absolute;
   width: @radius * 2;
   height: @radius * 2;
-  border: 1px solid @primary-7;
+  border: 1px solid var(--primary-7);
   box-sizing: border-box;
   border-radius: 50%;
-  background-color: @white;
+  background-color: var(--component-background);
 }
 
 .top {
@@ -293,7 +298,7 @@ export default {
 
 // .shape-rotate {
 //   position: absolute;
-//   color: @primary-7;
+//   color: var(--primary-7);
 //   top: -30px;
 //   left: 50%;
 //   transform: translateX(-50%);

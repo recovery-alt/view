@@ -68,7 +68,7 @@ export default {
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background-color: @table-header-sort-bg;
+    background-color: var(--normal-color);
   }
 
   &__wrapper {

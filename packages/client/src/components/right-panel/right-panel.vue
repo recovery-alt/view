@@ -113,10 +113,10 @@ export default {
 <style lang="less" scoped>
 .right-panel {
   position: relative;
-  border-left: 1px solid @border-color-base;
+  border-left: 1px solid var(--border-color-base);
   box-sizing: border-box;
-  box-shadow: @shadow-color;
-  transition: width 0.3s ease-in-out;
+  box-shadow: var(--box-shadow-base);
+  transition: width 0.3s var(--ease-in-out);
   overflow: auto;
   z-index: 90;
   user-select: none;
@@ -142,7 +142,7 @@ export default {
         height: 0;
         border-left: 20px solid transparent;
         border-right: 20px solid transparent;
-        border-bottom: 40px solid @primary-8;
+        border-bottom: 40px solid var(--primary-8);
         margin-bottom: 10px;
       }
     }

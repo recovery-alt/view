@@ -79,8 +79,8 @@ export default {
   flex-shrink: 0;
   box-sizing: border-box;
   z-index: 4;
-  background-color: @white;
-  transition: width 0.3s ease;
+  background-color: var(--component-background);
+  transition: width 0.3s var(--ease-in-out);
   white-space: nowrap;
   user-select: none;
 
@@ -91,7 +91,7 @@ export default {
 
   &__header {
     height: 30px;
-    background-color: @table-header-sort-bg;
+    background-color: var(--normal-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -127,7 +127,7 @@ export default {
       height: 22px;
       box-sizing: border-box;
       padding: 0 5px;
-      background-color: @table-header-sort-bg;
+      background-color: var(--normal-color);
       text-align: center;
     }
 

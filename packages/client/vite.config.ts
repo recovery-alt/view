@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
-import { getThemeVariables } from 'ant-design-vue/dist/theme';
 import jsx from '@vitejs/plugin-vue-jsx';
 
 export default defineConfig({
@@ -21,7 +20,6 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
-        modifyVars: getThemeVariables(),
       },
     },
   },

@@ -73,7 +73,7 @@ export default {
   cursor: pointer;
 
   &:hover {
-    color: @primary-8;
+    color: var(--primary-8);
   }
 }
 </style>

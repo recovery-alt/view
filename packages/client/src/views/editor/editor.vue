@@ -174,7 +174,7 @@ export default {
 <style lang="less" scoped>
 .header {
   height: 41px;
-  border-bottom: 1px solid @border-color-base;
+  border-bottom: 1px solid var(--border-color-base);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -182,7 +182,7 @@ export default {
   padding: 0 20px;
   position: relative;
   z-index: 100;
-  background-color: @white;
+  background-color: var(--component-background);
   user-select: none;
 
   &__wrapper {
@@ -217,9 +217,9 @@ export default {
   &-icon {
     font-size: 20px;
     margin-left: 20px;
-    color: @primary-8;
+    color: var(--primary-8);
     &:hover {
-      color: @success-color;
+      color: var(--success-color);
     }
   }
 
@@ -239,7 +239,7 @@ export default {
   &-panel {
     flex: 1;
     height: 100%;
-    background-color: @descriptions-bg;
+    background-color: var(--item-hover-bg);
     box-sizing: border-box;
     overflow: hidden;
 
@@ -250,9 +250,9 @@ export default {
       align-items: center;
       box-sizing: border-box;
       padding-left: 30px;
-      border-bottom: 1px solid @border-color-base;
+      border-bottom: 1px solid var(--border-color-base);
       z-index: 10;
-      background-color: @white;
+      background-color: var(--component-background);
     }
 
     &__wrapper {

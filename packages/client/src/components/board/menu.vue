@@ -108,9 +108,9 @@ export default {
   position: absolute;
 
   ul {
-    background-color: @normal-color;
+    background-color: var(--normal-color);
     border-radius: 5px;
-    box-shadow: @shadow-color;
+    box-shadow: var(--box-shadow-base);
     padding: 5px 0;
   }
 
@@ -121,8 +121,8 @@ export default {
     cursor: default;
 
     &:hover {
-      background-color: @primary-8;
-      color: @white;
+      background-color: var(--primary-8);
+      color: var(--component-background);
     }
   }
 
