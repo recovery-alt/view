@@ -25,14 +25,14 @@
             </div>
           </template>
         </a-form-item>
-        <a-form-item label="背景颜色" v-bind="validateInfos.bgColor">
-          <color-picker v-model="form.bgColor" />
+        <a-form-item label="背景颜色" v-bind="validateInfos.backgroundColor">
+          <color-picker v-model="form.backgroundColor" />
         </a-form-item>
-        <a-form-item label="缩放方式" v-bind="validateInfos.bgColor">
-          <color-picker v-model="form.bgColor" />
+        <a-form-item label="缩放方式" v-bind="validateInfos.backgroundColor">
+          <color-picker v-model="form.backgroundColor" />
         </a-form-item>
-        <a-form-item label="栅格间距" v-bind="validateInfos.bgColor">
-          <color-picker v-model="form.bgColor" />
+        <a-form-item label="栅格间距" v-bind="validateInfos.backgroundColor">
+          <color-picker v-model="form.backgroundColor" />
         </a-form-item>
       </a-form>
     </section>
@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .page-config {
   &__header {
     height: 30px;

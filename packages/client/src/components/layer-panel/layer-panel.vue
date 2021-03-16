@@ -116,7 +116,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .layer-panel {
   width: 200px;
   height: 100%;

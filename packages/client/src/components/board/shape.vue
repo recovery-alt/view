@@ -6,28 +6,31 @@
     @mousedown.stop="handleMousedown"
     @mouseup="handleMouseup"
   >
-    <slot />
+    <slot class="board-component" />
     <template v-if="active">
       <!-- <i class="shape-rotate el-icon-refresh-right" @mousedown="handleMousedownOnRotate" /> -->
       <div
         v-for="point in points"
         :key="point"
-        class="point"
+        class="board-shape__point"
         :class="point"
         @mousedown="handleMousedownOnPoint"
       />
+    </template>
+    <template v-if="board.selected.includes(index)">
+      <div class="board-shape__graticule --x" :style="patchUnit(graticule.x)"></div>
+      <div class="board-shape__graticule --y" :style="patchUnit(graticule.y)"></div>
+      <div class="board-shape__marker">{{ graticule.x.width }}, {{ graticule.y.height }}</div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { useStore } from '@/store';
-import { judgeLineShow, hideAllLines } from '@/hooks';
-import { BoardEnum } from '@/store';
-import { SnapshotEnum } from '@/store';
-import { on, off } from '@/utils';
+import { BoardEnum, SnapshotEnum, useStore } from '@/store';
+import { hideAllLines, showMenu, useBoardRefs } from '@/hooks';
+import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
-import { showMenu, useBoardRefs } from '@/hooks';
+import { computed } from 'vue';
 
 export default {
   name: 'board-shape',
@@ -38,9 +41,18 @@ export default {
   setup(props) {
     const store = useStore();
 
-    const board = store.state.board;
+    const { board } = store.state;
 
     const { handleEchartsResize } = useBoardRefs();
+
+    const graticule = computed(() => {
+      const { left: boardLeft, top: boardTop } = board.data[props.index].style;
+      const width = boardLeft + 60;
+      const height = boardTop + 60;
+      const left = -width;
+      const top = -height;
+      return { x: { width, left }, y: { height, top } };
+    });
 
     const points = [
       'top-left',
@@ -89,7 +101,7 @@ export default {
             component.style.top = diffY + top;
           });
           // 计算吸附情况
-          judgeLineShow(board, curComponents);
+          // judgeLineShow(board, curComponents);
         };
 
         const mouseup = (e: MouseEvent) => {
@@ -205,12 +217,15 @@ export default {
       handleMousedownOnPoint,
       handleMouseup,
       handleMousedownOnRotate,
+      graticule,
+      board,
+      patchUnit,
     };
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @radius: 4px;
 
 .board-shape {
@@ -218,81 +233,104 @@ export default {
   cursor: move;
   box-sizing: border-box;
 
+  .board-component {
+    height: 100%;
+  }
+
   &.active {
     outline: 1px solid var(--primary-7);
   }
-}
 
-:deep.board-shape > * {
-  width: 100%;
-  height: 100%;
-}
+  &__graticule {
+    position: absolute;
 
-.point {
-  position: absolute;
-  width: @radius * 2;
-  height: @radius * 2;
-  border: 1px solid var(--primary-7);
-  box-sizing: border-box;
-  border-radius: 50%;
-  background-color: var(--component-background);
-}
-
-.top {
-  &-left {
-    left: -@radius;
-    top: -@radius;
-    cursor: se-resize;
+    &.--x {
+      top: 0;
+      border-top: 1px solid var(--primary-color);
+      height: 0;
+    }
+    &.--y {
+      left: 0;
+      border-left: 1px solid var(--primary-color);
+      width: 0;
+    }
   }
 
-  &-mid {
-    top: -@radius - 1px;
-    left: 50%;
-    margin-left: -@radius;
-    cursor: s-resize;
+  &__marker {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    font-size: 16px;
+    color: var(--primary-color);
+    transform: translate(-100%, -100%);
   }
 
-  &-right {
-    top: -@radius;
-    right: -@radius;
-    cursor: ne-resize;
-  }
-}
-
-.mid {
-  &-left {
-    left: -@radius;
-    top: 50%;
-    margin-top: -@radius;
-    cursor: w-resize;
+  &__point {
+    position: absolute;
+    width: @radius * 2;
+    height: @radius * 2;
+    border: 1px solid var(--primary-7);
+    box-sizing: border-box;
+    border-radius: 50%;
+    background-color: var(--component-background);
   }
 
-  &-right {
-    right: -@radius;
-    top: 50%;
-    margin-top: -@radius;
-    cursor: w-resize;
-  }
-}
+  .top {
+    &-left {
+      left: -@radius;
+      top: -@radius;
+      cursor: se-resize;
+    }
 
-.bottom {
-  &-left {
-    left: -@radius;
-    bottom: -@radius;
-    cursor: ne-resize;
+    &-mid {
+      top: -@radius - 1px;
+      left: 50%;
+      margin-left: -@radius;
+      cursor: s-resize;
+    }
+
+    &-right {
+      top: -@radius;
+      right: -@radius;
+      cursor: ne-resize;
+    }
   }
 
-  &-mid {
-    left: 50%;
-    bottom: -@radius - 1px;
-    margin-left: -@radius;
-    cursor: s-resize;
+  .mid {
+    &-left {
+      left: -@radius;
+      top: 50%;
+      margin-top: -@radius;
+      cursor: w-resize;
+    }
+
+    &-right {
+      right: -@radius;
+      top: 50%;
+      margin-top: -@radius;
+      cursor: w-resize;
+    }
   }
 
-  &-right {
-    right: -@radius;
-    bottom: -@radius;
-    cursor: se-resize;
+  .bottom {
+    &-left {
+      left: -@radius;
+      bottom: -@radius;
+      cursor: ne-resize;
+    }
+
+    &-mid {
+      left: 50%;
+      bottom: -@radius - 1px;
+      margin-left: -@radius;
+      cursor: s-resize;
+    }
+
+    &-right {
+      right: -@radius;
+      bottom: -@radius;
+      cursor: se-resize;
+    }
   }
 }
 

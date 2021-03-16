@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .right-panel {
   position: relative;
   border-left: 1px solid var(--border-color-base);

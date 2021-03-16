@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .attr-panel {
   &__title {
     font-size: 14px;

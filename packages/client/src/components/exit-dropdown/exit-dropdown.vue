@@ -154,7 +154,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .exit-dropdown {
   padding: 0 8px;
   font-size: 16px;

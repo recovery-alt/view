@@ -80,7 +80,7 @@ type Page = {
   author: string;
   width: number;
   height: number;
-  bgColor: string;
+  backgroundColor: string;
   pageMode: number;
   config: Array<Component>;
 };

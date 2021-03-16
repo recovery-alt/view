@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .component-panel {
   width: 233px;
   flex-shrink: 0;
@@ -149,23 +149,6 @@ export default {
       margin-top: 6px;
       font-size: 16px;
     }
-  }
-}
-
-:deep {
-  .ant-tabs .ant-tabs-left-content {
-    padding-left: 0;
-  }
-
-  .ant-tabs .ant-tabs-left-bar .ant-tabs-tab,
-  .ant-tabs .ant-tabs-right-bar .ant-tabs-tab {
-    padding: 4px 10px;
-  }
-  .ant-tabs-nav .ant-tabs-tab .anticon {
-    margin-right: 0;
-  }
-  .ant-tabs-vertical.ant-tabs-line.ant-tabs.ant-tabs-left {
-    height: 100%;
   }
 }
 </style>

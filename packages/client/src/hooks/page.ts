@@ -13,7 +13,7 @@ const pageConfig = reactive<Page>({
   ...config.defaultBoardSize,
   title: '',
   description: '',
-  bgColor: '',
+  backgroundColor: '',
   author: '',
   pageMode: 0,
   config: [],

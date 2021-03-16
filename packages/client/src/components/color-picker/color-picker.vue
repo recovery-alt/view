@@ -41,21 +41,13 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.reset {
-  cursor: pointer;
-}
-
-:deep {
-  input[type='color'] {
-    width: 0;
-    height: 0;
-    padding: 0;
-    visibility: hidden;
-    vertical-align: bottom;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-  }
+<style lang="less">
+input[type='color'] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  bottom: 0;
+  visibility: hidden;
 }
 </style>

@@ -1,9 +1,10 @@
-import { reactive } from 'vue';
+import { onMounted, reactive, ref, Ref, watchEffect } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
 import { hideMenu } from '.';
+import { pageConfig } from './page';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -98,4 +99,132 @@ export const useBoardRefs = () => {
     handleEchartsResize,
     handleAllEchartsResize,
   };
+};
+
+export const useThumbnail = (
+  screenShotRef: Ref<HTMLElement | null>,
+  canvasWrapperRef: Ref<HTMLElement | null>
+) => {
+  const thumbnailRef = ref<HTMLCanvasElement | null>(null);
+  const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
+
+  // 初始化视窗尺寸
+  const resizeViewport = () => {
+    if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
+    const { width, height } = screenShotRef.value.getBoundingClientRect();
+    const { width: viewW, height: viewH } = canvasWrapperRef.value.getBoundingClientRect();
+    const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
+    const ratioX = viewW / width;
+    const ratioY = viewH / height;
+    viewportSize.width = ratioX * parentW;
+    viewportSize.height = ratioY * parentH;
+  };
+
+  // 鼠标按下事件
+  const handleThumbnailMousedown = (e: MouseEvent) => {
+    if (e.buttons !== 1 || !thumbnailRef.value) return;
+    const target = e.target as HTMLElement;
+    let startX = e.clientX;
+    let startY = e.clientY;
+    let { left: startLeft, top: startTop } = viewportSize;
+    const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
+    const { width, height } = target.getBoundingClientRect();
+    const maxLeft = parentW - width;
+    const maxTop = parentH - height;
+
+    const mousemove = (e: MouseEvent) => {
+      e.stopPropagation();
+      if (!canvasWrapperRef.value || !screenShotRef.value) return;
+      const { clientX, clientY } = e;
+      const diffX = clientX - startX;
+      const diffY = clientY - startY;
+      let left = 0;
+      let top = 0;
+
+      // x轴移动
+      if (diffX < 0 && viewportSize.left <= 0) {
+        startX = clientX;
+        startLeft = 0;
+        left = 0;
+      } else if (diffX >= 0 && viewportSize.left >= maxLeft) {
+        startX = clientX;
+        startLeft = maxLeft;
+        left = maxLeft;
+      } else {
+        left = startLeft + diffX;
+      }
+
+      // y轴移动
+      if (diffY < 0 && viewportSize.top <= 0) {
+        startY = clientY;
+        startTop = 0;
+        top = 0;
+      } else if (diffY >= 0 && viewportSize.top >= maxTop) {
+        startY = clientY;
+        startTop = maxTop;
+        top = maxTop;
+      } else {
+        top = startTop + diffY;
+      }
+
+      viewportSize.left = left;
+      viewportSize.top = top;
+    };
+
+    const mouseup = (e: MouseEvent) => {
+      e.stopPropagation();
+      off('mousemove', mousemove);
+      off('mouseup', mouseup);
+    };
+
+    on('mousemove', mousemove);
+    on('mouseup', mouseup);
+  };
+
+  // 同步滚动
+  const syncScroll = () => {
+    if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
+    const { width, height } = screenShotRef.value.getBoundingClientRect();
+    const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
+    const { scrollLeft, scrollTop } = canvasWrapperRef.value;
+    viewportSize.left = (scrollLeft / width) * parentW;
+    viewportSize.top = (scrollTop / height) * parentH;
+  };
+
+  // 初始化画布
+  const initCanvas = () => {
+    if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
+    const ctx = thumbnailRef.value.getContext('2d');
+    if (!ctx) return;
+
+    const { width: thumbnailW, height: thumbnailH } = thumbnailRef.value.getBoundingClientRect();
+    const { width: screenW, height: screenH } = screenShotRef.value.getBoundingClientRect();
+    const { width: pageW, height: pageH } = pageConfig;
+    const ratioX = thumbnailW / screenW;
+    const ratioY = thumbnailH / screenH;
+
+    const reflectW = pageW * ratioX * 2;
+    const reflectH = pageH * ratioY * 2;
+    const startX = 60 * ratioX * 2;
+    const startY = 60 * ratioY * 2;
+    ctx.strokeStyle = '#1890ff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(startX, startY, reflectW, reflectH);
+  };
+
+  onMounted(() => {
+    resizeViewport();
+    initCanvas();
+  });
+
+  watchEffect(() => {
+    if (!canvasWrapperRef.value || !thumbnailRef.value || !screenShotRef.value) return;
+    const { width, height } = screenShotRef.value.getBoundingClientRect();
+    const { width: thumbnailW, height: thumbnailH } = thumbnailRef.value.getBoundingClientRect();
+    const left = (viewportSize.left * width) / thumbnailW;
+    const top = (viewportSize.top * height) / thumbnailH;
+    canvasWrapperRef.value.scroll(left, top);
+  });
+
+  return { viewportSize, resizeViewport, thumbnailRef, handleThumbnailMousedown, syncScroll };
 };

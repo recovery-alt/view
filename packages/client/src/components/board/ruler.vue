@@ -41,6 +41,7 @@ export default {
         if (i % 10 === 0) fillText(x + 5, 30, i * pxPerCell);
       }
     });
+
     return { canvas };
   },
 };

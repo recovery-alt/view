@@ -103,7 +103,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .board-menu {
   position: absolute;
 

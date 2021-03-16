@@ -1,15 +1,12 @@
 <template>
-  <div class="canvas-wrapper" @scroll="handleScroll">
-    <div class="screen-shot" style="width: 2320px; height: 1480px">
+  <div ref="canvasWrapperRef" class="canvas-wrapper" @scroll="handleScroll">
+    <div ref="screenShotRef" class="screen-shot" style="width: 2320px; height: 1480px">
       <div class="fixed-wrapper">
-        <div
-          class="ruler-wrapper ruler-wrapper__x"
-          :style="`transform: translateX(${position.left}px)`"
-        >
+        <div class="ruler-wrapper --x" :style="`transform: translateX(${position.left}px)`">
           <board-ruler width="4640" height="40" style="width: 2320px; height: 20px" />
         </div>
         <div
-          class="ruler-wrapper ruler-wrapper__y"
+          class="ruler-wrapper --y"
           :style="`transform: rotate(90deg) translateX(${position.top}px)`"
         >
           <board-ruler width="2960" height="40" style="width: 1480px; height: 20px" />
@@ -21,7 +18,7 @@
 
       <div
         class="board"
-        :style="patchUnit({ width: pageConfig.width, height: pageConfig.height })"
+        :style="patchUnit(pageStyle)"
         @drop="handleDrop"
         @dragover.prevent
         @mousedown="handleMousedown"
@@ -53,12 +50,12 @@
   </div>
 
   <section class="thumbnail">
-    <canvas class="thumbnail__canvas" width="380" height="220" />
-    <span></span>
+    <canvas ref="thumbnailRef" class="thumbnail__canvas" width="380" height="220" />
+    <span :style="patchUnit(viewportSize)" @mousedown.stop="handleThumbnailMousedown"></span>
   </section>
 
   <footer class="edit-slider">
-    <a-slider v-model:value="zoom" :min="0" :max="20" />
+    <a-slider size="small" />
   </footer>
 </template>
 
@@ -68,13 +65,11 @@ import BoardShape from './shape.vue';
 import BoardMarkline from './markline.vue';
 import BoardGrid from './grid.vue';
 import BoardRuler from './ruler.vue';
-import { useStore } from '@/store';
-import { BoardEnum } from '@/store';
-import { menu, showMenu, pageConfig } from '@/hooks';
+import { BoardEnum, useStore } from '@/store';
+import { menu, showMenu, pageConfig, useSelectMask, useBoardRefs, useThumbnail } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
-import { useSelectMask, useBoardRefs } from '@/hooks';
 import { EyeInvisibleOutlined } from '@ant-design/icons-vue';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 export default {
   name: 'board',
@@ -83,8 +78,15 @@ export default {
     const store = useStore();
     const { board } = store.state;
     const { selectMask, handleMousedown } = useSelectMask(store);
-
+    const position = reactive({ left: 0, top: 0 });
     const { setBoardRef } = useBoardRefs();
+    const screenShotRef = ref<HTMLElement | null>(null);
+    const canvasWrapperRef = ref<HTMLElement | null>(null);
+
+    const pageStyle = computed(() => {
+      const { width, height, backgroundColor } = pageConfig;
+      return { width, height, backgroundColor };
+    });
 
     const handleDrop = (e: DragEvent) => {
       e.preventDefault();
@@ -100,11 +102,13 @@ export default {
       showMenu(e);
     };
 
-    const zoom = ref(10);
-    const position = reactive({
-      left: 0,
-      top: 0,
-    });
+    const {
+      viewportSize,
+      resizeViewport,
+      thumbnailRef,
+      handleThumbnailMousedown,
+      syncScroll,
+    } = useThumbnail(screenShotRef, canvasWrapperRef);
 
     const handleScroll = (e: Event) => {
       const target = e.target as HTMLElement;
@@ -112,6 +116,7 @@ export default {
         const { scrollLeft, scrollTop } = target;
         position.left = -scrollLeft;
         position.top = -scrollTop;
+        syncScroll();
       });
     };
 
@@ -124,21 +129,25 @@ export default {
       patchUnit,
       selectMask,
       setBoardRef,
-      zoom,
-      pageConfig,
+      pageStyle,
       handleScroll,
       position,
       splitStyleAndPatch,
+      viewportSize,
+      resizeViewport,
+      thumbnailRef,
+      handleThumbnailMousedown,
+      screenShotRef,
+      canvasWrapperRef,
     };
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .board {
   position: absolute;
   background-color: var(--component-background);
-  overflow: auto;
   top: 60px;
   left: 60px;
 
@@ -161,12 +170,12 @@ export default {
   position: absolute;
   height: 20px;
 
-  &__x {
+  &.--x {
     cursor: ew-resize;
     left: 20px;
   }
 
-  &__y {
+  &.--y {
     cursor: ns-resize;
     transform-origin: 0 100% 0;
     transform: rotate(90deg);

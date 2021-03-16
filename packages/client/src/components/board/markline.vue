@@ -21,20 +21,20 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .board-markline {
   position: absolute;
   background-color: var(--primary-8);
   z-index: 1000;
-}
 
-.xline {
-  width: 100%;
-  height: 1px;
-}
+  &.xline {
+    width: 100%;
+    height: 1px;
+  }
 
-.yline {
-  width: 1px;
-  height: 100%;
+  &.yline {
+    width: 1px;
+    height: 100%;
+  }
 }
 </style>

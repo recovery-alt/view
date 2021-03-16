@@ -28,7 +28,7 @@
   </svg>
 </template>
 
-<style lang="less" scoped>
+<style lang="less">
 .grid {
   position: absolute;
   top: 0;

@@ -21,7 +21,7 @@
           <template #title>
             {{ item.name }}
           </template>
-          <a-button class="header__button" size="small">
+          <a-button class="header__button" size="small" @click="item.event">
             <template #icon>
               <component :is="item.icon" />
             </template>
@@ -32,7 +32,7 @@
 
     <div class="header__title">
       <FundProjectionScreenOutlined />
-      <span>title</span>
+      <span>{{ pageConfig.title }}</span>
     </div>
   </header>
   <main class="main">
@@ -60,7 +60,7 @@ import Board, { BoardPreview } from '@/components/board';
 import { patchUnit } from '@/utils';
 import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
-import { usePage, usePageConfig, pageConfig, panel } from '@/hooks';
+import { usePage, pageConfig, panel } from '@/hooks';
 import { computed, ref } from 'vue';
 import ExitDropdown from '@/components/exit-dropdown';
 import LayerPanel from '@/components/layer-panel';
@@ -117,6 +117,8 @@ export default {
 
     const modalOpen = ref(false);
 
+    const { savePage } = usePage(store, router, props.id);
+
     const icons = [
       { key: 'layer', icon: 'LayoutOutlined' },
       { key: 'component', icon: 'UnorderedListOutlined' },
@@ -133,10 +135,12 @@ export default {
       {
         name: '组件删除备份',
         icon: 'RestOutlined',
+        event: () => null,
       },
       {
         name: '生成快照',
         icon: 'CameraOutlined',
+        event: () => null,
       },
       {
         name: '保存',
@@ -171,7 +175,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .header {
   height: 41px;
   border-bottom: 1px solid var(--border-color-base);

@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .animation-title {
   width: 100%;
   display: flex;
