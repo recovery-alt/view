@@ -2,20 +2,25 @@
   <div class="page-config">
     <header class="page-config__header">页面设置</header>
     <section class="page-config__wrapper">
-      <a-form :model="form" hide-required-mark :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+      <a-form
+        :model="pageConfig"
+        hide-required-mark
+        :label-col="{ span: 6 }"
+        :wrapper-col="{ span: 14 }"
+      >
         <a-form-item label="页面标题" v-bind="validateInfos.title">
-          <a-input v-model:value="form.title" size="small" />
+          <a-input v-model:value="pageConfig.title" size="small" />
         </a-form-item>
         <a-form-item label="页面描述" v-bind="validateInfos.description">
-          <a-textarea v-model:value="form.description" size="small"></a-textarea>
+          <a-textarea v-model:value="pageConfig.description" size="small"></a-textarea>
         </a-form-item>
         <a-form-item label="屏幕尺寸" v-bind="validateInfos.width">
           <a-row>
             <a-col span="8">
-              <a-input-number v-model:value="form.width" size="small" />
+              <a-input-number v-model:value="pageConfig.width" size="small" />
             </a-col>
             <a-col span="8" offset="4">
-              <a-input-number v-model:value="form.height" size="small" />
+              <a-input-number v-model:value="pageConfig.height" size="small" />
             </a-col>
           </a-row>
           <template #extra>
@@ -26,13 +31,25 @@
           </template>
         </a-form-item>
         <a-form-item label="背景颜色" v-bind="validateInfos.backgroundColor">
-          <color-picker v-model="form.backgroundColor" />
+          <color-picker v-model="pageConfig.backgroundColor" />
         </a-form-item>
-        <a-form-item label="缩放方式" v-bind="validateInfos.backgroundColor">
-          <color-picker v-model="form.backgroundColor" />
+        <a-form-item label="背景图片">
+          <a-input v-model:value="url" size="small" placeholder="图片地址" />
         </a-form-item>
-        <a-form-item label="栅格间距" v-bind="validateInfos.backgroundColor">
-          <color-picker v-model="form.backgroundColor" />
+        <a-form-item label="缩放方式">
+          <a-button
+            v-for="(item, i) in zoomOptions"
+            :key="item.icon"
+            class="page-config__btn"
+            size="small"
+            :type="selected === i ? 'primary' : 'default'"
+            @click="selected = i"
+          >
+            <component :is="item.icon" />
+          </a-button>
+        </a-form-item>
+        <a-form-item label="栅格间距">
+          <a-input-number v-model:value="gap" size="small" />
         </a-form-item>
       </a-form>
     </section>
@@ -40,24 +57,53 @@
 </template>
 
 <script lang="ts">
-import { usePageConfig } from '@/hooks';
 import ColorPicker from '@/components/color-picker';
+import { ref, reactive } from 'vue';
+import { useForm } from '@ant-design-vue/use';
+import { pageConfig } from '@/hooks';
+import {
+  ExpandOutlined,
+  ColumnWidthOutlined,
+  ColumnHeightOutlined,
+  DragOutlined,
+  StopOutlined,
+} from '@ant-design/icons-vue';
 
 export default {
   name: 'page-config',
-  components: { ColorPicker },
+  components: {
+    ColorPicker,
+    ExpandOutlined,
+    ColumnWidthOutlined,
+    ColumnHeightOutlined,
+    DragOutlined,
+    StopOutlined,
+  },
   setup() {
-    const {
-      pageConfig,
-      showPageConfig,
-      form,
-      resetFields,
-      validate,
-      validateInfos,
-      savePageConfig,
-    } = usePageConfig();
+    const showPageConfig = ref(false);
+    const rules = reactive({
+      title: [{ required: true, message: '标题为必填项' }],
+      width: [{ required: true, message: '页面宽为必填项' }],
+      height: [{ required: true, message: '页面高为必填项' }],
+    });
 
-    return { pageConfig, showPageConfig, form, validateInfos, savePageConfig };
+    const selected = ref(0);
+
+    const zoomOptions = [
+      { icon: 'ExpandOutlined', tip: '全屏铺满' },
+      { icon: 'ColumnWidthOutlined', tip: '等比缩放宽度铺满' },
+      { icon: 'ColumnHeightOutlined', tip: '等比缩放高度铺满' },
+      { icon: 'DragOutlined', tip: '等比缩放高度铺满（可滚动）' },
+      { icon: 'StopOutlined', tip: '不缩放' },
+    ];
+
+    const gap = ref(1);
+
+    const url = ref('');
+
+    const { resetFields, validate, validateInfos } = useForm(pageConfig, rules);
+
+    return { pageConfig, showPageConfig, validateInfos, zoomOptions, selected, gap, url };
   },
 };
 </script>
@@ -82,6 +128,14 @@ export default {
 
     span {
       flex: 1;
+    }
+  }
+
+  &__btn {
+    margin-left: 10px;
+
+    &:first-child {
+      margin-left: 0;
     }
   }
 }

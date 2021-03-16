@@ -1,4 +1,4 @@
-import { reactive, ref, onMounted, toRaw, watchEffect } from 'vue';
+import { reactive, onMounted, toRaw } from 'vue';
 import { addPage, getPage, updatePage } from '@/api';
 import { Store } from 'vuex';
 import { BoardEnum } from '@/store';
@@ -6,7 +6,6 @@ import { cloneDeep } from 'lodash';
 import { message } from 'ant-design-vue';
 import config from '@/config';
 import { Router } from 'vue-router';
-import { useForm } from '@ant-design-vue/use';
 
 const pageConfig = reactive<Page>({
   _id: '',
@@ -21,39 +20,6 @@ const pageConfig = reactive<Page>({
 
 const setPageConfig = async (config: PageConfig) => {
   Object.assign(pageConfig, config);
-};
-
-const usePageConfig = () => {
-  const showPageConfig = ref(false);
-  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-  const { _id, config, ...page } = pageConfig;
-  const form = reactive({ ...page });
-  const rules = reactive({
-    title: [{ required: true, message: '标题为必填项' }],
-    width: [{ required: true, message: '页面宽为必填项' }],
-    height: [{ required: true, message: '页面高为必填项' }],
-  });
-
-  const { resetFields, validate, validateInfos } = useForm(form, rules);
-
-  const savePageConfig = async () => {
-    setPageConfig(form);
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const { config, ...page } = pageConfig;
-    const res = await updatePage({ ...page });
-    if (res.code === 0) {
-      message.success('更新成功！');
-      showPageConfig.value = false;
-    } else {
-      message.error('更新失败！');
-    }
-  };
-
-  watchEffect(() => {
-    showPageConfig.value && Object.assign(form, pageConfig);
-  });
-
-  return { pageConfig, showPageConfig, form, resetFields, validate, validateInfos, savePageConfig };
 };
 
 const usePage = (store: Store<RootStateType>, router: Router, id?: string) => {
@@ -95,4 +61,4 @@ const usePage = (store: Store<RootStateType>, router: Router, id?: string) => {
   return { savePage };
 };
 
-export { pageConfig, usePage, usePageConfig };
+export { pageConfig, usePage };

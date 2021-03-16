@@ -24,7 +24,7 @@
         @mousedown="handleMousedown"
         @contextmenu="handleRightClick"
       >
-        <board-grid />
+        <!-- <board-grid /> -->
         <board-shape
           v-for="(item, index) in board.data"
           :key="item.id"

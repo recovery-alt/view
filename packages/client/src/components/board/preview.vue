@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { computed } from 'vue';
-import { usePageConfig } from '@/hooks';
+import { pageConfig } from '@/hooks';
 import BoardWrapper from './wrapper.vue';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
@@ -26,8 +26,6 @@ export default {
     const store = useStore();
 
     const { board } = store.state;
-
-    const { pageConfig } = usePageConfig();
 
     const style = computed(() => ({
       width: pageConfig.width + 'px',

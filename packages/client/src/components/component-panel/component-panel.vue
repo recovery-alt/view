@@ -9,7 +9,12 @@
       <LeftOutlined @click="panel.component = !panel.component" />
     </header>
     <div class="component-panel__select-box">
-      <a-input v-show="panel.component" />
+      <a-input-search
+        v-show="panel.component"
+        enter-button
+        placeholder="请输入组件名"
+        @search="searchComponent"
+      />
     </div>
     <a-tabs v-model:activeKey="activeTab" tab-position="left">
       <a-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
@@ -68,7 +73,11 @@ export default {
       }
     };
 
-    return { handleDragStart, board, galleryGroup, activeTab, panel };
+    const searchComponent = () => {
+      // TODO: 查询组件
+    };
+
+    return { handleDragStart, board, galleryGroup, activeTab, panel, searchComponent };
   },
 };
 </script>

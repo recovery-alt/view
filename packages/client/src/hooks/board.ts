@@ -1,10 +1,9 @@
-import { onMounted, reactive, ref, Ref, watchEffect } from 'vue';
+import { onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
-import { hideMenu } from '.';
-import { pageConfig } from './page';
+import { hideMenu, panel, pageConfig } from '.';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -224,6 +223,10 @@ export const useThumbnail = (
     const left = (viewportSize.left * width) / thumbnailW;
     const top = (viewportSize.top * height) / thumbnailH;
     canvasWrapperRef.value.scroll(left, top);
+  });
+
+  watch(panel, () => {
+    resizeViewport();
   });
 
   return { viewportSize, resizeViewport, thumbnailRef, handleThumbnailMousedown, syncScroll };

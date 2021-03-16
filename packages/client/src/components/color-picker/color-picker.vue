@@ -1,6 +1,12 @@
 <template>
-  <a-input v-model:value="inputValue" allow-clear @click="clickInputColor">
-    <template #prefix>
+  <a-input
+    v-model:value="inputValue"
+    size="small"
+    :placeholder="placeholder"
+    allow-clear
+    @click="clickInputColor"
+  >
+    <template #suffix>
       <input ref="inputColor" v-model="inputValue" type="color" />
     </template>
   </a-input>
@@ -15,6 +21,10 @@ export default {
     modelValue: {
       type: String,
       default: () => '',
+    },
+    placeholder: {
+      type: String,
+      default: () => '请选择颜色',
     },
   },
   emits: ['update:modelValue'],
