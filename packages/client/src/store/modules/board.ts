@@ -194,15 +194,51 @@ const actions: Data<Action<Board, RootStateType>> = {
   group({ state, commit }) {
     const { selected, data } = state;
     const components = spliceItems(data, selected);
+    const position = components.reduce(
+      (acc, val) => {
+        const { left, top, width, height } = val.style;
+        return {
+          leftX: Math.min(acc.leftX, left),
+          leftY: Math.min(acc.leftY, top),
+          rightX: Math.max(acc.rightX, width + left),
+          rightY: Math.max(acc.rightY, height + top),
+        };
+      },
+      { leftX: Infinity, leftY: Infinity, rightX: 0, rightY: 0 }
+    );
+    const { leftX: left, leftY: top, rightX, rightY } = position;
+
+    components.forEach(component => {
+      component.style.top -= top;
+      component.style.left -= left;
+    });
+
+    const width = rightX - left;
+    const height = rightY - top;
 
     const group: Component = {
       id: uuid(),
       component: 'cq-group',
       label: '成组',
-      propValue: components,
-      style: { rotate: 0, top: 0, left: 0, width: 0, height: 0 },
+      group: components,
+      style: { top, left, width, height, rotate: 0 },
     };
     commit('append', group);
+  },
+  cancelGroup({ state, commit }) {
+    const { selected, data } = state;
+    const component = data[selected[0]];
+    data.splice(selected[0], 1);
+    const group = component.group as Component[];
+    if (!group) return;
+    const { left, top } = component.style;
+    const components: Component[] = [];
+    group.forEach(component => {
+      component.style.left += left;
+      component.style.top += top;
+      components.push(component);
+    });
+    commit('append', components);
   },
 };
 
@@ -226,7 +262,8 @@ enum BoardEnum {
   MOVE_UP = 'board/moveUp',
   MOVE_DOWN = 'board/moveDown',
   CALC_SELECTED_BY_RECT = 'board/calcSelectedByRect',
-  GROUP = 'group',
+  GROUP = 'board/group',
+  CANCEL_GROUP = 'board/cancelGroup',
 }
 
 export { board, BoardEnum };

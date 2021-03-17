@@ -237,6 +237,12 @@ export default {
   cursor: move;
   box-sizing: border-box;
 
+  & > *:first-child {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
   .board-component {
     height: 100%;
   }
@@ -249,12 +255,12 @@ export default {
     position: absolute;
 
     &.--x {
-      top: 0;
+      top: -1px;
       border-top: 1px solid var(--primary-color);
       height: 0;
     }
     &.--y {
-      left: 0;
+      left: -1px;
       border-left: 1px solid var(--primary-color);
       width: 0;
     }
@@ -277,6 +283,7 @@ export default {
     box-sizing: border-box;
     border-radius: 50%;
     background-color: var(--component-background);
+    z-index: 1;
   }
 
   .top {

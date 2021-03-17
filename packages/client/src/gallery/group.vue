@@ -1,22 +1,39 @@
 <template>
   <div class="board-group">
-    <component :is="item.component" v-for="item in propValue" :key="item.id" />
+    <component
+      :is="item.component"
+      v-for="item in group"
+      :key="item.id"
+      :style="patchUnit(item.style)"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { PropType } from 'vue';
+import { patchUnit } from '@/utils';
 
 export default {
   name: 'group',
   props: {
-    propValue: {
+    group: {
       type: Array as PropType<Array<Component>>,
       default: () => [],
     },
   },
-  setup(props) {
-    // TODO
+  setup() {
+    return { patchUnit };
   },
 };
 </script>
+
+<style lang="less" scoped>
+.board-group {
+  position: absolute;
+  height: 100%;
+
+  & > * {
+    position: absolute;
+  }
+}
+</style>

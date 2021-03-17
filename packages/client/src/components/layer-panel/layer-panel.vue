@@ -26,20 +26,40 @@
           </a-tooltip>
         </header>
         <ul class="layer-panel__box">
-          <li
-            v-for="(item, index) in board.data"
-            :key="item.id"
-            :class="{
-              active: board.selected.includes(index),
-              'layer-panel__box--thumbail': !showlist,
-              'layer-panel__box--item': showlist,
-            }"
-            @click="e => changeSelected(e, index)"
-          >
-            <DatabaseOutlined v-if="showlist" />
-            <img v-else src="//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png" />
-            <div>{{ item.label }}</div>
-          </li>
+          <template v-for="(item, index) in board.data" :key="item.id">
+            <li
+              :class="{
+                active: board.selected.includes(index),
+                '--thumbail': !showlist,
+                '--item': showlist,
+              }"
+              @click="changeSelected($event, index)"
+            >
+              <RightOutlined
+                v-if="item.group && item.group.length > 0"
+                style="cursor: pointer"
+                @click="toggleGroup"
+              />
+              <DatabaseOutlined v-else-if="showlist" />
+              <img v-else src="//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png" />
+              <span>{{ item.label }}</span>
+            </li>
+            <template v-if="item.group && item.group.length > 0">
+              <li
+                v-for="val in item.group"
+                :key="val.id"
+                :class="{
+                  '--thumbail': !showlist,
+                  '--item': showlist,
+                }"
+                @click="changeSelected($event, index)"
+              >
+                <DatabaseOutlined v-if="showlist" />
+                <img v-else src="//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png" />
+                <span>{{ val.label }}</span>
+              </li>
+            </template>
+          </template>
         </ul>
       </section>
       <footer class="layer-panel__footer">
@@ -62,6 +82,7 @@ import {
   VerticalAlignBottomOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
+  RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
 import { ref } from 'vue';
@@ -80,6 +101,7 @@ export default {
     VerticalAlignBottomOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
+    RightOutlined,
   },
   setup() {
     const store = useStore();
@@ -115,7 +137,20 @@ export default {
       }
     };
 
-    return { panel, showlist, changeSelected, board, switchList, moveActions, operations };
+    const toggleGroup = () => {
+      // TODO
+    };
+
+    return {
+      panel,
+      showlist,
+      changeSelected,
+      board,
+      switchList,
+      moveActions,
+      operations,
+      toggleGroup,
+    };
   },
 };
 </script>
@@ -204,18 +239,20 @@ export default {
       }
     }
 
-    &--item {
+    .--item {
+      line-height: 32px;
       height: 32px;
       display: flex;
       align-items: center;
 
-      div {
+      span {
         margin-left: 5px;
       }
     }
 
-    &--thumbail {
+    .--thumbail {
       height: 48px;
+      line-height: 48px;
 
       img {
         width: 51px;
@@ -223,7 +260,7 @@ export default {
         border: 1px solid var(--border-color-base);
       }
 
-      div {
+      span {
         margin-left: 5px;
       }
     }

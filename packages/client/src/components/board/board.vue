@@ -46,6 +46,7 @@
             :key="item.id"
             :ref="el => el && setBoardRef(el.$el, index)"
             :index="index"
+            :group="item.group"
             :style="splitStyleAndPatch(item.style, false)"
           />
         </board-shape>
@@ -93,7 +94,6 @@ import { BoardMenu, BoardShape, BoardMarkline, BoardRuler } from '@/components';
 import { BoardEnum, useStore } from '@/store';
 import {
   menu,
-  showMenu,
   pageConfig,
   useSelectMask,
   useBoardRefs,

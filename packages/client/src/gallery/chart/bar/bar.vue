@@ -45,10 +45,3 @@ export default {
   },
 };
 </script>
-
-<style lang="less" scoped>
-.bar {
-  width: 100%;
-  height: 100%;
-}
-</style>

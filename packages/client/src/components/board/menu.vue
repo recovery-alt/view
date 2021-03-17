@@ -73,14 +73,12 @@ export default {
       {
         name: '成组',
         icon: 'FolderOutlined',
-        event: () => {
-          // TODO: 成组
-        },
+        event: () => store.dispatch(BoardEnum.GROUP),
       },
       {
         name: '取消成组',
         icon: 'FolderOpenOutlined',
-        event: () => null,
+        event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
       },
 
       {
