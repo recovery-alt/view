@@ -80,7 +80,7 @@ import { watchEffect, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
-import ColorPicker from '@/components/color-picker';
+import { ColorPicker } from '@/components';
 
 export default {
   name: 'attr-panel',

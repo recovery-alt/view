@@ -11,7 +11,7 @@
         <a-form-item label="页面标题" v-bind="validateInfos.title">
           <a-input v-model:value="pageConfig.title" size="small" />
         </a-form-item>
-        <a-form-item label="页面描述" v-bind="validateInfos.description">
+        <a-form-item label="页面描述">
           <a-textarea v-model:value="pageConfig.description" size="small"></a-textarea>
         </a-form-item>
         <a-form-item label="屏幕尺寸" v-bind="validateInfos.width">
@@ -30,26 +30,31 @@
             </div>
           </template>
         </a-form-item>
-        <a-form-item label="背景颜色" v-bind="validateInfos.backgroundColor">
+        <a-form-item label="背景颜色">
           <color-picker v-model="pageConfig.backgroundColor" />
         </a-form-item>
         <a-form-item label="背景图片">
-          <a-input v-model:value="url" size="small" placeholder="图片地址" />
+          <a-input v-model:value="pageConfig.url" size="small" placeholder="图片地址" />
         </a-form-item>
         <a-form-item label="缩放方式">
-          <a-button
+          <a-tooltip
             v-for="(item, i) in zoomOptions"
             :key="item.icon"
-            class="page-config__btn"
-            size="small"
-            :type="selected === i ? 'primary' : 'default'"
-            @click="selected = i"
+            :title="item.tip"
+            placement="bottom"
           >
-            <component :is="item.icon" />
-          </a-button>
+            <a-button
+              class="page-config__btn"
+              size="small"
+              :type="pageConfig.zoom === i ? 'primary' : 'default'"
+              @click="pageConfig.zoom = i"
+            >
+              <component :is="item.icon" />
+            </a-button>
+          </a-tooltip>
         </a-form-item>
         <a-form-item label="栅格间距">
-          <a-input-number v-model:value="gap" size="small" />
+          <a-input-number v-model:value="pageConfig.gap" size="small" />
         </a-form-item>
       </a-form>
     </section>
@@ -57,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import ColorPicker from '@/components/color-picker';
+import { ColorPicker } from '@/components';
 import { ref, reactive } from 'vue';
 import { useForm } from '@ant-design-vue/use';
 import { pageConfig } from '@/hooks';
@@ -87,8 +92,6 @@ export default {
       height: [{ required: true, message: '页面高为必填项' }],
     });
 
-    const selected = ref(0);
-
     const zoomOptions = [
       { icon: 'ExpandOutlined', tip: '全屏铺满' },
       { icon: 'ColumnWidthOutlined', tip: '等比缩放宽度铺满' },
@@ -97,13 +100,9 @@ export default {
       { icon: 'StopOutlined', tip: '不缩放' },
     ];
 
-    const gap = ref(1);
+    const { validate, validateInfos } = useForm(pageConfig, rules);
 
-    const url = ref('');
-
-    const { resetFields, validate, validateInfos } = useForm(pageConfig, rules);
-
-    return { pageConfig, showPageConfig, validateInfos, zoomOptions, selected, gap, url };
+    return { pageConfig, showPageConfig, validateInfos, zoomOptions };
   },
 };
 </script>

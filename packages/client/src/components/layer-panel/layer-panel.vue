@@ -16,8 +16,12 @@
       </header>
       <section class="layer-panel__wrapper">
         <header class="layer-panel__toolbar">
-          <a-tooltip v-for="item in moveActions" :key="item.icon" placement="bottom">
-            <template #title>{{ item.tip }}</template>
+          <a-tooltip
+            v-for="item in moveActions"
+            :key="item.icon"
+            :title="item.tip"
+            placement="bottom"
+          >
             <component :is="item.icon" />
           </a-tooltip>
         </header>

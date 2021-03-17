@@ -1,9 +1,10 @@
-import { onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
+import { nextTick, onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
 import { hideMenu, panel, pageConfig } from '.';
+import { debounce } from 'lodash';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -212,8 +213,10 @@ export const useThumbnail = (
   };
 
   onMounted(() => {
-    resizeViewport();
-    initCanvas();
+    nextTick(() => {
+      resizeViewport();
+      initCanvas();
+    });
   });
 
   watchEffect(() => {
@@ -230,4 +233,33 @@ export const useThumbnail = (
   });
 
   return { viewportSize, resizeViewport, thumbnailRef, handleThumbnailMousedown, syncScroll };
+};
+
+export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | null>) => {
+  const screenShotSize = reactive({ width: 0, height: 0 });
+
+  const sliderFormatter = (value: number) => value + '%';
+
+  const rulerKey = ref(0);
+
+  const resizeScreenShot = () => {
+    if (!canvasWrapperRef.value) return;
+    const { width: minW, height: minH } = canvasWrapperRef.value.getBoundingClientRect();
+    const { width: pageW, height: pageH } = pageConfig;
+    const width = (pageW * pageConfig.scale) / 100 + 400;
+    const height = (pageH * pageConfig.scale) / 100 + 400;
+    screenShotSize.width = width <= minW ? minW : width;
+    screenShotSize.height = height <= minH ? minH : height;
+  };
+
+  const handleSliderChange = debounce(() => {
+    resizeScreenShot();
+    rulerKey.value++;
+  }, 50);
+
+  onMounted(resizeScreenShot);
+
+  // watch(pageConfig.scale, debounce(resizeScreenShot, 50));
+
+  return { sliderFormatter, handleSliderChange, screenShotSize, rulerKey };
 };

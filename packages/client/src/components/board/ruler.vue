@@ -1,23 +1,26 @@
 <template>
-  <canvas ref="canvas" style="background-color: #fff" />
+  <canvas ref="canvas" height="40" class="board-ruler" />
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
+import { pageConfig } from '@/hooks';
+
 export default {
   setup() {
     const canvas = ref<HTMLCanvasElement | null>(null);
 
     // 每格代表像素值
-    const pxPerCell = 8;
+    const pxPerCell = Math.floor(800 / pageConfig.scale);
 
-    onMounted(() => {
+    const reRenderCanvas = () => {
       if (!canvas.value) return;
       const ctx = canvas.value.getContext('2d');
       if (!ctx) return;
       const { width } = canvas.value;
+      type NumTuple = [number, number];
 
-      const drawLine = (begin: [number, number], end: [number, number], width = 1) => {
+      const drawLine = (begin: NumTuple, end: NumTuple, width = 1) => {
         ctx.beginPath();
         ctx.moveTo(...begin);
         ctx.lineTo(...end);
@@ -30,7 +33,6 @@ export default {
         ctx.fillText(text, x, y);
       };
 
-      // drawLine([0, 40], [width, 40]);
       const canvasUnitPerCell = 2 * pxPerCell;
       const len = width / canvasUnitPerCell - 5;
 
@@ -40,9 +42,20 @@ export default {
         drawLine([x, start], [x, 40]);
         if (i % 10 === 0) fillText(x + 5, 30, i * pxPerCell);
       }
+    };
+
+    onMounted(() => {
+      nextTick(reRenderCanvas);
     });
 
     return { canvas };
   },
 };
 </script>
+
+<style lang="less" scoped>
+.board-ruler {
+  background-color: #fff;
+  height: 20px;
+}
+</style>

@@ -7,6 +7,11 @@ const schema = new Schema({
   width: Number,
   height: Number,
   pageMode: Number,
+  backgroundColor: String,
+  scale: Number,
+  zoom: Number,
+  gap: Number,
+  url: String,
   config: Object,
 });
 
@@ -16,8 +21,12 @@ export interface Page extends Document {
   author: string;
   width: number;
   height: number;
-  backgroundColor: string;
   pageMode: number;
+  backgroundColor: string;
+  scale: number;
+  zoom: number;
+  gap: number;
+  url: string;
   config: Array<{
     id: string;
     component: string;

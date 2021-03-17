@@ -6,7 +6,7 @@
 import { onMounted, ref } from 'vue';
 import { getPage } from '@/api';
 import { patchUnit } from '@/utils';
-import { BoardWrapper } from '@/components/board';
+import { BoardWrapper } from '@/components';
 
 export default {
   name: 'render',

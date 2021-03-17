@@ -20,6 +20,11 @@ export const patchUnit = (style: Data) => {
       continue;
     }
 
+    if (key === 'scale') {
+      result.transform = `scale(${(value as number) / 100})`;
+      continue;
+    }
+
     result[key] = needAddPixelList.includes(key) ? value + 'px' : value;
   }
   return result;

@@ -203,7 +203,7 @@ const board: Module<Board, RootStateType> = {
   namespaced: true,
 };
 
-export enum BoardEnum {
+enum BoardEnum {
   APEEND = 'board/append',
   DEL = 'board/del',
   SET_INDEX = 'board/setIndex',
@@ -218,4 +218,4 @@ export enum BoardEnum {
   CALC_SELECTED_BY_RECT = 'board/calcSelectedByRect',
 }
 
-export default board;
+export { board, BoardEnum };

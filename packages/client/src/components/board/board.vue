@@ -1,15 +1,25 @@
 <template>
   <div ref="canvasWrapperRef" class="canvas-wrapper" @scroll="handleScroll">
-    <div ref="screenShotRef" class="screen-shot" style="width: 2320px; height: 1480px">
+    <div ref="screenShotRef" class="screen-shot" :style="patchUnit(screenShotSize)">
       <div class="fixed-wrapper">
         <div class="ruler-wrapper --x" :style="`transform: translateX(${position.left}px)`">
-          <board-ruler width="4640" height="40" style="width: 2320px; height: 20px" />
+          <board-ruler
+            :key="rulerKey"
+            :scale="pageConfig.scale"
+            :width="screenShotSize.width * 2 + ''"
+            :style="{ width: screenShotSize.width + 'px' }"
+          />
         </div>
         <div
           class="ruler-wrapper --y"
           :style="`transform: rotate(90deg) translateX(${position.top}px)`"
         >
-          <board-ruler width="2960" height="40" style="width: 1480px; height: 20px" />
+          <board-ruler
+            :key="rulerKey"
+            :scale="pageConfig.scale"
+            :width="screenShotSize.height * 2 + ''"
+            :style="{ width: screenShotSize.height + 'px' }"
+          />
         </div>
         <div class="guide-line__controller">
           <EyeInvisibleOutlined />
@@ -24,7 +34,6 @@
         @mousedown="handleMousedown"
         @contextmenu="handleRightClick"
       >
-        <!-- <board-grid /> -->
         <board-shape
           v-for="(item, index) in board.data"
           :key="item.id"
@@ -44,7 +53,7 @@
 
         <board-menu v-show="menu.show" v-model="menu.show" :style="patchUnit(menu.style)" />
         <board-markline />
-        <div v-show="selectMask.show" class="board-mask" :style="patchUnit(selectMask.style)" />
+        <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
     </div>
   </div>
@@ -55,25 +64,57 @@
   </section>
 
   <footer class="edit-slider">
-    <a-slider size="small" />
+    <a-col span="2">
+      <a-input-number
+        v-model:value="pageConfig.scale"
+        size="small"
+        :min="20"
+        :max="200"
+        :formatter="sliderFormatter"
+      />
+    </a-col>
+    <a-col span="4" class="edit-slider__col">
+      <a-slider
+        v-model:value="pageConfig.scale"
+        size="small"
+        :min="20"
+        :max="200"
+        :tip-formatter="sliderFormatter"
+        @change="handleSliderChange"
+      />
+    </a-col>
+    <a-col span="1" class="edit-slider__col">
+      <BlockOutlined class="edit-slider__icon" />
+    </a-col>
   </footer>
 </template>
 
 <script lang="ts">
-import BoardMenu from './menu.vue';
-import BoardShape from './shape.vue';
-import BoardMarkline from './markline.vue';
-import BoardGrid from './grid.vue';
-import BoardRuler from './ruler.vue';
+import { BoardMenu, BoardShape, BoardMarkline, BoardRuler } from '@/components';
 import { BoardEnum, useStore } from '@/store';
-import { menu, showMenu, pageConfig, useSelectMask, useBoardRefs, useThumbnail } from '@/hooks';
+import {
+  menu,
+  showMenu,
+  pageConfig,
+  useSelectMask,
+  useBoardRefs,
+  useThumbnail,
+  useEditSlider,
+} from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
-import { EyeInvisibleOutlined } from '@ant-design/icons-vue';
+import { EyeInvisibleOutlined, BlockOutlined } from '@ant-design/icons-vue';
 import { computed, reactive, ref } from 'vue';
 
 export default {
   name: 'board',
-  components: { BoardShape, BoardMenu, BoardMarkline, BoardGrid, BoardRuler, EyeInvisibleOutlined },
+  components: {
+    BoardShape,
+    BoardMenu,
+    BoardMarkline,
+    BoardRuler,
+    EyeInvisibleOutlined,
+    BlockOutlined,
+  },
   setup() {
     const store = useStore();
     const { board } = store.state;
@@ -84,8 +125,8 @@ export default {
     const canvasWrapperRef = ref<HTMLElement | null>(null);
 
     const pageStyle = computed(() => {
-      const { width, height, backgroundColor } = pageConfig;
-      return { width, height, backgroundColor };
+      const { width, height, backgroundColor, scale } = pageConfig;
+      return { width, height, backgroundColor, scale };
     });
 
     const handleDrop = (e: DragEvent) => {
@@ -101,6 +142,10 @@ export default {
       e.preventDefault();
       showMenu(e);
     };
+
+    const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
+      canvasWrapperRef
+    );
 
     const {
       viewportSize,
@@ -129,6 +174,7 @@ export default {
       patchUnit,
       selectMask,
       setBoardRef,
+      pageConfig,
       pageStyle,
       handleScroll,
       position,
@@ -139,6 +185,10 @@ export default {
       handleThumbnailMousedown,
       screenShotRef,
       canvasWrapperRef,
+      sliderFormatter,
+      handleSliderChange,
+      screenShotSize,
+      rulerKey,
     };
   },
 };
@@ -150,8 +200,14 @@ export default {
   background-color: var(--component-background);
   top: 60px;
   left: 60px;
+  transform-origin: 0 0;
+  transition: 0.2s all var(--ease-in-out);
+  background-size: cover, contain;
+  background-position: center, right bottom;
+  background-repeat: no-repeat, no-repeat;
+  box-shadow: var(--box-shadow-base);
 
-  &-mask {
+  &__mask {
     position: absolute;
     opacity: 0.5;
     background-color: var(--primary-1);
@@ -200,17 +256,33 @@ export default {
 }
 
 .edit-slider {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
   background: var(--normal-color);
   height: 30px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  position: absolute;
-  right: 0;
-  bottom: 40px;
-  user-select: none;
   z-index: 99;
+
+  .ant-input-number {
+    width: auto;
+  }
+
+  &__col {
+    margin-left: 10px;
+    font-size: 16px;
+  }
+
+  &__icon {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
 }
 
 .fixed-wrapper {

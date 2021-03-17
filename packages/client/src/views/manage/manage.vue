@@ -54,7 +54,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons-vue';
-import ExitDropdown from '@/components/exit-dropdown';
+import { ExitDropdown } from '@/components';
 import { generateColumns } from '@/utils';
 
 export default {

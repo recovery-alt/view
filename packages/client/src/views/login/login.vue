@@ -37,7 +37,7 @@ export default {
   name: 'login',
   props: { redirect: { type: String, default: () => '' } },
   setup(props) {
-    const form = reactive({ name: 'ccq', password: '123456' });
+    const form = reactive({ name: 'ccq', password: 'a123456' });
     const rules = reactive({
       name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
       password: [{ required: true, message: '请输入密码', trigger: 'blur' }],

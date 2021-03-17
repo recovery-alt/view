@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <img width="40" height="40" src="/src/assets/img/logo.svg" />
+    <img width="40" height="40" src="/src/assets/img/logo.svg" @click="$router.push('/')" />
     <div class="header__wrapper">
       <div class="header__panel-box">
         <a-button
@@ -17,10 +17,12 @@
         </a-button>
       </div>
       <div class="header__publish">
-        <a-tooltip v-for="item in buttonGroup" :key="item.icon" placement="bottom">
-          <template #title>
-            {{ item.name }}
-          </template>
+        <a-tooltip
+          v-for="item in buttonGroup"
+          :key="item.icon"
+          :title="item.name"
+          placement="bottom"
+        >
           <a-button class="header__button" size="small" @click="item.event">
             <template #icon>
               <component :is="item.icon" />
@@ -55,15 +57,18 @@
 </template>
 
 <script lang="ts">
-import ComponentPanel from '@/components/component-panel';
-import Board, { BoardPreview } from '@/components/board';
 import { patchUnit } from '@/utils';
-import RightPanel from '@/components/right-panel';
 import { useStore } from '@/store';
 import { usePage, pageConfig, panel } from '@/hooks';
 import { computed, ref } from 'vue';
-import ExitDropdown from '@/components/exit-dropdown';
-import LayerPanel from '@/components/layer-panel';
+import {
+  Board,
+  BoardPreview,
+  RightPanel,
+  ExitDropdown,
+  LayerPanel,
+  ComponentPanel,
+} from '@/components';
 import {
   LeftOutlined,
   RightOutlined,
@@ -189,6 +194,10 @@ export default {
   background-color: var(--component-background);
   user-select: none;
 
+  img {
+    cursor: pointer;
+  }
+
   &__wrapper {
     flex: 1;
     display: flex;
@@ -217,20 +226,6 @@ export default {
       content: '-';
     }
   }
-
-  &-icon {
-    font-size: 20px;
-    margin-left: 20px;
-    color: var(--primary-8);
-    &:hover {
-      color: var(--success-color);
-    }
-  }
-
-  &-right {
-    display: flex;
-    align-items: center;
-  }
 }
 
 .main {
@@ -239,31 +234,29 @@ export default {
   user-select: none;
 }
 
-.mid {
-  &-panel {
-    flex: 1;
-    height: 100%;
-    background-color: var(--item-hover-bg);
+.mid-panel {
+  flex: 1;
+  height: 100%;
+  background-color: var(--item-hover-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &__toolbar {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
+    padding-left: 30px;
+    border-bottom: 1px solid var(--border-color-base);
+    z-index: 10;
+    background-color: var(--component-background);
+  }
+
+  &__wrapper {
+    position: relative;
+    height: 100%;
     overflow: hidden;
-
-    &__toolbar {
-      position: relative;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      box-sizing: border-box;
-      padding-left: 30px;
-      border-bottom: 1px solid var(--border-color-base);
-      z-index: 10;
-      background-color: var(--component-background);
-    }
-
-    &__wrapper {
-      position: relative;
-      height: 100%;
-      overflow: hidden;
-    }
   }
 }
 

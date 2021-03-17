@@ -81,6 +81,10 @@ type Page = {
   width: number;
   height: number;
   backgroundColor: string;
+  scale: number;
+  zoom: number;
+  gap: number;
+  url: string;
   pageMode: number;
   config: Array<Component>;
 };

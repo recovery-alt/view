@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 
 export default {
   name: 'color-picker',
@@ -42,7 +42,7 @@ export default {
       emit('update:modelValue', value);
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       inputValue.value = props.modelValue;
     });
 

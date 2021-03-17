@@ -1,14 +1,12 @@
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { InjectionKey } from 'vue';
-import board from './modules/board';
-import snapshot from './modules/snapshot';
+import { board, BoardEnum } from './modules/board';
+import { snapshot, SnapshotEnum } from './modules/snapshot';
 
-export const key: InjectionKey<Store<RootStateType>> = Symbol();
+const key: InjectionKey<Store<RootStateType>> = Symbol();
 
-export const store = createStore({ modules: { board, snapshot } });
+const store = createStore({ modules: { board, snapshot } });
 
-export const useStore = () => baseUseStore(key);
+const useStore = () => baseUseStore(key);
 
-export { BoardEnum } from './modules/board';
-
-export { SnapshotEnum } from './modules/snapshot';
+export { key, store, useStore, BoardEnum, SnapshotEnum };

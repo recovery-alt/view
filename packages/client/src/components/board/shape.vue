@@ -20,14 +20,14 @@
     <template v-if="board.selected.includes(index)">
       <div class="board-shape__graticule --x" :style="patchUnit(graticule.x)"></div>
       <div class="board-shape__graticule --y" :style="patchUnit(graticule.y)"></div>
-      <div class="board-shape__marker">{{ graticule.x.width }}, {{ graticule.y.height }}</div>
+      <div class="board-shape__marker">{{ sizeText }}</div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
 import { BoardEnum, SnapshotEnum, useStore } from '@/store';
-import { hideAllLines, showMenu, useBoardRefs } from '@/hooks';
+import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
 import { computed } from 'vue';
@@ -52,6 +52,12 @@ export default {
       const left = -width;
       const top = -height;
       return { x: { width, left }, y: { height, top } };
+    });
+
+    const sizeText = computed(() => {
+      const width = Number.parseInt((graticule.value.x.width - 60) * (pageConfig.scale / 100));
+      const height = Number.parseInt((graticule.value.y.height - 60) * (pageConfig.scale / 100));
+      return `${width},${height}`;
     });
 
     const points = [
@@ -220,6 +226,7 @@ export default {
       graticule,
       board,
       patchUnit,
+      sizeText,
     };
   },
 };
@@ -238,7 +245,7 @@ export default {
   }
 
   &.active {
-    outline: 1px solid var(--primary-7);
+    outline: 1px solid var(--outline-color);
   }
 
   &__graticule {

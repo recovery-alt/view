@@ -1,13 +1,20 @@
 @import 'css-vars';
 @import 'rewrite';
 
-::-webkit-scrollbar-thumb {
-  background: #434b55;
-  border: 1px solid #434b55;
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: var(--white);
 }
-::-webkit-scrollbar-thumb {
-  background-color: #434b55;
-}
+
 ::-webkit-scrollbar-track {
-  background: #000;
+  box-shadow: inset var(--box-shadow-base);
+  border-radius: var(--border-radius-base);
+  background-color: var(--white);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--border-radius-base);
+  box-shadow: inset var(--box-shadow-base);
+  background-color: var(--normal-color);
 }

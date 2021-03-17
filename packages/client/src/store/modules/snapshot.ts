@@ -51,10 +51,10 @@ const snapshot: Module<Snapshot, RootStateType> = {
   namespaced: true,
 };
 
-export enum SnapshotEnum {
+enum SnapshotEnum {
   RECORD_SNAPSHOT = 'snapshot/recordSnapshot',
   UNDO = 'snapshot/undo',
   REDO = 'snapshot/redo',
 }
 
-export default snapshot;
+export { snapshot, SnapshotEnum };
