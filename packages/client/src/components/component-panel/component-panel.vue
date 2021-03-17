@@ -131,6 +131,7 @@ export default {
     width: 80px;
     height: 80px;
     margin-bottom: 6px;
+    cursor: pointer;
 
     header {
       height: 22px;

@@ -1,7 +1,7 @@
 <template>
   <div class="board-menu" @mousedown.stop @mouseup.stop>
     <ul>
-      <li v-for="item in data" :key="item.name" @click="e => handleClick(e, item.event)">
+      <li v-for="item in data" :key="item.name" @click="handleClick($event, item.event)">
         <component :is="item.icon" />
         <span>{{ item.name }}</span>
       </li>
@@ -20,8 +20,10 @@ import {
   DeleteOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
-  UpOutlined,
-  DownOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  FolderOutlined,
+  FolderOpenOutlined,
 } from '@ant-design/icons-vue';
 
 export default {
@@ -33,8 +35,10 @@ export default {
     DeleteOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
-    UpOutlined,
-    DownOutlined,
+    VerticalAlignTopOutlined,
+    VerticalAlignBottomOutlined,
+    FolderOutlined,
+    FolderOpenOutlined,
   },
   props: {
     modelValue: {
@@ -45,6 +49,51 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const data = [
+      {
+        name: '置顶',
+        icon: 'VerticalAlignTopOutlined',
+        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+      },
+      {
+        name: '置底',
+        icon: 'VerticalAlignBottomOutlined',
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+      },
+      {
+        name: '上移一层',
+        icon: 'ArrowUpOutlined',
+        event: () => store.dispatch(BoardEnum.MOVE_UP),
+      },
+      {
+        name: '下移一层',
+        icon: 'ArrowDownOutlined',
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+      },
+
+      {
+        name: '成组',
+        icon: 'FolderOutlined',
+        event: () => {
+          // TODO: 成组
+        },
+      },
+      {
+        name: '取消成组',
+        icon: 'FolderOpenOutlined',
+        event: () => null,
+      },
+
+      {
+        name: '锁定',
+        icon: 'FolderOpenOutlined',
+        event: () => null,
+      },
+      {
+        name: '隐藏',
+        icon: 'FolderOpenOutlined',
+        event: () => null,
+      },
+
       {
         name: '剪切',
         icon: 'ScissorOutlined',
@@ -68,26 +117,6 @@ export default {
         name: '删除',
         icon: 'DeleteOutlined',
         event: () => store.dispatch(BoardEnum.DEL),
-      },
-      {
-        name: '置顶',
-        icon: 'ArrowUpOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
-      },
-      {
-        name: '置底',
-        icon: 'ArrowDownOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
-      },
-      {
-        name: '上移一层',
-        icon: 'UpOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_UP),
-      },
-      {
-        name: '下移一层',
-        icon: 'DownOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
       },
     ];
 
@@ -117,12 +146,17 @@ export default {
   li {
     padding: 0 10px;
     margin-top: 5px;
-    border-radius: 3px;
     cursor: default;
+    padding-right: 3em;
 
     &:hover {
       background-color: var(--primary-8);
       color: var(--component-background);
+    }
+
+    &:nth-child(4),
+    &:nth-child(8) {
+      border-bottom: 1px solid var(--black);
     }
   }
 

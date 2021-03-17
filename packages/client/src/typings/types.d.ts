@@ -54,7 +54,7 @@ type Component = {
   id: string;
   component: string;
   label: string;
-  propValue?: string;
+  propValue?: unknown;
   icon?: string;
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;

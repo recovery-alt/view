@@ -32,7 +32,6 @@
         @drop="handleDrop"
         @dragover.prevent
         @mousedown="handleMousedown"
-        @contextmenu="handleRightClick"
       >
         <board-shape
           v-for="(item, index) in board.data"
@@ -138,10 +137,10 @@ export default {
       store.dispatch(BoardEnum.APEEND, { type, left, top });
     };
 
-    const handleRightClick = (e: MouseEvent) => {
-      e.preventDefault();
-      showMenu(e);
-    };
+    // const handleRightClick = (e: MouseEvent) => {
+    //   e.preventDefault();
+    //   showMenu(e);
+    // };
 
     const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
       canvasWrapperRef
@@ -169,7 +168,6 @@ export default {
       board,
       handleMousedown,
       handleDrop,
-      handleRightClick,
       menu,
       patchUnit,
       selectMask,

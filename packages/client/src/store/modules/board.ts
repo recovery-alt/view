@@ -7,6 +7,7 @@ import config from '@/config';
 import { useBoardRefs } from '@/hooks';
 import { nextTick } from 'vue';
 import { v4 as uuid } from 'uuid';
+import { spliceItems } from '@/utils';
 
 const state: Board = {
   selected: [],
@@ -30,11 +31,7 @@ const mutations: Data<Mutation<Board>> = {
     state.selected = selected;
   },
   del(state) {
-    const selectedComponents = state.selected.map(index => state.data[index]);
-    selectedComponents.forEach(val => {
-      const index = state.data.indexOf(val);
-      state.data.splice(index, 1);
-    });
+    spliceItems(state.data, state.selected);
     state.selected = [];
   },
   cancelSelected(state) {
@@ -194,6 +191,19 @@ const actions: Data<Action<Board, RootStateType>> = {
     });
     commit('setIndex', needSelected);
   },
+  group({ state, commit }) {
+    const { selected, data } = state;
+    const components = spliceItems(data, selected);
+
+    const group: Component = {
+      id: uuid(),
+      component: 'cq-group',
+      label: '成组',
+      propValue: components,
+      style: { rotate: 0, top: 0, left: 0, width: 0, height: 0 },
+    };
+    commit('append', group);
+  },
 };
 
 const board: Module<Board, RootStateType> = {
@@ -216,6 +226,7 @@ enum BoardEnum {
   MOVE_UP = 'board/moveUp',
   MOVE_DOWN = 'board/moveDown',
   CALC_SELECTED_BY_RECT = 'board/calcSelectedByRect',
+  GROUP = 'group',
 }
 
 export { board, BoardEnum };

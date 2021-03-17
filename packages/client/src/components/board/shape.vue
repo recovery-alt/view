@@ -2,7 +2,7 @@
   <div
     class="board-shape"
     :class="{ active }"
-    @click="handleShapeClick"
+    @contextmenu="handleRightClick"
     @mousedown.stop="handleMousedown"
     @mouseup="handleMouseup"
   >
@@ -72,13 +72,10 @@ export default {
     ];
 
     const handleRightClick = (e: MouseEvent) => {
+      e.preventDefault();
       showMenu(e);
-    };
-
-    const handleShapeClick = (e: MouseEvent) => {
-      e.stopPropagation();
-      if (e.buttons === 2) {
-        handleRightClick(e);
+      if (!board.selected.includes(props.index)) {
+        store.dispatch(BoardEnum.SET_INDEX, props.index);
       }
     };
 
@@ -217,7 +214,7 @@ export default {
     };
 
     return {
-      handleShapeClick,
+      handleRightClick,
       handleMousedown,
       points,
       handleMousedownOnPoint,

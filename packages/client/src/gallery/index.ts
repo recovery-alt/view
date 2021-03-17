@@ -2,6 +2,7 @@ import { App } from 'vue';
 import { Group, Gallery, GalleryGroup } from '@/typings';
 import basic from './basic';
 import chart from './chart';
+import ComponentGroup from './group.vue';
 
 const galleryGroup: GalleryGroup = [];
 
@@ -22,6 +23,7 @@ export default (app: App) => {
 
   resolveGroup(basic);
   resolveGroup(chart);
+  app.component(`cq-${ComponentGroup.name}`, ComponentGroup);
 };
 
 export const getGalleryGroup = () => galleryGroup;

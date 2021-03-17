@@ -195,11 +195,12 @@ export default {
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-8);
+        background-color: var(--primary-2);
       }
 
       &.active {
-        background-color: var(--primary-1);
+        color: var(--white);
+        background-color: var(--primary-5);
       }
     }
 
@@ -219,7 +220,7 @@ export default {
       img {
         width: 51px;
         height: 34px;
-        border: 1px solid #3a4659;
+        border: 1px solid var(--border-color-base);
       }
 
       div {
