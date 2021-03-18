@@ -223,13 +223,16 @@ const actions: Data<Action<Board, RootStateType>> = {
       group: components,
       style: { top, left, width, height, rotate: 0 },
     };
+
+    // 取消原先选中
+    selected.length = 0;
     commit('append', group);
   },
   cancelGroup({ state, commit }) {
     const { selected, data } = state;
     const component = data[selected[0]];
     data.splice(selected[0], 1);
-    const group = component.group as Component[];
+    const group = component.group;
     if (!group) return;
     const { left, top } = component.style;
     const components: Component[] = [];

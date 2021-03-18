@@ -11,10 +11,11 @@ import {
   VerticalAlignBottomOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
+  DownOutlined,
   RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 
 export default {
@@ -31,6 +32,7 @@ export default {
     VerticalAlignBottomOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
+    DownOutlined,
     RightOutlined,
   },
   setup() {
@@ -39,6 +41,7 @@ export default {
     const showList = ref(false);
 
     const { board } = store.state;
+
     const moveActions = [
       { tip: '置顶', icon: VerticalAlignTopOutlined },
       { tip: '置底', icon: VerticalAlignBottomOutlined },
@@ -67,8 +70,18 @@ export default {
       }
     };
 
-    const toggleGroup = () => {
-      // TODO
+    const toggleState = reactive<Data<boolean>>({});
+
+    board.data.map(item => {
+      const { group } = item;
+
+      if (group && group.length > 0) {
+        toggleState[item.id] = false;
+      }
+    });
+
+    const toggleGroup = (id: string) => {
+      toggleState[id] = !toggleState[id];
     };
 
     const className = computed(() => (showList.value ? '--item' : '--thumbail'));
@@ -103,15 +116,24 @@ export default {
           </header>
           <ul class="layer-panel__box">
             {board.data.map((item, index) => {
-              const { group } = item;
+              const { group, id } = item;
               let icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
               let children;
               let parentIcon = icon;
 
               if (group && group.length > 0) {
-                parentIcon = <RightOutlined onClick={toggleGroup} />;
+                const [transform, display] = toggleState[id]
+                  ? ['rotate(90deg)', 'block']
+                  : ['rotate(0deg)', 'none'];
+                parentIcon = (
+                  <RightOutlined
+                    class={'--animated'}
+                    style={{ transform }}
+                    onClick={toggleGroup.bind(null, id)}
+                  />
+                );
                 children = group.map((val, i) => (
-                  <li class={className.value} onClick={e => changeSelected(e, i)}>
+                  <li class="--animated" class={className.value} style={{ display }}>
                     {icon}
                     <span>{val.label}</span>
                   </li>
@@ -255,6 +277,10 @@ export default {
       span {
         margin-left: 5px;
       }
+    }
+
+    .--animated {
+      transition: transform 0.3s var(--ease-in-out);
     }
   }
 
