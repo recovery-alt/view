@@ -50,13 +50,10 @@
 
 <script lang="ts">
 import { ref, computed } from 'vue';
-import AttrPanel from './attr-panel.vue';
-import { useAnimation } from '@/hooks';
+import { AttrPanel, AnimatePanel, PageConfig } from '@/components';
+import { panel, useAnimation } from '@/hooks';
 import { useStore } from '@/store';
-import AnimatePanel from './animate-panel.vue';
 import { PlusOutlined, PlayCircleOutlined } from '@ant-design/icons-vue';
-import { panel } from '@/hooks';
-import PageConfig from './page-config.vue';
 
 export default {
   name: 'right-panel',

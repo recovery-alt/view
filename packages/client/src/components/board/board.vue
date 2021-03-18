@@ -51,7 +51,7 @@
           />
         </board-shape>
 
-        <board-menu v-show="menu.show" v-model="menu.show" :style="patchUnit(menu.style)" />
+        <board-menu v-if="menu.show" v-model="menu.show" :style="patchUnit(menu.style)" />
         <board-markline />
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
@@ -136,11 +136,6 @@ export default {
       const { offsetX: left, offsetY: top } = e;
       store.dispatch(BoardEnum.APEEND, { type, left, top });
     };
-
-    // const handleRightClick = (e: MouseEvent) => {
-    //   e.preventDefault();
-    //   showMenu(e);
-    // };
 
     const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
       canvasWrapperRef

@@ -1,75 +1,4 @@
-<template>
-  <div class="layer-panel" :class="{ 'layer-panel--hide': !panel.layer }">
-    <template v-if="panel.layer">
-      <header class="layer-panel__header">
-        <div>图层</div>
-        <section>
-          <component
-            :is="item"
-            v-for="(item, i) in ['AppstoreOutlined', 'DatabaseOutlined']"
-            :key="item"
-            :class="{ active: i === 0 ? !showlist : showlist }"
-            @click="switchList(i)"
-          />
-          <LeftOutlined @click="panel.layer = !panel.layer" />
-        </section>
-      </header>
-      <section class="layer-panel__wrapper">
-        <header class="layer-panel__toolbar">
-          <a-tooltip
-            v-for="item in moveActions"
-            :key="item.icon"
-            :title="item.tip"
-            placement="bottom"
-          >
-            <component :is="item.icon" />
-          </a-tooltip>
-        </header>
-        <ul class="layer-panel__box">
-          <template v-for="(item, index) in board.data" :key="item.id">
-            <li
-              :class="{
-                active: board.selected.includes(index),
-                '--thumbail': !showlist,
-                '--item': showlist,
-              }"
-              @click="changeSelected($event, index)"
-            >
-              <RightOutlined
-                v-if="item.group && item.group.length > 0"
-                style="cursor: pointer"
-                @click="toggleGroup"
-              />
-              <DatabaseOutlined v-else-if="showlist" />
-              <img v-else src="//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png" />
-              <span>{{ item.label }}</span>
-            </li>
-            <template v-if="item.group && item.group.length > 0">
-              <li
-                v-for="val in item.group"
-                :key="val.id"
-                :class="{
-                  '--thumbail': !showlist,
-                  '--item': showlist,
-                }"
-                @click="changeSelected($event, index)"
-              >
-                <DatabaseOutlined v-if="showlist" />
-                <img v-else src="//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png" />
-                <span>{{ val.label }}</span>
-              </li>
-            </template>
-          </template>
-        </ul>
-      </section>
-      <footer class="layer-panel__footer">
-        <component :is="item.icon" v-for="item in operations" :key="item.icon" />
-      </footer>
-    </template>
-  </div>
-</template>
-
-<script lang="ts">
+<script lang="tsx">
 import {
   AppstoreOutlined,
   DatabaseOutlined,
@@ -85,10 +14,11 @@ import {
   RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 
 export default {
+  name: 'layer-panel',
   components: {
     AppstoreOutlined,
     DatabaseOutlined,
@@ -106,21 +36,21 @@ export default {
   setup() {
     const store = useStore();
 
-    const showlist = ref(false);
+    const showList = ref(false);
 
     const { board } = store.state;
     const moveActions = [
-      { tip: '置顶', icon: 'VerticalAlignTopOutlined' },
-      { tip: '置底', icon: 'VerticalAlignBottomOutlined' },
-      { tip: '上移', icon: 'ArrowUpOutlined' },
-      { tip: '下移', icon: 'ArrowDownOutlined' },
+      { tip: '置顶', icon: VerticalAlignTopOutlined },
+      { tip: '置底', icon: VerticalAlignBottomOutlined },
+      { tip: '上移', icon: ArrowUpOutlined },
+      { tip: '下移', icon: ArrowDownOutlined },
     ];
 
     const operations = [
-      { tip: '成组', icon: 'FolderOutlined' },
-      { tip: '删除', icon: 'DeleteOutlined' },
-      { tip: '锁定', icon: 'LockOutlined' },
-      { tip: '隐藏', icon: 'EyeInvisibleOutlined' },
+      { tip: '成组', icon: FolderOutlined },
+      { tip: '删除', icon: DeleteOutlined },
+      { tip: '锁定', icon: LockOutlined },
+      { tip: '隐藏', icon: EyeInvisibleOutlined },
     ];
 
     const changeSelected = (e: MouseEvent, index: number) => {
@@ -132,8 +62,8 @@ export default {
     };
 
     const switchList = (index: number) => {
-      if ((index === 0 && showlist.value) || (index === 1 && !showlist.value)) {
-        showlist.value = !showlist.value;
+      if ((index === 0 && showList.value) || (index === 1 && !showList.value)) {
+        showList.value = !showList.value;
       }
     };
 
@@ -141,16 +71,78 @@ export default {
       // TODO
     };
 
-    return {
-      panel,
-      showlist,
-      changeSelected,
-      board,
-      switchList,
-      moveActions,
-      operations,
-      toggleGroup,
-    };
+    const className = computed(() => (showList.value ? '--item' : '--thumbail'));
+    const src = '//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png';
+
+    return () => (
+      <div class="layer-panel" class={panel.layer || '--hide'}>
+        <header class="layer-panel__header">
+          <div>图层</div>
+          <section>
+            {[AppstoreOutlined, DatabaseOutlined].map((Item, i) => (
+              <Item
+                key={Item.name}
+                class={(i === 0 ? !showList.value : showList.value) && 'active'}
+                onClick={switchList.bind(null, i)}
+              />
+            ))}
+            <LeftOutlined
+              onClick={() => {
+                panel.layer = !panel.layer;
+              }}
+            />
+          </section>
+        </header>
+        <section class="layer-panel__wrapper">
+          <header class="layer-panel__toolbar">
+            {moveActions.map(Item => (
+              <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
+                <Item.icon />
+              </ATooltip>
+            ))}
+          </header>
+          <ul class="layer-panel__box">
+            {board.data.map((item, index) => {
+              const { group } = item;
+              let icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
+              let children;
+              let parentIcon = icon;
+
+              if (group && group.length > 0) {
+                parentIcon = <RightOutlined onClick={toggleGroup} />;
+                children = group.map((val, i) => (
+                  <li class={className.value} onClick={e => changeSelected(e, i)}>
+                    {icon}
+                    <span>{val.label}</span>
+                  </li>
+                ));
+              }
+
+              return (
+                <>
+                  <li
+                    class={className.value}
+                    class={board.selected.includes(index) && 'active'}
+                    onClick={e => changeSelected(e, index)}
+                  >
+                    {parentIcon}
+                    <span>{item.label}</span>
+                  </li>
+                  {children}
+                </>
+              );
+            })}
+          </ul>
+        </section>
+        <footer class="layer-panel__footer">
+          {operations.map(Item => (
+            <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
+              <Item.icon key={Item.icon.name} />
+            </ATooltip>
+          ))}
+        </footer>
+      </div>
+    );
   },
 };
 </script>
@@ -166,7 +158,7 @@ export default {
   white-space: nowrap;
   user-select: none;
 
-  &--hide {
+  &.--hide {
     width: 0;
     border: 0;
   }

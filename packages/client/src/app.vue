@@ -8,6 +8,7 @@
 import ZhCN from 'ant-design-vue/es/locale/zh_CN';
 
 export default {
+  name: 'app',
   setup() {
     return { locale: ZhCN };
   },
@@ -21,6 +22,7 @@ body {
   overflow: hidden;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     '微软雅黑', Arial, sans-serif;
+  color: var(--text-color);
 }
 
 #app {

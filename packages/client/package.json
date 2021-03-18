@@ -16,6 +16,7 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@ehutch79/vite-eslint": "^0.0.1",
     "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.168",
     "@vitejs/plugin-vue": "^1.1.4",

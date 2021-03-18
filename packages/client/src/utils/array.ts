@@ -14,3 +14,27 @@ export const spliceItems = <T>(arr: T[], indexArr: number[]) => {
   });
   return selectedItems;
 };
+
+export const judgeGroupDisabled = (board: Board) => {
+  const { selected, data } = board;
+
+  if (selected.length <= 1) return true;
+
+  let counter = 0;
+  selected.forEach(index => {
+    const { group } = data[index];
+    if (!group || group.length === 0) counter++;
+  });
+
+  return counter !== selected.length;
+};
+
+export const judgeCancelGroupDisabled = (board: Board) => {
+  const { selected, data } = board;
+
+  if (selected.length !== 1) return true;
+
+  const { group } = data[selected[0]];
+
+  return !(group && group.length > 0);
+};

@@ -9,7 +9,7 @@ import { patchUnit } from '@/utils';
 import { BoardWrapper } from '@/components';
 
 export default {
-  name: 'render',
+  name: 'engine-pc',
   components: { BoardWrapper },
   props: {
     id: { type: String, default: () => '' },

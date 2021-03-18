@@ -7,6 +7,7 @@ import { nextTick, onMounted, ref } from 'vue';
 import { pageConfig } from '@/hooks';
 
 export default {
+  name: 'board-ruler',
   setup() {
     const canvas = ref<HTMLCanvasElement | null>(null);
 

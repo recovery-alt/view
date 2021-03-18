@@ -1,7 +1,12 @@
 <template>
   <div class="board-menu" @mousedown.stop @mouseup.stop>
     <ul>
-      <li v-for="item in data" :key="item.name" @click="handleClick($event, item.event)">
+      <li
+        v-for="item in data"
+        :key="item.name"
+        :class="{ '--disable': item.disable }"
+        @click="handleClick($event, item.disable, item.event)"
+      >
         <component :is="item.icon" />
         <span>{{ item.name }}</span>
       </li>
@@ -10,9 +15,8 @@
 </template>
 
 <script lang="ts">
-import { useStore } from '@/store';
-import { BoardEnum } from '@/store';
-import { getMenuPosition } from '@/utils';
+import { useStore, BoardEnum } from '@/store';
+import { getMenuPosition, judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import {
   ScissorOutlined,
   CopyOutlined,
@@ -25,6 +29,7 @@ import {
   FolderOutlined,
   FolderOpenOutlined,
 } from '@ant-design/icons-vue';
+import { reactive, onMounted } from 'vue';
 
 export default {
   name: 'board-menu',
@@ -48,7 +53,10 @@ export default {
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const store = useStore();
-    const data = [
+
+    const { board } = store.state;
+
+    const data = reactive([
       {
         name: '置顶',
         icon: 'VerticalAlignTopOutlined',
@@ -73,22 +81,26 @@ export default {
       {
         name: '成组',
         icon: 'FolderOutlined',
+        disable: false,
         event: () => store.dispatch(BoardEnum.GROUP),
       },
       {
         name: '取消成组',
         icon: 'FolderOpenOutlined',
+        disable: false,
         event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
       },
 
       {
         name: '锁定',
         icon: 'FolderOpenOutlined',
+        disable: false,
         event: () => null,
       },
       {
         name: '隐藏',
         icon: 'FolderOpenOutlined',
+        disable: false,
         event: () => null,
       },
 
@@ -116,14 +128,23 @@ export default {
         icon: 'DeleteOutlined',
         event: () => store.dispatch(BoardEnum.DEL),
       },
-    ];
+    ]);
 
     // 处理菜单消失
-    const handleClick = (e: MouseEvent, cb: () => void) => {
+    const handleClick = (e: MouseEvent, disable: boolean, cb: () => void) => {
       e.stopPropagation();
+      if (disable) {
+        e.preventDefault();
+        return;
+      }
       emit('update:modelValue', false);
       cb();
     };
+
+    onMounted(() => {
+      data[4].disable = judgeGroupDisabled(board);
+      data[5].disable = judgeCancelGroupDisabled(board);
+    });
 
     return { data, handleClick };
   },
@@ -133,6 +154,7 @@ export default {
 <style lang="less">
 .board-menu {
   position: absolute;
+  z-index: 2;
 
   ul {
     background-color: var(--normal-color);
@@ -155,6 +177,16 @@ export default {
     &:nth-child(4),
     &:nth-child(8) {
       border-bottom: 1px solid var(--black);
+    }
+
+    &.--disable {
+      cursor: not-allowed;
+      opacity: 0.3;
+
+      &:hover {
+        color: var(--text-color);
+        background-color: var(--normal-color);
+      }
     }
   }
 

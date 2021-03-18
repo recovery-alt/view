@@ -3,7 +3,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'cq-demo',
+};
 </script>
 
 <style></style>

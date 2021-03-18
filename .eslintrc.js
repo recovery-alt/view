@@ -4,6 +4,7 @@ module.exports = {
   parser: 'vue-eslint-parser',
   parserOptions: { ecmaVersion: 2020, parser: '@typescript-eslint/parser' },
   extends: [
+    'plugin:jsx-a11y/recommended',
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -17,6 +18,9 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0,
     'vue/name-property-casing': ['error', 'kebab-case'],
     'vue/component-definition-name-casing': ['error', 'kebab-case'],
+    'jsx-a11y/alt-text': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
   },
   overrides: [
     {

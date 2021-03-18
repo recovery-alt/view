@@ -17,6 +17,7 @@ import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 
 export default {
+  name: 'board-preview',
   components: { BoardWrapper, CloseSquareOutlined },
   props: {
     modelValue: Boolean,
