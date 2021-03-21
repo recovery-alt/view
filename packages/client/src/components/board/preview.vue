@@ -3,7 +3,20 @@
     <div v-if="modelValue" class="modal-mask">
       <div class="modal-box" :style="style">
         <CloseSquareOutlined class="modal-close" @click="handleClose" />
-        <board-wrapper :data="board.data" />
+        <div
+          v-for="(item, index) in board.data"
+          :key="item.id"
+          class="board-wrapper"
+          :z-index="index"
+          :style="splitStyleAndPatch(item.style)"
+        >
+          <component
+            :is="item.component"
+            class="board-component"
+            :group="item.group"
+            :style="splitStyleAndPatch(item.style, false)"
+          />
+        </div>
       </div>
     </div>
   </teleport>
@@ -12,13 +25,13 @@
 <script lang="ts">
 import { computed } from 'vue';
 import { pageConfig } from '@/hooks';
-import BoardWrapper from './wrapper.vue';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
+import { splitStyleAndPatch } from '@/utils';
 
 export default {
   name: 'board-preview',
-  components: { BoardWrapper, CloseSquareOutlined },
+  components: { CloseSquareOutlined },
   props: {
     modelValue: Boolean,
   },
@@ -37,7 +50,7 @@ export default {
       emit('update:modelValue', false);
     };
 
-    return { handleClose, style, board };
+    return { handleClose, style, board, splitStyleAndPatch };
   },
 };
 </script>
@@ -73,6 +86,21 @@ export default {
 
   &:hover {
     color: var(--primary-8);
+  }
+}
+
+.board-wrapper {
+  position: absolute;
+  box-sizing: border-box;
+
+  & > *:first-child {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .board-component {
+    height: 100%;
   }
 }
 </style>

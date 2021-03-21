@@ -1,16 +1,27 @@
 <template>
-  <board-wrapper :data="data" />
+  <div
+    v-for="(item, index) in data"
+    :key="item.id"
+    class="board-wrapper"
+    :z-index="index"
+    :style="splitStyleAndPatch(item.style)"
+  >
+    <component
+      :is="item.component"
+      class="board-component"
+      :group="item.group"
+      :style="splitStyleAndPatch(item.style, false)"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import { onMounted, ref } from 'vue';
 import { getPage } from '@/api';
-import { patchUnit } from '@/utils';
-import { BoardWrapper } from '@/components';
+import { splitStyleAndPatch } from '@/utils';
 
 export default {
   name: 'engine-pc',
-  components: { BoardWrapper },
   props: {
     id: { type: String, default: () => '' },
   },
@@ -26,7 +37,7 @@ export default {
       document.body.style.height = res.data.height + 'px';
     });
 
-    return { data, patchUnit };
+    return { data, splitStyleAndPatch };
   },
 };
 </script>
@@ -36,5 +47,20 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.board-wrapper {
+  position: absolute;
+  box-sizing: border-box;
+
+  & > *:first-child {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .board-component {
+    height: 100%;
+  }
 }
 </style>

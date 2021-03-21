@@ -13,3 +13,8 @@ export enum LocalKeys {
   USER_INFO = 'user-info',
   AUTHORIZATION = 'authorization',
 }
+
+export enum Direction {
+  X = 'x',
+  Y = 'y',
+}

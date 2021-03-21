@@ -4,7 +4,7 @@ import {
   DatabaseOutlined,
   LeftOutlined,
   FolderOutlined,
-  DeleteOutlined,
+  FolderOpenOutlined,
   LockOutlined,
   EyeInvisibleOutlined,
   VerticalAlignTopOutlined,
@@ -14,9 +14,11 @@ import {
   DownOutlined,
   RightOutlined,
 } from '@ant-design/icons-vue';
-import { panel } from '@/hooks';
+import { panel, menu, showMenu } from '@/hooks';
 import { computed, reactive, ref } from 'vue';
 import { BoardEnum, useStore } from '@/store';
+import { BoardMenu } from '@/components';
+import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 
 export default {
   name: 'layer-panel',
@@ -25,7 +27,7 @@ export default {
     DatabaseOutlined,
     LeftOutlined,
     FolderOutlined,
-    DeleteOutlined,
+    FolderOpenOutlined,
     LockOutlined,
     EyeInvisibleOutlined,
     VerticalAlignTopOutlined,
@@ -34,6 +36,7 @@ export default {
     ArrowDownOutlined,
     DownOutlined,
     RightOutlined,
+    BoardMenu,
   },
   setup() {
     const store = useStore();
@@ -42,18 +45,61 @@ export default {
 
     const { board } = store.state;
 
+    const layerRef = ref<HTMLElement | null>(null);
+
+    const unlock = (e: MouseEvent, index: number) => {
+      e.stopPropagation();
+      store.dispatch(BoardEnum.TOGGLE_LOCKED, index);
+    };
+    const show = (e: MouseEvent, index: number) => {
+      e.stopPropagation();
+      store.dispatch(BoardEnum.SHOW, index);
+    };
+
     const moveActions = [
-      { tip: '置顶', icon: VerticalAlignTopOutlined },
-      { tip: '置底', icon: VerticalAlignBottomOutlined },
-      { tip: '上移', icon: ArrowUpOutlined },
-      { tip: '下移', icon: ArrowDownOutlined },
+      {
+        tip: '置顶',
+        icon: VerticalAlignTopOutlined,
+        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+      },
+      {
+        tip: '置底',
+        icon: VerticalAlignBottomOutlined,
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+      },
+      {
+        tip: '上移',
+        icon: ArrowUpOutlined,
+        event: () => store.dispatch(BoardEnum.MOVE_UP),
+      },
+      {
+        tip: '下移',
+        icon: ArrowDownOutlined,
+        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+      },
     ];
 
     const operations = [
-      { tip: '成组', icon: FolderOutlined },
-      { tip: '删除', icon: DeleteOutlined },
-      { tip: '锁定', icon: LockOutlined },
-      { tip: '隐藏', icon: EyeInvisibleOutlined },
+      {
+        tip: '成组',
+        icon: FolderOutlined,
+        event: () => store.dispatch(BoardEnum.GROUP),
+      },
+      {
+        tip: '取消成组',
+        icon: FolderOpenOutlined,
+        event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
+      },
+      {
+        tip: '锁定',
+        icon: LockOutlined,
+        event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
+      },
+      {
+        tip: '隐藏',
+        icon: EyeInvisibleOutlined,
+        event: () => store.dispatch(BoardEnum.HIDE, board.selected),
+      },
     ];
 
     const changeSelected = (e: MouseEvent, index: number) => {
@@ -71,7 +117,6 @@ export default {
     };
 
     const toggleState = reactive<Data<boolean>>({});
-
     board.data.map(item => {
       const { group } = item;
 
@@ -84,18 +129,35 @@ export default {
       toggleState[id] = !toggleState[id];
     };
 
+    const handleRightClick = (e: MouseEvent, index: number) => {
+      e.preventDefault();
+      showMenu(e, 'layer');
+      if (!board.selected.includes(index)) {
+        store.dispatch(BoardEnum.SET_INDEX, index);
+      }
+    };
+
+    const operationActions = computed(() => {
+      const result: Array<{ disable?: boolean }> = [];
+      result[0] = { disable: judgeGroupDisabled(board) };
+      result[1] = { disable: judgeCancelGroupDisabled(board) };
+      result[2] = { disable: board.selected.length === 0 };
+      result[3] = { disable: board.selected.length === 0 };
+      return result;
+    });
+
     const className = computed(() => (showList.value ? '--item' : '--thumbail'));
     const src = '//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png';
 
     return () => (
-      <div class="layer-panel" class={panel.layer || '--hide'}>
+      <div class="layer-panel" ref={layerRef} class={panel.layer || '--hide'}>
         <header class="layer-panel__header">
           <div>图层</div>
           <section>
             {[AppstoreOutlined, DatabaseOutlined].map((Item, i) => (
               <Item
                 key={Item.name}
-                class={(i === 0 ? !showList.value : showList.value) && 'active'}
+                class={(i === 0 ? !showList.value : showList.value) && '--active'}
                 onClick={switchList.bind(null, i)}
               />
             ))}
@@ -110,16 +172,32 @@ export default {
           <header class="layer-panel__toolbar">
             {moveActions.map(Item => (
               <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
-                <Item.icon />
+                <Item.icon
+                  onClick={Item.event}
+                  class={board.selected.length === 0 && '--disable'}
+                />
               </ATooltip>
             ))}
           </header>
           <ul class="layer-panel__box">
             {board.data.map((item, index) => {
-              const { group, id } = item;
+              const { group, id, locked } = item;
+              const { display } = item.style;
               let icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
               let children;
               let parentIcon = icon;
+
+              let LockOrHidden;
+
+              if (locked) {
+                LockOrHidden = <LockOutlined class="--icon" onClick={e => unlock(e, index)} />;
+              }
+
+              if (display === 'none') {
+                LockOrHidden = (
+                  <EyeInvisibleOutlined class="--icon" onClick={e => show(e, index)} />
+                );
+              }
 
               if (group && group.length > 0) {
                 const [transform, display] = toggleState[id]
@@ -132,10 +210,10 @@ export default {
                     onClick={toggleGroup.bind(null, id)}
                   />
                 );
-                children = group.map((val, i) => (
+                children = group.map(val => (
                   <li class="--animated" class={className.value} style={{ display }}>
                     {icon}
-                    <span>{val.label}</span>
+                    <b>{val.label}</b>
                   </li>
                 ));
               }
@@ -144,24 +222,35 @@ export default {
                 <>
                   <li
                     class={className.value}
-                    class={board.selected.includes(index) && 'active'}
-                    onClick={e => changeSelected(e, index)}
+                    class={board.selected.includes(index) && '--active'}
+                    onContextmenu={e => handleRightClick(e, index)}
+                    onMouseup={e => changeSelected(e, index)}
                   >
+                    {LockOrHidden}
                     {parentIcon}
-                    <span>{item.label}</span>
+                    <b>{item.label}</b>
                   </li>
                   {children}
                 </>
               );
             })}
           </ul>
+          {menu.layer.show && <BoardMenu menu-type="layer" container={layerRef.value} />}
         </section>
         <footer class="layer-panel__footer">
-          {operations.map(Item => (
-            <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
-              <Item.icon key={Item.icon.name} />
-            </ATooltip>
-          ))}
+          {operations.map((Item, i) => {
+            const action = operationActions.value[i];
+
+            return (
+              <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
+                <Item.icon
+                  key={Item.icon.name}
+                  onClick={(action && action.disable) || Item.event}
+                  class={action && action.disable && '--disable'}
+                />
+              </ATooltip>
+            );
+          })}
         </footer>
       </div>
     );
@@ -171,6 +260,7 @@ export default {
 
 <style lang="less">
 .layer-panel {
+  position: relative;
   width: 200px;
   height: 100%;
   border-right: 1px solid var(--border-color-base);
@@ -179,6 +269,11 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   user-select: none;
+  background-color: var(--component-background);
+
+  .--disable {
+    opacity: 0.3;
+  }
 
   &.--hide {
     width: 0;
@@ -203,7 +298,11 @@ export default {
       cursor: pointer;
       font-size: 16px;
 
-      &.active {
+      &:hover {
+        color: var(--primary-8);
+      }
+
+      &.--active {
         color: var(--primary-8);
       }
     }
@@ -236,6 +335,7 @@ export default {
 
   &__box {
     li {
+      position: relative;
       width: 100%;
       padding-left: 8px;
       padding-right: 6px;
@@ -247,7 +347,7 @@ export default {
         background-color: var(--primary-2);
       }
 
-      &.active {
+      &.--active {
         color: var(--white);
         background-color: var(--primary-5);
       }
@@ -259,8 +359,9 @@ export default {
       display: flex;
       align-items: center;
 
-      span {
+      b {
         margin-left: 5px;
+        font-weight: normal;
       }
     }
 
@@ -274,13 +375,20 @@ export default {
         border: 1px solid var(--border-color-base);
       }
 
-      span {
+      b {
         margin-left: 5px;
+        font-weight: normal;
       }
     }
 
     .--animated {
       transition: transform 0.3s var(--ease-in-out);
+    }
+
+    .--icon {
+      position: absolute;
+      right: 5px;
+      top: 5px;
     }
   }
 
@@ -301,6 +409,11 @@ export default {
         background-color: var(--primary-8);
         color: var(--component-background);
       }
+    }
+
+    .--icon {
+      background-color: var(--primary-color);
+      color: var(--white);
     }
   }
 }

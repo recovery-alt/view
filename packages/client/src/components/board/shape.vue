@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { BoardEnum, SnapshotEnum, useStore } from '@/store';
+import { BoardEnum, useStore } from '@/store';
 import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
@@ -73,7 +73,7 @@ export default {
 
     const handleRightClick = (e: MouseEvent) => {
       e.preventDefault();
-      showMenu(e);
+      showMenu(e, 'board');
       if (!board.selected.includes(props.index)) {
         store.dispatch(BoardEnum.SET_INDEX, props.index);
       }
@@ -109,7 +109,6 @@ export default {
 
         const mouseup = (e: MouseEvent) => {
           e.stopPropagation();
-          store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
           off('mousemove', mousemove);
           off('mouseup', mouseup);
           hideAllLines();
@@ -170,7 +169,6 @@ export default {
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
         handleEchartsResize(board.selected[0]);
-        store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
         off('mouseup', mouseup);
         off('mousemove', mousemove);
       };
@@ -204,7 +202,6 @@ export default {
 
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
-        store.dispatch(SnapshotEnum.RECORD_SNAPSHOT);
         off('mouseup', mouseup);
         off('mousemove', mousemove);
       };

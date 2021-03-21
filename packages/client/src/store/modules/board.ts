@@ -1,6 +1,5 @@
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
-import { SnapshotEnum } from './snapshot';
 import { getGalleryList } from '@/gallery';
 import { message } from 'ant-design-vue';
 import config from '@/config';
@@ -38,11 +37,21 @@ const mutations: Data<Mutation<Board>> = {
     state.selected = [];
   },
   setIndex(state, selected: Array<number>) {
-    state.selected = selected;
+    const result: number[] = [];
+    const { data } = state;
+    selected.forEach(i => {
+      if (!data[i].locked && data[i].style.display !== 'none') result.push(i);
+    });
+    state.selected = result;
   },
   appendSelected(state, selected: number | Array<number>) {
+    const { data } = state;
     const selectedArr = typeof selected === 'number' ? [selected] : selected;
-    state.selected.push(...selectedArr);
+    const result: number[] = [];
+    selectedArr.forEach(i => {
+      if (!data[i].locked && data[i].style.display !== 'none') result.push(i);
+    });
+    state.selected.push(...result);
   },
   spliceSelected(state, selected: number) {
     state.selected.splice(state.selected.indexOf(selected), 1);
@@ -58,12 +67,37 @@ const mutations: Data<Mutation<Board>> = {
   setCopy(state) {
     state.copy = cloneDeep(state.selected.map(index => state.data[index]));
   },
+  toggleLocked(state, target: number | Array<number>) {
+    const { data, selected } = state;
+    const targetArr = typeof target === 'number' ? [target] : [...target];
+    targetArr.forEach(index => {
+      const component = data[index];
+      const i = selected.indexOf(index);
+      component.locked = !component.locked;
+      if (component.locked && i > -1) {
+        selected.splice(i, 1);
+      }
+    });
+  },
+  hide(state, target: number | Array<number>) {
+    const { data, selected } = state;
+    const targetArr = typeof target === 'number' ? [target] : [...target];
+    targetArr.forEach(index => {
+      data[index].style.display = 'none';
+      const i = selected.indexOf(index);
+      if (i > -1) selected.splice(i, 1);
+    });
+  },
+  show(state, target: number) {
+    state.data[target].style.display = 'block';
+  },
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ commit, dispatch }, { top = 0, left = 0, type = 'area' }) {
+  append({ commit }, { top = 0, left = 0, type = 'area' }) {
     const rotate = 0;
-    const style = { top, left, rotate, ...config.defaultComponentSize };
+    const opacity = 1;
+    const style = { top, left, rotate, opacity, ...config.defaultComponentSize };
     const component = `cq-${type}`;
     // const attr = presetComponentAttr;
     const id = uuid();
@@ -72,12 +106,10 @@ const actions: Data<Action<Board, RootStateType>> = {
     if (!componentConfig) throw new Error('获取不到组件配置');
     const label = componentConfig.type;
     commit('append', { id, label, component, style });
-    dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
   },
-  del({ state, commit, dispatch }) {
+  del({ state, commit }) {
     if (state.selected.length > 0) {
       commit('del');
-      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
       message.success('删除成功！');
     } else {
       message.error('尚未选中任何组件！');
@@ -101,16 +133,6 @@ const actions: Data<Action<Board, RootStateType>> = {
       handleAllEchartsResize(state);
     });
   },
-  cut({ state, commit, dispatch }) {
-    if (state.selected.length > 0) {
-      commit('setCopy');
-      commit('del');
-      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
-      message.success('剪切成功！');
-    } else {
-      message.error('尚未选中任何组件！');
-    }
-  },
   copy({ commit }) {
     if (state.selected.length > 0) {
       commit('setCopy');
@@ -119,36 +141,11 @@ const actions: Data<Action<Board, RootStateType>> = {
       message.error('尚未选中任何组件！');
     }
   },
-  paste({ commit, state, dispatch }, position: { top: number; left: number }) {
-    if (state.copy) {
-      const minPos = state.copy.reduce(
-        (acc, val) => ({
-          left: Math.min(acc.left, val.style.left),
-          top: Math.min(acc.left, val.style.left),
-        }),
-        { left: Infinity, top: Infinity }
-      );
-
-      const diffX = position.left - minPos.left;
-      const diffY = position.top - minPos.top;
-
-      const newCopy = cloneDeep(state.copy).map(val => {
-        val.id = uuid();
-        val.style.left += diffX;
-        val.style.top += diffY;
-        return val;
-      });
-      commit('append', newCopy);
-      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
-    } else {
-      message.error('请先进行剪切/复制操作！');
-    }
-  },
-  moveUp({ state, dispatch }, moveTop = false) {
+  moveUp({ state }, moveTop = false) {
     const { data, selected } = state;
     const len = data.length;
     if (selected.length === 0) {
-      message.error('尚未选中任何组件！');
+      return;
     } else if (selected.length > 1) {
       message.error('多选无法移动');
     } else if (selected[0] === len - 1) {
@@ -156,13 +153,12 @@ const actions: Data<Action<Board, RootStateType>> = {
     } else {
       const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
-      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     }
   },
-  moveDown({ state, dispatch }, moveBottom = false) {
+  moveDown({ state }, moveBottom = false) {
     const { data, selected } = state;
     if (selected.length === 0) {
-      message.error('尚未选中任何组件！');
+      return;
     } else if (selected.length > 1) {
       message.error('多选无法移动');
     } else if (selected[0] === 0) {
@@ -170,7 +166,6 @@ const actions: Data<Action<Board, RootStateType>> = {
     } else {
       const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
       [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
-      dispatch(SnapshotEnum.RECORD_SNAPSHOT, null, { root: true });
     }
   },
   // 根据矩形计算选中的组件
@@ -221,7 +216,7 @@ const actions: Data<Action<Board, RootStateType>> = {
       component: 'cq-group',
       label: '成组',
       group: components,
-      style: { top, left, width, height, rotate: 0 },
+      style: { top, left, width, height, rotate: 0, opacity: 1 },
     };
 
     // 取消原先选中
@@ -243,6 +238,15 @@ const actions: Data<Action<Board, RootStateType>> = {
     });
     commit('append', components);
   },
+  toggleLocked({ commit }, target: number | Array<number>) {
+    commit('toggleLocked', target);
+  },
+  hide({ commit }, target: number | Array<number>) {
+    commit('hide', target);
+  },
+  show({ commit }, target: number) {
+    commit('show', target);
+  },
 };
 
 const board: Module<Board, RootStateType> = {
@@ -259,14 +263,15 @@ enum BoardEnum {
   CANCEL_SELECTED = 'board/cancelSelected',
   CHANGE_SELECTED = 'board/changeSelected',
   SET_BOARD = 'board/setBoard',
-  CUT = 'board/cut',
   COPY = 'board/copy',
-  PASTE = 'board/paste',
   MOVE_UP = 'board/moveUp',
   MOVE_DOWN = 'board/moveDown',
   CALC_SELECTED_BY_RECT = 'board/calcSelectedByRect',
   GROUP = 'board/group',
   CANCEL_GROUP = 'board/cancelGroup',
+  TOGGLE_LOCKED = 'board/toggleLocked',
+  HIDE = 'board/hide',
+  SHOW = 'board/show',
 }
 
 export { board, BoardEnum };

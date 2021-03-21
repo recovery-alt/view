@@ -22,6 +22,7 @@ export const judgeGroupDisabled = (board: Board) => {
 
   let counter = 0;
   selected.forEach(index => {
+    if (!data[index]) return;
     const { group } = data[index];
     if (!group || group.length === 0) counter++;
   });

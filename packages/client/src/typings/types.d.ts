@@ -40,6 +40,7 @@ interface CSSStyleDataWithSize extends CSSStyleData {
 
 interface CSSStyleDataWithRotate extends CSSStyleDataWithSize {
   rotate: number;
+  opacity: number;
 }
 
 type ComponentAttr = {
@@ -56,6 +57,7 @@ type Component = {
   label: string;
   group?: Array<Component>;
   propValue?: unknown;
+  locked?: boolean;
   icon?: string;
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;
@@ -71,7 +73,7 @@ type Board = {
 
 type Snapshot = {
   index: number;
-  data: Array<Board>;
+  data: Array<Page>;
 };
 
 type Page = {

@@ -2,24 +2,28 @@
   <div ref="canvasWrapperRef" class="canvas-wrapper" @scroll="handleScroll">
     <div ref="screenShotRef" class="screen-shot" :style="patchUnit(screenShotSize)">
       <div class="fixed-wrapper">
-        <div class="ruler-wrapper --x" :style="`transform: translateX(${position.left}px)`">
-          <board-ruler
-            :key="rulerKey"
-            :scale="pageConfig.scale"
-            :width="screenShotSize.width * 2 + ''"
-            :style="{ width: screenShotSize.width + 'px' }"
-          />
-        </div>
         <div
-          class="ruler-wrapper --y"
-          :style="`transform: rotate(90deg) translateX(${position.top}px)`"
+          v-for="item in rulerData"
+          :key="item.direction"
+          :class="`ruler-wrapper --${item.direction}`"
+          :style="getStyle(item.direction, position)"
         >
           <board-ruler
             :key="rulerKey"
             :scale="pageConfig.scale"
-            :width="screenShotSize.height * 2 + ''"
-            :style="{ width: screenShotSize.height + 'px' }"
+            :width="screenShotSize[getUnit(item.direction)] * 2 + ''"
+            :style="{ width: screenShotSize[getUnit(item.direction)] + 'px' }"
+            @click="addMarkline($event, item.marklineDct)"
           />
+          <div
+            v-for="(markline, i) in item.marklines"
+            :key="markline"
+            :class="`markline --${item.marklineDct}`"
+            :style="{ left: markline + 'px' }"
+            @contextmenu.prevent="cancelMarkline(i, item.direction)"
+          >
+            <span>{{ markline - 40 }}</span>
+          </div>
         </div>
         <div class="guide-line__controller">
           <EyeInvisibleOutlined />
@@ -27,6 +31,7 @@
       </div>
 
       <div
+        ref="boardDom"
         class="board"
         :style="patchUnit(pageStyle)"
         @drop="handleDrop"
@@ -51,19 +56,35 @@
           />
         </board-shape>
 
-        <board-menu v-if="menu.show" v-model="menu.show" :style="patchUnit(menu.style)" />
+        <board-menu v-if="menu.board.show" menu-type="board" :container="$refs.boardDom" />
         <board-markline />
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
     </div>
   </div>
 
-  <section class="thumbnail">
+  <section v-show="showThumbnail" class="thumbnail">
     <canvas ref="thumbnailRef" class="thumbnail__canvas" width="380" height="220" />
     <span :style="patchUnit(viewportSize)" @mousedown.stop="handleThumbnailMousedown"></span>
   </section>
 
   <footer class="edit-slider">
+    <a-col span="1">
+      <a-tooltip>
+        <template #title>
+          <div key="1" class="edit-slider__text">
+            <span>切换图层面板</span><span>ctrl/cmd + &larr;</span>
+          </div>
+          <div key="2" class="edit-slider__text">
+            <span>切换组件面板</span><span>ctrl/cmd + &uarr;</span>
+          </div>
+          <div key="3" class="edit-slider__text">
+            <span>切换右侧面板</span><span>ctrl/cmd + &rarr;</span>
+          </div>
+        </template>
+        <MacCommandOutlined class="edit-slider__icon" />
+      </a-tooltip>
+    </a-col>
     <a-col span="2">
       <a-input-number
         v-model:value="pageConfig.scale"
@@ -84,7 +105,7 @@
       />
     </a-col>
     <a-col span="1" class="edit-slider__col">
-      <BlockOutlined class="edit-slider__icon" />
+      <BlockOutlined class="edit-slider__icon" @click="switchThumbnail" />
     </a-col>
   </footer>
 </template>
@@ -99,9 +120,10 @@ import {
   useBoardRefs,
   useThumbnail,
   useEditSlider,
+  useRuler,
 } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
-import { EyeInvisibleOutlined, BlockOutlined } from '@ant-design/icons-vue';
+import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, reactive, ref } from 'vue';
 
 export default {
@@ -113,6 +135,7 @@ export default {
     BoardRuler,
     EyeInvisibleOutlined,
     BlockOutlined,
+    MacCommandOutlined,
   },
   setup() {
     const store = useStore();
@@ -122,6 +145,7 @@ export default {
     const { setBoardRef } = useBoardRefs();
     const screenShotRef = ref<HTMLElement | null>(null);
     const canvasWrapperRef = ref<HTMLElement | null>(null);
+    const boardDom = ref<HTMLElement | null>(null);
 
     const pageStyle = computed(() => {
       const { width, height, backgroundColor, scale } = pageConfig;
@@ -147,6 +171,8 @@ export default {
       thumbnailRef,
       handleThumbnailMousedown,
       syncScroll,
+      showThumbnail,
+      switchThumbnail,
     } = useThumbnail(screenShotRef, canvasWrapperRef);
 
     const handleScroll = (e: Event) => {
@@ -159,8 +185,11 @@ export default {
       });
     };
 
+    const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
+
     return {
       board,
+      boardDom,
       handleMousedown,
       handleDrop,
       menu,
@@ -176,12 +205,19 @@ export default {
       resizeViewport,
       thumbnailRef,
       handleThumbnailMousedown,
+      showThumbnail,
+      switchThumbnail,
       screenShotRef,
       canvasWrapperRef,
       sliderFormatter,
       handleSliderChange,
       screenShotSize,
       rulerKey,
+      rulerData,
+      getStyle,
+      getUnit,
+      addMarkline,
+      cancelMarkline,
     };
   },
 };
@@ -276,6 +312,16 @@ export default {
       color: var(--primary-color);
     }
   }
+
+  &__text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span:last-child {
+      margin-left: 20px;
+    }
+  }
 }
 
 .fixed-wrapper {
@@ -305,6 +351,38 @@ export default {
     cursor: move;
     width: 64px;
     height: 48px;
+  }
+}
+
+.markline {
+  position: absolute;
+  background-color: var(--primary-color);
+
+  width: 1px;
+
+  &.--x {
+    top: 20px;
+    height: 100vw;
+    transform: translateY(-100%);
+    span {
+      bottom: 15px;
+    }
+  }
+
+  &.--y {
+    top: 0;
+    height: 100vh;
+    span {
+      top: 15px;
+    }
+  }
+
+  span {
+    position: absolute;
+    left: 5px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0 3px;
   }
 }
 </style>

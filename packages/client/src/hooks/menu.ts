@@ -1,36 +1,47 @@
 import { nextTick, reactive } from 'vue';
 
-type Menu = {
+export type Menu = {
   show: boolean;
   style: CSSStyleData;
+  ref: null | HTMLElement;
+  container: null | HTMLElement;
 };
 
-const menu = reactive<Menu>({
-  show: false,
-  style: {},
+export type MenuType = 'board' | 'layer';
+
+const menu = reactive<Data<Menu>>({
+  board: {
+    show: false,
+    style: {},
+    ref: null,
+    container: null,
+  },
+  layer: {
+    show: false,
+    style: {},
+    ref: null,
+    container: null,
+  },
 });
 
-const setStyle = (style: CSSStyleData) => {
-  menu.style = style;
-};
-
-const showMenu = (e: MouseEvent) => {
+const showMenu = (e: MouseEvent, key: MenuType) => {
+  e.preventDefault();
   const { pageX, pageY } = e;
-  menu.show = true;
+  menu[key].show = true;
+
   nextTick(() => {
-    const menuDom = document.querySelector('.board-menu');
-    const boardDom = document.querySelector('.board');
-    if (!menuDom || !boardDom) return;
+    const { ref, container, style } = menu[key];
+    if (!ref || !container) return;
     const menuGap = 10;
-    const { width, height } = menuDom.getBoundingClientRect();
-    const boardRec = boardDom.getBoundingClientRect();
-    menu.style.left = Math.min(pageX - boardRec.left, boardRec.width - width - menuGap);
-    menu.style.top = Math.min(pageY - boardRec.top, boardRec.height - height - menuGap);
+    const { width, height } = ref.getBoundingClientRect();
+    const { width: boxW, height: boxH, left, top } = container.getBoundingClientRect();
+    style.left = Math.min(pageX - left, boxW - width - menuGap);
+    style.top = Math.min(pageY - top, boxH - height - menuGap);
   });
 };
 
-const hideMenu = () => {
-  menu.show = false;
+const hideMenu = (key: MenuType) => {
+  menu[key].show = false;
 };
 
-export { menu, setStyle, showMenu, hideMenu };
+export { menu, showMenu, hideMenu };

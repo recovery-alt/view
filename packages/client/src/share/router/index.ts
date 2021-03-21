@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/pc/:id?',
     name: 'pc',
     props: true,
-    component: () => import('@/share/engine-pc.vue'),
+    component: () => import('@/share/components/engine-pc.vue'),
   },
 ];
 

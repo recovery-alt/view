@@ -3,8 +3,9 @@ import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
-import { hideMenu, panel, pageConfig } from '.';
+import { panel, pageConfig } from '.';
 import { debounce } from 'lodash';
+import { Direction } from '@/enum';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -60,7 +61,6 @@ export const useSelectMask = (store: Store<RootStateType>) => {
         // 如果重合的话，代表点击事件
         if (e.clientX == startX && e.clientY == startY) {
           store.dispatch(BoardEnum.CANCEL_SELECTED);
-          hideMenu();
         }
       };
 
@@ -107,6 +107,7 @@ export const useThumbnail = (
 ) => {
   const thumbnailRef = ref<HTMLCanvasElement | null>(null);
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
+  const showThumbnail = ref(true);
 
   // 初始化视窗尺寸
   const resizeViewport = () => {
@@ -229,10 +230,22 @@ export const useThumbnail = (
   });
 
   watch(panel, () => {
-    resizeViewport();
+    setTimeout(resizeViewport, 300);
   });
 
-  return { viewportSize, resizeViewport, thumbnailRef, handleThumbnailMousedown, syncScroll };
+  const switchThumbnail = () => {
+    showThumbnail.value = !showThumbnail.value;
+  };
+
+  return {
+    viewportSize,
+    resizeViewport,
+    thumbnailRef,
+    handleThumbnailMousedown,
+    syncScroll,
+    showThumbnail,
+    switchThumbnail,
+  };
 };
 
 export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | null>) => {
@@ -262,4 +275,37 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | null>) => {
   // watch(pageConfig.scale, debounce(resizeScreenShot, 50));
 
   return { sliderFormatter, handleSliderChange, screenShotSize, rulerKey };
+};
+
+export const useRuler = () => {
+  type Ruler = { direction: Direction; marklineDct: Direction; marklines: Array<number> };
+
+  const rulerData = reactive<Array<Ruler>>([
+    { direction: Direction.X, marklineDct: Direction.Y, marklines: [] },
+    { direction: Direction.Y, marklineDct: Direction.X, marklines: [] },
+  ]);
+
+  const addMarkline = (e: MouseEvent, direction: Direction) => {
+    const { clientX, clientY } = e;
+    const target = e.target as HTMLElement;
+    const { left, top } = target.getBoundingClientRect();
+    const [position, index] = direction === Direction.X ? [clientY - top, 1] : [clientX - left, 0];
+
+    rulerData[index].marklines.push(position);
+  };
+
+  const cancelMarkline = (i: number, direction: Direction) => {
+    const index = direction === Direction.X ? 0 : 1;
+    rulerData[index].marklines.splice(i, 1);
+  };
+
+  const getStyle = (direction: Direction, position: { left: number; top: number }) => {
+    const rotate = direction === Direction.Y ? ' rotate(90deg)' : '';
+    const leftOrTop = direction === Direction.Y ? 'top' : 'left';
+    return `transform:${rotate} translateX(${position[leftOrTop]}px)`;
+  };
+
+  const getUnit = (direction: Direction) => (direction === Direction.X ? 'width' : 'height');
+
+  return { rulerData, getStyle, getUnit, addMarkline, cancelMarkline };
 };

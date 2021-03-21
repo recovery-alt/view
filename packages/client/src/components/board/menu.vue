@@ -1,5 +1,11 @@
 <template>
-  <div class="board-menu" @mousedown.stop @mouseup.stop>
+  <div
+    ref="menuRef"
+    class="board-menu"
+    :style="patchUnit(menu[menuType].style)"
+    @mousedown.stop
+    @mouseup.stop
+  >
     <ul>
       <li
         v-for="item in data"
@@ -16,11 +22,9 @@
 
 <script lang="ts">
 import { useStore, BoardEnum } from '@/store';
-import { getMenuPosition, judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
+import { judgeCancelGroupDisabled, judgeGroupDisabled, on, patchUnit } from '@/utils';
 import {
-  ScissorOutlined,
   CopyOutlined,
-  DiffOutlined,
   DeleteOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
@@ -28,15 +32,16 @@ import {
   VerticalAlignBottomOutlined,
   FolderOutlined,
   FolderOpenOutlined,
+  LockOutlined,
+  EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, ref, PropType } from 'vue';
+import { MenuType, menu } from '@/hooks';
 
 export default {
   name: 'board-menu',
   components: {
-    ScissorOutlined,
     CopyOutlined,
-    DiffOutlined,
     DeleteOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
@@ -44,17 +49,25 @@ export default {
     VerticalAlignBottomOutlined,
     FolderOutlined,
     FolderOpenOutlined,
+    LockOutlined,
+    EyeInvisibleOutlined,
   },
   props: {
-    modelValue: {
-      type: Boolean,
+    menuType: {
+      type: String as PropType<MenuType>,
+      default: () => 'board',
+    },
+    container: {
+      type: Object as PropType<HTMLElement>,
+      default: () => null,
     },
   },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
+  setup(props) {
     const store = useStore();
 
     const { board } = store.state;
+
+    const menuRef = ref<null | HTMLElement>(null);
 
     const data = reactive([
       {
@@ -93,35 +106,20 @@ export default {
 
       {
         name: '锁定',
-        icon: 'FolderOpenOutlined',
+        icon: 'LockOutlined',
         disable: false,
-        event: () => null,
+        event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
       },
       {
         name: '隐藏',
-        icon: 'FolderOpenOutlined',
+        icon: 'EyeInvisibleOutlined',
         disable: false,
-        event: () => null,
-      },
-
-      {
-        name: '剪切',
-        icon: 'ScissorOutlined',
-        event: () => store.dispatch(BoardEnum.CUT),
+        event: () => store.dispatch(BoardEnum.HIDE, board.selected),
       },
       {
         name: '复制',
         icon: 'CopyOutlined',
         event: () => store.dispatch(BoardEnum.COPY),
-      },
-      {
-        name: '粘贴',
-        icon: 'DiffOutlined',
-        event: () => {
-          const menuPosition = getMenuPosition();
-          if (!menuPosition) return;
-          store.dispatch(BoardEnum.PASTE, menuPosition);
-        },
       },
       {
         name: '删除',
@@ -137,16 +135,29 @@ export default {
         e.preventDefault();
         return;
       }
-      emit('update:modelValue', false);
+      menu[props.menuType].show = false;
       cb();
+    };
+
+    const handleCancelMenu = () => {
+      on('click', e => {
+        e.stopPropagation();
+        e.preventDefault();
+        Object.keys(menu).forEach(key => {
+          menu[key].show = false;
+        });
+      });
     };
 
     onMounted(() => {
       data[4].disable = judgeGroupDisabled(board);
       data[5].disable = judgeCancelGroupDisabled(board);
+      menu[props.menuType].ref = menuRef.value;
+      menu[props.menuType].container = props.container;
+      handleCancelMenu();
     });
 
-    return { data, handleClick };
+    return { menu, menuRef, data, handleClick, patchUnit };
   },
 };
 </script>

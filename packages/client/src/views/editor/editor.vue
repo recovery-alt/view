@@ -41,10 +41,7 @@
     <layer-panel />
     <component-panel />
     <section class="mid-panel">
-      <header class="mid-panel__toolbar">
-        <span>aaa</span>
-        <span>bbb</span>
-      </header>
+      <header class="mid-panel__toolbar"></header>
       <div class="mid-panel__wrapper">
         <section class="canvas-main">
           <board />
@@ -57,10 +54,10 @@
 </template>
 
 <script lang="ts">
-import { patchUnit } from '@/utils';
-import { useStore } from '@/store';
+import { patchUnit, on } from '@/utils';
+import { useStore, SnapshotEnum } from '@/store';
 import { usePage, pageConfig, panel } from '@/hooks';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import {
   Board,
   BoardPreview,
@@ -145,7 +142,7 @@ export default {
       {
         name: '生成快照',
         icon: 'CameraOutlined',
-        event: () => null,
+        event: () => store.dispatch(SnapshotEnum.RECORD_SNAPSHOT),
       },
       {
         name: '保存',
@@ -167,6 +164,10 @@ export default {
         },
       },
     ];
+
+    onMounted(() => {
+      on('contextmenu', e => e.preventDefault());
+    });
 
     return {
       patchUnit,

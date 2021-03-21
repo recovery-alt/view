@@ -38,15 +38,27 @@
     <a-form-item label="透明度">
       <a-row>
         <a-col span="8">
-          <a-slider size="small" />
+          <a-slider
+            v-model:value="curComponent.style.opacity"
+            size="small"
+            :min="0"
+            :max="1"
+            :step="0.1"
+          />
         </a-col>
         <a-col span="8" offset="4">
-          <a-input-number size="small"></a-input-number>
+          <a-input-number
+            v-model:value="curComponent.style.opacity"
+            size="small"
+            :min="0"
+            :max="1"
+            :step="0.1"
+          />
         </a-col>
       </a-row>
     </a-form-item>
     <a-form-item label="旋转角度">
-      <a-input-number size="small"></a-input-number>
+      <a-input-number v-model:value="curComponent.style.rotate" size="small" />
     </a-form-item>
   </a-form>
   <a-collapse v-model:activeKey="activeName" size="small">

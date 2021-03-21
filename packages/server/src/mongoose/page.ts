@@ -12,6 +12,7 @@ const schema = new Schema({
   zoom: Number,
   gap: Number,
   url: String,
+  group: Array,
   config: Object,
 });
 
@@ -27,14 +28,19 @@ export interface Page extends Document {
   zoom: number;
   gap: number;
   url: string;
+  group: Array<Page>;
   config: Array<{
     id: string;
     component: string;
     label: string;
-    propValue?: string;
+    group?: Array<unknown>;
+    propValue?: unknown;
+    locked?: boolean;
     icon?: string;
+    attr?: Array<{ title: string; data: Array<unknown> }>;
     animations?: Array<string>;
-    style: Record<string, unknown>;
+    events?: Array<Event>;
+    style: Data;
   }>;
 }
 

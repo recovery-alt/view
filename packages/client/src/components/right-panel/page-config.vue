@@ -100,7 +100,7 @@ export default {
       { icon: 'StopOutlined', tip: '不缩放' },
     ];
 
-    const { validate, validateInfos } = useForm(pageConfig, rules);
+    const { validateInfos } = useForm(pageConfig, rules);
 
     return { pageConfig, showPageConfig, validateInfos, zoomOptions };
   },
