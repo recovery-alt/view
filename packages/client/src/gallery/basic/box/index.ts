@@ -1,7 +1,6 @@
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, Component } from 'vue';
 
 export default {
-  type: 'box',
   name: '盒子',
-  component: defineAsyncComponent(() => import('./box.vue')),
+  component: defineAsyncComponent<Component>(() => import('./box.vue')),
 };

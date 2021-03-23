@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { ref, watch, watchEffect, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'color-picker',
   props: {
     modelValue: {
@@ -48,7 +48,7 @@ export default {
 
     return { inputValue, inputColor, clickInputColor };
   },
-};
+});
 </script>
 
 <style lang="less">

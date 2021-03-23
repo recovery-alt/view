@@ -24,9 +24,10 @@ const menu = reactive<Data<Menu>>({
   },
 });
 
-const showMenu = (e: MouseEvent, key: MenuType) => {
+const showMenu = (e: MouseEvent, key: MenuType, board: Board) => {
   e.preventDefault();
   const { pageX, pageY } = e;
+  if (board.selected.length === 0) return;
   menu[key].show = true;
 
   nextTick(() => {

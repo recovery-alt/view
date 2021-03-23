@@ -1,5 +1,8 @@
 <template>
-  <a-collapse v-if="curComponent.animations && curComponent.animations.length > 0" v-model="active">
+  <a-collapse
+    v-if="curComponent && curComponent.animations && curComponent.animations.length > 0"
+    v-model="active"
+  >
     <a-collapse-panel v-for="animation in curComponent.animations" :key="animation">
       <template #header>
         <div class="animation-title">

@@ -1,15 +1,15 @@
 import { Component } from 'vue';
 
 export type Gallery = {
+  type?: string;
   name: string;
-  type: string;
   component: Component;
 };
 
 export type Group = {
   name: string;
   icon: string;
-  components: Data<Gallery>;
+  components: Data<() => Promise<{ [key: string]: Gallery }>>;
 };
 
 export type GalleryGroup = Array<{

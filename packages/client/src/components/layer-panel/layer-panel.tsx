@@ -1,4 +1,3 @@
-<script lang="tsx">
 import {
   AppstoreOutlined,
   DatabaseOutlined,
@@ -19,6 +18,8 @@ import { computed, reactive, ref } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
+import { Tooltip } from 'ant-design-vue';
+import './layer-panel.less';
 
 export default {
   name: 'layer-panel',
@@ -131,10 +132,10 @@ export default {
 
     const handleRightClick = (e: MouseEvent, index: number) => {
       e.preventDefault();
-      showMenu(e, 'layer');
       if (!board.selected.includes(index)) {
         store.dispatch(BoardEnum.SET_INDEX, index);
       }
+      showMenu(e, 'layer', board);
     };
 
     const operationActions = computed(() => {
@@ -150,7 +151,7 @@ export default {
     const src = '//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png';
 
     return () => (
-      <div class="layer-panel" ref={layerRef} class={panel.layer || '--hide'}>
+      <div class={`layer-panel${panel.layer ? '' : ' --hide'}`} ref={layerRef}>
         <header class="layer-panel__header">
           <div>图层</div>
           <section>
@@ -171,19 +172,19 @@ export default {
         <section class="layer-panel__wrapper">
           <header class="layer-panel__toolbar">
             {moveActions.map(Item => (
-              <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
+              <Tooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
                 <Item.icon
                   onClick={Item.event}
                   class={board.selected.length === 0 && '--disable'}
                 />
-              </ATooltip>
+              </Tooltip>
             ))}
           </header>
           <ul class="layer-panel__box">
             {board.data.map((item, index) => {
               const { group, id, locked } = item;
               const { display } = item.style;
-              let icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
+              const icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
               let children;
               let parentIcon = icon;
 
@@ -211,7 +212,7 @@ export default {
                   />
                 );
                 children = group.map(val => (
-                  <li class="--animated" class={className.value} style={{ display }}>
+                  <li class={`--animated ${className.value}`} style={{ display }}>
                     {icon}
                     <b>{val.label}</b>
                   </li>
@@ -221,8 +222,7 @@ export default {
               return (
                 <>
                   <li
-                    class={className.value}
-                    class={board.selected.includes(index) && '--active'}
+                    class={`${className.value}${board.selected.includes(index) ? ' --active' : ''}`}
                     onContextmenu={e => handleRightClick(e, index)}
                     onMouseup={e => changeSelected(e, index)}
                   >
@@ -242,13 +242,13 @@ export default {
             const action = operationActions.value[i];
 
             return (
-              <ATooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
+              <Tooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
                 <Item.icon
                   key={Item.icon.name}
-                  onClick={(action && action.disable) || Item.event}
+                  onClick={action && action.disable ? undefined : Item.event}
                   class={action && action.disable && '--disable'}
                 />
-              </ATooltip>
+              </Tooltip>
             );
           })}
         </footer>
@@ -256,165 +256,3 @@ export default {
     );
   },
 };
-</script>
-
-<style lang="less">
-.layer-panel {
-  position: relative;
-  width: 200px;
-  height: 100%;
-  border-right: 1px solid var(--border-color-base);
-  transition: width 0.3s var(--ease-in-out);
-  z-index: 4;
-  overflow: hidden;
-  white-space: nowrap;
-  user-select: none;
-  background-color: var(--component-background);
-
-  .--disable {
-    opacity: 0.3;
-  }
-
-  &.--hide {
-    width: 0;
-    border: 0;
-  }
-
-  &__header {
-    height: 30px;
-    background-color: var(--normal-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 10px;
-
-    section {
-      display: flex;
-    }
-
-    span {
-      margin-left: 5px;
-      cursor: pointer;
-      font-size: 16px;
-
-      &:hover {
-        color: var(--primary-8);
-      }
-
-      &.--active {
-        color: var(--primary-8);
-      }
-    }
-  }
-
-  &__wrapper {
-    height: calc(100% - 60px);
-  }
-
-  &__toolbar {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 27px;
-    border-bottom: 1px solid var(--border-color-base);
-    background-color: var(--component-background);
-
-    span {
-      padding: 3px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--primary-8);
-        color: var(--component-background);
-      }
-    }
-  }
-
-  &__box {
-    li {
-      position: relative;
-      width: 100%;
-      padding-left: 8px;
-      padding-right: 6px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--primary-2);
-      }
-
-      &.--active {
-        color: var(--white);
-        background-color: var(--primary-5);
-      }
-    }
-
-    .--item {
-      line-height: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-
-      b {
-        margin-left: 5px;
-        font-weight: normal;
-      }
-    }
-
-    .--thumbail {
-      height: 48px;
-      line-height: 48px;
-
-      img {
-        width: 51px;
-        height: 34px;
-        border: 1px solid var(--border-color-base);
-      }
-
-      b {
-        margin-left: 5px;
-        font-weight: normal;
-      }
-    }
-
-    .--animated {
-      transition: transform 0.3s var(--ease-in-out);
-    }
-
-    .--icon {
-      position: absolute;
-      right: 5px;
-      top: 5px;
-    }
-  }
-
-  &__footer {
-    height: 30px;
-    border-top: 1px solid var(--border-color-base);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 50px;
-
-    span {
-      padding: 3px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--primary-8);
-        color: var(--component-background);
-      }
-    }
-
-    .--icon {
-      background-color: var(--primary-color);
-      color: var(--white);
-    }
-  }
-}
-</style>

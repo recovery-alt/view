@@ -31,7 +31,7 @@ type CSSStyleKey = Exclude<keyof CSSStyleDeclaration, CSSStyleFilter>;
 
 type CSSStyleData<T = string | number> = { [key in CSSStyleKey]?: T };
 
-interface CSSStyleDataWithSize extends CSSStyleData {
+interface CSSStyleDataWithSize extends CSSStyleData, Data<unknown> {
   top: number;
   left: number;
   width: number;

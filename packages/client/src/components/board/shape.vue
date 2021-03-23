@@ -30,9 +30,9 @@ import { BoardEnum, useStore } from '@/store';
 import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'board-shape',
   props: {
     index: { type: Number, default: () => 0 },
@@ -55,8 +55,8 @@ export default {
     });
 
     const sizeText = computed(() => {
-      const width = Number.parseInt((graticule.value.x.width - 60) * (pageConfig.scale / 100));
-      const height = Number.parseInt((graticule.value.y.height - 60) * (pageConfig.scale / 100));
+      const width = Math.floor((graticule.value.x.width - 60) * (pageConfig.scale / 100));
+      const height = Math.floor((graticule.value.y.height - 60) * (pageConfig.scale / 100));
       return `${width},${height}`;
     });
 
@@ -73,10 +73,10 @@ export default {
 
     const handleRightClick = (e: MouseEvent) => {
       e.preventDefault();
-      showMenu(e, 'board');
       if (!board.selected.includes(props.index)) {
         store.dispatch(BoardEnum.SET_INDEX, props.index);
       }
+      showMenu(e, 'board', board);
     };
 
     const handleMousedown = (e: MouseEvent) => {
@@ -223,7 +223,7 @@ export default {
       sizeText,
     };
   },
-};
+});
 </script>
 
 <style lang="less">

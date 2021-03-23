@@ -129,7 +129,7 @@ export default {
       }
     };
 
-    const changeTheme = (dark: 0 | 1) => {
+    const changeTheme = (dark: number) => {
       document.documentElement.setAttribute('theme', dark ? 'dark' : 'light');
     };
 

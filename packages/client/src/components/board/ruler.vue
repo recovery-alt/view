@@ -41,7 +41,7 @@ export default {
         const start = i % 20 === 0 ? 0 : i % 10 === 0 ? 30 : 35;
         const x = 80 + i * canvasUnitPerCell;
         drawLine([x, start], [x, 40]);
-        if (i % 10 === 0) fillText(x + 5, 30, i * pxPerCell);
+        if (i % 10 === 0) fillText(x + 5, 30, i * pxPerCell + '');
       }
     };
 

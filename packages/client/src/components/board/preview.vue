@@ -23,13 +23,13 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { pageConfig } from '@/hooks';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch } from '@/utils';
 
-export default {
+export default defineComponent({
   name: 'board-preview',
   components: { CloseSquareOutlined },
   props: {
@@ -52,7 +52,7 @@ export default {
 
     return { handleClose, style, board, splitStyleAndPatch };
   },
-};
+});
 </script>
 
 <style lang="less">

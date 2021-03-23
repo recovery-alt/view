@@ -35,10 +35,10 @@ import {
   LockOutlined,
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
-import { reactive, onMounted, ref, PropType } from 'vue';
+import { reactive, onMounted, ref, PropType, defineComponent } from 'vue';
 import { MenuType, menu } from '@/hooks';
 
-export default {
+export default defineComponent({
   name: 'board-menu',
   components: {
     CopyOutlined,
@@ -58,7 +58,7 @@ export default {
       default: () => 'board',
     },
     container: {
-      type: Object as PropType<HTMLElement>,
+      type: Object as PropType<HTMLElement | null>,
       default: () => null,
     },
   },
@@ -129,7 +129,7 @@ export default {
     ]);
 
     // 处理菜单消失
-    const handleClick = (e: MouseEvent, disable: boolean, cb: () => void) => {
+    const handleClick = (e: MouseEvent, disable: boolean | undefined, cb: () => void) => {
       e.stopPropagation();
       if (disable) {
         e.preventDefault();
@@ -159,7 +159,7 @@ export default {
 
     return { menu, menuRef, data, handleClick, patchUnit };
   },
-};
+});
 </script>
 
 <style lang="less">

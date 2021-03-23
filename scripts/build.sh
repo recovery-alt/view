@@ -7,7 +7,7 @@ rm -rf dist
 
 cd packages/server
 
-yarn tsc
+tsc
 
 wait
 
@@ -17,7 +17,7 @@ cp -r ./src/public ../../dist
 
 cd ../client
 
-yarn vuedx-typecheck . && yarn vite build
+vue-tsc --noEmit && vite build
 
 wait
 
