@@ -8,7 +8,7 @@
   >
     <slot class="board-component" />
     <template v-if="active">
-      <!-- <i class="shape-rotate el-icon-refresh-right" @mousedown="handleMousedownOnRotate" /> -->
+      <RedoOutlined class="shape-rotate" @mousedown="handleMousedownOnRotate" />
       <div
         v-for="point in points"
         :key="point"
@@ -31,9 +31,11 @@ import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
 import { computed, defineComponent } from 'vue';
+import { RedoOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
   name: 'board-shape',
+  components: { RedoOutlined },
   props: {
     index: { type: Number, default: () => 0 },
     active: { type: Boolean, default: () => false },
@@ -240,6 +242,15 @@ export default defineComponent({
     height: 100%;
   }
 
+  .shape-rotate {
+    position: absolute;
+    color: var(--primary-7);
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: grab;
+  }
+
   .board-component {
     height: 100%;
   }
@@ -341,13 +352,4 @@ export default defineComponent({
     }
   }
 }
-
-// .shape-rotate {
-//   position: absolute;
-//   color: var(--primary-7);
-//   top: -30px;
-//   left: 50%;
-//   transform: translateX(-50%);
-//   cursor: grab;
-// }
 </style>

@@ -19,7 +19,7 @@ export default defineComponent({
   name: 'color-picker',
   props: {
     modelValue: {
-      type: String,
+      type: [String, Number],
       default: () => '',
     },
     placeholder: {
@@ -43,7 +43,7 @@ export default defineComponent({
     });
 
     watchEffect(() => {
-      inputValue.value = props.modelValue;
+      inputValue.value = props.modelValue + '';
     });
 
     return { inputValue, inputColor, clickInputColor };

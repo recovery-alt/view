@@ -16,22 +16,26 @@ export const presetComponentAttr: Array<{
       {
         key: 'borderRadius',
         type: FormEnum.INPUT_NUMBER,
+        default: 0,
         label: '圆角',
       },
       {
         key: 'borderWidth',
         type: FormEnum.INPUT_NUMBER,
+        default: 0,
         label: '边框大小',
       },
       {
         key: 'borderColor',
         type: FormEnum.COLOR_PICKER,
+        default: '',
         label: '边框颜色',
       },
       {
         key: 'borderStyle',
         type: FormEnum.SELECT,
         label: '边框线型',
+        default: 'none',
         data: [
           { id: 'none', label: '无边框' },
           { id: 'dotted', label: '点状' },
@@ -42,7 +46,49 @@ export const presetComponentAttr: Array<{
     ],
   },
   {
+    title: '字体',
+    data: [
+      {
+        key: 'fontSize',
+        type: FormEnum.INPUT_NUMBER,
+        label: '大小',
+        default: 14,
+      },
+      {
+        key: 'fontWeight',
+        type: FormEnum.INPUT_NUMBER,
+        label: '粗细',
+        default: 500,
+      },
+      {
+        key: 'lineHeight',
+        type: FormEnum.INPUT_NUMBER,
+        label: '行高',
+        default: 1,
+      },
+      {
+        key: 'letterSpacing',
+        type: FormEnum.INPUT_NUMBER,
+        label: '文字间距',
+        default: 0,
+      },
+      {
+        key: 'color',
+        type: FormEnum.COLOR_PICKER,
+        label: '字体颜色',
+        default: '',
+      },
+    ],
+  },
+  {
     title: '颜色',
-    data: [{ key: 'backgroundColor', type: FormEnum.COLOR_PICKER, label: '背景色' }],
+    data: [
+      {
+        key: 'backgroundColor',
+        type: FormEnum.COLOR_PICKER,
+        label: '背景色',
+        default: '',
+      },
+    ],
   },
 ];

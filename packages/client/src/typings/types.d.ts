@@ -27,11 +27,9 @@ type CSSStyleFilter =
   | 'removeProperty'
   | 'setProperty';
 
-type CSSStyleKey = Exclude<keyof CSSStyleDeclaration, CSSStyleFilter>;
+type CSSStyleData = Partial<Omit<CSSStyleDeclaration, CSSStyleFilter>>;
 
-type CSSStyleData<T = string | number> = { [key in CSSStyleKey]?: T };
-
-interface CSSStyleDataWithSize extends CSSStyleData, Data<unknown> {
+interface CSSStyleDataWithSize extends CSSStyleData, Data<string | number> {
   top: number;
   left: number;
   width: number;
@@ -47,6 +45,7 @@ type ComponentAttr = {
   key: CSSStyleKey;
   type: FormEnum;
   label: string;
+  default: string | number;
   config?: Data;
   data?: Array<{ id: number | string; label: string }>;
 };

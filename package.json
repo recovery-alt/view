@@ -12,6 +12,7 @@
     "dev:server": "sh scripts/dev-server.sh",
     "dev:client": "sh scripts/dev-client.sh",
     "build": "sh scripts/build.sh",
+    "test": "jest",
     "start": "pm2 start dist/app.js",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",

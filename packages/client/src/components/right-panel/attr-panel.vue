@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { watchEffect, computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
@@ -114,9 +114,10 @@ export default {
         presetComponentAttr.forEach(val => {
           const { data } = val;
           data.forEach(item => {
-            const { type, key } = item;
-            const empty = type === FormEnum.INPUT_NUMBER ? 0 : '';
-            style[key] = style[key] || empty;
+            const { key, default: defaultVal } = item;
+            if (!style[key]) {
+              style[key] = defaultVal;
+            }
           });
         });
       }

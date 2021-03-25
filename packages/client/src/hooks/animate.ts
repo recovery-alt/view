@@ -1,4 +1,4 @@
-import { reactive, computed } from 'vue';
+import { computed, shallowReactive } from 'vue';
 import { Store } from 'vuex';
 import { useBoardRefs } from '@/hooks';
 
@@ -444,7 +444,7 @@ export const useAnimation = (store?: Store<RootStateType>) => {
     },
   ];
 
-  const drawer = reactive({
+  const drawer = shallowReactive({
     show: false,
     selected: animations[0].title,
     data: animations,
@@ -453,7 +453,7 @@ export const useAnimation = (store?: Store<RootStateType>) => {
 
   const getAnimationClass = (name: string) => {
     const animation = name === drawer.previewAnimation ? ` animate__animated animate__${name}` : '';
-    return `${animation}`;
+    return animation;
   };
 
   const handleMouseover = (name: string) => {
@@ -501,7 +501,8 @@ export const useAnimation = (store?: Store<RootStateType>) => {
     });
   };
 
-  const previewAnimation = async (curComponent: Component, index: number) => {
+  const previewAnimation = async (curComponent: Component | null, index: number) => {
+    if (!curComponent) return;
     const { boardRefs } = useBoardRefs();
     const ref = boardRefs[index];
     if (!ref) return;

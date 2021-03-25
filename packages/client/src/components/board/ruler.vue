@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .board-ruler {
   background-color: #fff;
   height: 20px;
