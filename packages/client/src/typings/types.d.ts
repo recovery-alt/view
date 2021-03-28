@@ -46,6 +46,7 @@ type ComponentAttr = {
   type: FormEnum;
   label: string;
   default: string | number;
+  props?: Data;
   config?: Data;
   data?: Array<{ id: number | string; label: string }>;
 };
@@ -67,7 +68,6 @@ type Component = {
 type Board = {
   selected: Array<number>;
   data: Array<Component>;
-  copy?: Array<Component>;
 };
 
 type Snapshot = {

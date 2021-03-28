@@ -91,7 +91,6 @@ export default {
   background-color: var(--component-background);
   transition: width 0.3s var(--ease-in-out);
   white-space: nowrap;
-  user-select: none;
 
   &--hide {
     width: 0;

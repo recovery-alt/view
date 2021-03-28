@@ -1,6 +1,6 @@
 <template>
-  <h2 class="attr-panel__title">基本柱状图</h2>
-  <h3 class="attr-panel__subtitle">v3.1.0 | 基本柱状图</h3>
+  <h2 class="attr-panel__title">{{ gallery?.name }}</h2>
+  <h3 class="attr-panel__subtitle">v{{ gallery?.version }} | {{ gallery?.name }}</h3>
   <template v-if="curComponent">
     <a-form label-align="left" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
       <a-form-item label="图表尺寸">
@@ -58,7 +58,7 @@
         </a-row>
       </a-form-item>
       <a-form-item label="旋转角度">
-        <a-input-number v-model:value="curComponent.style.rotate" size="small" />
+        <a-input-number v-model:value="curComponent.style.rotate" :precision="0" size="small" />
       </a-form-item>
     </a-form>
     <a-collapse v-model:activeKey="activeName" size="small">
@@ -74,7 +74,12 @@
               v-if="item.type === FormEnum.COLOR_PICKER"
               v-model="curComponent.style[item.key]"
             />
-            <component :is="`a-${item.type}`" v-else v-model:value="curComponent.style[item.key]">
+            <component
+              :is="`a-${item.type}`"
+              v-bind="item.props"
+              v-else
+              v-model:value="curComponent.style[item.key]"
+            >
               <template v-if="item.type === 'select'">
                 <a-select-option v-for="option in item.data" :key="option.id" :value="option.id">
                   {{ option.label }}
@@ -94,6 +99,7 @@ import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
 import { ColorPicker } from '@/components';
+import { getGalleryList } from '@/gallery';
 
 export default {
   name: 'attr-panel',
@@ -106,6 +112,13 @@ export default {
 
     const curComponent = computed(() => {
       return board.selected.length === 1 ? board.data[board.selected[0]] : null;
+    });
+
+    const gallery = computed(() => {
+      if (!curComponent.value) return;
+      const galleryList = getGalleryList();
+      const type = curComponent.value.component.slice(3);
+      return galleryList.find(gallery => gallery.type === type);
     });
 
     watchEffect(() => {
@@ -123,7 +136,7 @@ export default {
       }
     });
 
-    return { board, curComponent, presetComponentAttr, activeName, FormEnum };
+    return { board, curComponent, presetComponentAttr, activeName, FormEnum, gallery };
   },
 };
 </script>

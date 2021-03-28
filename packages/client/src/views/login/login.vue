@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { reactive } from 'vue';
+import { reactive, defineComponent } from 'vue';
 import { login } from '@/api';
 import { message } from 'ant-design-vue';
 import { useForm } from '@ant-design-vue/use';
@@ -33,7 +33,7 @@ import { useRouter } from 'vue-router';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
 
-export default {
+export default defineComponent({
   name: 'login',
   props: { redirect: { type: String, default: () => '' } },
   setup(props) {
@@ -63,7 +63,7 @@ export default {
 
     return { form, rules, submitLogin };
   },
-};
+});
 </script>
 
 <style lang="less" scoped>

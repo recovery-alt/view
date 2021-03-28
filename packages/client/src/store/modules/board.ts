@@ -64,9 +64,6 @@ const mutations: Data<Mutation<Board>> = {
       state.selected = [];
     }
   },
-  setCopy(state) {
-    state.copy = cloneDeep(state.selected.map(index => state.data[index]));
-  },
   toggleLocked(state, target: number | Array<number>) {
     const { data, selected } = state;
     const targetArr = typeof target === 'number' ? [target] : [...target];
@@ -91,19 +88,29 @@ const mutations: Data<Mutation<Board>> = {
   show(state, target: number) {
     state.data[target].style.display = 'block';
   },
+  selectAll(state) {
+    const { data } = state;
+    state.selected = data.map((component, i) => i);
+  },
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
   append({ commit }, { top = 0, left = 0, type = 'area' }) {
-    const rotate = 0;
-    const opacity = 1;
-    const style = { top, left, rotate, opacity, ...config.defaultComponentSize };
-    const component = `cq-${type}`;
-    // const attr = presetComponentAttr;
-    const id = uuid();
     const gallery = getGalleryList();
     const componentConfig = gallery.find(val => val.type === type);
-    if (!componentConfig) throw new Error('获取不到组件配置');
+    if (!componentConfig) throw new Error('获取不到该组件信息');
+    const rotate = 0;
+    const opacity = 1;
+    const component = `cq-${type}`;
+    const id = uuid();
+    const style = {
+      top,
+      left,
+      rotate,
+      opacity,
+      ...config.defaultComponentSize,
+      ...componentConfig.defaultStyle,
+    };
     const label = componentConfig.type;
     commit('append', { id, label, component, style });
   },
@@ -111,8 +118,6 @@ const actions: Data<Action<Board, RootStateType>> = {
     if (state.selected.length > 0) {
       commit('del');
       message.success('删除成功！');
-    } else {
-      message.error('尚未选中任何组件！');
     }
   },
   cancelSelected({ commit }) {
@@ -133,12 +138,15 @@ const actions: Data<Action<Board, RootStateType>> = {
       handleAllEchartsResize(state);
     });
   },
-  copy({ commit }) {
+  copy({ commit, state }) {
     if (state.selected.length > 0) {
-      commit('setCopy');
-      message.success('复制成功！');
-    } else {
-      message.error('尚未选中任何组件！');
+      const newBoards = state.selected.map(index => {
+        const newBoard = cloneDeep(state.data[index]);
+        newBoard.style.left += 10;
+        newBoard.style.top += 10;
+        return newBoard;
+      });
+      commit('append', newBoards);
     }
   },
   moveUp({ state }, moveTop = false) {
@@ -247,6 +255,9 @@ const actions: Data<Action<Board, RootStateType>> = {
   show({ commit }, target: number) {
     commit('show', target);
   },
+  selectAll({ commit }) {
+    commit('selectAll');
+  },
 };
 
 const board: Module<Board, RootStateType> = {
@@ -272,6 +283,7 @@ enum BoardEnum {
   TOGGLE_LOCKED = 'board/toggleLocked',
   HIDE = 'board/hide',
   SHOW = 'board/show',
+  SELECT_ALL = 'board/selectAll',
 }
 
 export { board, BoardEnum };

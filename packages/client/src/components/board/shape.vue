@@ -236,6 +236,11 @@ export default defineComponent({
   cursor: move;
   box-sizing: border-box;
 
+  &:hover {
+    background-color: var(--primary-1);
+    outline: 1px dashed var(--primary-7);
+  }
+
   & > *:first-child {
     position: absolute;
     width: 100%;

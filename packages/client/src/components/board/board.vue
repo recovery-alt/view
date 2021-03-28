@@ -121,10 +121,12 @@ import {
   useThumbnail,
   useEditSlider,
   useRuler,
+  useBoardKeydown,
 } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'board',
@@ -146,6 +148,7 @@ export default {
     const screenShotRef = ref<HTMLElement | null>(null);
     const canvasWrapperRef = ref<HTMLElement | null>(null);
     const boardDom = ref<HTMLElement | null>(null);
+    const router = useRouter();
 
     const pageStyle = computed(() => {
       const { width, height, backgroundColor, scale } = pageConfig;
@@ -186,6 +189,8 @@ export default {
     };
 
     const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
+
+    useBoardKeydown(store, router);
 
     return {
       board,
@@ -333,7 +338,6 @@ export default {
   position: absolute;
   right: 5px;
   bottom: 70px;
-  user-select: none;
   transition: 0.3s transform var(--ease-in-out);
 
   &__canvas {

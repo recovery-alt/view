@@ -2,9 +2,13 @@ import { defineAsyncComponent, Component } from 'vue';
 import type { Gallery } from '@/typings';
 
 const gallery: Gallery = {
-  name: '盒子',
+  name: '轮播图',
   version: '0.1.0',
-  component: defineAsyncComponent<Component>(() => import('./box.vue')),
+  defaultStyle: {
+    width: 300,
+    height: 240,
+  },
+  component: defineAsyncComponent<Component>(() => import('./carousel.vue')),
 };
 
 export default gallery;

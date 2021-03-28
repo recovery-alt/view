@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 
-export const panel = reactive({
+export const panel = reactive<Data<boolean>>({
   layer: true,
   component: true,
   config: true,

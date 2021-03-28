@@ -55,9 +55,9 @@
 
 <script lang="ts">
 import { patchUnit, on } from '@/utils';
-import { useStore, SnapshotEnum } from '@/store';
-import { usePage, pageConfig, panel } from '@/hooks';
-import { computed, onMounted, ref } from 'vue';
+import { useStore, SnapshotEnum, BoardEnum } from '@/store';
+import { pageConfig, setPageConfig, savePage, panel } from '@/hooks';
+import { computed, onMounted, ref, defineComponent } from 'vue';
 import {
   Board,
   BoardPreview,
@@ -85,8 +85,10 @@ import {
   DesktopOutlined,
 } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
+import { getPage } from '@/api';
+import { cloneDeep } from 'lodash';
 
-export default {
+export default defineComponent({
   name: 'editor',
   components: {
     LayerPanel,
@@ -119,8 +121,6 @@ export default {
 
     const modalOpen = ref(false);
 
-    const { savePage } = usePage(store, router, props.id);
-
     const icons = [
       { key: 'layer', icon: 'LayoutOutlined' },
       { key: 'component', icon: 'UnorderedListOutlined' },
@@ -147,7 +147,7 @@ export default {
       {
         name: '保存',
         icon: 'SaveOutlined',
-        event: () => savePage(),
+        event: () => savePage(store, router),
       },
       {
         name: '发布',
@@ -165,8 +165,16 @@ export default {
       },
     ];
 
-    onMounted(() => {
+    onMounted(async () => {
       on('contextmenu', e => e.preventDefault());
+      if (!props.id) return;
+      const res = await getPage<Page>(props.id);
+      if (res.code !== 0) return;
+      Object.assign(pageConfig, res.data);
+      /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+      const { _id, config, ...remain } = res.data;
+      setPageConfig(remain);
+      store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });
     });
 
     return {
@@ -178,7 +186,7 @@ export default {
       switchPanelShow,
     };
   },
-};
+});
 </script>
 
 <style lang="less">
@@ -193,7 +201,6 @@ export default {
   position: relative;
   z-index: 100;
   background-color: var(--component-background);
-  user-select: none;
 
   img {
     cursor: pointer;
@@ -232,7 +239,6 @@ export default {
 .main {
   height: calc(100% - 41px);
   display: flex;
-  user-select: none;
 }
 
 .mid-panel {

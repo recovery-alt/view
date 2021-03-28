@@ -3,6 +3,8 @@ import { Component } from 'vue';
 export type Gallery = {
   type?: string;
   name: string;
+  version: string;
+  defaultStyle?: Partial<CSSStyleDataWithRotate>;
   component: Component;
 };
 

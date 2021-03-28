@@ -1,11 +1,12 @@
-import { nextTick, onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
-import { panel, pageConfig } from '.';
+import { panel, pageConfig, savePage } from '.';
 import { debounce } from 'lodash';
 import { Direction } from '@/enum';
+import type { Router } from 'vue-router';
 
 const boardRefs = reactive<Record<number, HTMLElement>>({});
 
@@ -308,4 +309,28 @@ export const useRuler = () => {
   const getUnit = (direction: Direction) => (direction === Direction.X ? 'width' : 'height');
 
   return { rulerData, getStyle, getUnit, addMarkline, cancelMarkline };
+};
+
+export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => {
+  // 快捷键事件策略
+  const strategy: Data<(ctrl: boolean) => void> = {
+    Backspace: () => store.dispatch(BoardEnum.DEL),
+    a: ctrl => ctrl && store.dispatch(BoardEnum.SELECT_ALL),
+    s: ctrl => ctrl && savePage(store, router),
+    c: ctrl => ctrl && store.dispatch(BoardEnum.COPY),
+    ArrowLeft: ctrl => ctrl && (panel.layer = !panel.layer),
+    ArrowUp: ctrl => ctrl && (panel.component = !panel.component),
+    ArrowRight: ctrl => ctrl && (panel.config = !panel.config),
+  };
+
+  const keydown = (e: KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const handleKeydown = strategy[e.key];
+    const ctrl = e.ctrlKey || e.metaKey;
+    handleKeydown && handleKeydown(ctrl);
+  };
+
+  onMounted(() => document.addEventListener('keydown', keydown));
+  onBeforeUnmount(() => document.removeEventListener('keydown', keydown));
 };

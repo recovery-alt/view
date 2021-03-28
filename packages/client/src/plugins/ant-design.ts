@@ -24,6 +24,7 @@ import 'ant-design-vue/lib/popover/style/index.css';
 import 'ant-design-vue/lib/modal/style/index.css';
 import 'ant-design-vue/lib/checkbox/style/index.css';
 import 'ant-design-vue/lib/slider/style/index.css';
+import 'ant-design-vue/lib/carousel/style/index.css';
 import {
   Button,
   Input,
@@ -49,6 +50,7 @@ import {
   Slider,
   Col,
   Row,
+  Carousel,
 } from 'ant-design-vue';
 
 export const useAntDesign = (app: App) => {
@@ -76,4 +78,5 @@ export const useAntDesign = (app: App) => {
   app.use(Slider);
   app.use(Col);
   app.use(Row);
+  app.use(Carousel);
 };

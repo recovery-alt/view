@@ -14,14 +14,14 @@ import {
   RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel, menu, showMenu } from '@/hooks';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, defineComponent } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import { Tooltip } from 'ant-design-vue';
 import './layer-panel.less';
 
-export default {
+export default defineComponent({
   name: 'layer-panel',
   components: {
     AppstoreOutlined,
@@ -255,4 +255,4 @@ export default {
       </div>
     );
   },
-};
+});

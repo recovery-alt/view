@@ -3,7 +3,7 @@ import { FormEnum } from '@/enum';
 export default {
   maxSnapshot: 20,
   defaultComponentSize: { width: 100, height: 100 },
-  defaultBoardSize: { width: 1920, height: 1080 },
+  defaultPageSize: { width: 1920, height: 1080 },
 };
 
 export const presetComponentAttr: Array<{
@@ -59,12 +59,14 @@ export const presetComponentAttr: Array<{
         type: FormEnum.INPUT_NUMBER,
         label: '粗细',
         default: 500,
+        props: { step: 100, min: 100, max: 900 },
       },
       {
         key: 'lineHeight',
         type: FormEnum.INPUT_NUMBER,
         label: '行高',
         default: 1,
+        props: { step: 0.1 },
       },
       {
         key: 'letterSpacing',

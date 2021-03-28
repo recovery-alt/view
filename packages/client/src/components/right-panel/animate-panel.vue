@@ -1,4 +1,14 @@
 <template>
+  <div class="animation-btn_group">
+    <a-button type="primary" @click="drawer.show = true">
+      <template #icon><PlusOutlined /></template>
+      添加
+    </a-button>
+    <a-button type="primary" @click="previewAnimation(curComponent, board.selected[0])">
+      <template #icon><PlayCircleOutlined /></template>
+      预览
+    </a-button>
+  </div>
   <a-collapse
     v-if="curComponent && curComponent.animations && curComponent.animations.length > 0"
     v-model="active"
@@ -20,17 +30,37 @@
     </a-collapse-panel>
   </a-collapse>
   <a-empty v-else description="尚未选择任何动画" />
+  <a-drawer v-model:visible="drawer.show" placement="right" :width="400">
+    <a-tabs v-model="drawer.selected" size="small">
+      <a-tab-pane v-for="item in drawer.data" :key="item.title" :label="item.title">
+        <template #tab>{{ item.title }}</template>
+        <ul class="animation-box">
+          <li
+            v-for="animation in item.data"
+            :key="animation.name"
+            class="animation-box_item"
+            @mouseover="handleMouseover(animation.name)"
+            @mouseleave="handleMouseleave"
+            @click="addAnimation(animation.name)"
+          >
+            <div :class="getAnimationClass(animation.name)" />
+            {{ animation.label }}
+          </li>
+        </ul>
+      </a-tab-pane>
+    </a-tabs>
+  </a-drawer>
 </template>
 
 <script lang="ts">
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, useBoardRefs } from '@/hooks';
-import { PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 export default {
   name: 'animate-panel',
-  components: { PlayCircleOutlined, DeleteOutlined },
+  components: { PlusOutlined, PlayCircleOutlined, DeleteOutlined },
   setup() {
     const active = ref('');
 
@@ -42,7 +72,15 @@ export default {
       return board.selected.length === 1 ? board.data[board.selected[0]] : null;
     });
 
-    const { play } = useAnimation();
+    const {
+      drawer,
+      play,
+      handleMouseover,
+      handleMouseleave,
+      getAnimationClass,
+      addAnimation,
+      previewAnimation,
+    } = useAnimation(store);
 
     const preview = (name: string) => {
       const { boardRefs } = useBoardRefs();
@@ -56,7 +94,19 @@ export default {
       curComponent.value.animations.splice(index, 1);
     };
 
-    return { active, curComponent, preview, board, del };
+    return {
+      active,
+      curComponent,
+      preview,
+      board,
+      del,
+      drawer,
+      handleMouseover,
+      handleMouseleave,
+      getAnimationClass,
+      addAnimation,
+      previewAnimation,
+    };
   },
 };
 </script>

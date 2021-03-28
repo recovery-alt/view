@@ -27,6 +27,7 @@ body {
 
 #app {
   height: 100%;
+  user-select: none;
 }
 
 ul,
