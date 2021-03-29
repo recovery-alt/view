@@ -111,7 +111,7 @@ const actions: Data<Action<Board, RootStateType>> = {
       ...config.defaultComponentSize,
       ...componentConfig.defaultStyle,
     };
-    const label = componentConfig.type;
+    const label = componentConfig.name;
     commit('append', { id, label, component, style });
   },
   del({ state, commit }) {

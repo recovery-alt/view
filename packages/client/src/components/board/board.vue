@@ -22,7 +22,7 @@
             :style="{ left: markline + 'px' }"
             @contextmenu.prevent="cancelMarkline(i, item.direction)"
           >
-            <span>{{ markline - 40 }}</span>
+            <span>{{ Math.floor(markline) - 40 }}</span>
           </div>
         </div>
         <div class="guide-line__controller">

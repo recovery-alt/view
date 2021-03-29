@@ -312,15 +312,46 @@ export const useRuler = () => {
 };
 
 export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => {
+  const { board } = store.state;
+
   // 快捷键事件策略
   const strategy: Data<(ctrl: boolean) => void> = {
     Backspace: () => store.dispatch(BoardEnum.DEL),
     a: ctrl => ctrl && store.dispatch(BoardEnum.SELECT_ALL),
     s: ctrl => ctrl && savePage(store, router),
     c: ctrl => ctrl && store.dispatch(BoardEnum.COPY),
-    ArrowLeft: ctrl => ctrl && (panel.layer = !panel.layer),
-    ArrowUp: ctrl => ctrl && (panel.component = !panel.component),
-    ArrowRight: ctrl => ctrl && (panel.config = !panel.config),
+    ArrowLeft: ctrl => {
+      if (ctrl) {
+        panel.layer = !panel.layer;
+      } else {
+        board.selected.forEach(i => {
+          board.data[i].style.left -= pageConfig.gap;
+        });
+      }
+    },
+    ArrowUp: ctrl => {
+      if (ctrl) {
+        panel.component = !panel.component;
+      } else {
+        board.selected.forEach(i => {
+          board.data[i].style.top -= pageConfig.gap;
+        });
+      }
+    },
+    ArrowRight: ctrl => {
+      if (ctrl) {
+        panel.config = !panel.config;
+      } else {
+        board.selected.forEach(i => {
+          board.data[i].style.left += pageConfig.gap;
+        });
+      }
+    },
+    ArrowDown: () => {
+      board.selected.forEach(i => {
+        board.data[i].style.top += pageConfig.gap;
+      });
+    },
   };
 
   const keydown = (e: KeyboardEvent) => {

@@ -5,10 +5,8 @@
         <template #tab>
           <span>{{ item.title }}</span>
         </template>
-        <template v-if="gallery">
-          <h2 class="right-panel__title">{{ gallery.name }}</h2>
-          <h3 class="right-panel__subtitle">v{{ gallery.version }} | {{ gallery?.name }}</h3>
-        </template>
+        <h2 class="right-panel__title">{{ gallery?.name }}</h2>
+        <h3 class="right-panel__subtitle">v{{ gallery?.version }} | {{ gallery?.name }}</h3>
         <component :is="item.component" />
       </a-tab-pane>
     </a-tabs>

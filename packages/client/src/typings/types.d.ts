@@ -1,14 +1,3 @@
-declare enum FormEnum {
-  RADIO = 'radio',
-  CHECKBOX = 'checkbox',
-  INPUT = 'input',
-  INPUT_NUMBER = 'input-number',
-  SELECT = 'select',
-  SWITCH = 'switch',
-  SLIDER = 'slider',
-  COLOR_PICKER = 'color-picker',
-}
-
 type ResponseData<T = any> = {
   code: number;
   data: T;
@@ -43,7 +32,7 @@ interface CSSStyleDataWithRotate extends CSSStyleDataWithSize {
 
 type ComponentAttr = {
   key: CSSStyleKey;
-  type: FormEnum;
+  type: import('@/enum').FormEnum;
   label: string;
   default: string | number;
   props?: Data;
@@ -62,6 +51,7 @@ type Component = {
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;
   events?: Array<Event>;
+  data?: unknown;
   style: CSSStyleDataWithRotate;
 };
 
