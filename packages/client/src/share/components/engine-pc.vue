@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineComponent } from 'vue';
 import { getPage } from '@/api';
 import { splitStyleAndPatch } from '@/utils';
 
-export default {
+export default defineComponent({
   name: 'engine-pc',
   props: {
     id: { type: String, default: () => '' },
   },
   setup(props) {
-    const data = ref([]);
+    const data = ref<Component[]>([]);
 
     onMounted(async () => {
       if (!props.id) return;
@@ -39,7 +39,7 @@ export default {
 
     return { data, splitStyleAndPatch };
   },
-};
+});
 </script>
 
 <style lang="less">

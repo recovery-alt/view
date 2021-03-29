@@ -1,5 +1,3 @@
-import { Gallery } from '@/typings';
-
 const components: Data<() => Promise<{ [key: string]: Gallery }>> = {};
 
 const modules = import.meta.glob('./*/index.ts');

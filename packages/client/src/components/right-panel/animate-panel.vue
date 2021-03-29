@@ -9,10 +9,7 @@
       预览
     </a-button>
   </div>
-  <a-collapse
-    v-if="curComponent && curComponent.animations && curComponent.animations.length > 0"
-    v-model="active"
-  >
+  <a-collapse v-if="curComponent.animations && curComponent.animations.length > 0" v-model="active">
     <a-collapse-panel v-for="animation in curComponent.animations" :key="animation">
       <template #header>
         <div class="animation-title">
@@ -68,9 +65,7 @@ export default {
     const { board } = store.state;
 
     // 当前选中组件
-    const curComponent = computed(() => {
-      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
-    });
+    const curComponent = computed(() => board.data[board.selected[0]]);
 
     const {
       drawer,
@@ -89,7 +84,7 @@ export default {
     };
 
     const del = (animation: string) => {
-      if (!curComponent.value || !curComponent.value.animations) return;
+      if (!curComponent.value.animations) return;
       const index = curComponent.value.animations.findIndex(val => val === animation);
       curComponent.value.animations.splice(index, 1);
     };
@@ -112,13 +107,60 @@ export default {
 </script>
 
 <style lang="less">
-.animation-title {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
+.animation {
+  &-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 
-  &_right button:first-child {
-    margin-right: 10px;
+    &_right button:first-child {
+      margin-right: 10px;
+    }
+  }
+  &-box {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    &_item {
+      width: 120px;
+      margin-left: 20px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      div {
+        display: block;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 40px solid var(--primary-color);
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  &-list {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    li {
+      margin-top: 10px;
+    }
+  }
+
+  &-btn_group {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button:first-child {
+      margin-right: 10px;
+    }
   }
 }
 </style>

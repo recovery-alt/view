@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 
-type Line = { name: string; show: boolean; style: CSSStyleData };
+type Line = { name: string; show: boolean; style: Partial<CSSStyleDataWithSize> };
 
 type Markline = {
   diff: number;
@@ -63,7 +63,7 @@ const judgeLineShow = (board: Board, curComponents: Array<Component>) => {
   });
 
   // 需要显示的线
-  const needShow = [];
+  const needShow: number[] = [];
 
   // 上中下/左中右
   for (let i = 0; i < 3; i++) {

@@ -85,7 +85,7 @@ export default defineComponent({
   cursor: pointer;
 
   &:hover {
-    color: var(--primary-8);
+    color: var(--primary-color);
   }
 }
 

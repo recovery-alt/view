@@ -1,5 +1,4 @@
 import { App } from 'vue';
-import { Group, Gallery, GalleryGroup } from '@/typings';
 import ComponentGroup from './group.vue';
 
 const modules = import.meta.glob('./*/index.ts');

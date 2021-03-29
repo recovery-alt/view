@@ -2,7 +2,7 @@ import { nextTick, reactive } from 'vue';
 
 export type Menu = {
   show: boolean;
-  style: CSSStyleData;
+  style: Partial<CSSStyleDataWithSize>;
   ref: null | HTMLElement;
   container: null | HTMLElement;
 };

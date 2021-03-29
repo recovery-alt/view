@@ -1,7 +1,5 @@
 <template>
-  <h2 class="attr-panel__title">{{ gallery?.name }}</h2>
-  <h3 class="attr-panel__subtitle">v{{ gallery?.version }} | {{ gallery?.name }}</h3>
-  <template v-if="curComponent">
+  <template>
     <a-form label-align="left" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
       <a-form-item label="图表尺寸">
         <a-row>
@@ -99,7 +97,6 @@ import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
 import { ColorPicker } from '@/components';
-import { getGalleryList } from '@/gallery';
 
 export default {
   name: 'attr-panel',
@@ -110,16 +107,7 @@ export default {
 
     const activeName = ref(presetComponentAttr[0].title);
 
-    const curComponent = computed(() => {
-      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
-    });
-
-    const gallery = computed(() => {
-      if (!curComponent.value) return;
-      const galleryList = getGalleryList();
-      const type = curComponent.value.component.slice(3);
-      return galleryList.find(gallery => gallery.type === type);
-    });
+    const curComponent = computed(() => board.data[board.selected[0]]);
 
     watchEffect(() => {
       if (board.selected.length === 1) {
@@ -136,30 +124,13 @@ export default {
       }
     });
 
-    return { board, curComponent, presetComponentAttr, activeName, FormEnum, gallery };
+    return { board, curComponent, presetComponentAttr, activeName, FormEnum };
   },
 };
 </script>
 
 <style lang="less">
 .attr-panel {
-  &__title {
-    font-size: 14px;
-    padding-bottom: 3px;
-    padding-left: 10px;
-    padding-right: 5px;
-    margin-bottom: 0;
-  }
-
-  &__subtitle {
-    font-size: 12px;
-    color: #647279;
-    font-weight: normal;
-    padding-left: 10px;
-    padding-right: 5px;
-    margin-bottom: 0;
-  }
-
   &__extra {
     width: 100%;
     display: flex;

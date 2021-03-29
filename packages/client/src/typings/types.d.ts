@@ -101,3 +101,23 @@ type PageConfig = Omit<Page, '_id' | 'config'>;
 type UserInfo = { token: string; name: string };
 
 type ColumnConfig = { key: string; title: string; dataIndex?: string };
+
+type Gallery = {
+  type?: string;
+  name: string;
+  version: string;
+  defaultStyle?: Partial<CSSStyleDataWithRotate>;
+  component: import('vue').Component;
+};
+
+type Group = {
+  name: string;
+  icon: string;
+  components: Data<() => Promise<{ [key: string]: Gallery }>>;
+};
+
+type GalleryGroup = Array<{
+  groupName: string;
+  icon: string;
+  list: Array<Gallery>;
+}>;

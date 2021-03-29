@@ -5,6 +5,10 @@
         <template #tab>
           <span>{{ item.title }}</span>
         </template>
+        <template v-if="gallery">
+          <h2 class="right-panel__title">{{ gallery.name }}</h2>
+          <h3 class="right-panel__subtitle">v{{ gallery.version }} | {{ gallery?.name }}</h3>
+        </template>
         <component :is="item.component" />
       </a-tab-pane>
     </a-tabs>
@@ -17,6 +21,7 @@ import { ref, computed } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';
+import { getGalleryList } from '@/gallery';
 
 export default {
   name: 'right-panel',
@@ -49,6 +54,13 @@ export default {
 
     const width = computed(() => (panel.config ? '332px' : '0'));
 
+    const gallery = computed(() => {
+      if (!curComponent.value) return;
+      const galleryList = getGalleryList();
+      const type = curComponent.value.component.slice(3);
+      return galleryList.find(gallery => gallery.type === type);
+    });
+
     return {
       board,
       curComponent,
@@ -57,6 +69,7 @@ export default {
       toggle,
       width,
       panel,
+      gallery,
     };
   },
 };
@@ -71,54 +84,23 @@ export default {
   transition: width 0.3s var(--ease-in-out);
   overflow: auto;
   z-index: 90;
-  background-color: var(--component-background);
-}
+  background-color: var(--body-background);
 
-.animation {
-  &-box {
-    display: flex;
-    flex-wrap: wrap;
-    overflow: auto;
-    &_item {
-      width: 120px;
-      margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      div {
-        display: block;
-        content: '';
-        width: 0;
-        height: 0;
-        border-left: 20px solid transparent;
-        border-right: 20px solid transparent;
-        border-bottom: 40px solid var(--primary-8);
-        margin-bottom: 10px;
-      }
-    }
+  &__title {
+    font-size: 14px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-bottom: 0;
   }
 
-  &-list {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    li {
-      margin-top: 10px;
-    }
-  }
-
-  &-btn_group {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    button:first-child {
-      margin-right: 10px;
-    }
+  &__subtitle {
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    font-weight: normal;
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-bottom: 5px;
   }
 }
 </style>

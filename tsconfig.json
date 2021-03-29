@@ -14,6 +14,10 @@
     "paths": { "@/*": ["packages/client/src/*"] },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "packages/*/src/**/*.vue"],
+  "include": [
+    "packages/client/src/**/*.ts",
+    "packages/client/src/**/*.tsx",
+    "packages/client/src/**/*.vue"
+  ],
   "exclude": ["node_modules"]
 }

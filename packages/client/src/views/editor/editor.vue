@@ -54,18 +54,11 @@
 </template>
 
 <script lang="ts">
-import { patchUnit, on } from '@/utils';
+import { patchUnit, on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
 import { pageConfig, setPageConfig, savePage, panel } from '@/hooks';
 import { computed, onMounted, ref, defineComponent } from 'vue';
-import {
-  Board,
-  BoardPreview,
-  RightPanel,
-  ExitDropdown,
-  LayerPanel,
-  ComponentPanel,
-} from '@/components';
+import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
   LeftOutlined,
   RightOutlined,
@@ -83,6 +76,7 @@ import {
   CameraOutlined,
   SendOutlined,
   DesktopOutlined,
+  SkinOutlined,
 } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { getPage } from '@/api';
@@ -103,7 +97,6 @@ export default defineComponent({
     DeleteOutlined,
     FileDoneOutlined,
     PlaySquareOutlined,
-    ExitDropdown,
     LayoutOutlined,
     UnorderedListOutlined,
     InsertRowRightOutlined,
@@ -113,6 +106,7 @@ export default defineComponent({
     CameraOutlined,
     SendOutlined,
     DesktopOutlined,
+    SkinOutlined,
   },
   props: { id: { type: String, default: () => '' } },
   setup(props) {
@@ -132,6 +126,8 @@ export default defineComponent({
     const switchPanelShow = (key: string) => {
       panel[key] = !panel[key];
     };
+
+    let dark = 0;
 
     const buttonGroup = [
       {
@@ -161,6 +157,13 @@ export default defineComponent({
         icon: 'DesktopOutlined',
         event: () => {
           modalOpen.value = true;
+        },
+      },
+      {
+        name: '换肤',
+        icon: 'SkinOutlined',
+        event: () => {
+          changeTheme((dark = dark ? 0 : 1));
         },
       },
     ];
@@ -200,7 +203,7 @@ export default defineComponent({
   padding: 0 20px;
   position: relative;
   z-index: 100;
-  background-color: var(--component-background);
+  background-color: var(--body-background);
 
   img {
     cursor: pointer;
@@ -244,7 +247,7 @@ export default defineComponent({
 .mid-panel {
   flex: 1;
   height: 100%;
-  background-color: var(--item-hover-bg);
+  background-color: var(--component-background);
   box-sizing: border-box;
   overflow: hidden;
 
@@ -257,7 +260,7 @@ export default defineComponent({
     padding-left: 30px;
     border-bottom: 1px solid var(--border-color-base);
     z-index: 10;
-    background-color: var(--component-background);
+    background-color: var(--body-background);
   }
 
   &__wrapper {

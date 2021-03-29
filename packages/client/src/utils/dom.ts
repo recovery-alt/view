@@ -11,3 +11,7 @@ export const getBoardMenuPosition = (className = '.board-menu') => {
   const { top, left } = menuDom.getBoundingClientRect();
   return getBoardReletedPosition(left, top);
 };
+
+export const changeTheme = (dark: number) => {
+  document.documentElement.setAttribute('theme', dark ? 'dark' : 'light');
+};

@@ -72,14 +72,9 @@
     <a-col span="1">
       <a-tooltip>
         <template #title>
-          <div key="1" class="edit-slider__text">
-            <span>切换图层面板</span><span>ctrl/cmd + &larr;</span>
-          </div>
-          <div key="2" class="edit-slider__text">
-            <span>切换组件面板</span><span>ctrl/cmd + &uarr;</span>
-          </div>
-          <div key="3" class="edit-slider__text">
-            <span>切换右侧面板</span><span>ctrl/cmd + &rarr;</span>
+          <div v-for="item in tips" :key="item.name" class="edit-slider__text">
+            <span>{{ item.name }}</span>
+            <span v-html="item.value"></span>
           </div>
         </template>
         <MacCommandOutlined class="edit-slider__icon" />
@@ -192,6 +187,12 @@ export default {
 
     useBoardKeydown(store, router);
 
+    const tips = [
+      { name: '切换图层面板', value: 'ctrl/cmd + &larr;' },
+      { name: '切换组件面板', value: 'ctrl/cmd + &uarr;' },
+      { name: '切换右侧面板', value: 'ctrl/cmd + &rarr;' },
+    ];
+
     return {
       board,
       boardDom,
@@ -223,6 +224,7 @@ export default {
       getUnit,
       addMarkline,
       cancelMarkline,
+      tips,
     };
   },
 };
@@ -231,7 +233,7 @@ export default {
 <style lang="less">
 .board {
   position: absolute;
-  background-color: var(--component-background);
+  background-color: var(--body-background);
   top: 60px;
   left: 60px;
   transform-origin: 0 0;
@@ -274,8 +276,8 @@ export default {
 
 .guide-line {
   &__controller {
-    border-right: 1px solid var(--black);
-    border-bottom: 1px solid var(--black);
+    border-right: 1px solid var(--border-color-base);
+    border-bottom: 1px solid var(--border-color-base);
     width: 20px;
     height: 20px;
     font-size: 14px;
@@ -285,7 +287,7 @@ export default {
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: var(--component-background);
+    background-color: var(--body-background);
   }
 }
 
@@ -293,7 +295,7 @@ export default {
   position: absolute;
   right: 0;
   bottom: 40px;
-  background: var(--normal-color);
+  background-color: var(--component-background);
   height: 30px;
   width: 100%;
   display: flex;
@@ -314,7 +316,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      color: var(--primary-color);
+      color: var(--text-color);
     }
   }
 
@@ -348,7 +350,7 @@ export default {
 
   span {
     position: absolute;
-    border: 1px solid var(--primary-1);
+    border: 1px solid var(--primary-color);
     z-index: 2;
     top: 0;
     left: 0;
@@ -385,7 +387,7 @@ export default {
     position: absolute;
     left: 5px;
     background-color: var(--primary-color);
-    color: var(--white);
+    color: var(--text-color-inverse);
     padding: 0 3px;
   }
 }

@@ -31,7 +31,7 @@ export default { name: 'carousel' };
       height: 100%;
     }
     .slick-slide h3 {
-      color: #fff;
+      color: var(--text-color);
     }
 
     .slick-track {

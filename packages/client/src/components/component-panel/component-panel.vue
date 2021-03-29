@@ -88,7 +88,7 @@ export default {
   flex-shrink: 0;
   box-sizing: border-box;
   z-index: 4;
-  background-color: var(--component-background);
+  background-color: var(--body-background);
   transition: width 0.3s var(--ease-in-out);
   white-space: nowrap;
 
@@ -99,7 +99,7 @@ export default {
 
   &__header {
     height: 30px;
-    background-color: var(--normal-color);
+    background-color: var(--heading-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -136,7 +136,7 @@ export default {
       height: 22px;
       box-sizing: border-box;
       padding: 0 5px;
-      background-color: var(--normal-color);
+      background-color: var(--heading-bg);
       text-align: center;
     }
 

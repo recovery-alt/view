@@ -115,7 +115,7 @@ export default {
 
 <style lang="less" scoped>
 .logo {
-  color: #fff;
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: center;

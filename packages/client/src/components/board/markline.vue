@@ -24,7 +24,7 @@ export default {
 <style lang="less">
 .board-markline {
   position: absolute;
-  background-color: var(--primary-8);
+  background-color: var(--primary-color);
   z-index: 1000;
 
   &.xline {

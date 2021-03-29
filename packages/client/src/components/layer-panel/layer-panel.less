@@ -7,7 +7,7 @@
   z-index: 4;
   overflow: hidden;
   white-space: nowrap;
-  background-color: var(--component-background);
+  background-color: var(--body-background);
 
   .--disable {
     opacity: 0.3;
@@ -20,7 +20,7 @@
 
   &__header {
     height: 30px;
-    background-color: var(--normal-color);
+    background-color: var(--heading-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,11 +37,11 @@
       font-size: 16px;
 
       &:hover {
-        color: var(--primary-8);
+        color: var(--primary-color);
       }
 
       &.--active {
-        color: var(--primary-8);
+        color: var(--primary-color);
       }
     }
   }
@@ -58,15 +58,15 @@
     box-sizing: border-box;
     padding: 0 27px;
     border-bottom: 1px solid var(--border-color-base);
-    background-color: var(--component-background);
+    background-color: var(--body-background);
 
     span {
       padding: 3px;
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-8);
-        color: var(--component-background);
+        background-color: var(--primary-color);
+        color: var(--text-color-inverse);
       }
     }
   }
@@ -82,12 +82,12 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-2);
+        background-color: var(--item-hover-bg);
       }
 
       &.--active {
-        color: var(--white);
-        background-color: var(--primary-5);
+        color: var(--text-color-inverse);
+        background-color: var(--primary-color);
       }
     }
 
@@ -144,14 +144,14 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-8);
-        color: var(--component-background);
+        background-color: var(--primary-color);
+        color: var(--text-color-inverse);
       }
     }
 
     .--icon {
       background-color: var(--primary-color);
-      color: var(--white);
+      color: var(--text-color-inverse);
     }
   }
 }

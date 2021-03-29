@@ -168,7 +168,7 @@ export default defineComponent({
   z-index: 2;
 
   ul {
-    background-color: var(--normal-color);
+    background-color: var(--component-background);
     border-radius: 5px;
     box-shadow: var(--box-shadow-base);
     padding: 5px 0;
@@ -181,13 +181,13 @@ export default defineComponent({
     padding-right: 3em;
 
     &:hover {
-      background-color: var(--primary-8);
-      color: var(--component-background);
+      background-color: var(--primary-color);
+      color: var(--text-color-inverse);
     }
 
     &:nth-child(4),
     &:nth-child(8) {
-      border-bottom: 1px solid var(--black);
+      border-bottom: 1px solid var(--border-color-base);
     }
 
     &.--disable {
@@ -195,8 +195,8 @@ export default defineComponent({
       opacity: 0.3;
 
       &:hover {
-        color: var(--text-color);
-        background-color: var(--normal-color);
+        color: var(--text-color-inverse);
+        background-color: var(--item-hover-bg);
       }
     }
   }

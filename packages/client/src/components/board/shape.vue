@@ -237,8 +237,8 @@ export default defineComponent({
   box-sizing: border-box;
 
   &:hover {
-    background-color: var(--primary-1);
-    outline: 1px dashed var(--primary-7);
+    background-color: var(--item-hover-bg);
+    outline: 1px dashed var(--outline-color);
   }
 
   & > *:first-child {
@@ -249,7 +249,7 @@ export default defineComponent({
 
   .shape-rotate {
     position: absolute;
-    color: var(--primary-7);
+    color: var(--primary-color);
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
@@ -292,10 +292,10 @@ export default defineComponent({
     position: absolute;
     width: @radius * 2;
     height: @radius * 2;
-    border: 1px solid var(--primary-7);
+    border: 1px solid var(--primary-color);
     box-sizing: border-box;
     border-radius: 50%;
-    background-color: var(--component-background);
+    background-color: var(--popover-background);
     z-index: 1;
   }
 

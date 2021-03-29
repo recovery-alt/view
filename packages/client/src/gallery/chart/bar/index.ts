@@ -1,5 +1,4 @@
 import { defineAsyncComponent } from 'vue';
-import type { Gallery } from '@/typings';
 
 const gallery: Gallery = {
   name: '柱状图',

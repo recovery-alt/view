@@ -113,7 +113,7 @@ export default {
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background-color: var(--normal-color);
+    background-color: var(--heading-bg);
   }
 
   &__wrapper {

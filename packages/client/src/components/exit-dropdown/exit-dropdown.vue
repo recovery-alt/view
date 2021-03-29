@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { UserOutlined, BgColorsOutlined } from '@ant-design/icons-vue';
-import { local, to, encrypt } from '@/utils';
+import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
@@ -129,10 +129,6 @@ export default {
       }
     };
 
-    const changeTheme = (dark: number) => {
-      document.documentElement.setAttribute('theme', dark ? 'dark' : 'light');
-    };
-
     const logout = () => {
       local.remove(LocalKeys.AUTHORIZATION);
       router.push(`/login?redirect=${route.path}`);
@@ -180,7 +176,7 @@ export default {
 .theme-change {
   margin-left: 10px;
   &:hover {
-    color: var(--primary-7);
+    color: var(--primary-color);
   }
 }
 </style>
