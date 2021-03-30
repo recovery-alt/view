@@ -1,6 +1,6 @@
 <template>
   <section class="right-panel" :style="{ width }">
-    <a-tabs v-if="curComponent" v-model="activeTab" size="small">
+    <a-tabs v-if="curComponent" v-model="activeTab" type="card" size="small">
       <a-tab-pane v-for="item in tabs" :key="item.title">
         <template #tab>
           <span>{{ item.title }}</span>

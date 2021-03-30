@@ -1,3 +1,6 @@
+import { local } from './storage';
+import { LocalKeys } from '@/enum';
+
 export const getBoardReletedPosition = (left: number, top: number, className = '.board') => {
   const boardDom = document.querySelector(className);
   if (!boardDom) return;
@@ -12,6 +15,15 @@ export const getBoardMenuPosition = (className = '.board-menu') => {
   return getBoardReletedPosition(left, top);
 };
 
-export const changeTheme = (dark: number) => {
-  document.documentElement.setAttribute('theme', dark ? 'dark' : 'light');
+export const changeTheme = () => {
+  const isDark = local.get(LocalKeys.IS_DARK);
+  let theme;
+  if (isDark) {
+    theme = 'light';
+    local.remove(LocalKeys.IS_DARK);
+  } else {
+    theme = 'dark';
+    local.set(LocalKeys.IS_DARK, 1);
+  }
+  document.documentElement.setAttribute('theme', theme);
 };

@@ -19,20 +19,7 @@
         </a-menu>
       </template>
     </a-dropdown>
-    <a-dropdown>
-      <BgColorsOutlined class="theme-change" />
-      <template #overlay>
-        <a-menu>
-          <a-menu-item
-            v-for="(item, index) in ['明亮主题', '暗黑主题']"
-            :key="item"
-            @click="changeTheme(index)"
-          >
-            {{ item }}
-          </a-menu-item>
-        </a-menu>
-      </template>
-    </a-dropdown>
+    <SkinOutlined class="theme-change" @click="changeTheme()" />
   </div>
   <a-modal
     v-model:visible="visible"
@@ -55,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { UserOutlined, BgColorsOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
@@ -67,7 +54,7 @@ import { RuleType } from 'ant-design-vue/lib/form/interface';
 
 export default {
   name: 'exit-dropdown',
-  components: { UserOutlined, BgColorsOutlined },
+  components: { UserOutlined, SkinOutlined },
   setup() {
     const userInfoStr = local.get(LocalKeys.USER_INFO);
     const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};

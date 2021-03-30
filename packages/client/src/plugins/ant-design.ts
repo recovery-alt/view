@@ -25,6 +25,7 @@ import 'ant-design-vue/lib/modal/style/index.css';
 import 'ant-design-vue/lib/checkbox/style/index.css';
 import 'ant-design-vue/lib/slider/style/index.css';
 import 'ant-design-vue/lib/carousel/style/index.css';
+import 'ant-design-vue/lib/timeline/style/index.css';
 import {
   Button,
   Input,
@@ -51,6 +52,7 @@ import {
   Col,
   Row,
   Carousel,
+  Timeline,
 } from 'ant-design-vue';
 
 export const useAntDesign = (app: App) => {
@@ -79,4 +81,5 @@ export const useAntDesign = (app: App) => {
   app.use(Col);
   app.use(Row);
   app.use(Carousel);
+  app.use(Timeline);
 };

@@ -23,7 +23,7 @@
           :title="item.name"
           placement="bottom"
         >
-          <a-button class="header__button" size="small" @click="item.event">
+          <a-button class="header__button" size="small" @click="item.event()">
             <template #icon>
               <component :is="item.icon" />
             </template>
@@ -127,8 +127,6 @@ export default defineComponent({
       panel[key] = !panel[key];
     };
 
-    let dark = 0;
-
     const buttonGroup = [
       {
         name: '组件删除备份',
@@ -162,9 +160,7 @@ export default defineComponent({
       {
         name: '换肤',
         icon: 'SkinOutlined',
-        event: () => {
-          changeTheme((dark = dark ? 0 : 1));
-        },
+        event: changeTheme,
       },
     ];
 

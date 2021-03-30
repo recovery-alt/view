@@ -12,6 +12,7 @@ export enum FormEnum {
 export enum LocalKeys {
   USER_INFO = 'user-info',
   AUTHORIZATION = 'authorization',
+  IS_DARK = 'is-dark',
 }
 
 export enum Direction {
