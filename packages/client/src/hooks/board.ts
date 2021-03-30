@@ -355,6 +355,7 @@ export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => 
   };
 
   const keydown = (e: KeyboardEvent) => {
+    if (!document.querySelector('.board')?.contains(document.activeElement)) return;
     e.preventDefault();
     e.stopPropagation();
     const handleKeydown = strategy[e.key];

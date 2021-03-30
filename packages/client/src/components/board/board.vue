@@ -33,6 +33,7 @@
       <div
         ref="boardDom"
         class="board"
+        tabindex="0"
         :style="patchUnit(pageStyle)"
         @drop="handleDrop"
         @dragover.prevent
@@ -42,6 +43,7 @@
           v-for="(item, index) in board.data"
           :key="item.id"
           :active="board.selected.includes(index)"
+          :tabindex="index + 1"
           :index="index"
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
@@ -241,7 +243,12 @@ export default {
   background-size: cover, contain;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
-  box-shadow: var(--box-shadow-base);
+  box-shadow: var(--shadow-1-right);
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--box-shadow-base);
+  }
 
   &__mask {
     position: absolute;
