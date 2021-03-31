@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';
@@ -38,13 +38,17 @@ export default {
       board.selected.length === 1 ? board.data[board.selected[0]] : null
     );
 
-    const tabs = [
-      { title: '配置', component: 'attr-panel' },
-      { title: '数据', component: 'data-panel' },
-      { title: '动画', component: 'animate-panel' },
-    ];
+    const tabs = computed(() => {
+      const tabs = [
+        { title: '配置', component: 'attr-panel' },
+        { title: '数据', component: 'data-panel' },
+        { title: '动画', component: 'animate-panel' },
+      ];
+      curComponent.value?.dataConfig || tabs.splice(1, 1);
+      return tabs;
+    });
 
-    const activeTab = ref(tabs[0].title);
+    const activeTab = ref(tabs.value[0].title);
 
     const toggle = () => {
       panel.config = !panel.config;

@@ -12,8 +12,8 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 1 : 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 1 : 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     'vue/name-property-casing': ['error', 'kebab-case'],
@@ -22,7 +22,8 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'jsx-a11y/no-static-element-interactions': 0,
-    'vue/no-v-html': 0,
+    'vue/no-v-html': process.env.NODE_ENV === 'production' ? 1 : 0,
+    'vue/require-default-prop': process.env.NODE_ENV === 'production' ? 1 : 0,
   },
   overrides: [
     {

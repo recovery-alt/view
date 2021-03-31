@@ -103,10 +103,10 @@ export const useBoardRefs = () => {
 };
 
 export const useThumbnail = (
-  screenShotRef: Ref<HTMLElement | null>,
-  canvasWrapperRef: Ref<HTMLElement | null>
+  screenShotRef: Ref<HTMLElement | undefined>,
+  canvasWrapperRef: Ref<HTMLElement | undefined>
 ) => {
-  const thumbnailRef = ref<HTMLCanvasElement | null>(null);
+  const thumbnailRef = ref<HTMLCanvasElement>();
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
   const showThumbnail = ref(true);
 
@@ -249,7 +249,7 @@ export const useThumbnail = (
   };
 };
 
-export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | null>) => {
+export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) => {
   const screenShotSize = reactive({ width: 0, height: 0 });
 
   const sliderFormatter = (value: number) => value + '%';
@@ -272,8 +272,6 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | null>) => {
   }, 50);
 
   onMounted(resizeScreenShot);
-
-  // watch(pageConfig.scale, debounce(resizeScreenShot, 50));
 
   return { sliderFormatter, handleSliderChange, screenShotSize, rulerKey };
 };
@@ -355,7 +353,7 @@ export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => 
   };
 
   const keydown = (e: KeyboardEvent) => {
-    if (!document.querySelector('.board')?.contains(document.activeElement)) return;
+    if (!document.querySelector('.canvas-wrapper')?.contains(document.activeElement)) return;
     e.preventDefault();
     e.stopPropagation();
     const handleKeydown = strategy[e.key];

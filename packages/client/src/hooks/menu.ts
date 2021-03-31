@@ -3,8 +3,8 @@ import { nextTick, reactive } from 'vue';
 export type Menu = {
   show: boolean;
   style: Partial<CSSStyleDataWithSize>;
-  ref: null | HTMLElement;
-  container: null | HTMLElement;
+  ref?: HTMLElement;
+  container?: HTMLElement;
 };
 
 export type MenuType = 'board' | 'layer';
@@ -13,14 +13,10 @@ const menu = reactive<Data<Menu>>({
   board: {
     show: false,
     style: {},
-    ref: null,
-    container: null,
   },
   layer: {
     show: false,
     style: {},
-    ref: null,
-    container: null,
   },
 });
 

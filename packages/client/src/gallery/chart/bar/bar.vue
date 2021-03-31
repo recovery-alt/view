@@ -3,33 +3,43 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineComponent, PropType } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import { DataSource } from '@/enum';
+import { handleChartData } from '@/utils';
 
-export default {
+export default defineComponent({
   name: 'bar',
-  setup() {
-    const bar = ref<HTMLElement | null>(null);
+  props: {
+    data: {
+      type: Object as PropType<ComponentData>,
+      default: () => ({ type: DataSource.STATIC, data: [] }),
+    },
+  },
+  setup(props) {
+    const bar = ref<HTMLElement>();
 
     use([GridComponent, BarChart, CanvasRenderer]);
 
     onMounted(() => {
       if (!bar.value) return;
       const chart = init(bar.value);
+      const dataset = handleChartData(props.data.data);
+
       const option = {
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: dataset[0].data,
         },
         yAxis: {
           type: 'value',
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: dataset[1].data,
             type: 'bar',
             showBackground: true,
             backgroundStyle: {
@@ -43,5 +53,5 @@ export default {
 
     return { bar };
   },
-};
+});
 </script>

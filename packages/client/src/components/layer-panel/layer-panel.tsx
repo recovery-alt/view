@@ -46,7 +46,7 @@ export default defineComponent({
 
     const { board } = store.state;
 
-    const layerRef = ref<HTMLElement | null>(null);
+    const layerRef = ref<HTMLElement>();
 
     const unlock = (e: MouseEvent, index: number) => {
       e.stopPropagation();

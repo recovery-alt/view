@@ -20,13 +20,14 @@ export default (app: App) => {
   const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
     const module = await getGroup();
     const group = module.default as Group;
-    const { name: groupName, icon, components } = group;
+    const { name: groupName, icon, components, dataConfig } = group;
     const list: Array<Gallery> = [];
 
     for (const [key, getModule] of Object.entries(components)) {
       const module = await getModule();
       const gallery = module.default;
       gallery.type = key;
+      gallery.dataConfig = dataConfig || gallery.dataConfig;
       app.component(`cq-${key}`, gallery.component);
 
       list.push(gallery);

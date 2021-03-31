@@ -99,6 +99,7 @@ const actions: Data<Action<Board, RootStateType>> = {
     const gallery = getGalleryList();
     const componentConfig = gallery.find(val => val.type === type);
     if (!componentConfig) throw new Error('获取不到该组件信息');
+    const { dataConfig, defaultStyle, defaultData } = componentConfig;
     const rotate = 0;
     const opacity = 1;
     const component = `cq-${type}`;
@@ -109,10 +110,10 @@ const actions: Data<Action<Board, RootStateType>> = {
       rotate,
       opacity,
       ...config.defaultComponentSize,
-      ...componentConfig.defaultStyle,
+      ...defaultStyle,
     };
     const label = componentConfig.name;
-    commit('append', { id, label, component, style });
+    commit('append', { id, dataConfig, dataset: defaultData, label, component, style });
   },
   del({ state, commit }) {
     if (state.selected.length > 0) {

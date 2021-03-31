@@ -31,7 +31,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const inputValue = ref('');
 
-    const inputColor = ref<null | HTMLElement>(null);
+    const inputColor = ref<HTMLElement>();
 
     const clickInputColor = () => {
       if (!inputColor.value) return;

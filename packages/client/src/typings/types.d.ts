@@ -40,6 +40,13 @@ type ComponentAttr = {
   data?: Array<{ id: number | string; label: string }>;
 };
 
+type ComponentData = {
+  type: import('@/enum').DataSource;
+  url?: string;
+  data?: Data | Array;
+  filter?: (data: unknown) => unknown;
+};
+
 type Component = {
   id: string;
   component: string;
@@ -51,7 +58,8 @@ type Component = {
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
   animations?: Array<string>;
   events?: Array<Event>;
-  data?: unknown;
+  dataConfig?: boolean;
+  dataset?: ComponentData;
   style: CSSStyleDataWithRotate;
 };
 
@@ -96,13 +104,16 @@ type Gallery = {
   type?: string;
   name: string;
   version: string;
+  dataConfig?: boolean;
   defaultStyle?: Partial<CSSStyleDataWithRotate>;
+  defaultData?: ComponentData;
   component: import('vue').Component;
 };
 
 type Group = {
   name: string;
   icon: string;
+  dataConfig?: boolean;
   components: Data<() => Promise<{ [key: string]: Gallery }>>;
 };
 

@@ -57,17 +57,14 @@ export default defineComponent({
       type: String as PropType<MenuType>,
       default: () => 'board',
     },
-    container: {
-      type: Object as PropType<HTMLElement | null>,
-      default: () => null,
-    },
+    container: Object as PropType<HTMLElement>,
   },
   setup(props) {
     const store = useStore();
 
     const { board } = store.state;
 
-    const menuRef = ref<null | HTMLElement>(null);
+    const menuRef = ref<HTMLElement>();
 
     const data = reactive([
       {

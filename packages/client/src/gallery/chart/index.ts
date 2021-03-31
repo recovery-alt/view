@@ -12,5 +12,6 @@ for (const [key, module] of Object.entries(modules)) {
 export default {
   components,
   name: '图表',
+  dataConfig: true,
   icon: 'LineChartOutlined',
 };

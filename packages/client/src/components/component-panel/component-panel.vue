@@ -60,7 +60,7 @@ export default {
   setup() {
     const store = useStore();
 
-    const board = store.state.board;
+    const { board } = store.state;
 
     const activeTab = ref('基础');
 

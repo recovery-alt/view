@@ -1,5 +1,5 @@
 <template>
-  <div ref="canvasWrapperRef" class="canvas-wrapper" @scroll="handleScroll">
+  <div ref="canvasWrapperRef" tabindex="-1" class="canvas-wrapper" @scroll="handleScroll">
     <div ref="screenShotRef" class="screen-shot" :style="patchUnit(screenShotSize)">
       <div class="fixed-wrapper">
         <div
@@ -33,7 +33,6 @@
       <div
         ref="boardDom"
         class="board"
-        tabindex="0"
         :style="patchUnit(pageStyle)"
         @drop="handleDrop"
         @dragover.prevent
@@ -42,8 +41,8 @@
         <board-shape
           v-for="(item, index) in board.data"
           :key="item.id"
+          tabindex="0"
           :active="board.selected.includes(index)"
-          :tabindex="index + 1"
           :index="index"
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
@@ -54,6 +53,7 @@
             :ref="el => el && setBoardRef(el.$el, index)"
             :index="index"
             :group="item.group"
+            :data="item.dataset"
             :style="splitStyleAndPatch(item.style, false)"
           />
         </board-shape>
@@ -142,9 +142,9 @@ export default {
     const { selectMask, handleMousedown } = useSelectMask(store);
     const position = reactive({ left: 0, top: 0 });
     const { setBoardRef } = useBoardRefs();
-    const screenShotRef = ref<HTMLElement | null>(null);
-    const canvasWrapperRef = ref<HTMLElement | null>(null);
-    const boardDom = ref<HTMLElement | null>(null);
+    const screenShotRef = ref<HTMLElement>();
+    const canvasWrapperRef = ref<HTMLElement>();
+    const boardDom = ref<HTMLElement>();
     const router = useRouter();
 
     const pageStyle = computed(() => {
@@ -156,9 +156,10 @@ export default {
       e.preventDefault();
       e.stopPropagation();
       const type = e.dataTransfer?.getData('type');
-      if (!type) return;
+      if (!type || !canvasWrapperRef.value) return;
       const { offsetX: left, offsetY: top } = e;
       store.dispatch(BoardEnum.APEEND, { type, left, top });
+      canvasWrapperRef.value.click();
     };
 
     const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
@@ -243,12 +244,7 @@ export default {
   background-size: cover, contain;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
-  box-shadow: var(--shadow-1-right);
-
-  &:focus {
-    outline: none;
-    box-shadow: var(--box-shadow-base);
-  }
+  box-shadow: var(--box-shadow-base);
 
   &__mask {
     position: absolute;
@@ -263,6 +259,11 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--box-shadow-base);
+  }
 }
 
 .ruler-wrapper {

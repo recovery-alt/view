@@ -9,7 +9,7 @@ import { pageConfig } from '@/hooks';
 export default {
   name: 'board-ruler',
   setup() {
-    const canvas = ref<HTMLCanvasElement | null>(null);
+    const canvas = ref<HTMLCanvasElement>();
 
     // 每格代表像素值
     const pxPerCell = Math.floor(800 / pageConfig.scale);

@@ -19,3 +19,8 @@ export enum Direction {
   X = 'x',
   Y = 'y',
 }
+
+export enum DataSource {
+  URL,
+  STATIC,
+}

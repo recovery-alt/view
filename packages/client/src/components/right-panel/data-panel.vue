@@ -9,35 +9,65 @@
         >
           <div class="timeline-wrapper__item">
             <span>{{ item.text }}</span>
-            <a-button v-if="item.btnText" type="primary" size="small">
+            <a-button v-if="item.btnText" type="primary" size="small" @click="item.event">
               {{ item.btnText }}
             </a-button>
-            <ReloadOutlined v-else />
+            <ReloadOutlined v-else @click="item.event" />
           </div>
         </a-timeline-item>
       </a-timeline>
     </div>
-    <div ref="codeBox" class="code-box"></div>
+    <code-mirror
+      v-model="viewer"
+      class="code-box"
+      :doc="JSON.stringify(curComponent.dataset?.data)"
+    />
     <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-    <a-drawer v-model:visible="drawer.show" placement="right" :width="400"></a-drawer>
+    <a-drawer v-model:visible="drawer.show" placement="right" title="设置数据源" :width="400">
+      <div class="data-panel__drawer-row">
+        <div>
+          <label class="data-panel__label">数据源类型：</label>
+          <a-select v-model:value="selected" size="small">
+            <a-select-option v-for="item in options" :key="item.id" :value="item.id">
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <a-button type="primary" size="small">获取数据</a-button>
+      </div>
+      <div class="data-panel__drawer-row">
+        <div>
+          <label class="data-panel__label">开启过滤器：</label>
+          <a-switch v-model:checked="openFilter" />
+        </div>
+        <a-button type="primary" size="small" @click="showModal = true">设置过滤器</a-button>
+      </div>
+      <code-mirror v-model="drawerViewer" />
+      <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
+    </a-drawer>
+    <a-modal v-model:visible="showModal" title="过滤器" :z-index="1001">
+      <code-mirror v-model="modalViewer" type="javascript" />
+    </a-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { useStore } from '@/store';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
-import { basicSetup, EditorView, EditorState } from '@codemirror/basic-setup';
-import { language } from '@codemirror/language';
-import { jsonLanguage } from '@codemirror/lang-json';
 import { generateColumns } from '@/utils';
+import { CodeMirror } from '@/components';
+import { EditorView } from '@codemirror/basic-setup';
 
 export default {
   name: 'data-panel',
-  components: { ReloadOutlined },
+  components: { ReloadOutlined, CodeMirror },
   setup() {
     const store = useStore();
     const { board } = store.state;
+    const viewer = shallowRef<EditorView>();
+    const drawerViewer = shallowRef<EditorView>();
+    const modalViewer = shallowRef<EditorView>();
 
     const drawer = reactive({
       show: false,
@@ -77,28 +107,53 @@ export default {
       ]),
     });
 
-    const timeline = reactive([
-      { actived: true, text: '静态数据', btnText: '配置数据源' },
-      { actived: false, text: '数据过滤器', btnText: '添加过滤器' },
-      { actived: true, text: '数据响应结果（只读）', icon: 'ReloadOutlined' },
-    ]);
-
     const curComponent = computed(() => {
       return board.data[board.selected[0]];
     });
 
-    const codeBox = ref<HTMLElement | null>(null);
-    let state: EditorState, view: EditorView;
+    const timeline = reactive([
+      {
+        actived: true,
+        text: '静态数据',
+        btnText: '设置数据源',
+        event: () => {
+          drawer.show = true;
+        },
+      },
+      {
+        actived: false,
+        text: '数据过滤器',
+        btnText: '添加过滤器',
+        event: () => {
+          showModal.value = true;
+        },
+      },
+      { actived: true, text: '数据响应结果（只读）', icon: 'ReloadOutlined', event: () => null },
+    ]);
 
-    onMounted(() => {
-      if (!codeBox.value) return;
-      state = EditorState.create({
-        extensions: [basicSetup, language.of(jsonLanguage)],
-      });
-      view = new EditorView({ state, parent: codeBox.value });
-    });
+    const selected = ref(0);
 
-    return { curComponent, drawer, table, timeline, codeBox };
+    const options = [
+      { id: 0, label: '静态数据' },
+      { id: 1, label: '接口请求' },
+    ];
+
+    const openFilter = ref(false);
+    const showModal = ref(false);
+
+    return {
+      viewer,
+      drawerViewer,
+      modalViewer,
+      curComponent,
+      drawer,
+      table,
+      timeline,
+      selected,
+      options,
+      openFilter,
+      showModal,
+    };
   },
 };
 </script>
@@ -106,33 +161,32 @@ export default {
 <style lang="less">
 .data-panel {
   background-color: var(--body-background);
-}
 
-.timeline-wrapper {
-  box-sizing: border-box;
-  padding: 0 10px;
-  padding-top: 10px;
-
-  &__item {
+  &__drawer-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-}
-
-.code-box {
-  overflow: auto;
-  height: 200px;
-  margin: 0 10px;
-  margin-bottom: 5px;
-  border: 1px solid var(--border-color-base);
-
-  .cm-editor {
-    height: 100%;
+    margin-bottom: 20px;
   }
 
-  .ͼ1.cm-focused {
-    outline: none;
+  &__label {
+    margin-right: 5px;
+  }
+
+  .timeline-wrapper {
+    box-sizing: border-box;
+    padding: 0 10px;
+    padding-top: 10px;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .code-box {
+    margin: 0 10px;
   }
 }
 </style>

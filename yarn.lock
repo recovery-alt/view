@@ -670,6 +670,19 @@
     "@codemirror/state" "^0.18.3"
     "@codemirror/view" "^0.18.0"
 
+"@codemirror/lang-javascript@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.npm.taobao.org/@codemirror/lang-javascript/download/@codemirror/lang-javascript-0.18.0.tgz#e077b6601a076e1b4471c06ffc2b77dce8815c0e"
+  integrity sha1-4He2YBoHbhtEccBv/Ct33OiBXA4=
+  dependencies:
+    "@codemirror/autocomplete" "^0.18.0"
+    "@codemirror/highlight" "^0.18.0"
+    "@codemirror/language" "^0.18.0"
+    "@codemirror/lint" "^0.18.0"
+    "@codemirror/state" "^0.18.0"
+    "@codemirror/view" "^0.18.0"
+    lezer-javascript "^0.13.0"
+
 "@codemirror/lang-json@^0.18.0":
   version "0.18.0"
   resolved "https://registry.npm.taobao.org/@codemirror/lang-json/download/@codemirror/lang-json-0.18.0.tgz#775f2dc95039a86fe3e6e55e4467e10c2ecae414"
@@ -5872,6 +5885,13 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lezer-javascript@^0.13.0:
+  version "0.13.3"
+  resolved "https://registry.npm.taobao.org/lezer-javascript/download/lezer-javascript-0.13.3.tgz#cdf72fca777f24a66458b800711ecb78085e7b46"
+  integrity sha1-zfcvynd/JKZkWLgAcR7LeAhee0Y=
+  dependencies:
+    lezer "^0.13.0"
 
 lezer-json@^0.13.0:
   version "0.13.1"
