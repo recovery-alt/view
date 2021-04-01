@@ -7,12 +7,14 @@ import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { language, LezerLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
-import { onMounted, PropType, ref, defineComponent } from 'vue';
+import { onMounted, PropType, ref, defineComponent, watchEffect } from 'vue';
+import { format } from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 
 export default defineComponent({
   name: 'code-mirror',
   props: {
-    modelValue: Object as PropType<EditorView>,
+    viewer: Object as PropType<EditorView>,
     type: {
       type: String,
       default: () => 'json',
@@ -21,8 +23,12 @@ export default defineComponent({
       type: String,
       default: () => '',
     },
+    readonly: {
+      type: Boolean,
+      default: () => false,
+    },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:viewer'],
   setup(props, { emit }) {
     const cm = ref<HTMLElement>();
 
@@ -31,14 +37,21 @@ export default defineComponent({
       javascript: javascriptLanguage,
     };
 
-    onMounted(() => {
-      if (!cm.value) return;
+    const parser = props.type === 'json' ? 'json' : 'babel';
+
+    watchEffect(() => {
+      const doc = format(props.doc, { parser, plugins: [parserBabel] });
       const lang = strategy[props.type] || strategy.json;
       const state = EditorState.create({
-        doc: props.doc,
-        extensions: [basicSetup, language.of(lang)],
+        doc,
+        extensions: [basicSetup, language.of(lang), EditorView.editable.of(!props.readonly)],
       });
-      emit('update:modelValue', new EditorView({ state, parent: cm.value }));
+      props.viewer?.setState(state);
+    });
+
+    onMounted(() => {
+      if (!cm.value) return;
+      emit('update:viewer', new EditorView({ parent: cm.value }));
     });
 
     return { cm };

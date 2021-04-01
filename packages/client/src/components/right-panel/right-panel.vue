@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive } from 'vue';
+import { ref, computed } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';

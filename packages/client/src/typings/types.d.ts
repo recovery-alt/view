@@ -113,6 +113,7 @@ type Gallery = {
 type Group = {
   name: string;
   icon: string;
+  order: number;
   dataConfig?: boolean;
   components: Data<() => Promise<{ [key: string]: Gallery }>>;
 };

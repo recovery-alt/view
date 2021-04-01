@@ -12,5 +12,6 @@ for (const [key, module] of Object.entries(modules)) {
 export default {
   components,
   name: '基础',
+  order: 0,
   icon: 'BankOutlined',
 };

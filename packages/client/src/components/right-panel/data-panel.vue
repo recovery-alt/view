@@ -17,13 +17,15 @@
         </a-timeline-item>
       </a-timeline>
     </div>
-    <code-mirror
-      v-model="viewer"
-      class="code-box"
-      :doc="JSON.stringify(curComponent.dataset?.data)"
-    />
+    <code-mirror v-model:viewer="viewer" class="code-box" readonly :doc="dataStringify" />
     <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-    <a-drawer v-model:visible="drawer.show" placement="right" title="设置数据源" :width="400">
+    <a-drawer
+      v-model:visible="drawer.show"
+      placement="right"
+      title="设置数据源"
+      :width="400"
+      @close="handleDrawerColse"
+    >
       <div class="data-panel__drawer-row">
         <div>
           <label class="data-panel__label">数据源类型：</label>
@@ -42,18 +44,18 @@
         </div>
         <a-button type="primary" size="small" @click="showModal = true">设置过滤器</a-button>
       </div>
-      <code-mirror v-model="drawerViewer" />
+      <code-mirror v-model:viewer="drawerViewer" v-model:doc="dataStringify" />
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     </a-drawer>
     <a-modal v-model:visible="showModal" title="过滤器" :z-index="1001">
-      <code-mirror v-model="modalViewer" type="javascript" />
+      <code-mirror v-model:viewer="modalViewer" type="javascript" />
     </a-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { useStore } from '@/store';
-import { computed, reactive, ref, shallowRef } from 'vue';
+import { computed, onMounted, reactive, ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
@@ -111,6 +113,12 @@ export default {
       return board.data[board.selected[0]];
     });
 
+    const dataStringify = ref<string>();
+
+    onMounted(() => {
+      dataStringify.value = JSON.stringify(curComponent.value.dataset?.data);
+    });
+
     const timeline = reactive([
       {
         actived: true,
@@ -141,6 +149,15 @@ export default {
     const openFilter = ref(false);
     const showModal = ref(false);
 
+    const handleDrawerColse = () => {
+      if (!drawerViewer.value) return;
+      const doc = drawerViewer.value.state.doc.toJSON();
+      dataStringify.value = doc.reduce((acc, val) => acc + val, '');
+      if (curComponent.value.dataset) {
+        curComponent.value.dataset.data = JSON.parse(dataStringify.value);
+      }
+    };
+
     return {
       viewer,
       drawerViewer,
@@ -153,6 +170,8 @@ export default {
       options,
       openFilter,
       showModal,
+      dataStringify,
+      handleDrawerColse,
     };
   },
 };

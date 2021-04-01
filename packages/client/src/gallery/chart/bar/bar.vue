@@ -3,13 +3,12 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, defineComponent, PropType } from 'vue';
-import { use, init } from 'echarts/core';
+import { onMounted, ref, defineComponent, PropType, watch } from 'vue';
+import { use, init, ComposeOption, ECharts } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
-import { BarChart } from 'echarts/charts';
+import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { DataSource } from '@/enum';
-import { handleChartData } from '@/utils';
 
 export default defineComponent({
   name: 'bar',
@@ -21,34 +20,22 @@ export default defineComponent({
   },
   setup(props) {
     const bar = ref<HTMLElement>();
+    const chart = ref<ECharts>();
 
     use([GridComponent, BarChart, CanvasRenderer]);
 
     onMounted(() => {
       if (!bar.value) return;
-      const chart = init(bar.value);
-      const dataset = handleChartData(props.data.data);
+      chart.value = init(bar.value);
 
-      const option = {
-        xAxis: {
-          type: 'category',
-          data: dataset[0].data,
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: dataset[1].data,
-            type: 'bar',
-            showBackground: true,
-            backgroundStyle: {
-              color: 'rgba(180, 180, 180, 0.2)',
-            },
-          },
-        ],
+      const option: ComposeOption<BarSeriesOption> = {
+        dataset: { source: props.data.data },
+        xAxis: { type: 'category' },
+        yAxis: {},
+        series: [{ type: 'bar' }],
       };
-      chart.setOption(option);
+
+      chart.value.setOption(option);
     });
 
     return { bar };
