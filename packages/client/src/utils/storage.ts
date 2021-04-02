@@ -1,7 +1,9 @@
+import json from 'json5';
+
 // 封装localStorage，可设置过期事件
 export const local = {
   set(key: string, value: unknown, expires = 86400000) {
-    const handledValue = typeof value === 'string' ? value : JSON.stringify(value);
+    const handledValue = typeof value === 'string' ? value : json.stringify(value);
     localStorage.setItem(key, handledValue);
     localStorage.setItem(`${key}__expires__`, Date.now() + expires + '');
     return value;

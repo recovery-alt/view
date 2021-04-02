@@ -170,9 +170,9 @@ export default defineComponent({
 
       const mouseup = (e: MouseEvent) => {
         e.stopPropagation();
-        handleEchartsResize(board.selected[0]);
         off('mouseup', mouseup);
         off('mousemove', mousemove);
+        handleEchartsResize(board.selected[0]);
       };
 
       on('mousemove', mousemove);

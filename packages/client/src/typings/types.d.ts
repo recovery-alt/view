@@ -43,7 +43,7 @@ type ComponentAttr = {
 type ComponentData = {
   type: import('@/enum').DataSource;
   url?: string;
-  data?: Data | Array;
+  static?: Data | Array<unknown>;
   filter?: (data: unknown) => unknown;
 };
 
@@ -106,7 +106,7 @@ type Gallery = {
   version: string;
   dataConfig?: boolean;
   defaultStyle?: Partial<CSSStyleDataWithRotate>;
-  defaultData?: ComponentData;
+  defaultDataset?: ComponentData;
   component: import('vue').Component;
 };
 

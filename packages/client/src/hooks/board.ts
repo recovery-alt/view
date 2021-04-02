@@ -1,4 +1,15 @@
-import { nextTick, onBeforeUnmount, onMounted, reactive, ref, Ref, watch, watchEffect } from 'vue';
+import {
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  Ref,
+  shallowReactive,
+  shallowRef,
+  watch,
+  watchEffect,
+} from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
 import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
@@ -8,7 +19,7 @@ import { debounce } from 'lodash';
 import { Direction } from '@/enum';
 import type { Router } from 'vue-router';
 
-const boardRefs = reactive<Record<number, HTMLElement>>({});
+const boardRefs = shallowReactive<Record<number, HTMLElement>>({});
 
 export const useSelectMask = (store: Store<RootStateType>) => {
   type SelectMask = {
@@ -84,6 +95,8 @@ export const useBoardRefs = () => {
     const dom = boardRefs[index];
     if (dom) {
       const chart = getInstanceByDom(dom);
+      console.log(chart.getOption());
+
       chart && chart.resize();
     }
   };
@@ -106,7 +119,7 @@ export const useThumbnail = (
   screenShotRef: Ref<HTMLElement | undefined>,
   canvasWrapperRef: Ref<HTMLElement | undefined>
 ) => {
-  const thumbnailRef = ref<HTMLCanvasElement>();
+  const thumbnailRef = shallowRef<HTMLCanvasElement>();
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
   const showThumbnail = ref(true);
 

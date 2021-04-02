@@ -51,13 +51,14 @@ import { reactive, ref } from 'vue';
 import { useForm } from '@ant-design-vue/use';
 import { changePassword } from '@/api';
 import { RuleType } from 'ant-design-vue/lib/form/interface';
+import json from 'json5';
 
 export default {
   name: 'exit-dropdown',
   components: { UserOutlined, SkinOutlined },
   setup() {
     const userInfoStr = local.get(LocalKeys.USER_INFO);
-    const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+    const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
     const router = useRouter();
     const route = useRoute();
 

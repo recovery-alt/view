@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { ref, watch, watchEffect, defineComponent } from 'vue';
+import { ref, watch, watchEffect, defineComponent, shallowRef } from 'vue';
 
 export default defineComponent({
   name: 'color-picker',
@@ -31,7 +31,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const inputValue = ref('');
 
-    const inputColor = ref<HTMLElement>();
+    const inputColor = shallowRef<HTMLElement>();
 
     const clickInputColor = () => {
       if (!inputColor.value) return;

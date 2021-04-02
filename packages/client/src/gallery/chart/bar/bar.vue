@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, defineComponent, PropType, watch } from 'vue';
+import { onMounted, defineComponent, PropType, shallowRef, watchEffect } from 'vue';
 import { use, init, ComposeOption, ECharts } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
@@ -19,23 +19,27 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const bar = ref<HTMLElement>();
-    const chart = ref<ECharts>();
+    const bar = shallowRef<HTMLElement>();
+    const chart = shallowRef<ECharts>();
 
     use([GridComponent, BarChart, CanvasRenderer]);
 
-    onMounted(() => {
-      if (!bar.value) return;
-      chart.value = init(bar.value);
-
+    watchEffect(() => {
+      if (!chart.value || props.data.type !== DataSource.STATIC) return;
       const option: ComposeOption<BarSeriesOption> = {
-        dataset: { source: props.data.data },
+        dataset: { source: props.data.static },
         xAxis: { type: 'category' },
-        yAxis: {},
+        yAxis: { type: 'value' },
         series: [{ type: 'bar' }],
       };
 
       chart.value.setOption(option);
+    });
+
+    onMounted(() => {
+      if (bar.value) {
+        chart.value = init(bar.value);
+      }
     });
 
     return { bar };

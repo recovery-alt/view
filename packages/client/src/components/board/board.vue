@@ -122,7 +122,7 @@ import {
 } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -142,9 +142,9 @@ export default {
     const { selectMask, handleMousedown } = useSelectMask(store);
     const position = reactive({ left: 0, top: 0 });
     const { setBoardRef } = useBoardRefs();
-    const screenShotRef = ref<HTMLElement>();
-    const canvasWrapperRef = ref<HTMLElement>();
-    const boardDom = ref<HTMLElement>();
+    const screenShotRef = shallowRef<HTMLElement>();
+    const canvasWrapperRef = shallowRef<HTMLElement>();
+    const boardDom = shallowRef<HTMLElement>();
     const router = useRouter();
 
     const pageStyle = computed(() => {

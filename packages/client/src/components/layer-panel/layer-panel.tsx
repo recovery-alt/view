@@ -14,7 +14,7 @@ import {
   RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel, menu, showMenu } from '@/hooks';
-import { computed, reactive, ref, defineComponent } from 'vue';
+import { computed, reactive, ref, defineComponent, shallowRef } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
@@ -46,7 +46,7 @@ export default defineComponent({
 
     const { board } = store.state;
 
-    const layerRef = ref<HTMLElement>();
+    const layerRef = shallowRef<HTMLElement>();
 
     const unlock = (e: MouseEvent, index: number) => {
       e.stopPropagation();

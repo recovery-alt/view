@@ -8,9 +8,9 @@ const gallery: Gallery = {
     width: 400,
     height: 300,
   },
-  defaultData: {
+  defaultDataset: {
     type: DataSource.STATIC,
-    data: [
+    static: [
       { x: 'Mon', y: 120 },
       { x: 'Tue', y: 200 },
       { x: 'Wed', y: 150 },

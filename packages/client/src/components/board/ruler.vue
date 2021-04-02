@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, shallowRef } from 'vue';
 import { pageConfig } from '@/hooks';
 
 export default {
   name: 'board-ruler',
   setup() {
-    const canvas = ref<HTMLCanvasElement>();
+    const canvas = shallowRef<HTMLCanvasElement>();
 
     // 每格代表像素值
     const pxPerCell = Math.floor(800 / pageConfig.scale);

@@ -7,7 +7,7 @@ import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { language, LezerLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
-import { onMounted, PropType, ref, defineComponent, watchEffect } from 'vue';
+import { onMounted, PropType, defineComponent, watchEffect, shallowRef } from 'vue';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   emits: ['update:viewer'],
   setup(props, { emit }) {
-    const cm = ref<HTMLElement>();
+    const cm = shallowRef<HTMLElement>();
 
     const strategy: Data<LezerLanguage> = {
       json: jsonLanguage,

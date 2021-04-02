@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
+import json from 'json5';
 
 // 默认提示
 const TIP = '连接出错了~';
@@ -44,7 +45,7 @@ const service = axios.create({
   transformResponse: [
     (data: unknown) => {
       if (typeof data === 'string' && data.startsWith('{')) {
-        data = JSON.parse(data);
+        data = json.parse(data);
       }
       return data;
     },

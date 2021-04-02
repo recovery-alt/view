@@ -35,7 +35,7 @@ import {
   LockOutlined,
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
-import { reactive, onMounted, ref, PropType, defineComponent } from 'vue';
+import { reactive, onMounted, PropType, defineComponent, shallowRef } from 'vue';
 import { MenuType, menu } from '@/hooks';
 
 export default defineComponent({
@@ -64,7 +64,7 @@ export default defineComponent({
 
     const { board } = store.state;
 
-    const menuRef = ref<HTMLElement>();
+    const menuRef = shallowRef<HTMLElement>();
 
     const data = reactive([
       {

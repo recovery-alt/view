@@ -60,6 +60,7 @@ import { ReloadOutlined } from '@ant-design/icons-vue';
 import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
 import { EditorView } from '@codemirror/basic-setup';
+import json from 'json5';
 
 export default {
   name: 'data-panel',
@@ -116,7 +117,7 @@ export default {
     const dataStringify = ref<string>();
 
     onMounted(() => {
-      dataStringify.value = JSON.stringify(curComponent.value.dataset?.data);
+      dataStringify.value = json.stringify(curComponent.value.dataset?.static);
     });
 
     const timeline = reactive([
@@ -154,7 +155,7 @@ export default {
       const doc = drawerViewer.value.state.doc.toJSON();
       dataStringify.value = doc.reduce((acc, val) => acc + val, '');
       if (curComponent.value.dataset) {
-        curComponent.value.dataset.data = JSON.parse(dataStringify.value);
+        curComponent.value.dataset.static = json.parse(dataStringify.value);
       }
     };
 
