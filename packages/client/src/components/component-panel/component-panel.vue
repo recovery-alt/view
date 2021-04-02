@@ -41,44 +41,25 @@
   </section>
 </template>
 
-<script lang="ts">
-import { useStore } from '@/store';
+<script lang="ts" setup>
 import { getGalleryGroup } from '@/gallery';
 import { ref } from 'vue';
-import {
-  DatabaseOutlined,
-  FolderOutlined,
-  LineChartOutlined,
-  BankOutlined,
-  LeftOutlined,
-} from '@ant-design/icons-vue';
+import { LeftOutlined } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
 
-export default {
-  name: 'component-panel',
-  components: { DatabaseOutlined, FolderOutlined, LineChartOutlined, BankOutlined, LeftOutlined },
-  setup() {
-    const store = useStore();
+const activeTab = ref('基础');
 
-    const { board } = store.state;
+const galleryGroup = getGalleryGroup();
 
-    const activeTab = ref('基础');
+const handleDragStart = (e: DragEvent) => {
+  const target = e.target as HTMLDataListElement;
+  if (target.dataset.type) {
+    e.dataTransfer?.setData('type', target.dataset.type);
+  }
+};
 
-    const galleryGroup = getGalleryGroup();
-
-    const handleDragStart = (e: DragEvent) => {
-      const target = e.target as HTMLDataListElement;
-      if (target.dataset.type) {
-        e.dataTransfer?.setData('type', target.dataset.type);
-      }
-    };
-
-    const searchComponent = () => {
-      // TODO: 查询组件
-    };
-
-    return { handleDragStart, board, galleryGroup, activeTab, panel, searchComponent };
-  },
+const searchComponent = () => {
+  // TODO: 查询组件
 };
 </script>
 

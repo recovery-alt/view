@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { useStore } from '@/store';
 import { computed, onMounted, reactive, ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
@@ -62,119 +62,97 @@ import { CodeMirror } from '@/components';
 import { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
 
-export default {
-  name: 'data-panel',
-  components: { ReloadOutlined, CodeMirror },
-  setup() {
-    const store = useStore();
-    const { board } = store.state;
-    const viewer = shallowRef<EditorView>();
-    const drawerViewer = shallowRef<EditorView>();
-    const modalViewer = shallowRef<EditorView>();
+const store = useStore();
+const { board } = store.state;
+const viewer = shallowRef<EditorView>();
+const drawerViewer = shallowRef<EditorView>();
+const modalViewer = shallowRef<EditorView>();
 
-    const drawer = reactive({
-      show: false,
-    });
+const drawer = reactive({
+  show: false,
+});
 
-    const table = reactive({
-      data: [
-        {
-          key: 'x',
-          mapping: '-',
-          status: '匹配成功',
-        },
-        {
-          key: 'y',
-          mapping: '-',
-          status: '匹配成功',
-        },
-        {
-          key: 'z',
-          mapping: '-',
-          status: '匹配成功',
-        },
-      ],
-      columns: generateColumns([
-        {
-          title: '字段',
-          key: 'key',
-        },
-        {
-          title: '映射',
-          key: 'mapping',
-        },
-        {
-          title: '状态',
-          key: 'status',
-        },
-      ]),
-    });
+const table = reactive({
+  data: [
+    {
+      key: 'x',
+      mapping: '-',
+      status: '匹配成功',
+    },
+    {
+      key: 'y',
+      mapping: '-',
+      status: '匹配成功',
+    },
+    {
+      key: 'z',
+      mapping: '-',
+      status: '匹配成功',
+    },
+  ],
+  columns: generateColumns([
+    {
+      title: '字段',
+      key: 'key',
+    },
+    {
+      title: '映射',
+      key: 'mapping',
+    },
+    {
+      title: '状态',
+      key: 'status',
+    },
+  ]),
+});
 
-    const curComponent = computed(() => {
-      return board.data[board.selected[0]];
-    });
+const curComponent = computed(() => {
+  return board.data[board.selected[0]];
+});
 
-    const dataStringify = ref<string>();
+const dataStringify = ref<string>();
 
-    onMounted(() => {
-      dataStringify.value = json.stringify(curComponent.value.dataset?.static);
-    });
+onMounted(() => {
+  dataStringify.value = json.stringify(curComponent.value.dataset?.static);
+});
 
-    const timeline = reactive([
-      {
-        actived: true,
-        text: '静态数据',
-        btnText: '设置数据源',
-        event: () => {
-          drawer.show = true;
-        },
-      },
-      {
-        actived: false,
-        text: '数据过滤器',
-        btnText: '添加过滤器',
-        event: () => {
-          showModal.value = true;
-        },
-      },
-      { actived: true, text: '数据响应结果（只读）', icon: 'ReloadOutlined', event: () => null },
-    ]);
-
-    const selected = ref(0);
-
-    const options = [
-      { id: 0, label: '静态数据' },
-      { id: 1, label: '接口请求' },
-    ];
-
-    const openFilter = ref(false);
-    const showModal = ref(false);
-
-    const handleDrawerColse = () => {
-      if (!drawerViewer.value) return;
-      const doc = drawerViewer.value.state.doc.toJSON();
-      dataStringify.value = doc.reduce((acc, val) => acc + val, '');
-      if (curComponent.value.dataset) {
-        curComponent.value.dataset.static = json.parse(dataStringify.value);
-      }
-    };
-
-    return {
-      viewer,
-      drawerViewer,
-      modalViewer,
-      curComponent,
-      drawer,
-      table,
-      timeline,
-      selected,
-      options,
-      openFilter,
-      showModal,
-      dataStringify,
-      handleDrawerColse,
-    };
+const timeline = reactive([
+  {
+    actived: true,
+    text: '静态数据',
+    btnText: '设置数据源',
+    event: () => {
+      drawer.show = true;
+    },
   },
+  {
+    actived: false,
+    text: '数据过滤器',
+    btnText: '添加过滤器',
+    event: () => {
+      showModal.value = true;
+    },
+  },
+  { actived: true, text: '数据响应结果（只读）', icon: 'ReloadOutlined', event: () => null },
+]);
+
+const selected = ref(0);
+
+const options = [
+  { id: 0, label: '静态数据' },
+  { id: 1, label: '接口请求' },
+];
+
+const openFilter = ref(false);
+const showModal = ref(false);
+
+const handleDrawerColse = () => {
+  if (!drawerViewer.value) return;
+  const doc = drawerViewer.value.state.doc.toJSON();
+  dataStringify.value = doc.reduce((acc, val) => acc + val, '');
+  if (curComponent.value.dataset) {
+    curComponent.value.dataset.static = json.parse(dataStringify.value);
+  }
 };
 </script>
 

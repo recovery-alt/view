@@ -22,37 +22,29 @@
   </teleport>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed, defineProps, useContext } from 'vue';
 import { pageConfig } from '@/hooks';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch } from '@/utils';
 
-export default defineComponent({
-  name: 'board-preview',
-  components: { CloseSquareOutlined },
-  props: {
-    modelValue: Boolean,
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const store = useStore();
+defineProps({ modelValue: Boolean });
 
-    const { board } = store.state;
+const { emit } = useContext();
 
-    const style = computed(() => ({
-      width: pageConfig.width + 'px',
-      height: pageConfig.height + 'px',
-    }));
+const store = useStore();
 
-    const handleClose = () => {
-      emit('update:modelValue', false);
-    };
+const { board } = store.state;
 
-    return { handleClose, style, board, splitStyleAndPatch };
-  },
-});
+const style = computed(() => ({
+  width: pageConfig.width + 'px',
+  height: pageConfig.height + 'px',
+}));
+
+const handleClose = () => {
+  emit('update:modelValue', false);
+};
 </script>
 
 <style lang="less">

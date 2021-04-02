@@ -53,20 +53,14 @@
   <board-preview v-model="modalOpen" />
 </template>
 
-<script lang="ts">
-import { patchUnit, on, changeTheme } from '@/utils';
+<script lang="ts" setup>
+import { on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
 import { pageConfig, setPageConfig, savePage, panel } from '@/hooks';
-import { computed, onMounted, ref, defineComponent } from 'vue';
+import { computed, defineProps, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
-  LeftOutlined,
-  RightOutlined,
-  ScissorOutlined,
-  CopyOutlined,
-  DeleteOutlined,
   FileDoneOutlined,
-  PlaySquareOutlined,
   LayoutOutlined,
   UnorderedListOutlined,
   InsertRowRightOutlined,
@@ -82,109 +76,71 @@ import { useRouter } from 'vue-router';
 import { getPage } from '@/api';
 import { cloneDeep } from 'lodash';
 
-export default defineComponent({
-  name: 'editor',
-  components: {
-    LayerPanel,
-    ComponentPanel,
-    Board,
-    RightPanel,
-    BoardPreview,
-    LeftOutlined,
-    RightOutlined,
-    ScissorOutlined,
-    CopyOutlined,
-    DeleteOutlined,
-    FileDoneOutlined,
-    PlaySquareOutlined,
-    LayoutOutlined,
-    UnorderedListOutlined,
-    InsertRowRightOutlined,
-    FundProjectionScreenOutlined,
-    SaveOutlined,
-    RestOutlined,
-    CameraOutlined,
-    SendOutlined,
-    DesktopOutlined,
-    SkinOutlined,
+const props = defineProps({ id: { type: String, default: () => '' } });
+const store = useStore();
+const router = useRouter();
+
+const modalOpen = ref(false);
+
+const icons = [
+  { key: 'layer', icon: LayoutOutlined },
+  { key: 'component', icon: UnorderedListOutlined },
+  { key: 'config', icon: FileDoneOutlined },
+  { key: 'util', icon: InsertRowRightOutlined },
+];
+const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[item.key] })));
+
+const switchPanelShow = (key: string) => {
+  panel[key] = !panel[key];
+};
+
+const buttonGroup = [
+  {
+    name: '组件删除备份',
+    icon: RestOutlined,
+    event: () => null,
   },
-  props: { id: { type: String, default: () => '' } },
-  setup(props) {
-    const store = useStore();
-    const router = useRouter();
-
-    const modalOpen = ref(false);
-
-    const icons = [
-      { key: 'layer', icon: 'LayoutOutlined' },
-      { key: 'component', icon: 'UnorderedListOutlined' },
-      { key: 'config', icon: 'FileDoneOutlined' },
-      { key: 'util', icon: 'InsertRowRightOutlined' },
-    ];
-    const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[item.key] })));
-
-    const switchPanelShow = (key: string) => {
-      panel[key] = !panel[key];
-    };
-
-    const buttonGroup = [
-      {
-        name: '组件删除备份',
-        icon: 'RestOutlined',
-        event: () => null,
-      },
-      {
-        name: '生成快照',
-        icon: 'CameraOutlined',
-        event: () => store.dispatch(SnapshotEnum.RECORD_SNAPSHOT),
-      },
-      {
-        name: '保存',
-        icon: 'SaveOutlined',
-        event: () => savePage(store, router),
-      },
-      {
-        name: '发布',
-        icon: 'SendOutlined',
-        event: () => {
-          modalOpen.value = true;
-        },
-      },
-      {
-        name: '预览',
-        icon: 'DesktopOutlined',
-        event: () => {
-          modalOpen.value = true;
-        },
-      },
-      {
-        name: '换肤',
-        icon: 'SkinOutlined',
-        event: changeTheme,
-      },
-    ];
-
-    onMounted(async () => {
-      on('contextmenu', e => e.preventDefault());
-      if (!props.id) return;
-      const res = await getPage<Page>(props.id);
-      if (res.code !== 0) return;
-      Object.assign(pageConfig, res.data);
-      /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-      const { _id, config, ...remain } = res.data;
-      setPageConfig(remain);
-      store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });
-    });
-
-    return {
-      patchUnit,
-      buttonGroup,
-      modalOpen,
-      pageConfig,
-      panelStatus,
-      switchPanelShow,
-    };
+  {
+    name: '生成快照',
+    icon: CameraOutlined,
+    event: () => store.dispatch(SnapshotEnum.RECORD_SNAPSHOT),
   },
+  {
+    name: '保存',
+    icon: SaveOutlined,
+    event: () => savePage(store, router),
+  },
+  {
+    name: '发布',
+    icon: SendOutlined,
+    event: () => {
+      modalOpen.value = true;
+    },
+  },
+  {
+    name: '预览',
+    icon: DesktopOutlined,
+    event: () => {
+      modalOpen.value = true;
+    },
+  },
+  {
+    name: '换肤',
+    icon: SkinOutlined,
+    event: changeTheme,
+  },
+];
+
+onMounted(async () => {
+  on('contextmenu', e => e.preventDefault());
+  if (!props.id) return;
+  const res = await getPage<Page>(props.id);
+  if (res.code !== 0) return;
+  Object.assign(pageConfig, res.data);
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  const { _id, config, ...remain } = res.data;
+  setPageConfig(remain);
+  store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });
 });
 </script>
 

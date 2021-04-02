@@ -41,7 +41,7 @@
   </a-modal>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
@@ -53,88 +53,70 @@ import { changePassword } from '@/api';
 import { RuleType } from 'ant-design-vue/lib/form/interface';
 import json from 'json5';
 
-export default {
-  name: 'exit-dropdown',
-  components: { UserOutlined, SkinOutlined },
-  setup() {
-    const userInfoStr = local.get(LocalKeys.USER_INFO);
-    const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
-    const router = useRouter();
-    const route = useRoute();
+const userInfoStr = local.get(LocalKeys.USER_INFO);
+const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
+const router = useRouter();
+const route = useRoute();
 
-    const visible = ref(false);
+const visible = ref(false);
 
-    const form = reactive({
-      password: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
+const form = reactive({
+  password: '',
+  newPassword: '',
+  confirmPassword: '',
+});
 
-    const checkPassword = async (rule: RuleType, value: string) => {
-      if (/S+/.test(value)) {
-        return Promise.reject('密码不能为空。');
-      }
+const checkPassword = async (rule: RuleType, value: string) => {
+  if (/S+/.test(value)) {
+    return Promise.reject('密码不能为空。');
+  }
 
-      if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
-        return Promise.reject('密码需以字母开头，长度在6~18之间。');
-      }
+  if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
+    return Promise.reject('密码需以字母开头，长度在6~18之间。');
+  }
 
-      return Promise.resolve();
-    };
+  return Promise.resolve();
+};
 
-    const checkPasswordSync = async (rule: RuleType, value: string) => {
-      const [err] = await to(checkPassword(rule, value));
-      if (err) {
-        return Promise.reject(err);
-      }
+const checkPasswordSync = async (rule: RuleType, value: string) => {
+  const [err] = await to(checkPassword(rule, value));
+  if (err) {
+    return Promise.reject(err);
+  }
 
-      if (value !== form.newPassword) {
-        return Promise.reject('两次输入不一致。');
-      }
+  if (value !== form.newPassword) {
+    return Promise.reject('两次输入不一致。');
+  }
 
-      return Promise.resolve();
-    };
+  return Promise.resolve();
+};
 
-    const rules = reactive({
-      password: [{ required: true, validator: checkPassword, trigger: 'blur' }],
-      newPassword: [{ required: true, validator: checkPassword, trigger: 'blur' }],
-      confirmPassword: [{ required: true, validator: checkPasswordSync, trigger: 'blur' }],
-    });
+const rules = reactive({
+  password: [{ required: true, validator: checkPassword, trigger: 'blur' }],
+  newPassword: [{ required: true, validator: checkPassword, trigger: 'blur' }],
+  confirmPassword: [{ required: true, validator: checkPasswordSync, trigger: 'blur' }],
+});
 
-    const { resetFields, validate, validateInfos } = useForm(form, rules);
+const { resetFields, validate, validateInfos } = useForm(form, rules);
 
-    const submitPasswordChange = async () => {
-      const [err] = await to(validate());
-      if (err) return;
-      const password = encrypt(form.password);
-      const newPassword = encrypt(form.newPassword);
-      const res = await changePassword({ password, newPassword });
-      if (res.code === 0) {
-        visible.value = false;
-        message.success('修改成功！');
-      } else {
-        message.error(res.msg);
-      }
-    };
+const submitPasswordChange = async () => {
+  const [err] = await to(validate());
+  if (err) return;
+  const password = encrypt(form.password);
+  const newPassword = encrypt(form.newPassword);
+  const res = await changePassword({ password, newPassword });
+  if (res.code === 0) {
+    visible.value = false;
+    message.success('修改成功！');
+  } else {
+    message.error(res.msg);
+  }
+};
 
-    const logout = () => {
-      local.remove(LocalKeys.AUTHORIZATION);
-      router.push(`/login?redirect=${route.path}`);
-      message.success('已退出登录！');
-    };
-
-    return {
-      userInfo,
-      logout,
-      visible,
-      form,
-      resetFields,
-      validateInfos,
-      validate,
-      submitPasswordChange,
-      changeTheme,
-    };
-  },
+const logout = () => {
+  local.remove(LocalKeys.AUTHORIZATION);
+  router.push(`/login?redirect=${route.path}`);
+  message.success('已退出登录！');
 };
 </script>
 

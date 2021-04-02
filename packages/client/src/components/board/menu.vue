@@ -20,7 +20,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import type { MenuType } from '@/hooks';
+import type { PropType } from 'vue';
 import { useStore, BoardEnum } from '@/store';
 import { judgeCancelGroupDisabled, judgeGroupDisabled, on, patchUnit } from '@/utils';
 import {
@@ -35,127 +37,109 @@ import {
   LockOutlined,
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
-import { reactive, onMounted, PropType, defineComponent, shallowRef } from 'vue';
-import { MenuType, menu } from '@/hooks';
+import { reactive, onMounted, shallowRef, defineProps } from 'vue';
+import { menu } from '@/hooks';
 
-export default defineComponent({
-  name: 'board-menu',
-  components: {
-    CopyOutlined,
-    DeleteOutlined,
-    ArrowUpOutlined,
-    ArrowDownOutlined,
-    VerticalAlignTopOutlined,
-    VerticalAlignBottomOutlined,
-    FolderOutlined,
-    FolderOpenOutlined,
-    LockOutlined,
-    EyeInvisibleOutlined,
+const props = defineProps({
+  menuType: {
+    type: String as PropType<MenuType>,
+    default: () => 'board',
   },
-  props: {
-    menuType: {
-      type: String as PropType<MenuType>,
-      default: () => 'board',
-    },
-    container: Object as PropType<HTMLElement>,
+  container: Object as PropType<HTMLElement>,
+});
+
+const store = useStore();
+
+const { board } = store.state;
+
+const menuRef = shallowRef<HTMLElement>();
+
+const data = reactive([
+  {
+    name: '置顶',
+    icon: VerticalAlignTopOutlined,
+    event: () => store.dispatch(BoardEnum.MOVE_UP, true),
   },
-  setup(props) {
-    const store = useStore();
+  {
+    name: '置底',
+    icon: VerticalAlignBottomOutlined,
+    event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+  },
+  {
+    name: '上移一层',
+    icon: ArrowUpOutlined,
+    event: () => store.dispatch(BoardEnum.MOVE_UP),
+  },
+  {
+    name: '下移一层',
+    icon: ArrowDownOutlined,
+    event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+  },
 
-    const { board } = store.state;
+  {
+    name: '成组',
+    icon: FolderOutlined,
+    disable: false,
+    event: () => store.dispatch(BoardEnum.GROUP),
+  },
+  {
+    name: '取消成组',
+    icon: FolderOpenOutlined,
+    disable: false,
+    event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
+  },
 
-    const menuRef = shallowRef<HTMLElement>();
+  {
+    name: '锁定',
+    icon: LockOutlined,
+    disable: false,
+    event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
+  },
+  {
+    name: '隐藏',
+    icon: EyeInvisibleOutlined,
+    disable: false,
+    event: () => store.dispatch(BoardEnum.HIDE, board.selected),
+  },
+  {
+    name: '复制',
+    icon: CopyOutlined,
+    event: () => store.dispatch(BoardEnum.COPY),
+  },
+  {
+    name: '删除',
+    icon: DeleteOutlined,
+    event: () => store.dispatch(BoardEnum.DEL),
+  },
+]);
 
-    const data = reactive([
-      {
-        name: '置顶',
-        icon: 'VerticalAlignTopOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
-      },
-      {
-        name: '置底',
-        icon: 'VerticalAlignBottomOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
-      },
-      {
-        name: '上移一层',
-        icon: 'ArrowUpOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_UP),
-      },
-      {
-        name: '下移一层',
-        icon: 'ArrowDownOutlined',
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
-      },
+// 处理菜单消失
+const handleClick = (e: MouseEvent, disable: boolean | undefined, cb: () => void) => {
+  e.stopPropagation();
+  if (disable) {
+    e.preventDefault();
+    return;
+  }
+  menu[props.menuType].show = false;
+  cb();
+};
 
-      {
-        name: '成组',
-        icon: 'FolderOutlined',
-        disable: false,
-        event: () => store.dispatch(BoardEnum.GROUP),
-      },
-      {
-        name: '取消成组',
-        icon: 'FolderOpenOutlined',
-        disable: false,
-        event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
-      },
-
-      {
-        name: '锁定',
-        icon: 'LockOutlined',
-        disable: false,
-        event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
-      },
-      {
-        name: '隐藏',
-        icon: 'EyeInvisibleOutlined',
-        disable: false,
-        event: () => store.dispatch(BoardEnum.HIDE, board.selected),
-      },
-      {
-        name: '复制',
-        icon: 'CopyOutlined',
-        event: () => store.dispatch(BoardEnum.COPY),
-      },
-      {
-        name: '删除',
-        icon: 'DeleteOutlined',
-        event: () => store.dispatch(BoardEnum.DEL),
-      },
-    ]);
-
-    // 处理菜单消失
-    const handleClick = (e: MouseEvent, disable: boolean | undefined, cb: () => void) => {
-      e.stopPropagation();
-      if (disable) {
-        e.preventDefault();
-        return;
-      }
-      menu[props.menuType].show = false;
-      cb();
-    };
-
-    const handleCancelMenu = () => {
-      on('click', e => {
-        e.stopPropagation();
-        e.preventDefault();
-        Object.keys(menu).forEach(key => {
-          menu[key].show = false;
-        });
-      });
-    };
-
-    onMounted(() => {
-      data[4].disable = judgeGroupDisabled(board);
-      data[5].disable = judgeCancelGroupDisabled(board);
-      menu[props.menuType].ref = menuRef.value;
-      menu[props.menuType].container = props.container;
-      handleCancelMenu();
+const handleCancelMenu = () => {
+  on('click', e => {
+    e.stopPropagation();
+    e.preventDefault();
+    Object.keys(menu).forEach(key => {
+      menu[key].show = false;
     });
+  });
+};
 
-    return { menu, menuRef, data, handleClick, patchUnit };
-  },
+onMounted(() => {
+  data[4].disable = judgeGroupDisabled(board);
+  data[5].disable = judgeCancelGroupDisabled(board);
+  menu[props.menuType].ref = menuRef.value;
+  menu[props.menuType].container = props.container;
+  handleCancelMenu();
 });
 </script>
 

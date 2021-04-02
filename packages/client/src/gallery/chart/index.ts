@@ -1,3 +1,5 @@
+import { LineChartOutlined } from '@ant-design/icons-vue';
+
 const components: Data<() => Promise<{ [key: string]: Gallery }>> = {};
 
 const modules = import.meta.glob('./*/index.ts');
@@ -14,5 +16,5 @@ export default {
   name: '图表',
   order: 1,
   dataConfig: true,
-  icon: 'LineChartOutlined',
+  icon: LineChartOutlined,
 };

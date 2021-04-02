@@ -112,7 +112,7 @@ type Gallery = {
 
 type Group = {
   name: string;
-  icon: string;
+  icon: import('vue').Component;
   order: number;
   dataConfig?: boolean;
   components: Data<() => Promise<{ [key: string]: Gallery }>>;
@@ -120,6 +120,6 @@ type Group = {
 
 type GalleryGroup = Array<{
   groupName: string;
-  icon: string;
+  icon: import('vue').Component;
   list: Array<Gallery>;
 }>;

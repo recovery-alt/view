@@ -2,60 +2,56 @@
   <div ref="cm" class="code-mirror"></div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import type { PropType } from 'vue';
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { language, LezerLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
-import { onMounted, PropType, defineComponent, watchEffect, shallowRef } from 'vue';
+import { onMounted, watchEffect, shallowRef, defineProps, useContext } from 'vue';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 
-export default defineComponent({
-  name: 'code-mirror',
-  props: {
-    viewer: Object as PropType<EditorView>,
-    type: {
-      type: String,
-      default: () => 'json',
-    },
-    doc: {
-      type: String,
-      default: () => '',
-    },
-    readonly: {
-      type: Boolean,
-      default: () => false,
-    },
+const props = defineProps({
+  viewer: Object as PropType<EditorView>,
+  type: {
+    type: String,
+    default: () => 'json',
   },
-  emits: ['update:viewer'],
-  setup(props, { emit }) {
-    const cm = shallowRef<HTMLElement>();
-
-    const strategy: Data<LezerLanguage> = {
-      json: jsonLanguage,
-      javascript: javascriptLanguage,
-    };
-
-    const parser = props.type === 'json' ? 'json' : 'babel';
-
-    watchEffect(() => {
-      const doc = format(props.doc, { parser, plugins: [parserBabel] });
-      const lang = strategy[props.type] || strategy.json;
-      const state = EditorState.create({
-        doc,
-        extensions: [basicSetup, language.of(lang), EditorView.editable.of(!props.readonly)],
-      });
-      props.viewer?.setState(state);
-    });
-
-    onMounted(() => {
-      if (!cm.value) return;
-      emit('update:viewer', new EditorView({ parent: cm.value }));
-    });
-
-    return { cm };
+  doc: {
+    type: String,
+    default: () => '',
   },
+  readonly: {
+    type: Boolean,
+    default: () => false,
+  },
+});
+
+const { emit } = useContext();
+
+const cm = shallowRef<HTMLElement>();
+
+const strategy: Data<LezerLanguage> = {
+  json: jsonLanguage,
+  javascript: javascriptLanguage,
+};
+
+const parser = props.type === 'json' ? 'json' : 'babel';
+
+watchEffect(() => {
+  const doc = format(props.doc, { parser, plugins: [parserBabel] });
+  const lang = strategy[props.type] || strategy.json;
+  const state = EditorState.create({
+    doc,
+    extensions: [basicSetup, language.of(lang), EditorView.editable.of(!props.readonly)],
+  });
+  props.viewer?.setState(state);
+});
+
+onMounted(() => {
+  if (!cm.value) return;
+  emit('update:viewer', new EditorView({ parent: cm.value }));
 });
 </script>
 

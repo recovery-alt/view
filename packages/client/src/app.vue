@@ -4,15 +4,8 @@
   </a-config-provider>
 </template>
 
-<script lang="ts">
-import ZhCN from 'ant-design-vue/es/locale/zh_CN';
-
-export default {
-  name: 'app',
-  setup() {
-    return { locale: ZhCN };
-  },
-};
+<script lang="ts" setup>
+import locale from 'ant-design-vue/es/locale/zh_CN';
 </script>
 
 <style lang="less">

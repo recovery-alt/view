@@ -50,7 +50,7 @@
           <component
             :is="item.component"
             :key="item.id"
-            :ref="el => el && setBoardRef(el.$el, index)"
+            :ref="setBoardRef"
             :index="index"
             :group="item.group"
             :data="item.dataset"
@@ -107,8 +107,8 @@
   </footer>
 </template>
 
-<script lang="ts">
-import { BoardMenu, BoardShape, BoardMarkline, BoardRuler } from '@/components';
+<script lang="ts" setup>
+import { BoardMenu, BoardShape, BoardRuler } from '@/components';
 import { BoardEnum, useStore } from '@/store';
 import {
   menu,
@@ -125,112 +125,63 @@ import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-de
 import { computed, reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 
-export default {
-  name: 'board',
-  components: {
-    BoardShape,
-    BoardMenu,
-    BoardMarkline,
-    BoardRuler,
-    EyeInvisibleOutlined,
-    BlockOutlined,
-    MacCommandOutlined,
-  },
-  setup() {
-    const store = useStore();
-    const { board } = store.state;
-    const { selectMask, handleMousedown } = useSelectMask(store);
-    const position = reactive({ left: 0, top: 0 });
-    const { setBoardRef } = useBoardRefs();
-    const screenShotRef = shallowRef<HTMLElement>();
-    const canvasWrapperRef = shallowRef<HTMLElement>();
-    const boardDom = shallowRef<HTMLElement>();
-    const router = useRouter();
+const store = useStore();
+const { board } = store.state;
+const { selectMask, handleMousedown } = useSelectMask(store);
+const position = reactive({ left: 0, top: 0 });
+const { setBoardRef } = useBoardRefs();
+const screenShotRef = shallowRef<HTMLElement>();
+const canvasWrapperRef = shallowRef<HTMLElement>();
+const boardDom = shallowRef<HTMLElement>();
+const router = useRouter();
 
-    const pageStyle = computed(() => {
-      const { width, height, backgroundColor, scale } = pageConfig;
-      return { width, height, backgroundColor, scale };
-    });
+const pageStyle = computed(() => {
+  const { width, height, backgroundColor, scale } = pageConfig;
+  return { width, height, backgroundColor, scale };
+});
 
-    const handleDrop = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const type = e.dataTransfer?.getData('type');
-      if (!type || !canvasWrapperRef.value) return;
-      const { offsetX: left, offsetY: top } = e;
-      store.dispatch(BoardEnum.APEEND, { type, left, top });
-      canvasWrapperRef.value.click();
-    };
-
-    const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
-      canvasWrapperRef
-    );
-
-    const {
-      viewportSize,
-      resizeViewport,
-      thumbnailRef,
-      handleThumbnailMousedown,
-      syncScroll,
-      showThumbnail,
-      switchThumbnail,
-    } = useThumbnail(screenShotRef, canvasWrapperRef);
-
-    const handleScroll = (e: Event) => {
-      const target = e.target as HTMLElement;
-      window.requestAnimationFrame(() => {
-        const { scrollLeft, scrollTop } = target;
-        position.left = -scrollLeft;
-        position.top = -scrollTop;
-        syncScroll();
-      });
-    };
-
-    const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
-
-    useBoardKeydown(store, router);
-
-    const tips = [
-      { name: '切换图层面板', value: 'ctrl/cmd + &larr;' },
-      { name: '切换组件面板', value: 'ctrl/cmd + &uarr;' },
-      { name: '切换右侧面板', value: 'ctrl/cmd + &rarr;' },
-    ];
-
-    return {
-      board,
-      boardDom,
-      handleMousedown,
-      handleDrop,
-      menu,
-      patchUnit,
-      selectMask,
-      setBoardRef,
-      pageConfig,
-      pageStyle,
-      handleScroll,
-      position,
-      splitStyleAndPatch,
-      viewportSize,
-      resizeViewport,
-      thumbnailRef,
-      handleThumbnailMousedown,
-      showThumbnail,
-      switchThumbnail,
-      screenShotRef,
-      canvasWrapperRef,
-      sliderFormatter,
-      handleSliderChange,
-      screenShotSize,
-      rulerKey,
-      rulerData,
-      getStyle,
-      getUnit,
-      addMarkline,
-      cancelMarkline,
-      tips,
-    };
-  },
+const handleDrop = (e: DragEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const type = e.dataTransfer?.getData('type');
+  if (!type || !canvasWrapperRef.value) return;
+  const { offsetX: left, offsetY: top } = e;
+  store.dispatch(BoardEnum.APEEND, { type, left, top });
+  canvasWrapperRef.value.click();
 };
+
+const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
+  canvasWrapperRef
+);
+
+const {
+  viewportSize,
+  thumbnailRef,
+  handleThumbnailMousedown,
+  syncScroll,
+  showThumbnail,
+  switchThumbnail,
+} = useThumbnail(screenShotRef, canvasWrapperRef);
+
+const handleScroll = (e: Event) => {
+  const target = e.target as HTMLElement;
+  window.requestAnimationFrame(() => {
+    const { scrollLeft, scrollTop } = target;
+    position.left = -scrollLeft;
+    position.top = -scrollTop;
+    syncScroll();
+  });
+};
+
+const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
+
+useBoardKeydown(store, router);
+
+const tips = [
+  { name: '切换图层面板', value: 'ctrl/cmd + &larr;' },
+  { name: '切换组件面板', value: 'ctrl/cmd + &uarr;' },
+  { name: '切换右侧面板', value: 'ctrl/cmd + &rarr;' },
+];
 </script>
 
 <style lang="less">

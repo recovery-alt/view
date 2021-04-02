@@ -89,42 +89,34 @@
   </a-collapse>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
 import { ColorPicker } from '@/components';
 
-export default {
-  name: 'attr-panel',
-  components: { ColorPicker },
-  setup() {
-    const store = useStore();
-    const { board } = store.state;
+const store = useStore();
+const { board } = store.state;
 
-    const activeName = ref(presetComponentAttr[0].title);
+const activeName = ref(presetComponentAttr[0].title);
 
-    const curComponent = computed(() => board.data[board.selected[0]]);
+const curComponent = computed(() => board.data[board.selected[0]]);
 
-    watchEffect(() => {
-      if (board.selected.length === 1) {
-        const { style } = board.data[board.selected[0]];
-        presetComponentAttr.forEach(val => {
-          const { data } = val;
-          data.forEach(item => {
-            const { key, default: defaultVal } = item;
-            if (!style[key]) {
-              style[key] = defaultVal;
-            }
-          });
-        });
-      }
+watchEffect(() => {
+  if (board.selected.length === 1) {
+    const { style } = board.data[board.selected[0]];
+    presetComponentAttr.forEach(val => {
+      const { data } = val;
+      data.forEach(item => {
+        const { key, default: defaultVal } = item;
+        if (!style[key]) {
+          style[key] = defaultVal;
+        }
+      });
     });
-
-    return { board, curComponent, presetComponentAttr, activeName, FormEnum };
-  },
-};
+  }
+});
 </script>
 
 <style lang="less">

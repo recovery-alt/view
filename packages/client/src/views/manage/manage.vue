@@ -43,8 +43,7 @@
     </a-layout>
   </a-layout>
 </template>
-<script lang="ts">
-import { ref } from 'vue';
+<script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { useManage } from '@/hooks';
 import {
@@ -56,60 +55,46 @@ import {
 } from '@ant-design/icons-vue';
 import { ExitDropdown } from '@/components';
 import { generateColumns } from '@/utils';
+import { ref } from 'vue';
 
-export default {
-  name: 'manage',
-  components: {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    ExitDropdown,
+const { pages } = useManage();
+const router = useRouter();
+
+const columns = generateColumns([
+  {
+    title: '作者',
+    key: 'author',
   },
-  setup() {
-    const { pages } = useManage();
-    const router = useRouter();
-
-    const columns = generateColumns([
-      {
-        title: '作者',
-        key: 'author',
-      },
-      {
-        title: '描述',
-        key: 'description',
-      },
-      {
-        title: '标题',
-        key: 'title',
-      },
-      {
-        title: '模式',
-        key: 'pageMode',
-      },
-      {
-        title: '宽',
-        key: 'width',
-      },
-      {
-        title: '高',
-        key: 'height',
-      },
-      {
-        title: '操作',
-        key: 'action',
-      },
-    ]);
-    const selectedKeys = ref<string[]>(['1']);
-    const collapsed = ref<boolean>(false);
-
-    const toEdit = (id: string) => {
-      router.push({ path: `/editor/${id}`, params: { id } });
-    };
-
-    return { pages, toEdit, columns, selectedKeys, collapsed };
+  {
+    title: '描述',
+    key: 'description',
   },
+  {
+    title: '标题',
+    key: 'title',
+  },
+  {
+    title: '模式',
+    key: 'pageMode',
+  },
+  {
+    title: '宽',
+    key: 'width',
+  },
+  {
+    title: '高',
+    key: 'height',
+  },
+  {
+    title: '操作',
+    key: 'action',
+  },
+]);
+const selectedKeys = ref(['1']);
+const collapsed = ref(false);
+
+const toEdit = (id: string) => {
+  router.push({ path: `/editor/${id}`, params: { id } });
 };
 </script>
 

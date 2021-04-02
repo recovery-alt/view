@@ -9,22 +9,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { PropType } from 'vue';
+<script lang="ts" setup>
+import type { PropType } from 'vue';
+import { defineProps } from 'vue';
 import { patchUnit } from '@/utils';
 
-export default {
-  name: 'group',
-  props: {
-    group: {
-      type: Array as PropType<Array<Component>>,
-      default: () => [],
-    },
-  },
-  setup() {
-    return { patchUnit };
-  },
-};
+defineProps({ group: { type: Array as PropType<Array<Component>>, default: () => [] } });
 </script>
 
 <style lang="less" scoped>

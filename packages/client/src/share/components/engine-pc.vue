@@ -15,30 +15,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, ref, defineComponent } from 'vue';
+<script lang="ts" setup>
+import { onMounted, ref, defineProps } from 'vue';
 import { getPage } from '@/api';
 import { splitStyleAndPatch } from '@/utils';
 
-export default defineComponent({
-  name: 'engine-pc',
-  props: {
-    id: { type: String, default: () => '' },
-  },
-  setup(props) {
-    const data = ref<Component[]>([]);
+const props = defineProps({ id: { type: String, default: () => '' } });
 
-    onMounted(async () => {
-      if (!props.id) return;
-      const res = await getPage<Page>(props.id);
-      document.title = res.data.title;
-      data.value = res.data.config;
-      document.body.style.width = res.data.width + 'px';
-      document.body.style.height = res.data.height + 'px';
-    });
+const data = ref<Component[]>([]);
 
-    return { data, splitStyleAndPatch };
-  },
+onMounted(async () => {
+  if (!props.id) return;
+  const res = await getPage<Page>(props.id);
+  document.title = res.data.title;
+  data.value = res.data.config;
+  document.body.style.width = res.data.width + 'px';
+  document.body.style.height = res.data.height + 'px';
 });
 </script>
 

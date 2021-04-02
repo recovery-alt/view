@@ -24,6 +24,7 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 0,
     'vue/no-v-html': process.env.NODE_ENV === 'production' ? 1 : 0,
     'vue/require-default-prop': process.env.NODE_ENV === 'production' ? 1 : 0,
+    '@typescript-eslint/no-unused-vars': 0,
   },
   overrides: [
     {

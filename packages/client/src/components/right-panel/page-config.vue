@@ -61,9 +61,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ColorPicker } from '@/components';
-import { ref, reactive } from 'vue';
+import { reactive } from 'vue';
 import { useForm } from '@ant-design-vue/use';
 import { pageConfig } from '@/hooks';
 import {
@@ -74,37 +74,21 @@ import {
   StopOutlined,
 } from '@ant-design/icons-vue';
 
-export default {
-  name: 'page-config',
-  components: {
-    ColorPicker,
-    ExpandOutlined,
-    ColumnWidthOutlined,
-    ColumnHeightOutlined,
-    DragOutlined,
-    StopOutlined,
-  },
-  setup() {
-    const showPageConfig = ref(false);
-    const rules = reactive({
-      title: [{ required: true, message: '标题为必填项' }],
-      width: [{ required: true, message: '页面宽为必填项' }],
-      height: [{ required: true, message: '页面高为必填项' }],
-    });
+const rules = reactive({
+  title: [{ required: true, message: '标题为必填项' }],
+  width: [{ required: true, message: '页面宽为必填项' }],
+  height: [{ required: true, message: '页面高为必填项' }],
+});
 
-    const zoomOptions = [
-      { icon: 'ExpandOutlined', tip: '全屏铺满' },
-      { icon: 'ColumnWidthOutlined', tip: '等比缩放宽度铺满' },
-      { icon: 'ColumnHeightOutlined', tip: '等比缩放高度铺满' },
-      { icon: 'DragOutlined', tip: '等比缩放高度铺满（可滚动）' },
-      { icon: 'StopOutlined', tip: '不缩放' },
-    ];
+const zoomOptions = [
+  { icon: ExpandOutlined, tip: '全屏铺满' },
+  { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满' },
+  { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满' },
+  { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）' },
+  { icon: StopOutlined, tip: '不缩放' },
+];
 
-    const { validateInfos } = useForm(pageConfig, rules);
-
-    return { pageConfig, showPageConfig, validateInfos, zoomOptions };
-  },
-};
+const { validateInfos } = useForm(pageConfig, rules);
 </script>
 
 <style lang="less">

@@ -1,10 +1,11 @@
+import type { Router } from 'vue-router';
+import type { Ref } from 'vue';
 import {
   nextTick,
   onBeforeUnmount,
   onMounted,
   reactive,
   ref,
-  Ref,
   shallowReactive,
   shallowRef,
   watch,
@@ -17,9 +18,8 @@ import { getInstanceByDom } from 'echarts';
 import { panel, pageConfig, savePage } from '.';
 import { debounce } from 'lodash';
 import { Direction } from '@/enum';
-import type { Router } from 'vue-router';
 
-const boardRefs = shallowReactive<Record<number, HTMLElement>>({});
+const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
 export const useSelectMask = (store: Store<RootStateType>) => {
   type SelectMask = {
@@ -85,9 +85,9 @@ export const useSelectMask = (store: Store<RootStateType>) => {
 };
 
 export const useBoardRefs = () => {
-  const setBoardRef = (el: HTMLElement, index: number) => {
-    if (el) {
-      boardRefs[index] = el;
+  const setBoardRef = (el: { $el: HTMLElement }) => {
+    if (el && !boardRefs.includes(el.$el)) {
+      boardRefs.push(el.$el);
     }
   };
 
@@ -95,8 +95,6 @@ export const useBoardRefs = () => {
     const dom = boardRefs[index];
     if (dom) {
       const chart = getInstanceByDom(dom);
-      console.log(chart.getOption());
-
       chart && chart.resize();
     }
   };

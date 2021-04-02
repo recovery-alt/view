@@ -14,67 +14,41 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';
 import { getGalleryList } from '@/gallery';
 
-export default {
-  name: 'right-panel',
-  components: {
-    AttrPanel,
-    AnimatePanel,
-    DataPanel,
-    PageConfig,
-  },
-  setup() {
-    const store = useStore();
-    const { board } = store.state;
+const store = useStore();
+const { board } = store.state;
 
-    // 当前选中组件
-    const curComponent = computed(() =>
-      board.selected.length === 1 ? board.data[board.selected[0]] : null
-    );
+// 当前选中组件
+const curComponent = computed(() =>
+  board.selected.length === 1 ? board.data[board.selected[0]] : null
+);
 
-    const tabs = computed(() => {
-      const tabs = [
-        { title: '配置', component: 'attr-panel' },
-        { title: '数据', component: 'data-panel' },
-        { title: '动画', component: 'animate-panel' },
-      ];
-      curComponent.value?.dataConfig || tabs.splice(1, 1);
-      return tabs;
-    });
+const tabs = computed(() => {
+  const tabs = [
+    { title: '配置', component: AttrPanel },
+    { title: '数据', component: DataPanel },
+    { title: '动画', component: AnimatePanel },
+  ];
+  curComponent.value?.dataConfig || tabs.splice(1, 1);
+  return tabs;
+});
 
-    const activeTab = ref(tabs.value[0].title);
+const activeTab = ref(tabs.value[0].title);
 
-    const toggle = () => {
-      panel.config = !panel.config;
-    };
+const width = computed(() => (panel.config ? '332px' : '0'));
 
-    const width = computed(() => (panel.config ? '332px' : '0'));
-
-    const gallery = computed(() => {
-      if (!curComponent.value) return;
-      const galleryList = getGalleryList();
-      const type = curComponent.value.component.slice(3);
-      return galleryList.find(gallery => gallery.type === type);
-    });
-
-    return {
-      board,
-      curComponent,
-      tabs,
-      activeTab,
-      toggle,
-      width,
-      panel,
-      gallery,
-    };
-  },
-};
+const gallery = computed(() => {
+  if (!curComponent.value) return;
+  const galleryList = getGalleryList();
+  const type = curComponent.value.component.slice(3);
+  return galleryList.find(gallery => gallery.type === type);
+});
 </script>
 
 <style lang="less">

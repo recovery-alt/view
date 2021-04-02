@@ -12,42 +12,37 @@
   </a-input>
 </template>
 
-<script lang="ts">
-import { ref, watch, watchEffect, defineComponent, shallowRef } from 'vue';
+<script lang="ts" setup>
+import { ref, watch, watchEffect, shallowRef, defineProps, useContext } from 'vue';
 
-export default defineComponent({
-  name: 'color-picker',
-  props: {
-    modelValue: {
-      type: [String, Number],
-      default: () => '',
-    },
-    placeholder: {
-      type: String,
-      default: () => '请选择颜色',
-    },
+const props = defineProps({
+  modelValue: {
+    type: [String, Number],
+    default: () => '',
   },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const inputValue = ref('');
-
-    const inputColor = shallowRef<HTMLElement>();
-
-    const clickInputColor = () => {
-      if (!inputColor.value) return;
-      inputColor.value.click();
-    };
-
-    watch(inputValue, value => {
-      emit('update:modelValue', value);
-    });
-
-    watchEffect(() => {
-      inputValue.value = props.modelValue + '';
-    });
-
-    return { inputValue, inputColor, clickInputColor };
+  placeholder: {
+    type: String,
+    default: () => '请选择颜色',
   },
+});
+
+const { emit } = useContext();
+
+const inputValue = ref('');
+
+const inputColor = shallowRef<HTMLElement>();
+
+const clickInputColor = () => {
+  if (!inputColor.value) return;
+  inputColor.value.click();
+};
+
+watch(inputValue, value => {
+  emit('update:modelValue', value);
+});
+
+watchEffect(() => {
+  inputValue.value = props.modelValue + '';
 });
 </script>
 

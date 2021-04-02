@@ -49,60 +49,40 @@
   </a-drawer>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, useBoardRefs } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
-export default {
-  name: 'animate-panel',
-  components: { PlusOutlined, PlayCircleOutlined, DeleteOutlined },
-  setup() {
-    const active = ref('');
+const active = ref('');
 
-    const store = useStore();
-    const { board } = store.state;
+const store = useStore();
+const { board } = store.state;
 
-    // 当前选中组件
-    const curComponent = computed(() => board.data[board.selected[0]]);
+// 当前选中组件
+const curComponent = computed(() => board.data[board.selected[0]]);
 
-    const {
-      drawer,
-      play,
-      handleMouseover,
-      handleMouseleave,
-      getAnimationClass,
-      addAnimation,
-      previewAnimation,
-    } = useAnimation(store);
+const {
+  drawer,
+  play,
+  handleMouseover,
+  handleMouseleave,
+  getAnimationClass,
+  addAnimation,
+  previewAnimation,
+} = useAnimation(store);
 
-    const preview = (name: string) => {
-      const { boardRefs } = useBoardRefs();
-      const ref = boardRefs[board.selected[0]];
-      play(name, ref);
-    };
+const preview = (name: string) => {
+  const { boardRefs } = useBoardRefs();
+  const ref = boardRefs[board.selected[0]];
+  play(name, ref);
+};
 
-    const del = (animation: string) => {
-      if (!curComponent.value.animations) return;
-      const index = curComponent.value.animations.findIndex(val => val === animation);
-      curComponent.value.animations.splice(index, 1);
-    };
-
-    return {
-      active,
-      curComponent,
-      preview,
-      board,
-      del,
-      drawer,
-      handleMouseover,
-      handleMouseleave,
-      getAnimationClass,
-      addAnimation,
-      previewAnimation,
-    };
-  },
+const del = (animation: string) => {
+  if (!curComponent.value.animations) return;
+  const index = curComponent.value.animations.findIndex(val => val === animation);
+  curComponent.value.animations.splice(index, 1);
 };
 </script>
 

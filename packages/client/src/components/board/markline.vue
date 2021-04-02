@@ -9,16 +9,9 @@
   />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { markline } from '@/hooks';
 import { patchUnit } from '@/utils';
-
-export default {
-  name: 'board-markline',
-  setup() {
-    return { markline, patchUnit };
-  },
-};
 </script>
 
 <style lang="less">

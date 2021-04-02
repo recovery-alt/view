@@ -25,207 +25,189 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { BoardEnum, useStore } from '@/store';
 import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
-import { computed, defineComponent } from 'vue';
+import { computed, defineProps } from 'vue';
 import { RedoOutlined } from '@ant-design/icons-vue';
 
-export default defineComponent({
-  name: 'board-shape',
-  components: { RedoOutlined },
-  props: {
-    index: { type: Number, default: () => 0 },
-    active: { type: Boolean, default: () => false },
-  },
-  setup(props) {
-    const store = useStore();
-
-    const { board } = store.state;
-
-    const { handleEchartsResize } = useBoardRefs();
-
-    const graticule = computed(() => {
-      const { left: boardLeft, top: boardTop } = board.data[props.index].style;
-      const width = boardLeft + 60;
-      const height = boardTop + 60;
-      const left = -width;
-      const top = -height;
-      return { x: { width, left }, y: { height, top } };
-    });
-
-    const sizeText = computed(() => {
-      const width = Math.floor((graticule.value.x.width - 60) * (pageConfig.scale / 100));
-      const height = Math.floor((graticule.value.y.height - 60) * (pageConfig.scale / 100));
-      return `${width},${height}`;
-    });
-
-    const points = [
-      'top-left',
-      'top-mid',
-      'top-right',
-      'mid-left',
-      'mid-right',
-      'bottom-left',
-      'bottom-mid',
-      'bottom-right',
-    ];
-
-    const handleRightClick = (e: MouseEvent) => {
-      e.preventDefault();
-      if (!board.selected.includes(props.index)) {
-        store.dispatch(BoardEnum.SET_INDEX, props.index);
-      }
-      showMenu(e, 'board', board);
-    };
-
-    const handleMousedown = (e: MouseEvent) => {
-      if (e.buttons !== 1) return;
-      // 没有按住ctrl的情况
-      if (!e.ctrlKey && !e.metaKey) {
-        if (!board.selected.includes(props.index)) {
-          store.dispatch(BoardEnum.SET_INDEX, props.index);
-        }
-        const curComponents = board.selected.map(index => board.data[index]);
-        const startX = e.clientX;
-        const startY = e.clientY;
-        const curPositions = curComponents.map(component => {
-          const { left, top } = component.style;
-          return { left, top };
-        });
-
-        const mousemove = (e: MouseEvent) => {
-          const { clientX, clientY } = e;
-          const diffX = clientX - startX;
-          const diffY = clientY - startY;
-          curComponents.forEach((component, index) => {
-            const { left, top } = curPositions[index];
-            component.style.left = diffX + left;
-            component.style.top = diffY + top;
-          });
-          // 计算吸附情况
-          // judgeLineShow(board, curComponents);
-        };
-
-        const mouseup = (e: MouseEvent) => {
-          e.stopPropagation();
-          off('mousemove', mousemove);
-          off('mouseup', mouseup);
-          hideAllLines();
-        };
-
-        on('mousemove', mousemove);
-        on('mouseup', mouseup);
-      }
-    };
-
-    const handleMouseup = (e: MouseEvent) => {
-      if (e.ctrlKey || e.metaKey) {
-        store.dispatch(BoardEnum.CHANGE_SELECTED, props.index);
-      }
-    };
-
-    const handleMousedownOnPoint = (e: MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      // 多选情况下，强制改变为单选
-      store.dispatch(BoardEnum.SET_INDEX, props.index);
-
-      const { className } = e.target as HTMLElement;
-      const hasLeft = className.includes('left');
-      const hasRight = className.includes('right');
-      const hasTop = className.includes('top');
-      const hasBottom = className.includes('bottom');
-      const { selected, data } = store.state.board;
-      const curComponent = data[selected[0]];
-      const { top, left, width, height } = curComponent.style;
-
-      const startX = e.clientX;
-      const startY = e.clientY;
-
-      const mousemove = throttle((e: MouseEvent) => {
-        e.stopPropagation();
-        const { clientX, clientY } = e;
-        if (hasLeft) {
-          const diffX = clientX - startX;
-          curComponent.style.width = width - diffX;
-          curComponent.style.left = left + diffX;
-        }
-        if (hasRight) {
-          const diffX = clientX - startX;
-          curComponent.style.width = width + diffX;
-        }
-        if (hasTop) {
-          const diffY = clientY - startY;
-          curComponent.style.height = height - diffY;
-          curComponent.style.top = top + diffY;
-        }
-        if (hasBottom) {
-          const diffY = clientY - startY;
-          curComponent.style.height = height + diffY;
-        }
-      }, 16);
-
-      const mouseup = (e: MouseEvent) => {
-        e.stopPropagation();
-        off('mouseup', mouseup);
-        off('mousemove', mousemove);
-        handleEchartsResize(board.selected[0]);
-      };
-
-      on('mousemove', mousemove);
-      on('mouseup', mouseup);
-    };
-
-    const handleMousedownOnRotate = (e: MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      // 多选情况下，强制改变为单选
-      store.dispatch(BoardEnum.SET_INDEX, props.index);
-
-      const startX = e.clientX;
-      const startY = e.clientY;
-      const curComponent = board.data[board.selected[0]];
-      const { rotate: startRotate } = curComponent.style;
-      const { boardRefs } = useBoardRefs();
-      const { left, top, width, height } = boardRefs[props.index].getBoundingClientRect();
-      const centerX = left + width / 2;
-      const centerY = top + height / 2;
-      // 旋转前的角度
-      const startAngle = Math.atan2(startY - centerY, startX - centerX) / (Math.PI / 180);
-
-      const mousemove = throttle((e: MouseEvent) => {
-        const { clientX, clientY } = e;
-        const curAngle = Math.atan2(clientY - centerY, clientX - centerX) / (Math.PI / 180);
-        curComponent.style.rotate = startRotate + curAngle - startAngle;
-      }, 16);
-
-      const mouseup = (e: MouseEvent) => {
-        e.stopPropagation();
-        off('mouseup', mouseup);
-        off('mousemove', mousemove);
-      };
-
-      on('mousemove', mousemove);
-      on('mouseup', mouseup);
-    };
-
-    return {
-      handleRightClick,
-      handleMousedown,
-      points,
-      handleMousedownOnPoint,
-      handleMouseup,
-      handleMousedownOnRotate,
-      graticule,
-      board,
-      patchUnit,
-      sizeText,
-    };
-  },
+const props = defineProps({
+  index: { type: Number, default: () => 0 },
+  active: { type: Boolean, default: () => false },
 });
+
+const store = useStore();
+
+const { board } = store.state;
+
+const { handleEchartsResize } = useBoardRefs();
+
+const graticule = computed(() => {
+  const { left: boardLeft, top: boardTop } = board.data[props.index].style;
+  const width = boardLeft + 60;
+  const height = boardTop + 60;
+  const left = -width;
+  const top = -height;
+  return { x: { width, left }, y: { height, top } };
+});
+
+const sizeText = computed(() => {
+  const width = Math.floor((graticule.value.x.width - 60) * (pageConfig.scale / 100));
+  const height = Math.floor((graticule.value.y.height - 60) * (pageConfig.scale / 100));
+  return `${width},${height}`;
+});
+
+const points = [
+  'top-left',
+  'top-mid',
+  'top-right',
+  'mid-left',
+  'mid-right',
+  'bottom-left',
+  'bottom-mid',
+  'bottom-right',
+];
+
+const handleRightClick = (e: MouseEvent) => {
+  e.preventDefault();
+  if (!board.selected.includes(props.index)) {
+    store.dispatch(BoardEnum.SET_INDEX, props.index);
+  }
+  showMenu(e, 'board', board);
+};
+
+const handleMousedown = (e: MouseEvent) => {
+  if (e.buttons !== 1) return;
+  // 没有按住ctrl的情况
+  if (!e.ctrlKey && !e.metaKey) {
+    if (!board.selected.includes(props.index)) {
+      store.dispatch(BoardEnum.SET_INDEX, props.index);
+    }
+    const curComponents = board.selected.map(index => board.data[index]);
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const curPositions = curComponents.map(component => {
+      const { left, top } = component.style;
+      return { left, top };
+    });
+
+    const mousemove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const diffX = clientX - startX;
+      const diffY = clientY - startY;
+      curComponents.forEach((component, index) => {
+        const { left, top } = curPositions[index];
+        component.style.left = diffX + left;
+        component.style.top = diffY + top;
+      });
+      // 计算吸附情况
+      // judgeLineShow(board, curComponents);
+    };
+
+    const mouseup = (e: MouseEvent) => {
+      e.stopPropagation();
+      off('mousemove', mousemove);
+      off('mouseup', mouseup);
+      hideAllLines();
+    };
+
+    on('mousemove', mousemove);
+    on('mouseup', mouseup);
+  }
+};
+
+const handleMouseup = (e: MouseEvent) => {
+  if (e.ctrlKey || e.metaKey) {
+    store.dispatch(BoardEnum.CHANGE_SELECTED, props.index);
+  }
+};
+
+const handleMousedownOnPoint = (e: MouseEvent) => {
+  e.stopPropagation();
+  e.preventDefault();
+  // 多选情况下，强制改变为单选
+  store.dispatch(BoardEnum.SET_INDEX, props.index);
+
+  const { className } = e.target as HTMLElement;
+  const hasLeft = className.includes('left');
+  const hasRight = className.includes('right');
+  const hasTop = className.includes('top');
+  const hasBottom = className.includes('bottom');
+  const { selected, data } = store.state.board;
+  const curComponent = data[selected[0]];
+  const { top, left, width, height } = curComponent.style;
+
+  const startX = e.clientX;
+  const startY = e.clientY;
+
+  const mousemove = throttle((e: MouseEvent) => {
+    e.stopPropagation();
+    const { clientX, clientY } = e;
+    if (hasLeft) {
+      const diffX = clientX - startX;
+      curComponent.style.width = width - diffX;
+      curComponent.style.left = left + diffX;
+    }
+    if (hasRight) {
+      const diffX = clientX - startX;
+      curComponent.style.width = width + diffX;
+    }
+    if (hasTop) {
+      const diffY = clientY - startY;
+      curComponent.style.height = height - diffY;
+      curComponent.style.top = top + diffY;
+    }
+    if (hasBottom) {
+      const diffY = clientY - startY;
+      curComponent.style.height = height + diffY;
+    }
+  }, 16);
+
+  const mouseup = (e: MouseEvent) => {
+    e.stopPropagation();
+    off('mouseup', mouseup);
+    off('mousemove', mousemove);
+    handleEchartsResize(board.selected[0]);
+  };
+
+  on('mousemove', mousemove);
+  on('mouseup', mouseup);
+};
+
+const handleMousedownOnRotate = (e: MouseEvent) => {
+  e.stopPropagation();
+  e.preventDefault();
+  // 多选情况下，强制改变为单选
+  store.dispatch(BoardEnum.SET_INDEX, props.index);
+
+  const startX = e.clientX;
+  const startY = e.clientY;
+  const curComponent = board.data[board.selected[0]];
+  const { rotate: startRotate } = curComponent.style;
+  const { boardRefs } = useBoardRefs();
+  const { left, top, width, height } = boardRefs[props.index].getBoundingClientRect();
+  const centerX = left + width / 2;
+  const centerY = top + height / 2;
+  // 旋转前的角度
+  const startAngle = Math.atan2(startY - centerY, startX - centerX) / (Math.PI / 180);
+
+  const mousemove = throttle((e: MouseEvent) => {
+    const { clientX, clientY } = e;
+    const curAngle = Math.atan2(clientY - centerY, clientX - centerX) / (Math.PI / 180);
+    curComponent.style.rotate = startRotate + curAngle - startAngle;
+  }, 16);
+
+  const mouseup = (e: MouseEvent) => {
+    e.stopPropagation();
+    off('mouseup', mouseup);
+    off('mousemove', mousemove);
+  };
+
+  on('mousemove', mousemove);
+  on('mouseup', mouseup);
+};
 </script>
 
 <style lang="less">
