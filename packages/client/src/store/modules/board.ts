@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 import { getGalleryList } from '@/gallery';
 import { message } from 'ant-design-vue';
 import config from '@/config';
-import { useBoardRefs } from '@/hooks';
+import { useEchartsResize } from '@/hooks';
 import { nextTick } from 'vue';
 import { v4 as uuid } from 'uuid';
 import { spliceItems } from '@/utils';
@@ -135,7 +135,7 @@ const actions: Data<Action<Board, RootStateType>> = {
   setBoard({ commit, state }, board: Board | null) {
     commit('setBoard', board);
     nextTick(() => {
-      const { handleAllEchartsResize } = useBoardRefs();
+      const { handleAllEchartsResize } = useEchartsResize();
       handleAllEchartsResize(state);
     });
   },

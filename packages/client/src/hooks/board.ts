@@ -1,9 +1,10 @@
 import type { Router } from 'vue-router';
-import type { Ref } from 'vue';
+import { Ref } from 'vue';
 import {
   nextTick,
   onBeforeUnmount,
   onMounted,
+  onBeforeUpdate,
   reactive,
   ref,
   shallowReactive,
@@ -19,7 +20,7 @@ import { panel, pageConfig, savePage } from '.';
 import { debounce } from 'lodash';
 import { Direction } from '@/enum';
 
-const boardRefs = shallowReactive<Array<HTMLElement>>([]);
+export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
 export const useSelectMask = (store: Store<RootStateType>) => {
   type SelectMask = {
@@ -86,11 +87,17 @@ export const useSelectMask = (store: Store<RootStateType>) => {
 
 export const useBoardRefs = () => {
   const setBoardRef = (el: { $el: HTMLElement }) => {
-    if (el && !boardRefs.includes(el.$el)) {
-      boardRefs.push(el.$el);
-    }
+    el && boardRefs.push(el.$el);
   };
 
+  onBeforeUpdate(() => {
+    boardRefs.length = 0;
+  });
+
+  return { setBoardRef };
+};
+
+export const useEchartsResize = () => {
   const handleEchartsResize = (index: number) => {
     const dom = boardRefs[index];
     if (dom) {
@@ -105,12 +112,7 @@ export const useBoardRefs = () => {
     }
   };
 
-  return {
-    boardRefs,
-    setBoardRef,
-    handleEchartsResize,
-    handleAllEchartsResize,
-  };
+  return { handleEchartsResize, handleAllEchartsResize };
 };
 
 export const useThumbnail = (

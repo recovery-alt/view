@@ -10,6 +10,7 @@ import parser from 'koa-bodyparser';
 import server from 'koa-static';
 import { resolve } from 'path';
 import historyApiFallback from 'koa2-connect-history-api-fallback';
+import { getIPAdress } from '@/utils';
 
 const app = new Koa();
 
@@ -38,5 +39,10 @@ app.on('error', err => {
 
 app.listen(port, () => {
   const addr = chalk.cyan(`http://localhost:${port}/`);
-  console.log(`server is running at ${addr}`);
+  console.log(`> local:    ${addr}`);
+  const ip = getIPAdress();
+  if (ip) {
+    const addr = chalk.cyan(`http://${ip}:${port}/`);
+    console.log(`> Network:  ${addr}`);
+  }
 });

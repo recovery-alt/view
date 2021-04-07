@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
-import { useAnimation, useBoardRefs } from '@/hooks';
+import { useAnimation, boardRefs } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 const active = ref('');
@@ -74,7 +74,6 @@ const {
 } = useAnimation(store);
 
 const preview = (name: string) => {
-  const { boardRefs } = useBoardRefs();
   const ref = boardRefs[board.selected[0]];
   play(name, ref);
 };

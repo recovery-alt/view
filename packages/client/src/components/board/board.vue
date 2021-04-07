@@ -59,7 +59,6 @@
         </board-shape>
 
         <board-menu v-if="menu.board.show" menu-type="board" :container="boardDom" />
-        <!-- <board-markline /> -->
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
     </div>

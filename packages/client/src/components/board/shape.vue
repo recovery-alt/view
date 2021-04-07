@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { BoardEnum, useStore } from '@/store';
-import { hideAllLines, pageConfig, showMenu, useBoardRefs } from '@/hooks';
+import { pageConfig, showMenu, boardRefs, useEchartsResize } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
 import { computed, defineProps } from 'vue';
@@ -42,7 +42,7 @@ const store = useStore();
 
 const { board } = store.state;
 
-const { handleEchartsResize } = useBoardRefs();
+const { handleEchartsResize } = useEchartsResize();
 
 const graticule = computed(() => {
   const { left: boardLeft, top: boardTop } = board.data[props.index].style;
@@ -110,7 +110,6 @@ const handleMousedown = (e: MouseEvent) => {
       e.stopPropagation();
       off('mousemove', mousemove);
       off('mouseup', mouseup);
-      hideAllLines();
     };
 
     on('mousemove', mousemove);
@@ -186,7 +185,6 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   const startY = e.clientY;
   const curComponent = board.data[board.selected[0]];
   const { rotate: startRotate } = curComponent.style;
-  const { boardRefs } = useBoardRefs();
   const { left, top, width, height } = boardRefs[props.index].getBoundingClientRect();
   const centerX = left + width / 2;
   const centerY = top + height / 2;

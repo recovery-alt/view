@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { pki } from 'node-forge';
 import { tips } from '@/config';
 import { ResponseEnum } from '@/enum';
+import { networkInterfaces } from 'os';
 
 export const wrapResponse = (data: unknown, code = 0) => ({ data, code, msg: 'success' });
 
@@ -23,4 +24,18 @@ export const decrypt: <T extends string | string[]>(input: T) => T = input => {
   };
   const result = Array.isArray(input) ? input.map(decryptInput) : decryptInput(input as string);
   return result as typeof input;
+};
+
+export const getIPAdress = () => {
+  const interfaces = networkInterfaces();
+  for (const devName in interfaces) {
+    const iface = interfaces[devName];
+    if (!iface) continue;
+    for (let i = 0; i < iface.length; i++) {
+      const alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
 };

@@ -1,6 +1,6 @@
 import { computed, shallowReactive } from 'vue';
 import { Store } from 'vuex';
-import { useBoardRefs } from '@/hooks';
+import { boardRefs } from '@/hooks';
 
 export const useAnimation = (store?: Store<RootStateType>) => {
   const animations = [
@@ -503,7 +503,6 @@ export const useAnimation = (store?: Store<RootStateType>) => {
 
   const previewAnimation = async (curComponent: Component | null, index: number) => {
     if (!curComponent) return;
-    const { boardRefs } = useBoardRefs();
     const ref = boardRefs[index];
     if (!ref) return;
 
