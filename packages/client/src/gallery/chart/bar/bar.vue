@@ -5,6 +5,7 @@
 <script lang="ts">
 import type { BarSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
+import type { DatasetComponentOption } from 'echarts/index';
 import type { PropType } from 'vue';
 import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
 import { use, init } from 'echarts/core';
@@ -26,22 +27,30 @@ export default defineComponent({
 
     use([GridComponent, BarChart, CanvasRenderer]);
 
-    const option: ComposeOption<BarSeriesOption> = {
-      dataset: { source: props.data.static },
+    const defaultOption: ComposeOption<BarSeriesOption> = {
       xAxis: { type: 'category' },
       yAxis: { type: 'value' },
       series: [{ type: 'bar' }],
     };
 
-    watchEffect(() => {
-      if (!chart.value || props.data.type !== DataSource.STATIC) return;
+    const setOption = () => {
+      if (!chart.value) return;
+      const option: ComposeOption<BarSeriesOption | DatasetComponentOption> = {
+        ...defaultOption,
+        dataset: { source: props.data.static },
+      };
       chart.value.setOption(option);
+    };
+
+    watchEffect(() => {
+      if (props.data.type !== DataSource.STATIC) return;
+      setOption();
     });
 
     onMounted(() => {
       if (bar.value) {
         chart.value = init(bar.value);
-        chart.value.setOption(option);
+        setOption();
       }
     });
 

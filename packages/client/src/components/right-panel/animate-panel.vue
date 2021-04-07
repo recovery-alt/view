@@ -14,7 +14,7 @@
       <template #header>
         <div class="animation-title">
           <span>{{ animation }}</span>
-          <div class="animation-title_right">
+          <div class="animation-title__right">
             <a-button size="small" type="primary" @click.stop="preview(animation)">
               <template #icon><PlayCircleOutlined /></template>
             </a-button>
@@ -27,7 +27,7 @@
     </a-collapse-panel>
   </a-collapse>
   <a-empty v-else description="尚未选择任何动画" />
-  <a-drawer v-model:visible="drawer.show" placement="right" :width="400">
+  <a-drawer v-model:visible="drawer.show" placement="right" :width="400" :closable="false">
     <a-tabs v-model="drawer.selected" size="small">
       <a-tab-pane v-for="item in drawer.data" :key="item.title" :label="item.title">
         <template #tab>{{ item.title }}</template>
@@ -35,7 +35,7 @@
           <li
             v-for="animation in item.data"
             :key="animation.name"
-            class="animation-box_item"
+            class="animation-box__item"
             @mouseover="handleMouseover(animation.name)"
             @mouseleave="handleMouseleave"
             @click="addAnimation(animation.name)"
@@ -92,7 +92,7 @@ const del = (animation: string) => {
     display: flex;
     justify-content: space-around;
 
-    &_right button:first-child {
+    &__right button:first-child {
       margin-right: 10px;
     }
   }
@@ -100,7 +100,7 @@ const del = (animation: string) => {
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
-    &_item {
+    &__item {
       width: 120px;
       margin-left: 20px;
       margin-top: 20px;

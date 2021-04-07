@@ -176,7 +176,7 @@ onMounted(() => {
       opacity: 0.3;
 
       &:hover {
-        color: var(--text-color-inverse);
+        color: var(--text-color);
         background-color: var(--item-hover-bg);
       }
     }

@@ -43,7 +43,7 @@ type ComponentAttr = {
 type ComponentData = {
   type: import('@/enum').DataSource;
   url?: string;
-  static?: Data | Array<unknown>;
+  static?: Array<string | number | Date>;
   filter?: (data: unknown) => unknown;
 };
 

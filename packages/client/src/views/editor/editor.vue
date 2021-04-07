@@ -137,9 +137,8 @@ onMounted(async () => {
   const res = await getPage<Page>(props.id);
   if (res.code !== 0) return;
   Object.assign(pageConfig, res.data);
-  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-  const { _id, config, ...remain } = res.data;
-  setPageConfig(remain);
+  const { config } = res.data;
+  setPageConfig(res.data);
   store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });
 });
 </script>

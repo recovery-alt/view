@@ -49,9 +49,7 @@
         >
           <component
             :is="item.component"
-            :key="item.id"
             :ref="setBoardRef"
-            :index="index"
             :group="item.group"
             :data="item.dataset"
             :style="splitStyleAndPatch(item.style, false)"
@@ -308,7 +306,7 @@ const tips = [
 
   span {
     position: absolute;
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--border-color-base);
     z-index: 2;
     top: 0;
     left: 0;
