@@ -5,28 +5,15 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from '@vue/runtime-core';
 import locale from 'ant-design-vue/es/locale/zh_CN';
+import { local } from '@/utils';
+import { LocalKeys } from '@/enum';
+import { theme } from '@/hooks';
+
+onMounted(() => {
+  const isDark = local.get(LocalKeys.IS_DARK);
+  theme.value = isDark ? 'dark' : 'light';
+  document.documentElement.setAttribute('theme', theme.value);
+});
 </script>
-
-<style lang="less">
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    '微软雅黑', Arial, sans-serif;
-  color: var(--text-color);
-}
-
-#app {
-  height: 100%;
-  user-select: none;
-}
-
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-</style>

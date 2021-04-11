@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "module": "esnext",
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
-    "types": ["vite/client", "jest"]
-  }
-}

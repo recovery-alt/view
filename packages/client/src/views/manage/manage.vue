@@ -108,7 +108,7 @@ const toEdit = (id: string) => {
 }
 
 .layout-header {
-  background: #fff;
+  background: var(--body-background);
   padding: 0 10px;
   font-size: 20px;
   display: flex;
@@ -117,7 +117,7 @@ const toEdit = (id: string) => {
 }
 
 .layout-content {
-  background: #fff;
+  background: var(--body-background);
   margin: 24px 16px;
   padding: 24px;
   min-height: 280px;

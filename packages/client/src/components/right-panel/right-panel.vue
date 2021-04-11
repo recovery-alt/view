@@ -61,6 +61,7 @@ const gallery = computed(() => {
   overflow: auto;
   z-index: 90;
   background-color: var(--body-background);
+  color: var(--text-color);
 
   &__title {
     font-size: 14px;
@@ -68,6 +69,7 @@ const gallery = computed(() => {
     padding-left: 10px;
     padding-right: 5px;
     margin-bottom: 0;
+    color: var(--text-color);
   }
 
   &__subtitle {

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -13,7 +14,8 @@
     "sourceMap": false,
     "baseUrl": ".",
     "paths": { "@/*": ["packages/client/src/*"] },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "types": ["vite/client", "jest"]
   },
   "include": [
     "packages/client/src/**/*.ts",

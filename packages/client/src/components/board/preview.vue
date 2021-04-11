@@ -1,21 +1,28 @@
 <template>
   <teleport to="#modal">
-    <div v-if="modelValue" class="modal-mask">
-      <div class="modal-box" :style="style">
-        <CloseSquareOutlined class="modal-close" @click="handleClose" />
-        <div
-          v-for="(item, index) in board.data"
-          :key="item.id"
-          class="board-wrapper"
-          :z-index="index"
-          :style="splitStyleAndPatch(item.style)"
-        >
-          <component
-            :is="item.component"
-            class="board-component"
-            :group="item.group"
-            :style="splitStyleAndPatch(item.style, false)"
-          />
+    <div v-if="modelValue" class="preview__mask">
+      <div class="preview__box">
+        <div class="preview__title">
+          {{ pageConfig.title }}
+          <CloseSquareOutlined class="preview__close" @click="handleClose" />
+        </div>
+        <div class="preview__container">
+          <div :style="patchUnit(pageStyle)">
+            <div
+              v-for="(item, index) in board.data"
+              :key="item.id"
+              class="board-wrapper"
+              :z-index="index"
+              :style="splitStyleAndPatch(item.style)"
+            >
+              <component
+                :is="item.component"
+                class="board-component"
+                :group="item.group"
+                :style="splitStyleAndPatch(item.style, false)"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -27,7 +34,7 @@ import { computed, defineProps, useContext } from 'vue';
 import { pageConfig } from '@/hooks';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
-import { splitStyleAndPatch } from '@/utils';
+import { splitStyleAndPatch, patchUnit } from '@/utils';
 
 defineProps({ modelValue: Boolean });
 
@@ -37,10 +44,10 @@ const store = useStore();
 
 const { board } = store.state;
 
-const style = computed(() => ({
-  width: pageConfig.width + 'px',
-  height: pageConfig.height + 'px',
-}));
+const pageStyle = computed(() => {
+  const { width, height, backgroundColor, scale } = pageConfig;
+  return { width, height, backgroundColor, scale };
+});
 
 const handleClose = () => {
   emit('update:modelValue', false);
@@ -48,36 +55,55 @@ const handleClose = () => {
 </script>
 
 <style lang="less">
-.modal-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
+.preview {
+  &__mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
 
-.modal-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  max-width: 80vw;
-  max-height: 80vh;
-  overflow: auto;
-}
+  &__box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80vw;
+    max-height: 80vh;
+    overflow: hidden;
+    color: var(--black);
+    display: flex;
+    flex-direction: column;
+  }
 
-.modal-close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 20px;
-  cursor: pointer;
+  &__title {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: var(--heading-bg);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color-base);
+  }
 
-  &:hover {
-    color: var(--primary-color);
+  &__close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 20px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+
+  &__container {
+    flex: 1;
+    overflow: auto;
   }
 }
 

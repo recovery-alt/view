@@ -1,7 +1,7 @@
 <template>
   <div
     class="board-shape"
-    :class="{ active }"
+    :class="{ '--active': active, '--disable': disable }"
     @contextmenu="handleRightClick"
     @mousedown.stop="handleMousedown"
     @mouseup="handleMouseup"
@@ -69,6 +69,11 @@ const points = [
   'bottom-mid',
   'bottom-right',
 ];
+
+const disable = computed(() => {
+  const curComponent = board.data[props.index];
+  return curComponent.locked || curComponent.style.display === 'none';
+});
 
 const handleRightClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -228,6 +233,10 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     height: 100%;
   }
 
+  &.--disable {
+    pointer-events: none;
+  }
+
   .shape-rotate {
     position: absolute;
     color: var(--primary-color);
@@ -241,7 +250,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     height: 100%;
   }
 
-  &.active {
+  &.--active {
     outline: 1px solid var(--outline-color);
   }
 
@@ -276,7 +285,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     border: 1px solid var(--primary-color);
     box-sizing: border-box;
     border-radius: 50%;
-    background-color: var(--popover-background);
+    background-color: var(--white);
     z-index: 1;
   }
 

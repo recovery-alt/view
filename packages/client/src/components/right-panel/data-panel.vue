@@ -61,6 +61,7 @@ import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
 import { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
+import { DataSource } from '@/enum';
 
 const store = useStore();
 const { board } = store.state;
@@ -119,28 +120,34 @@ onMounted(() => {
 const timeline = reactive([
   {
     actived: true,
-    text: '静态数据',
+    text: curComponent.value.dataset?.type,
     btnText: '设置数据源',
     event: () => {
       drawer.show = true;
     },
   },
   {
-    actived: false,
+    actived: !!curComponent.value.dataset?.filter,
     text: '数据过滤器',
     btnText: '添加过滤器',
     event: () => {
       showModal.value = true;
     },
   },
-  { actived: true, text: '数据响应结果（只读）', icon: 'ReloadOutlined', event: () => null },
+  {
+    actived: true,
+    text: '数据响应结果（只读）',
+    event: () => {
+      // TODO
+    },
+  },
 ]);
 
 const selected = ref(0);
 
 const options = [
-  { id: 0, label: '静态数据' },
-  { id: 1, label: '接口请求' },
+  { id: 0, label: DataSource.STATIC },
+  { id: 1, label: DataSource.URL },
 ];
 
 const openFilter = ref(false);

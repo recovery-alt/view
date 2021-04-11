@@ -3,10 +3,12 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, shallowRef } from 'vue';
-import { pageConfig } from '@/hooks';
+import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
+import { pageConfig, theme } from '@/hooks';
+import { getCurrentCSSVar } from '@/utils';
 
 const canvas = shallowRef<HTMLCanvasElement>();
+const color = ref<string>('');
 
 // 每格代表像素值
 const pxPerCell = Math.floor(800 / pageConfig.scale);
@@ -23,11 +25,13 @@ const reRenderCanvas = () => {
     ctx.moveTo(...begin);
     ctx.lineTo(...end);
     ctx.lineWidth = width;
+    ctx.strokeStyle = color.value;
     ctx.stroke();
   };
 
   const fillText = (x: number, y: number, text: string) => {
     ctx.font = '18px Arial';
+    ctx.fillStyle = color.value;
     ctx.fillText(text, x, y);
   };
 
@@ -42,6 +46,13 @@ const reRenderCanvas = () => {
   }
 };
 
+watchEffect(() => {
+  if (theme.value) {
+    color.value = getCurrentCSSVar('--text-color');
+    reRenderCanvas && reRenderCanvas();
+  }
+});
+
 onMounted(() => {
   nextTick(reRenderCanvas);
 });
@@ -49,7 +60,7 @@ onMounted(() => {
 
 <style lang="less">
 .board-ruler {
-  background-color: #fff;
+  background-color: var(--hight-contrast-bg);
   height: 20px;
 }
 </style>

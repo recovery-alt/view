@@ -16,7 +16,7 @@ cp -r src/public ../../dist
 
 cd ../client
 
-vue-tsc --noEmit --noImplicitAny false && vite build
+vue-tsc --noEmit && vite build
 
 cp -r dist/* ../../dist/public
 

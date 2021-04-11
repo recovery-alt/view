@@ -72,6 +72,7 @@ const searchComponent = () => {
   background-color: var(--body-background);
   transition: width 0.3s var(--ease-in-out);
   white-space: nowrap;
+  border-right: 1px solid var(--border-color-base);
 
   &--hide {
     width: 0;
@@ -119,10 +120,11 @@ const searchComponent = () => {
       padding: 0 5px;
       background-color: var(--heading-bg);
       text-align: center;
+      border-bottom: 1px solid var(--border-color-base);
     }
 
     section {
-      background-image: url('//img.alicdn.com/tfs/TB1KUHnlQY2gK0jSZFgXXc5OFXa-160-116.png');
+      background-image: url('/src/assets/img/gallery/input.svg');
       background-size: cover;
       pointer-events: none;
       height: calc(100% - 22px);

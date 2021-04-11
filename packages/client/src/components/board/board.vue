@@ -193,6 +193,7 @@ const tips = [
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
   box-shadow: var(--box-shadow-base);
+  color: var(--black);
 
   &__mask {
     position: absolute;
@@ -212,6 +213,12 @@ const tips = [
     outline: none;
     box-shadow: var(--box-shadow-base);
   }
+}
+
+.screen-shot {
+  background-image: linear-gradient(90deg, transparent 50%, var(--body-background) 50%),
+    linear-gradient(180deg, var(--body-background) 50%, transparent 50%);
+  background-size: 10px 10px;
 }
 
 .ruler-wrapper {
@@ -306,7 +313,7 @@ const tips = [
 
   span {
     position: absolute;
-    border: 1px solid var(--border-color-base);
+    border: 1px solid var(--white);
     z-index: 2;
     top: 0;
     left: 0;

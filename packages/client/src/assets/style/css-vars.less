@@ -58,8 +58,13 @@
   // Background
   --body-background: #fff;
   --component-background: #f0f2f5;
-  --popover-background: #fff;
-  --heading-bg: fade(@white, 85%);
+  --hight-contrast-bg: #fff;
+  --select-bg: #fff;
+  --select-active-bg: #e6f7ff;
+  --select-item-hover-bg: #f5f5f5;
+  --table-head-bg: #fafafa;
+  --table-hover-bg: #e6f7ff;
+  --heading-bg: #f0f2f5;
   --background-color-light: hsv(0, 0, 98%);
   --background-color-base: hsv(0, 0, 96%);
 
@@ -67,13 +72,14 @@
   --text-color: fade(@black, 85%);
   --text-color-secondary: fade(@black, 45%);
   --text-color-inverse: @white;
+  --select-active-color: rgba(0, 0, 0, 0.85);
 
   // Item
   --item-hover-bg: #f5f5f5;
   --item-active-bg: var(--primary-1);
   --icon-color-hover: fade(@black, 75%);
 
-  --border-color-base: hsv(0, 0, 85%);
+  --border-color-base: #d9d9d9;
   --border-color-split: hsv(0, 0, 94%);
 
   // Disabled
@@ -92,10 +98,15 @@
 
 [theme='dark'] {
   // Background
-  --body-background: @black;
-  --component-background: #141414;
-  --popover-background: #1f1f1f;
-  --heading-bg: fade(@black, 85%);
+  --body-background: #1d2126;
+  --component-background: #232528;
+  --hight-contrast-bg: @black;
+  --select-bg: #1f1f1f;
+  --select-active-bg: #111b26;
+  --select-item-hover-bg: rgba(255, 255, 255, 0.08);
+  --table-head-bg: #1d1d1d;
+  --table-hover-bg: #262626;
+  --heading-bg: #2e343c;
   --background-color-light: fade(@white, 4%);
   --background-color-base: fade(@white, 8%);
 
@@ -103,6 +114,7 @@
   --text-color: fade(@white, 85%);
   --text-color-secondary: fade(@white, 45%);
   --text-color-inverse: @black;
+  --select-active-color: rgba(255, 255, 255, 0.85);
 
   // Item
   --item-hover-bg: fade(@white, 8%);

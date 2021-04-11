@@ -21,6 +21,6 @@ export enum Direction {
 }
 
 export enum DataSource {
-  URL,
-  STATIC,
+  URL = '接口数据',
+  STATIC = '静态数据',
 }

@@ -10,7 +10,6 @@ import {
   VerticalAlignBottomOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
-  DownOutlined,
   RightOutlined,
 } from '@ant-design/icons-vue';
 import { panel, menu, showMenu } from '@/hooks';
@@ -23,22 +22,6 @@ import './layer-panel.less';
 
 export default defineComponent({
   name: 'layer-panel',
-  components: {
-    AppstoreOutlined,
-    DatabaseOutlined,
-    LeftOutlined,
-    FolderOutlined,
-    FolderOpenOutlined,
-    LockOutlined,
-    EyeInvisibleOutlined,
-    VerticalAlignTopOutlined,
-    VerticalAlignBottomOutlined,
-    ArrowUpOutlined,
-    ArrowDownOutlined,
-    DownOutlined,
-    RightOutlined,
-    BoardMenu,
-  },
   setup() {
     const store = useStore();
 
@@ -148,7 +131,7 @@ export default defineComponent({
     });
 
     const className = computed(() => (showList.value ? '--item' : '--thumbail'));
-    const src = '//img.alicdn.com/tfs/TB1tVMSk1bviK0jSZFNXXaApXXa-368-208.png';
+    const src = '/src/assets/img/logo.svg';
 
     return () => (
       <div class={`layer-panel${panel.layer ? '' : ' --hide'}`} ref={layerRef}>

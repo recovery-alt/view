@@ -4,17 +4,24 @@
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
-  background-color: var(--component-background);
 }
 
 ::-webkit-scrollbar-track {
   box-shadow: inset var(--box-shadow-base);
   border-radius: var(--border-radius-base);
-  background-color: var(--component-background);
+  background: var(--white);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: var(--border-radius-base);
   box-shadow: inset var(--box-shadow-base);
   background-color: var(--normal-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--white);
 }
