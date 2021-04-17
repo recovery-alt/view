@@ -22,6 +22,8 @@ import { Direction } from '@/enum';
 
 export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
+export const boardOffset = ref<{ left: number; top: number }>({ left: 0, top: 0 });
+
 export const useSelectMask = (store: Store<RootStateType>) => {
   type SelectMask = {
     show: boolean;
@@ -135,6 +137,8 @@ export const useThumbnail = (
     viewportSize.height = ratioY * parentH;
   };
 
+  const debounceResizeViewport = debounce(resizeViewport, 100);
+
   // 鼠标按下事件
   const handleThumbnailMousedown = (e: MouseEvent) => {
     if (e.buttons !== 1 || !thumbnailRef.value) return;
@@ -228,10 +232,16 @@ export const useThumbnail = (
   };
 
   onMounted(() => {
+    window.addEventListener('resize', debounceResizeViewport);
+
     nextTick(() => {
       resizeViewport();
       initCanvas();
     });
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', debounceResizeViewport);
   });
 
   watchEffect(() => {
@@ -245,6 +255,12 @@ export const useThumbnail = (
 
   watch(panel, () => {
     setTimeout(resizeViewport, 300);
+  });
+
+  watchEffect(() => {
+    if (pageConfig.scale) {
+      debounceResizeViewport();
+    }
   });
 
   const switchThumbnail = () => {

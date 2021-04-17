@@ -17,7 +17,7 @@
         </a-timeline-item>
       </a-timeline>
     </div>
-    <code-mirror v-model:viewer="viewer" class="code-box" readonly :doc="dataStringify" />
+    <code-mirror v-model:viewer="viewer" class="code-box" readonly v-model:doc="dataStringify" />
     <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <a-drawer
       v-model:visible="drawer.show"
@@ -48,7 +48,7 @@
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     </a-drawer>
     <a-modal v-model:visible="showModal" title="过滤器" :z-index="1001">
-      <code-mirror v-model:viewer="modalViewer" type="javascript" />
+      <code-mirror v-model:viewer="modalViewer" type="javascript" v-model:doc="modal.doc" />
     </a-modal>
   </div>
 </template>
@@ -69,6 +69,11 @@ const viewer = shallowRef<EditorView>();
 const drawerViewer = shallowRef<EditorView>();
 const modalViewer = shallowRef<EditorView>();
 
+const modal = {
+  doc: `function filter(data) {
+  return data;
+}`,
+};
 const drawer = reactive({
   show: false,
 });
@@ -165,7 +170,7 @@ const handleDrawerColse = () => {
 
 <style lang="less">
 .data-panel {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
 
   &__drawer-row {
     display: flex;

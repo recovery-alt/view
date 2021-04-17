@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { RuleType } from 'ant-design-vue/lib/form/interface';
 import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
@@ -50,7 +51,6 @@ import { message } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 import { useForm } from '@ant-design-vue/use';
 import { changePassword } from '@/api';
-import { RuleType } from 'ant-design-vue/lib/form/interface';
 import json from 'json5';
 
 const userInfoStr = local.get(LocalKeys.USER_INFO);

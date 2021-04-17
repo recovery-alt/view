@@ -10,7 +10,6 @@
         >
           <board-ruler
             :key="rulerKey"
-            :scale="pageConfig.scale"
             :width="screenShotSize[getUnit(item.direction)] * 2 + ''"
             :style="{ width: screenShotSize[getUnit(item.direction)] + 'px' }"
             @click="addMarkline($event, item.marklineDct)"
@@ -83,8 +82,8 @@
       <a-input-number
         v-model:value="pageConfig.scale"
         size="small"
-        :min="20"
-        :max="200"
+        :min="30"
+        :max="150"
         :formatter="sliderFormatter"
       />
     </a-col>
@@ -92,8 +91,8 @@
       <a-slider
         v-model:value="pageConfig.scale"
         size="small"
-        :min="20"
-        :max="200"
+        :min="30"
+        :max="150"
         :tip-formatter="sliderFormatter"
         @change="handleSliderChange"
       />
@@ -116,10 +115,11 @@ import {
   useEditSlider,
   useRuler,
   useBoardKeydown,
+  boardOffset,
 } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
-import { computed, reactive, shallowRef } from 'vue';
+import { computed, onMounted, reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 
 const store = useStore();
@@ -174,6 +174,14 @@ const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler()
 
 useBoardKeydown(store, router);
 
+onMounted(() => {
+  if (!boardDom.value || !canvasWrapperRef.value) return;
+  const { left, top } = boardDom.value.getBoundingClientRect();
+  const { left: parentLeft, top: parentTop } = canvasWrapperRef.value.getBoundingClientRect();
+  boardOffset.value.left = left - parentLeft;
+  boardOffset.value.top = top - parentTop;
+});
+
 const tips = [
   { name: '切换图层面板', value: 'ctrl/cmd + &larr;' },
   { name: '切换组件面板', value: 'ctrl/cmd + &uarr;' },
@@ -184,7 +192,7 @@ const tips = [
 <style lang="less">
 .board {
   position: absolute;
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   top: 60px;
   left: 60px;
   transform-origin: 0 0;
@@ -216,8 +224,8 @@ const tips = [
 }
 
 .screen-shot {
-  background-image: linear-gradient(90deg, transparent 50%, var(--body-background) 50%),
-    linear-gradient(180deg, var(--body-background) 50%, transparent 50%);
+  background-image: linear-gradient(90deg, transparent 50%, var(--body-bg) 50%),
+    linear-gradient(180deg, var(--body-bg) 50%, transparent 50%);
   background-size: 10px 10px;
 }
 
@@ -250,7 +258,7 @@ const tips = [
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: var(--body-background);
+    background-color: var(--body-bg);
   }
 }
 
@@ -258,7 +266,7 @@ const tips = [
   position: absolute;
   right: 0;
   bottom: 40px;
-  background-color: var(--component-background);
+  background-color: var(--component-bg);
   height: 30px;
   width: 100%;
   display: flex;

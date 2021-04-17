@@ -4,14 +4,11 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
-import { pageConfig, theme } from '@/hooks';
+import { wrapScale, theme } from '@/hooks';
 import { getCurrentCSSVar } from '@/utils';
 
 const canvas = shallowRef<HTMLCanvasElement>();
 const color = ref<string>('');
-
-// 每格代表像素值
-const pxPerCell = Math.floor(800 / pageConfig.scale);
 
 const reRenderCanvas = () => {
   if (!canvas.value) return;
@@ -29,32 +26,31 @@ const reRenderCanvas = () => {
     ctx.stroke();
   };
 
-  const fillText = (x: number, y: number, text: string) => {
+  const fillText = (x: number, y: number, text: string | number) => {
     ctx.font = '18px Arial';
     ctx.fillStyle = color.value;
-    ctx.fillText(text, x, y);
+    ctx.fillText(text + '', x, y);
   };
 
-  const canvasUnitPerCell = 2 * pxPerCell;
-  const len = width / canvasUnitPerCell - 5;
+  for (let i = 80; i < width; i += 8) {
+    if (i % 80 === 0) {
+      fillText(i, 20, wrapScale(i / 2 - 40));
+    }
 
-  for (let i = 0; i < len; i++) {
-    const start = i % 20 === 0 ? 0 : i % 10 === 0 ? 30 : 35;
-    const x = 80 + i * canvasUnitPerCell;
-    drawLine([x, start], [x, 40]);
-    if (i % 10 === 0) fillText(x + 5, 30, i * pxPerCell + '');
+    let height = i % 80 === 0 ? 26 : 32;
+    drawLine([i, height], [i, 40]);
   }
 };
 
-watchEffect(() => {
-  if (theme.value) {
-    color.value = getCurrentCSSVar('--text-color');
-    reRenderCanvas && reRenderCanvas();
-  }
-});
-
 onMounted(() => {
   nextTick(reRenderCanvas);
+
+  watchEffect(() => {
+    if (theme.value) {
+      color.value = getCurrentCSSVar('--text-color');
+      reRenderCanvas();
+    }
+  });
 });
 </script>
 

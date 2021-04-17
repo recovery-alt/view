@@ -39,18 +39,14 @@ export default defineComponent({
         ...defaultOption,
         dataset: { source: props.data.static },
       };
+
       chart.value.setOption(option);
     };
-
-    watchEffect(() => {
-      if (props.data.type !== DataSource.STATIC) return;
-      setOption();
-    });
 
     onMounted(() => {
       if (bar.value) {
         chart.value = init(bar.value);
-        setOption();
+        watchEffect(setOption);
       }
     });
 

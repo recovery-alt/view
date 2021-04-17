@@ -63,7 +63,7 @@ const submitLogin = () => {
 <style lang="less" scoped>
 .login {
   height: 100%;
-  background-color: #eee;
+  background-color: var(--component-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@ const submitLogin = () => {
   &-box {
     box-sizing: border-box;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--body-bg);
     display: flex;
     flex-direction: column;
     align-items: center;

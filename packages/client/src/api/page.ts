@@ -4,7 +4,7 @@ const prefix = 'page';
 
 export const addPage = <T = any>(params: Data) => post<T>(prefix, params);
 
-export const deletePage = <T = any>() => del<T>(prefix);
+export const deletePage = <T = any>(id: string) => del<T>(`${prefix}/${id}`);
 
 export const updatePage = <T = any>(params: Data) => put<T>(prefix, params);
 

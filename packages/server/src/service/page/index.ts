@@ -5,6 +5,10 @@ class PageService {
     return id ? page.findById(id) : page.find();
   }
 
+  delete(id: string) {
+    return page.findByIdAndDelete(id);
+  }
+
   add(record: Page) {
     return page.create(record);
   }

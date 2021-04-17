@@ -60,7 +60,7 @@ const gallery = computed(() => {
   transition: width 0.3s var(--ease-in-out);
   overflow: auto;
   z-index: 90;
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   color: var(--text-color);
 
   &__title {

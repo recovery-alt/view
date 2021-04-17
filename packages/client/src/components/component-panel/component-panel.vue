@@ -69,7 +69,7 @@ const searchComponent = () => {
   flex-shrink: 0;
   box-sizing: border-box;
   z-index: 4;
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   transition: width 0.3s var(--ease-in-out);
   white-space: nowrap;
   border-right: 1px solid var(--border-color-base);

@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { BoardEnum, useStore } from '@/store';
-import { pageConfig, showMenu, boardRefs, useEchartsResize } from '@/hooks';
+import { boardOffset, wrapScale, showMenu, boardRefs, useEchartsResize } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
 import { computed, defineProps } from 'vue';
@@ -46,16 +46,16 @@ const { handleEchartsResize } = useEchartsResize();
 
 const graticule = computed(() => {
   const { left: boardLeft, top: boardTop } = board.data[props.index].style;
-  const width = boardLeft + 60;
-  const height = boardTop + 60;
+  const width = boardLeft + wrapScale(boardOffset.value.left);
+  const height = boardTop + wrapScale(boardOffset.value.top);
   const left = -width;
   const top = -height;
   return { x: { width, left }, y: { height, top } };
 });
 
 const sizeText = computed(() => {
-  const width = Math.floor((graticule.value.x.width - 60) * (pageConfig.scale / 100));
-  const height = Math.floor((graticule.value.y.height - 60) * (pageConfig.scale / 100));
+  const width = graticule.value.x.width - wrapScale(boardOffset.value.left);
+  const height = graticule.value.y.height - wrapScale(boardOffset.value.top);
   return `${width},${height}`;
 });
 
@@ -100,8 +100,8 @@ const handleMousedown = (e: MouseEvent) => {
 
     const mousemove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      const diffX = clientX - startX;
-      const diffY = clientY - startY;
+      const diffX = wrapScale(clientX - startX);
+      const diffY = wrapScale(clientY - startY);
       curComponents.forEach((component, index) => {
         const { left, top } = curPositions[index];
         component.style.left = diffX + left;
@@ -150,21 +150,21 @@ const handleMousedownOnPoint = (e: MouseEvent) => {
     e.stopPropagation();
     const { clientX, clientY } = e;
     if (hasLeft) {
-      const diffX = clientX - startX;
+      const diffX = wrapScale(clientX - startX);
       curComponent.style.width = width - diffX;
       curComponent.style.left = left + diffX;
     }
     if (hasRight) {
-      const diffX = clientX - startX;
+      const diffX = wrapScale(clientX - startX);
       curComponent.style.width = width + diffX;
     }
     if (hasTop) {
-      const diffY = clientY - startY;
+      const diffY = wrapScale(clientY - startY);
       curComponent.style.height = height - diffY;
       curComponent.style.top = top + diffY;
     }
     if (hasBottom) {
-      const diffY = clientY - startY;
+      const diffY = wrapScale(clientY - startY);
       curComponent.style.height = height + diffY;
     }
   }, 16);

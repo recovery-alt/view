@@ -1,8 +1,29 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
+import { routeMap } from './config';
+
+const modules = import.meta.glob('../views/manage/*.vue');
+
+const children: RouteRecordRaw[] = [];
+
+for (const [key, module] of Object.entries(modules)) {
+  const matcher = key.match(/manage\/(.*).vue/);
+  if (matcher && matcher[1]) {
+    children.push({
+      path: matcher[1],
+      name: matcher[1],
+      component: module,
+    });
+  }
+}
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'home',
+    redirect: '/manage',
+  },
   {
     path: '/login',
     name: 'login',
@@ -10,17 +31,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/login'),
   },
   {
-    path: '/',
-    name: 'manage',
-    meta: { requiresAuth: true },
-    component: () => import('@/views/manage'),
-  },
-  {
     path: '/editor/:id?',
     name: 'editor',
     props: true,
     meta: { requiresAuth: true },
     component: () => import('@/views/editor'),
+  },
+  {
+    path: '/manage',
+    name: 'manage',
+    meta: { requiresAuth: true },
+    redirect: '/manage/page',
+    component: () => import('@/views/layout/'),
+    children,
   },
 ];
 
@@ -42,3 +65,12 @@ router.beforeEach(to => {
 });
 
 export default router;
+
+export const menuConfig = children.map(item => {
+  const name = item.name as string;
+  const config = routeMap[name];
+  return {
+    key: name,
+    ...config,
+  };
+});

@@ -55,7 +55,7 @@ li {
 
 // form
 .ant-form {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
 
   label {
     color: var(--text-color);
@@ -72,7 +72,7 @@ li {
 
 // tabs
 .ant-tabs {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   color: var(--text-color);
 }
 
@@ -145,14 +145,21 @@ li {
 
 .ant-input-affix-wrapper,
 .ant-input {
-  background-color: var(--component-background);
+  background-color: var(--input-bg);
   border-color: var(--border-color-base);
+}
+
+.has-error .ant-input:not(.has-error .ant-input-disabled),
+-has-error .ant-input:not(.has-error .ant-input-disabled),
+.has-error .ant-input:not(-has-error .ant-input-disabled),
+-has-error .ant-input:not(-has-error .ant-input-disabled) {
+  background-color: var(--input-bg);
 }
 
 // input-number
 .ant-input-number,
 .ant-input-number-handler-wrap {
-  background-color: var(--component-background);
+  background-color: var(--input-bg);
   color: var(--text-color);
   border-color: var(--border-color-base);
 }
@@ -168,8 +175,8 @@ li {
 
 // collapse
 .ant-collapse {
-  background-color: var(--body-background);
-  border: 0;
+  background-color: var(--body-bg);
+  border-color: var(--border-color-base);
 }
 
 .ant-collapse > .ant-collapse-item {
@@ -181,7 +188,7 @@ li {
 }
 
 .ant-collapse-content {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   border-top: 1px solid var(--border-color-base);
 }
 
@@ -191,7 +198,7 @@ li {
 }
 
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   border-color: var(--border-color-base);
 }
 
@@ -217,7 +224,7 @@ li {
 // table
 .ant-table {
   color: var(--text-color-secondary);
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
 }
 
 .ant-table-thead > tr > th {
@@ -241,13 +248,37 @@ li {
   border-bottom-color: var(--border-color-base);
 }
 
+.ant-table-placeholder {
+  background-color: var(--body-bg);
+}
+
+.ant-table-bordered .ant-table-thead > tr > th,
+.ant-table-bordered .ant-table-tbody > tr > td {
+  border-color: var(--border-color-base);
+}
+
+.ant-table-bordered .ant-table-header > table,
+.ant-table-bordered .ant-table-body > table,
+.ant-table-bordered .ant-table-fixed-left table,
+.ant-table-bordered .ant-table-fixed-right table {
+  border-color: var(--border-color-base);
+}
+
+.ant-empty-normal {
+  color: var(--text-color);
+}
+
+.ant-table-bordered.ant-table-empty .ant-table-placeholder {
+  border-color: var(--border-color-base);
+}
+
 // drawer
 .ant-drawer-content {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
 }
 
 .ant-drawer-header {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   border-bottom-color: var(--border-color-base);
 }
 
@@ -263,12 +294,16 @@ li {
 
 // layout
 .ant-layout {
-  background-color: var(--component-background);
+  background-color: var(--input-bg);
+}
+
+.ant-modal {
+  color: var(--text-color);
 }
 
 .ant-modal-content,
 .ant-modal-header {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   border-bottom-color: var(--border-color-base);
 }
 
@@ -320,7 +355,7 @@ li {
 
 // code-mirror
 .ͼ2 .cm-gutters {
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
   color: var(--text-color-secondary);
 }
 
@@ -330,4 +365,16 @@ li {
 
 .ͼ2 .cm-activeLine {
   background-color: var(--table-hover-bg);
+}
+
+.ͼ9 {
+  color: var(--cm-function);
+}
+
+.ͼe {
+  color: var(--cm-var);
+}
+
+.ͼ4 .cm-line {
+  caret-color: var(--text-color) !important;
 }

@@ -49,4 +49,10 @@ const savePage = async (store: Store<RootStateType>, router: Router) => {
   }
 };
 
-export { pageConfig, setPageConfig, savePage };
+const wrapScale = (size: number, isMultiply = false) => {
+  const percent = pageConfig.scale / 100;
+  const result = isMultiply ? size * percent : size / percent;
+  return Math.floor(result);
+};
+
+export { pageConfig, setPageConfig, savePage, wrapScale };

@@ -17,7 +17,7 @@ import { computed, reactive, ref, defineComponent, shallowRef } from 'vue';
 import { BoardEnum, useStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
-import { Tooltip } from 'ant-design-vue';
+import { Tooltip, Empty } from 'ant-design-vue';
 import './layer-panel.less';
 
 export default defineComponent({
@@ -163,61 +163,67 @@ export default defineComponent({
               </Tooltip>
             ))}
           </header>
-          <ul class="layer-panel__box">
-            {board.data.map((item, index) => {
-              const { group, id, locked } = item;
-              const { display } = item.style;
-              const icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
-              let children;
-              let parentIcon = icon;
+          {board.data.length === 0 ? (
+            <Empty description="尚未添加任何组件" />
+          ) : (
+            <ul class="layer-panel__box">
+              {board.data.map((item, index) => {
+                const { group, id, locked } = item;
+                const { display } = item.style;
+                const icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
+                let children;
+                let parentIcon = icon;
 
-              let LockOrHidden;
+                let LockOrHidden;
 
-              if (locked) {
-                LockOrHidden = <LockOutlined class="--icon" onClick={e => unlock(e, index)} />;
-              }
+                if (locked) {
+                  LockOrHidden = <LockOutlined class="--icon" onClick={e => unlock(e, index)} />;
+                }
 
-              if (display === 'none') {
-                LockOrHidden = (
-                  <EyeInvisibleOutlined class="--icon" onClick={e => show(e, index)} />
+                if (display === 'none') {
+                  LockOrHidden = (
+                    <EyeInvisibleOutlined class="--icon" onClick={e => show(e, index)} />
+                  );
+                }
+
+                if (group && group.length > 0) {
+                  const [transform, display] = toggleState[id]
+                    ? ['rotate(90deg)', 'block']
+                    : ['rotate(0deg)', 'none'];
+                  parentIcon = (
+                    <RightOutlined
+                      class={'--animated'}
+                      style={{ transform }}
+                      onClick={toggleGroup.bind(null, id)}
+                    />
+                  );
+                  children = group.map(val => (
+                    <li class={`--animated ${className.value}`} style={{ display }}>
+                      {icon}
+                      <b>{val.label}</b>
+                    </li>
+                  ));
+                }
+
+                return (
+                  <>
+                    <li
+                      class={`${className.value}${
+                        board.selected.includes(index) ? ' --active' : ''
+                      }`}
+                      onContextmenu={e => handleRightClick(e, index)}
+                      onMouseup={e => changeSelected(e, index)}
+                    >
+                      {LockOrHidden}
+                      {parentIcon}
+                      <b>{item.label}</b>
+                    </li>
+                    {children}
+                  </>
                 );
-              }
-
-              if (group && group.length > 0) {
-                const [transform, display] = toggleState[id]
-                  ? ['rotate(90deg)', 'block']
-                  : ['rotate(0deg)', 'none'];
-                parentIcon = (
-                  <RightOutlined
-                    class={'--animated'}
-                    style={{ transform }}
-                    onClick={toggleGroup.bind(null, id)}
-                  />
-                );
-                children = group.map(val => (
-                  <li class={`--animated ${className.value}`} style={{ display }}>
-                    {icon}
-                    <b>{val.label}</b>
-                  </li>
-                ));
-              }
-
-              return (
-                <>
-                  <li
-                    class={`${className.value}${board.selected.includes(index) ? ' --active' : ''}`}
-                    onContextmenu={e => handleRightClick(e, index)}
-                    onMouseup={e => changeSelected(e, index)}
-                  >
-                    {LockOrHidden}
-                    {parentIcon}
-                    <b>{item.label}</b>
-                  </li>
-                  {children}
-                </>
-              );
-            })}
-          </ul>
+              })}
+            </ul>
+          )}
           {menu.layer.show && <BoardMenu menu-type="layer" container={layerRef.value} />}
         </section>
         <footer class="layer-panel__footer">

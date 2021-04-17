@@ -147,9 +147,10 @@ onMounted(() => {
 .board-menu {
   position: absolute;
   z-index: 2;
+  color: var(--text-color);
 
   ul {
-    background-color: var(--component-background);
+    background-color: var(--component-bg);
     border-radius: 5px;
     box-shadow: var(--box-shadow-base);
     padding: 5px 0;

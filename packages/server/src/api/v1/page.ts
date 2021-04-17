@@ -25,8 +25,9 @@ router.put('/', async ctx => {
   ctx.body = ResponseEnum.SUCCESS;
 });
 
-router.delete('/', async ctx => {
-  ctx.body = ResponseEnum.SUCCESS;
+router.delete('/:id', async ctx => {
+  const { id } = ctx.params;
+  ctx.body = await pageService.delete(id);
 });
 
 export default router;

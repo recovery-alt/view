@@ -154,7 +154,7 @@ onMounted(async () => {
   padding: 0 20px;
   position: relative;
   z-index: 100;
-  background-color: var(--body-background);
+  background-color: var(--body-bg);
 
   img {
     cursor: pointer;
@@ -198,7 +198,7 @@ onMounted(async () => {
 .mid-panel {
   flex: 1;
   height: 100%;
-  background-color: var(--component-background);
+  background-color: var(--component-bg);
   box-sizing: border-box;
   overflow: hidden;
 
@@ -211,7 +211,7 @@ onMounted(async () => {
     padding-left: 30px;
     border-bottom: 1px solid var(--border-color-base);
     z-index: 10;
-    background-color: var(--body-background);
+    background-color: var(--body-bg);
   }
 
   &__wrapper {
