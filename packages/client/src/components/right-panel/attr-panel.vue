@@ -55,10 +55,28 @@
       </a-row>
     </a-form-item>
     <a-form-item label="旋转角度">
-      <a-input-number v-model:value="curComponent.style.rotate" :precision="0" size="small" />
+      <a-row>
+        <a-col span="8">
+          <a-input-number v-model:value="curComponent.style.rotate" :precision="0" size="small" />
+        </a-col>
+        <a-col span="4" offset="4">
+          <a-button size="small" @click="rotate(true)">
+            <template #icon>
+              <RotateLeftOutlined />
+            </template>
+          </a-button>
+        </a-col>
+        <a-col span="4">
+          <a-button size="small" @click="rotate()">
+            <template #icon>
+              <RotateRightOutlined />
+            </template>
+          </a-button>
+        </a-col>
+      </a-row>
     </a-form-item>
   </a-form>
-  <a-collapse v-model:activeKey="activeName" size="small">
+  <a-collapse v-model:activeKey="activeName" expand-icon-position="right" size="small">
     <a-collapse-panel
       v-for="val in presetComponentAttr"
       :key="val.title"
@@ -95,6 +113,7 @@ import { useStore } from '@/store';
 import { FormEnum } from '@/enum';
 import { presetComponentAttr } from '@/config';
 import { ColorPicker } from '@/components';
+import { RotateLeftOutlined, RotateRightOutlined } from '@ant-design/icons-vue';
 
 const store = useStore();
 const { board } = store.state;
@@ -102,6 +121,11 @@ const { board } = store.state;
 const activeName = ref(presetComponentAttr[0].title);
 
 const curComponent = computed(() => board.data[board.selected[0]]);
+
+const rotate = (reverse = false) => {
+  const deg = reverse ? -45 : 45;
+  curComponent.value.style.rotate += deg;
+};
 
 watchEffect(() => {
   if (board.selected.length === 1) {

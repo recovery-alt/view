@@ -8,13 +8,13 @@
         :label-col="{ span: 6 }"
         :wrapper-col="{ span: 14 }"
       >
-        <a-form-item label="页面标题" v-bind="validateInfos.title">
+        <a-form-item label="页面标题">
           <a-input v-model:value="pageConfig.title" size="small" />
         </a-form-item>
         <a-form-item label="页面描述">
           <a-textarea v-model:value="pageConfig.description" size="small"></a-textarea>
         </a-form-item>
-        <a-form-item label="屏幕尺寸" v-bind="validateInfos.width">
+        <a-form-item label="屏幕尺寸">
           <a-row>
             <a-col span="8">
               <a-input-number v-model:value="pageConfig.width" size="small" />
@@ -63,8 +63,6 @@
 
 <script lang="ts" setup>
 import { ColorPicker } from '@/components';
-import { reactive } from 'vue';
-import { useForm } from '@ant-design-vue/use';
 import { pageConfig } from '@/hooks';
 import {
   ExpandOutlined,
@@ -74,12 +72,6 @@ import {
   StopOutlined,
 } from '@ant-design/icons-vue';
 
-const rules = reactive({
-  title: [{ required: true, message: '标题为必填项' }],
-  width: [{ required: true, message: '页面宽为必填项' }],
-  height: [{ required: true, message: '页面高为必填项' }],
-});
-
 const zoomOptions = [
   { icon: ExpandOutlined, tip: '全屏铺满' },
   { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满' },
@@ -87,8 +79,6 @@ const zoomOptions = [
   { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）' },
   { icon: StopOutlined, tip: '不缩放' },
 ];
-
-const { validateInfos } = useForm(pageConfig, rules);
 </script>
 
 <style lang="less">

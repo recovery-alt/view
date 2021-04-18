@@ -274,6 +274,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     top: -5px;
     left: -5px;
     font-size: 16px;
+    font-weight: bold;
     color: var(--primary-color);
     transform: translate(-100%, -100%);
   }

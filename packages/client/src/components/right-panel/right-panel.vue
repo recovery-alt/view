@@ -80,5 +80,32 @@ const gallery = computed(() => {
     padding-right: 5px;
     margin-bottom: 5px;
   }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding-left: 27px;
+  }
+
+  .ant-tabs-nav {
+    width: 100%;
+
+    & > div {
+      display: flex;
+
+      .ant-tabs-tab {
+        text-align: center;
+        flex: 1;
+      }
+    }
+  }
+
+  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+    margin-right: 0;
+    border-top: 2px solid var(--heading-bg);
+    border-radius: 0;
+  }
+
+  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+    border-top: 2px solid var(--primary-color);
+  }
 }
 </style>

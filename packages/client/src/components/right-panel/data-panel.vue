@@ -17,7 +17,7 @@
         </a-timeline-item>
       </a-timeline>
     </div>
-    <code-mirror v-model:viewer="viewer" class="code-box" readonly v-model:doc="dataStringify" />
+    <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" class="code-box" readonly />
     <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <a-drawer
       v-model:visible="drawer.show"
@@ -48,7 +48,7 @@
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     </a-drawer>
     <a-modal v-model:visible="modal.show" title="过滤器" :z-index="1001">
-      <code-mirror v-model:viewer="modal.viewer" type="javascript" v-model:doc="modal.doc" />
+      <code-mirror v-model:viewer="modal.viewer" v-model:doc="modal.doc" type="javascript" />
     </a-modal>
   </div>
 </template>
