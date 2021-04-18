@@ -19,6 +19,7 @@ import { getInstanceByDom } from 'echarts';
 import { panel, pageConfig, savePage } from '.';
 import { debounce } from 'lodash';
 import { Direction } from '@/enum';
+import { wrapScale } from './page';
 
 export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
@@ -119,7 +120,8 @@ export const useEchartsResize = () => {
 
 export const useThumbnail = (
   screenShotRef: Ref<HTMLElement | undefined>,
-  canvasWrapperRef: Ref<HTMLElement | undefined>
+  canvasWrapperRef: Ref<HTMLElement | undefined>,
+  rulerKey: Ref<number>
 ) => {
   const thumbnailRef = shallowRef<HTMLCanvasElement>();
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
@@ -135,6 +137,7 @@ export const useThumbnail = (
     const ratioY = viewH / height;
     viewportSize.width = ratioX * parentW;
     viewportSize.height = ratioY * parentH;
+    rulerKey.value++;
   };
 
   const debounceResizeViewport = debounce(resizeViewport, 100);
@@ -215,6 +218,8 @@ export const useThumbnail = (
     if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
     const ctx = thumbnailRef.value.getContext('2d');
     if (!ctx) return;
+    const { width, height } = thumbnailRef.value;
+    ctx.clearRect(0, 0, width, height);
 
     const { width: thumbnailW, height: thumbnailH } = thumbnailRef.value.getBoundingClientRect();
     const { width: screenW, height: screenH } = screenShotRef.value.getBoundingClientRect();
@@ -222,10 +227,13 @@ export const useThumbnail = (
     const ratioX = thumbnailW / screenW;
     const ratioY = thumbnailH / screenH;
 
-    const reflectW = pageW * ratioX * 2;
-    const reflectH = pageH * ratioY * 2;
-    const startX = 60 * ratioX * 2;
-    const startY = 60 * ratioY * 2;
+    const canvasRatioX = ratioX * 2;
+    const canvasRatioY = ratioY * 2;
+
+    const reflectW = pageW * canvasRatioX;
+    const reflectH = pageH * canvasRatioY;
+    const startX = 60 * canvasRatioX;
+    const startY = 60 * canvasRatioY;
     ctx.strokeStyle = '#1890ff';
     ctx.lineWidth = 2;
     ctx.strokeRect(startX, startY, reflectW, reflectH);
@@ -254,7 +262,10 @@ export const useThumbnail = (
   });
 
   watch(panel, () => {
-    setTimeout(resizeViewport, 300);
+    setTimeout(() => {
+      resizeViewport();
+      initCanvas();
+    }, 300);
   });
 
   watchEffect(() => {
@@ -289,18 +300,23 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
     if (!canvasWrapperRef.value) return;
     const { width: minW, height: minH } = canvasWrapperRef.value.getBoundingClientRect();
     const { width: pageW, height: pageH } = pageConfig;
-    const width = (pageW * pageConfig.scale) / 100 + 400;
-    const height = (pageH * pageConfig.scale) / 100 + 400;
-    screenShotSize.width = width <= minW ? minW : width;
-    screenShotSize.height = height <= minH ? minH : height;
+    const width = wrapScale(pageW + 400, true);
+    const height = wrapScale(pageH + 400, true);
+    // 减去滚动条宽高
+    const minusMinW = minW - 4;
+    const minusMinH = minH - 4;
+    screenShotSize.width = width <= minusMinW ? minusMinW : width;
+    screenShotSize.height = height <= minusMinH ? minusMinH : height;
+    rulerKey.value++;
   };
 
-  const handleSliderChange = debounce(() => {
-    resizeScreenShot();
-    rulerKey.value++;
-  }, 50);
+  const handleSliderChange = debounce(resizeScreenShot, 100);
 
-  onMounted(resizeScreenShot);
+  onMounted(() => {
+    watchEffect(() => {
+      pageConfig.scale && resizeScreenShot();
+    });
+  });
 
   return { sliderFormatter, handleSliderChange, screenShotSize, rulerKey };
 };
@@ -390,6 +406,6 @@ export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => 
     handleKeydown && handleKeydown(ctrl);
   };
 
-  onMounted(() => document.addEventListener('keydown', keydown));
-  onBeforeUnmount(() => document.removeEventListener('keydown', keydown));
+  onMounted(() => on('keydown', keydown));
+  onBeforeUnmount(() => off('keydown', keydown));
 };

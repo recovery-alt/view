@@ -55,7 +55,6 @@
           />
         </board-shape>
 
-        <board-menu v-if="menu.board.show" menu-type="board" :container="boardDom" />
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
     </div>
@@ -101,6 +100,8 @@
       <BlockOutlined class="edit-slider__icon" @click="switchThumbnail" />
     </a-col>
   </footer>
+
+  <board-menu v-if="menu.board.show" menu-type="board" :container="canvasWrapperRef" />
 </template>
 
 <script lang="ts" setup>
@@ -158,7 +159,7 @@ const {
   syncScroll,
   showThumbnail,
   switchThumbnail,
-} = useThumbnail(screenShotRef, canvasWrapperRef);
+} = useThumbnail(screenShotRef, canvasWrapperRef, rulerKey);
 
 const handleScroll = (e: Event) => {
   const target = e.target as HTMLElement;
@@ -321,7 +322,7 @@ const tips = [
 
   span {
     position: absolute;
-    border: 1px solid var(--white);
+    outline: 1px solid var(--white);
     z-index: 2;
     top: 0;
     left: 0;

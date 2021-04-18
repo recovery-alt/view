@@ -24,13 +24,13 @@
       placement="right"
       title="设置数据源"
       :width="400"
-      @close="handleDrawerColse"
+      @close="handleDrawerClose"
     >
       <div class="data-panel__drawer-row">
         <div>
           <label class="data-panel__label">数据源类型：</label>
-          <a-select v-model:value="selected" size="small">
-            <a-select-option v-for="item in options" :key="item.id" :value="item.id">
+          <a-select v-model:value="drawer.selected" size="small">
+            <a-select-option v-for="item in drawer.options" :key="item.value" :value="item.value">
               {{ item.label }}
             </a-select-option>
           </a-select>
@@ -40,43 +40,44 @@
       <div class="data-panel__drawer-row">
         <div>
           <label class="data-panel__label">开启过滤器：</label>
-          <a-switch v-model:checked="openFilter" />
+          <a-switch v-model:checked="drawer.openFilter" />
         </div>
-        <a-button type="primary" size="small" @click="showModal = true">设置过滤器</a-button>
+        <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
       </div>
-      <code-mirror v-model:viewer="drawerViewer" v-model:doc="dataStringify" />
+      <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     </a-drawer>
-    <a-modal v-model:visible="showModal" title="过滤器" :z-index="1001">
-      <code-mirror v-model:viewer="modalViewer" type="javascript" v-model:doc="modal.doc" />
+    <a-modal v-model:visible="modal.show" title="过滤器" :z-index="1001">
+      <code-mirror v-model:viewer="modal.viewer" type="javascript" v-model:doc="modal.doc" />
     </a-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from '@/store';
-import { computed, onMounted, reactive, ref, shallowRef } from 'vue';
+import { computed, onMounted, reactive, ref, shallowReactive, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
-import { EditorView } from '@codemirror/basic-setup';
+import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
-import { DataSource } from '@/enum';
+import { useDrawer } from '@/hooks';
 
 const store = useStore();
 const { board } = store.state;
 const viewer = shallowRef<EditorView>();
-const drawerViewer = shallowRef<EditorView>();
-const modalViewer = shallowRef<EditorView>();
+const dataStringify = ref<string>();
 
-const modal = {
+const modal = shallowReactive<{ show: boolean; doc: string; viewer?: EditorView }>({
+  show: false,
   doc: `function filter(data) {
   return data;
 }`,
-};
-const drawer = reactive({
-  show: false,
 });
+
+const curComponent = computed(() => board.data[board.selected[0]]);
+
+const { drawer, handleDrawerClose } = useDrawer(dataStringify, curComponent);
 
 const table = reactive({
   data: [
@@ -112,12 +113,6 @@ const table = reactive({
   ]),
 });
 
-const curComponent = computed(() => {
-  return board.data[board.selected[0]];
-});
-
-const dataStringify = ref<string>();
-
 onMounted(() => {
   dataStringify.value = json.stringify(curComponent.value.dataset?.static);
 });
@@ -136,7 +131,7 @@ const timeline = reactive([
     text: '数据过滤器',
     btnText: '添加过滤器',
     event: () => {
-      showModal.value = true;
+      modal.show = true;
     },
   },
   {
@@ -147,25 +142,6 @@ const timeline = reactive([
     },
   },
 ]);
-
-const selected = ref(0);
-
-const options = [
-  { id: 0, label: DataSource.STATIC },
-  { id: 1, label: DataSource.URL },
-];
-
-const openFilter = ref(false);
-const showModal = ref(false);
-
-const handleDrawerColse = () => {
-  if (!drawerViewer.value) return;
-  const doc = drawerViewer.value.state.doc.toJSON();
-  dataStringify.value = doc.reduce((acc, val) => acc + val, '');
-  if (curComponent.value.dataset) {
-    curComponent.value.dataset.static = json.parse(dataStringify.value);
-  }
-};
 </script>
 
 <style lang="less">

@@ -37,7 +37,7 @@ import { ExitDropdown } from '@/components';
 import { ref } from 'vue';
 import { menuConfig } from '@/router';
 
-const selectedKeys = ref('page');
+const selectedKeys = ref(['page']);
 const collapsed = ref(false);
 </script>
 

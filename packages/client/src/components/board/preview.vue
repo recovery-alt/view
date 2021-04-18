@@ -19,6 +19,7 @@
                 :is="item.component"
                 class="board-component"
                 :group="item.group"
+                :data="item.dataset"
                 :style="splitStyleAndPatch(item.style, false)"
               />
             </div>
@@ -45,8 +46,8 @@ const store = useStore();
 const { board } = store.state;
 
 const pageStyle = computed(() => {
-  const { width, height, backgroundColor, scale } = pageConfig;
-  return { width, height, backgroundColor, scale };
+  const { width, height, backgroundColor } = pageConfig;
+  return { width, height, backgroundColor };
 });
 
 const handleClose = () => {
@@ -104,6 +105,10 @@ const handleClose = () => {
   &__container {
     flex: 1;
     overflow: auto;
+
+    & > div {
+      position: relative;
+    }
   }
 }
 

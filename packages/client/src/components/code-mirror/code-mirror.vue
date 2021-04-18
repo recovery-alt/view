@@ -13,7 +13,10 @@ import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 
 const props = defineProps({
-  viewer: Object as PropType<EditorView>,
+  viewer: {
+    type: Object as PropType<EditorView>,
+    default: () => new EditorView(),
+  },
   type: {
     type: String,
     default: () => 'json',
@@ -46,7 +49,7 @@ watchEffect(() => {
     doc,
     extensions: [basicSetup, language.of(lang), EditorView.editable.of(!props.readonly)],
   });
-  props.viewer?.setState(state);
+  props.viewer.setState(state);
 });
 
 onMounted(() => {
