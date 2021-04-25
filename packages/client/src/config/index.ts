@@ -94,3 +94,10 @@ export const presetComponentAttr: Array<{
     ],
   },
 ];
+
+export const DataSource = {
+  url: '接口数据',
+  static: '静态数据',
+} as const;
+
+export type DataSourceKey = keyof typeof DataSource;

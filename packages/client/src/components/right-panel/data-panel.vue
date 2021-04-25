@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
 import { computed, onMounted, reactive, ref, shallowReactive, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
@@ -113,10 +114,6 @@ const table = reactive({
   ]),
 });
 
-onMounted(() => {
-  dataStringify.value = json.stringify(curComponent.value.dataset?.static);
-});
-
 const timeline = reactive([
   {
     actived: true,
@@ -124,6 +121,8 @@ const timeline = reactive([
     btnText: '设置数据源',
     event: () => {
       drawer.show = true;
+      // TODO
+      console.log(curComponent.value);
     },
   },
   {
@@ -142,6 +141,27 @@ const timeline = reactive([
     },
   },
 ]);
+
+const resolveDataset = () => {
+  const { dataset } = curComponent.value;
+  if (!dataset) return;
+  const { type, static: data } = dataset;
+
+  const strategy: Record<DataSourceKey, () => void> = {
+    url: () => {
+      // TODO
+    },
+    static: () => {
+      dataStringify.value = json.stringify(data);
+    },
+  };
+  const handler = strategy[type] || strategy.static;
+  handler();
+};
+
+onMounted(() => {
+  resolveDataset();
+});
 </script>
 
 <style lang="less">

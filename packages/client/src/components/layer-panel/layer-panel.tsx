@@ -104,7 +104,7 @@ export default defineComponent({
     board.data.map(item => {
       const { group } = item;
 
-      if (group && group.length > 0) {
+      if (group?.length) {
         toggleState[item.id] = false;
       }
     });
@@ -186,7 +186,7 @@ export default defineComponent({
                   );
                 }
 
-                if (group && group.length > 0) {
+                if (group?.length) {
                   const [transform, display] = toggleState[id]
                     ? ['rotate(90deg)', 'block']
                     : ['rotate(0deg)', 'none'];
@@ -234,8 +234,8 @@ export default defineComponent({
               <Tooltip key={Item.icon.name} placement="bottom" title={Item.tip}>
                 <Item.icon
                   key={Item.icon.name}
-                  onClick={action && action.disable ? undefined : Item.event}
-                  class={action && action.disable && '--disable'}
+                  onClick={action?.disable ? undefined : Item.event}
+                  class={action?.disable && '--disable'}
                 />
               </Tooltip>
             );

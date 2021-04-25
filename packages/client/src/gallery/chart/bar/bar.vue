@@ -12,13 +12,12 @@ import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { DataSource } from '@/enum';
 
 export default defineComponent({
   props: {
     data: {
       type: Object as PropType<ComponentData>,
-      default: () => ({ type: DataSource.STATIC, data: [] }),
+      default: () => ({ type: 'static', data: [] }),
     },
   },
   setup(props) {

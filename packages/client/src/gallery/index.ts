@@ -7,7 +7,7 @@ const groups: Data<any> = {};
 
 for (const [key, module] of Object.entries(modules)) {
   const matcher = key.match(/\.\/(.*)\/index\.ts/);
-  if (matcher && matcher[1]) {
+  if (matcher?.[1]) {
     groups[matcher[1]] = module;
   }
 }

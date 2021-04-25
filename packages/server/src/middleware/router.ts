@@ -10,9 +10,7 @@ export const useRouter = async (app: Koa) => {
     const file = files[i];
     const matcher = file.match(/^([a-zA-Z-_]+)\.[tj]s/);
     const { default: router } = await import(`..${prefix}${file}`);
-    if (matcher && matcher[1]) {
-      router.prefix(`${prefix}${matcher[1]}`);
-      app.use(router.routes()).use(router.allowedMethods());
-    }
+    router.prefix(`${prefix}${matcher?.[1]}`);
+    app.use(router.routes()).use(router.allowedMethods());
   }
 };

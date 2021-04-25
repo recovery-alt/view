@@ -6,7 +6,7 @@
       </div>
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-menu-item
-          v-for="item in menuConfig"
+          v-for="item in routeList"
           :key="item.key"
           @click="$router.push({ name: item.key })"
         >
@@ -35,7 +35,7 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { ExitDropdown } from '@/components';
 import { ref } from 'vue';
-import { menuConfig } from '@/router';
+import { routeList } from '@/router';
 
 const selectedKeys = ref(['page']);
 const collapsed = ref(false);

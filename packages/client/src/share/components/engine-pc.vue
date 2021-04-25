@@ -10,6 +10,7 @@
       :is="item.component"
       class="board-component"
       :group="item.group"
+      :data="item.dataset"
       :style="splitStyleAndPatch(item.style, false)"
     />
   </div>

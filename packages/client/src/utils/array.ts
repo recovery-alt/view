@@ -37,5 +37,5 @@ export const judgeCancelGroupDisabled = (board: Board) => {
 
   const { group } = data[selected[0]];
 
-  return !(group && group.length > 0);
+  return !group?.length;
 };

@@ -105,7 +105,7 @@ export const useEchartsResize = () => {
     const dom = boardRefs[index];
     if (dom) {
       const chart = getInstanceByDom(dom);
-      chart && chart.resize();
+      chart?.resize();
     }
   };
 
@@ -402,7 +402,7 @@ export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => 
     e.stopPropagation();
     const handleKeydown = strategy[e.key];
     const ctrl = e.ctrlKey || e.metaKey;
-    handleKeydown && handleKeydown(ctrl);
+    handleKeydown?.(ctrl);
   };
 
   onMounted(() => on('keydown', keydown));

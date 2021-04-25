@@ -1,8 +1,9 @@
 import type { ComputedRef, Ref } from 'vue';
-import { DataSource } from '@/enum';
+import type { DataSourceKey } from '@/config';
 import { EditorView } from '@codemirror/basic-setup';
 import { shallowReactive } from 'vue';
 import json from 'json5';
+import { DataSource } from '@/config';
 
 export const useDrawer = (
   dataStringify: Ref<string | undefined>,
@@ -12,16 +13,16 @@ export const useDrawer = (
     show: boolean;
     selected: number;
     openFilter: boolean;
-    options: { value: number; label: DataSource }[];
+    options: { value: DataSourceKey; label: string }[];
     viewer?: EditorView;
   }>({
     selected: 0,
     openFilter: false,
     show: false,
-    options: [
-      { value: 0, label: DataSource.STATIC },
-      { value: 1, label: DataSource.URL },
-    ],
+    options: Object.values(DataSource).map(key => {
+      const value = key as DataSourceKey;
+      return { value, label: DataSource[value] };
+    }),
   });
 
   const handleDrawerClose = () => {

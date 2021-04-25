@@ -1,5 +1,4 @@
 import { defineAsyncComponent } from 'vue';
-import { DataSource } from '@/enum';
 
 const gallery: Gallery = {
   name: '柱状图',
@@ -9,7 +8,7 @@ const gallery: Gallery = {
     height: 300,
   },
   defaultDataset: {
-    type: DataSource.STATIC,
+    type: 'url',
     static: [
       { x: 'Mon', y: 120 },
       { x: 'Tue', y: 200 },

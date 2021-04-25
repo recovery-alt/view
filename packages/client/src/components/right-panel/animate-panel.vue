@@ -9,7 +9,7 @@
       预览
     </a-button>
   </div>
-  <a-collapse v-if="curComponent.animations && curComponent.animations.length > 0" v-model="active">
+  <a-collapse v-if="curComponent?.animations?.length" v-model="active">
     <a-collapse-panel v-for="animation in curComponent.animations" :key="animation">
       <template #header>
         <div class="animation-title">
