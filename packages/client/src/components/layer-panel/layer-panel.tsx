@@ -131,7 +131,6 @@ export default defineComponent({
     });
 
     const className = computed(() => (showList.value ? '--item' : '--thumbail'));
-    const src = '/src/assets/img/logo.svg';
 
     return () => (
       <div class={`layer-panel${panel.layer ? '' : ' --hide'}`} ref={layerRef}>
@@ -170,7 +169,11 @@ export default defineComponent({
               {board.data.map((item, index) => {
                 const { group, id, locked } = item;
                 const { display } = item.style;
-                const icon = showList.value ? <DatabaseOutlined /> : <img src={src} />;
+                const icon = showList.value ? (
+                  <DatabaseOutlined />
+                ) : (
+                  <img src="/src/assets/img/logo.svg" />
+                );
                 let children;
                 let parentIcon = icon;
 

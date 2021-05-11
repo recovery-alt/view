@@ -8,7 +8,7 @@ const gallery: Gallery = {
     height: 300,
   },
   defaultDataset: {
-    type: 'url',
+    type: 'static',
     static: [
       { x: 'Mon', y: 120 },
       { x: 'Tue', y: 200 },

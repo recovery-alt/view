@@ -69,9 +69,17 @@
     <a-col span="1">
       <a-tooltip>
         <template #title>
-          <div v-for="item in tips" :key="item.name" class="edit-slider__text">
-            <span>{{ item.name }}</span>
-            <span v-html="item.value"></span>
+          <div class="edit-slider__text">
+            <span> 切换图层面板 </span>
+            <span> ctrl/cmd + &larr; </span>
+          </div>
+          <div class="edit-slider__text">
+            <span> 切换组件面板 </span>
+            <span> ctrl/cmd + &uarr; </span>
+          </div>
+          <div class="edit-slider__text">
+            <span> 切换右侧面板 </span>
+            <span> ctrl/cmd + &rarr; </span>
           </div>
         </template>
         <MacCommandOutlined class="edit-slider__icon" />
@@ -148,9 +156,8 @@ const handleDrop = (e: DragEvent) => {
   canvasWrapperRef.value.click();
 };
 
-const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } = useEditSlider(
-  canvasWrapperRef
-);
+const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } =
+  useEditSlider(canvasWrapperRef);
 
 const {
   viewportSize,
@@ -182,12 +189,6 @@ onMounted(() => {
   boardOffset.value.left = left - parentLeft;
   boardOffset.value.top = top - parentTop;
 });
-
-const tips = [
-  { name: '切换图层面板', value: 'ctrl/cmd + &larr;' },
-  { name: '切换组件面板', value: 'ctrl/cmd + &uarr;' },
-  { name: '切换右侧面板', value: 'ctrl/cmd + &rarr;' },
-];
 </script>
 
 <style lang="less">

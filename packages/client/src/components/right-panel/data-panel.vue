@@ -122,7 +122,6 @@ const timeline = reactive([
     event: () => {
       drawer.show = true;
       // TODO
-      console.log(curComponent.value);
     },
   },
   {
