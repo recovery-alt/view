@@ -1,16 +1,16 @@
 <template>
-  <div ref="bar" class="bar" />
+  <div ref="gauge" class="gauge" />
 </template>
 
 <script lang="ts">
-import type { BarSeriesOption } from 'echarts/charts';
+import type { GaugeSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
 import type { DatasetComponentOption } from 'echarts/index';
 import type { PropType } from 'vue';
 import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
-import { BarChart } from 'echarts/charts';
+import { GaugeChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 
 export default defineComponent({
@@ -21,17 +21,23 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const bar = shallowRef<HTMLElement>();
+    const gauge = shallowRef<HTMLElement>();
     const chart = shallowRef<ECharts>();
 
-    use([GridComponent, BarChart, CanvasRenderer]);
+    use([GridComponent, GaugeChart, CanvasRenderer]);
 
     const setOption = () => {
       if (!chart.value) return;
-      const option: ComposeOption<BarSeriesOption | DatasetComponentOption> = {
-        xAxis: { type: 'category' },
-        yAxis: { type: 'value' },
-        series: [{ type: 'bar' }],
+      const option: ComposeOption<GaugeSeriesOption | DatasetComponentOption> = {
+        series: [
+          {
+            name: 'Pressure',
+            type: 'gauge',
+            detail: {
+              formatter: '{value}',
+            },
+          },
+        ],
         dataset: { source: props.data.static },
       };
 
@@ -39,13 +45,13 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (bar.value) {
-        chart.value = init(bar.value);
+      if (gauge.value) {
+        chart.value = init(gauge.value);
         watchEffect(setOption);
       }
     });
 
-    return { bar };
+    return { gauge };
   },
 });
 </script>

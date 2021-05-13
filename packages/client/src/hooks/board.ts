@@ -4,7 +4,6 @@ import {
   nextTick,
   onBeforeUnmount,
   onMounted,
-  onBeforeUpdate,
   reactive,
   ref,
   shallowReactive,
@@ -86,18 +85,6 @@ export const useSelectMask = (store: Store<RootStateType>) => {
   };
 
   return { selectMask, handleMousedown };
-};
-
-export const useBoardRefs = () => {
-  const setBoardRef = (el: { $el: HTMLElement }) => {
-    el && boardRefs.push(el.$el);
-  };
-
-  onBeforeUpdate(() => {
-    boardRefs.length = 0;
-  });
-
-  return { setBoardRef };
 };
 
 export const useEchartsResize = () => {

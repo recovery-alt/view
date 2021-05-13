@@ -33,7 +33,7 @@
             :data-type="item.type"
           >
             <header>{{ item.name }}</header>
-            <section></section>
+            <img :src="getImgSrc(item.type)" />
           </li>
         </ul>
       </a-tab-pane>
@@ -60,6 +60,20 @@ const handleDragStart = (e: DragEvent) => {
 
 const searchComponent = () => {
   // TODO: 查询组件
+};
+
+const getImgSrc = (type?: string) => {
+  const modules = import.meta.glob('/src/assets/img/gallery/*.png');
+  let canFindIcon = false;
+
+  for (const key of Object.keys(modules)) {
+    const matcher = key.match(/gallery\/(.*)\.png/);
+    if (matcher?.[1] && type === matcher[1]) {
+      canFindIcon = true;
+      break;
+    }
+  }
+  return `/src/assets/img/gallery/${canFindIcon ? type : 'default'}.png`;
 };
 </script>
 
@@ -123,9 +137,9 @@ const searchComponent = () => {
       border-bottom: 1px solid var(--border-color-base);
     }
 
-    section {
-      background-image: url('/src/assets/img/gallery/input.svg');
-      background-size: cover;
+    img {
+      width: 100%;
+      background-color: var(--background-color-light);
       pointer-events: none;
       height: calc(100% - 22px);
     }

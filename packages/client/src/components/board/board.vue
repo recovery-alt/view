@@ -10,7 +10,7 @@
         >
           <board-ruler
             :key="rulerKey"
-            :width="screenShotSize[getUnit(item.direction)] * 2 + ''"
+            :width="screenShotSize[getUnit(item.direction)] * 2"
             :style="{ width: screenShotSize[getUnit(item.direction)] + 'px' }"
             @click="addMarkline($event, item.marklineDct)"
           />
@@ -46,13 +46,7 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <component
-            :is="item.component"
-            :ref="setBoardRef"
-            :group="item.group"
-            :data="item.dataset"
-            :style="splitStyleAndPatch(item.style, false)"
-          />
+          <board-box :ref="el => el && boardRefs.push(el.$el)" :data="item" />
         </board-shape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
@@ -113,13 +107,13 @@
 </template>
 
 <script lang="ts" setup>
-import { BoardMenu, BoardShape, BoardRuler } from '@/components';
+import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
 import { BoardEnum, useStore } from '@/store';
 import {
   menu,
   pageConfig,
   useSelectMask,
-  useBoardRefs,
+  boardRefs,
   useThumbnail,
   useEditSlider,
   useRuler,
@@ -128,14 +122,13 @@ import {
 } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
-import { computed, onMounted, reactive, shallowRef } from 'vue';
+import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 
 const store = useStore();
 const { board } = store.state;
 const { selectMask, handleMousedown } = useSelectMask(store);
 const position = reactive({ left: 0, top: 0 });
-const { setBoardRef } = useBoardRefs();
 const screenShotRef = shallowRef<HTMLElement>();
 const canvasWrapperRef = shallowRef<HTMLElement>();
 const boardDom = shallowRef<HTMLElement>();
@@ -181,6 +174,10 @@ const handleScroll = (e: Event) => {
 const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
 
 useBoardKeydown(store, router);
+
+onBeforeUpdate(() => {
+  boardRefs.length = 0;
+});
 
 onMounted(() => {
   if (!boardDom.value || !canvasWrapperRef.value) return;

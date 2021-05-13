@@ -16,7 +16,7 @@ const galleryGroup: GalleryGroup = [];
 
 const galleryList: Array<Gallery> = [];
 
-export default (app: App) => {
+export default async (app: App) => {
   const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
     const module = await getGroup();
     const group = module.default as Group;
@@ -36,8 +36,10 @@ export default (app: App) => {
     galleryGroup[order] = { groupName, icon, list };
   };
 
-  app.component(`cq-${ComponentGroup.name}`, ComponentGroup);
-  Object.keys(groups).forEach(key => resolveGroup(groups[key]));
+  app.component('cq-group', ComponentGroup);
+  for (const key in groups) {
+    await resolveGroup(groups[key]);
+  }
 };
 
 export const getGalleryGroup = () => galleryGroup;

@@ -15,13 +15,7 @@
               :z-index="index"
               :style="splitStyleAndPatch(item.style)"
             >
-              <component
-                :is="item.component"
-                class="board-component"
-                :group="item.group"
-                :data="item.dataset"
-                :style="splitStyleAndPatch(item.style, false)"
-              />
+              <board-box :data="item" with-class />
             </div>
           </div>
         </div>
@@ -36,6 +30,7 @@ import { pageConfig } from '@/hooks';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';
+import BoardBox from './box.vue';
 
 defineProps({ modelValue: Boolean });
 

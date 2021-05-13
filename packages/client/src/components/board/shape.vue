@@ -222,9 +222,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   box-sizing: border-box;
 
   &:hover {
-    background-color: var(--item-hover-bg);
     outline: 1px dashed var(--outline-color);
-    opacity: 0.9;
   }
 
   & > *:first-child {

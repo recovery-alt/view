@@ -8,8 +8,12 @@ import 'normalize.css';
 import 'animate.css';
 import '@/assets/style/index.less';
 
-const app = createApp(App);
-useAntDesign(app);
-useGallery(app);
+const start = async () => {
+  const app = createApp(App);
+  useAntDesign(app);
+  await useGallery(app);
 
-app.use(store, key).use(router).mount('#app');
+  app.use(store, key).use(router).mount('#app');
+};
+
+start();

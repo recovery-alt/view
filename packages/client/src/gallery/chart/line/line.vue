@@ -1,16 +1,16 @@
 <template>
-  <div ref="bar" class="bar" />
+  <div ref="line" class="line" />
 </template>
 
 <script lang="ts">
-import type { BarSeriesOption } from 'echarts/charts';
+import type { LineSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
 import type { DatasetComponentOption } from 'echarts/index';
 import type { PropType } from 'vue';
 import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
-import { BarChart } from 'echarts/charts';
+import { LineChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 
 export default defineComponent({
@@ -21,17 +21,17 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const bar = shallowRef<HTMLElement>();
+    const line = shallowRef<HTMLElement>();
     const chart = shallowRef<ECharts>();
 
-    use([GridComponent, BarChart, CanvasRenderer]);
+    use([GridComponent, LineChart, CanvasRenderer]);
 
     const setOption = () => {
       if (!chart.value) return;
-      const option: ComposeOption<BarSeriesOption | DatasetComponentOption> = {
+      const option: ComposeOption<LineSeriesOption | DatasetComponentOption> = {
         xAxis: { type: 'category' },
         yAxis: { type: 'value' },
-        series: [{ type: 'bar' }],
+        series: [{ type: 'line' }],
         dataset: { source: props.data.static },
       };
 
@@ -39,13 +39,13 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (bar.value) {
-        chart.value = init(bar.value);
+      if (line.value) {
+        chart.value = init(line.value);
         watchEffect(setOption);
       }
     });
 
-    return { bar };
+    return { line };
   },
 });
 </script>

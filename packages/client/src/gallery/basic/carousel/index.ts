@@ -3,7 +3,7 @@ import { defineAsyncComponent, Component } from 'vue';
 const gallery: Gallery = {
   name: '轮播图',
   version: '0.1.0',
-  defaultStyle: {
+  style: {
     width: 300,
     height: 240,
   },

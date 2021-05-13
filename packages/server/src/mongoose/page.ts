@@ -34,7 +34,7 @@ export interface Page extends Document {
     component: string;
     label: string;
     group?: Array<unknown>;
-    propValue?: unknown;
+    propsData?: unknown;
     locked?: boolean;
     icon?: string;
     attr?: Array<{ title: string; data: Array<unknown> }>;

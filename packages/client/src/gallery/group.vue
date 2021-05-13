@@ -4,6 +4,7 @@
       :is="item.component"
       v-for="item in group"
       :key="item.id"
+      :data="item.dataset"
       :style="patchUnit(item.style)"
     />
   </div>

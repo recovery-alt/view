@@ -29,7 +29,7 @@
       height: 100%;
     }
     .slick-slide h3 {
-      color: var(--text-color);
+      color: #fff;
     }
 
     .slick-track {

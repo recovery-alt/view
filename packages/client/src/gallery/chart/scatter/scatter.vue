@@ -1,16 +1,16 @@
 <template>
-  <div ref="bar" class="bar" />
+  <div ref="scatter" class="scatter" />
 </template>
 
 <script lang="ts">
-import type { BarSeriesOption } from 'echarts/charts';
+import type { ScatterSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
 import type { DatasetComponentOption } from 'echarts/index';
 import type { PropType } from 'vue';
 import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
 import { use, init } from 'echarts/core';
 import { GridComponent } from 'echarts/components';
-import { BarChart } from 'echarts/charts';
+import { ScatterChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 
 export default defineComponent({
@@ -21,17 +21,22 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const bar = shallowRef<HTMLElement>();
+    const scatter = shallowRef<HTMLElement>();
     const chart = shallowRef<ECharts>();
 
-    use([GridComponent, BarChart, CanvasRenderer]);
+    use([GridComponent, ScatterChart, CanvasRenderer]);
 
     const setOption = () => {
       if (!chart.value) return;
-      const option: ComposeOption<BarSeriesOption | DatasetComponentOption> = {
-        xAxis: { type: 'category' },
-        yAxis: { type: 'value' },
-        series: [{ type: 'bar' }],
+      const option: ComposeOption<ScatterSeriesOption | DatasetComponentOption> = {
+        xAxis: {},
+        yAxis: {},
+        series: [
+          {
+            type: 'scatter',
+            symbolSize: 20,
+          },
+        ],
         dataset: { source: props.data.static },
       };
 
@@ -39,13 +44,13 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (bar.value) {
-        chart.value = init(bar.value);
+      if (scatter.value) {
+        chart.value = init(scatter.value);
         watchEffect(setOption);
       }
     });
 
-    return { bar };
+    return { scatter };
   },
 });
 </script>

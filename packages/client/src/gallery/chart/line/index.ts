@@ -1,7 +1,7 @@
 import { defineAsyncComponent } from 'vue';
 
 const gallery: Gallery = {
-  name: '柱状图',
+  name: '线性图',
   version: '0.1.0',
   style: {
     width: 400,
@@ -19,7 +19,7 @@ const gallery: Gallery = {
       { x: 'Sun', y: 130 },
     ],
   },
-  component: defineAsyncComponent(() => import('./bar.vue')),
+  component: defineAsyncComponent(() => import('./line.vue')),
 };
 
 export default gallery;

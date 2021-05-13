@@ -43,7 +43,7 @@ type ComponentAttr = {
 type ComponentData = {
   type: import('@/config').DataSourceKey;
   url?: string;
-  static?: Array<Data>;
+  static?: Array<Data | Array>;
   filter?: (data: unknown) => unknown;
 };
 
@@ -52,7 +52,7 @@ type Component = {
   component: string;
   label: string;
   group?: Array<Component>;
-  propValue?: unknown;
+  propsData?: unknown;
   locked?: boolean;
   icon?: string;
   attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
@@ -100,15 +100,13 @@ type UserInfo = { token: string; name: string };
 
 type ColumnConfig = { key: string; title: string; dataIndex?: string };
 
-type Gallery = {
+interface Gallery extends Omit<Component, 'id' | 'label'> {
   type?: string;
   name: string;
   version: string;
-  dataConfig?: boolean;
-  defaultStyle?: Partial<CSSStyleDataWithRotate>;
-  defaultDataset?: ComponentData;
   component: import('vue').Component;
-};
+  style?: Partial<CSSStyleDataWithRotate>;
+}
 
 type Group = {
   name: string;
