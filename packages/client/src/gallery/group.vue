@@ -1,19 +1,13 @@
 <template>
   <div class="board-group">
-    <component
-      :is="item.component"
-      v-for="item in group"
-      :key="item.id"
-      :data="item.dataset"
-      :style="patchUnit(item.style)"
-    />
+    <board-box v-for="item in group" :key="item.id" :data="item" patch-all />
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import { defineProps } from 'vue';
-import { patchUnit } from '@/utils';
+import { BoardBox } from '@/components';
 
 defineProps({ group: { type: Array as PropType<Array<Component>>, default: () => [] } });
 </script>

@@ -1,6 +1,11 @@
 <template>
-  <a-form label-align="left" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
-    <a-form-item label="图表尺寸">
+  <a-form label-align="right" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
+    <a-form-item label="名称">
+      <a-col span="22">
+        <a-input v-model:value="curComponent.label" size="small" />
+      </a-col>
+    </a-form-item>
+    <a-form-item label="尺寸">
       <a-row>
         <a-col span="8">
           <a-input-number v-model:value="curComponent.style.width" size="small" />
@@ -16,7 +21,7 @@
         </div>
       </template>
     </a-form-item>
-    <a-form-item label="图表位置">
+    <a-form-item label="位置">
       <a-row>
         <a-col span="8">
           <a-input-number v-model:value="curComponent.style.left" size="small" />
@@ -83,7 +88,7 @@
       :title="val.title"
       :header="val.title"
     >
-      <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
+      <a-form label-align="right" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
         <a-form-item v-for="item in val.data" :key="item.key" :label="item.label">
           <color-picker
             v-if="item.type === FormEnum.COLOR_PICKER"
@@ -91,9 +96,10 @@
           />
           <component
             :is="`a-${item.type}`"
-            v-bind="item.props"
             v-else
             v-model:value="curComponent.style[item.key]"
+            v-bind="item.props"
+            size="small"
           >
             <template v-if="item.type === 'select'">
               <a-select-option v-for="option in item.data" :key="option.id" :value="option.id">
@@ -118,7 +124,7 @@ import { RotateLeftOutlined, RotateRightOutlined } from '@ant-design/icons-vue';
 const store = useStore();
 const { board } = store.state;
 
-const activeName = ref(presetComponentAttr[0].title);
+const activeName = ref('');
 
 const curComponent = computed(() => board.data[board.selected[0]]);
 
@@ -134,9 +140,7 @@ watchEffect(() => {
       const { data } = val;
       data.forEach(item => {
         const { key, default: defaultVal } = item;
-        if (!style[key]) {
-          style[key] = defaultVal;
-        }
+        if (!style[key]) style[key] = defaultVal;
       });
     });
   }

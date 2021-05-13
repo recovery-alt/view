@@ -46,7 +46,11 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <board-box :ref="el => el && boardRefs.push(el.$el)" :data="item" />
+          <board-box
+            :ref="el => el && boardRefs.push(el.$el)"
+            class="board__component"
+            :data="item"
+          />
         </board-shape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
@@ -202,7 +206,7 @@ onMounted(() => {
   box-shadow: var(--box-shadow-base);
   color: var(--black);
 
-  &-component {
+  &__component {
     pointer-events: none;
   }
 
