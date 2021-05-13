@@ -202,6 +202,10 @@ onMounted(() => {
   box-shadow: var(--box-shadow-base);
   color: var(--black);
 
+  &-component {
+    pointer-events: none;
+  }
+
   &__mask {
     position: absolute;
     opacity: 0.5;

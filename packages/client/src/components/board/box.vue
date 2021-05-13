@@ -1,7 +1,7 @@
 <template>
   <component
     :is="data.component"
-    :class="{ 'board-component': withClass }"
+    class="board-component"
     :group="data.group"
     :data="data.dataset"
     :props-data="data.propsData"
