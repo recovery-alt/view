@@ -7,6 +7,8 @@ export enum FormEnum {
   SWITCH = 'switch',
   SLIDER = 'slider',
   COLOR_PICKER = 'color-picker',
+  BTN_GROUP = 'btn-group',
+  TEXTAREA = 'textarea',
 }
 
 export enum LocalKeys {

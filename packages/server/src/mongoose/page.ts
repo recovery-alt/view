@@ -37,7 +37,7 @@ export interface Page extends Document {
     propsData?: unknown;
     locked?: boolean;
     icon?: string;
-    attr?: Array<{ title: string; data: Array<unknown> }>;
+    attr?: Array<Data>;
     animations?: Array<string>;
     events?: Array<Event>;
     style: Data;

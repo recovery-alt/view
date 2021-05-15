@@ -30,16 +30,6 @@ interface CSSStyleDataWithRotate extends CSSStyleDataWithSize {
   opacity: number;
 }
 
-type ComponentAttr = {
-  key: CSSStyleKey;
-  type: import('@/enum').FormEnum;
-  label: string;
-  default: string | number;
-  props?: Data;
-  config?: Data;
-  data?: Array<{ id: number | string; label: string }>;
-};
-
 type ComponentData = {
   type: import('@/config').DataSourceKey;
   url?: string;
@@ -55,7 +45,7 @@ type Component = {
   propsData?: unknown;
   locked?: boolean;
   icon?: string;
-  attr?: Array<{ title: string; data: Array<ComponentAttr> }>;
+  attr?: Array<SchemaItem>;
   animations?: Array<string>;
   events?: Array<Event>;
   dataConfig?: boolean;
@@ -121,3 +111,24 @@ type GalleryGroup = Array<{
   icon: import('vue').Component;
   list: Array<Gallery>;
 }>;
+
+type FieldItem = {
+  type: import('@/enum').FormEnum;
+  model: string;
+  span?: number;
+  offset?: number;
+  props?: Data;
+  default?: string | number;
+  data?: Array<Data>;
+};
+
+type Field = {
+  label: string;
+  extra?: Array<string>;
+  item: Array<FieldItem> | FieldItem;
+};
+
+type SchemaItem = {
+  title: string;
+  fields: Array<Field>;
+};

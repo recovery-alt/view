@@ -1,77 +1,33 @@
 <template>
-  <a-form label-align="right" :label-col="{ span: 6, offset: 2 }" :wrapper-col="{ span: 16 }">
+  <a-form
+    label-align="right"
+    :label-col="{ span: 5, offset: 2 }"
+    :wrapper-col="{ span: 16, offset: 1 }"
+  >
     <a-form-item label="名称">
-      <a-col span="22">
+      <a-col span="16">
         <a-input v-model:value="curComponent.label" size="small" />
       </a-col>
     </a-form-item>
-    <a-form-item label="尺寸">
-      <a-row>
-        <a-col span="8">
-          <a-input-number v-model:value="curComponent.style.width" size="small" />
-        </a-col>
-        <a-col span="8" offset="4">
-          <a-input-number v-model:value="curComponent.style.height" size="small" />
-        </a-col>
-      </a-row>
-      <template #extra>
-        <div class="attr-panel__extra">
-          <span>宽度</span>
-          <span>高度</span>
-        </div>
-      </template>
-    </a-form-item>
-    <a-form-item label="位置">
-      <a-row>
-        <a-col span="8">
-          <a-input-number v-model:value="curComponent.style.left" size="small" />
-        </a-col>
-        <a-col span="8" offset="4">
-          <a-input-number v-model:value="curComponent.style.top" size="small" />
-        </a-col>
-      </a-row>
-      <template #extra>
-        <div class="attr-panel__extra">
-          <span>x轴</span>
-          <span>y轴</span>
-        </div>
-      </template>
-    </a-form-item>
-    <a-form-item label="透明度">
-      <a-row>
-        <a-col span="8">
-          <a-slider
-            v-model:value="curComponent.style.opacity"
-            size="small"
-            :min="0"
-            :max="1"
-            :step="0.1"
-          />
-        </a-col>
-        <a-col span="8" offset="4">
-          <a-input-number
-            v-model:value="curComponent.style.opacity"
-            size="small"
-            :min="0"
-            :max="1"
-            :step="0.1"
-          />
-        </a-col>
-      </a-row>
-    </a-form-item>
+    <form-item
+      v-for="field in basicField"
+      :key="field.label"
+      :field="field"
+      :model="curComponent.style"
+    />
     <a-form-item label="旋转角度">
       <a-row>
-        <a-col span="8">
+        <a-col span="10">
           <a-input-number v-model:value="curComponent.style.rotate" :precision="0" size="small" />
         </a-col>
-        <a-col span="4" offset="4">
+        <a-col span="3" offset="2">
           <a-button size="small" @click="rotate(true)">
             <template #icon>
               <RotateLeftOutlined />
             </template>
           </a-button>
         </a-col>
-        <a-col span="4">
+        <a-col span="3">
           <a-button size="small" @click="rotate()">
             <template #icon>
               <RotateRightOutlined />
@@ -80,51 +36,22 @@
         </a-col>
       </a-row>
     </a-form-item>
+    <form-generator v-model:activeKey="activeKey" :schema="schema" :model="curComponent.style" />
   </a-form>
-  <a-collapse v-model:activeKey="activeName" expand-icon-position="right" size="small">
-    <a-collapse-panel
-      v-for="val in presetComponentAttr"
-      :key="val.title"
-      :title="val.title"
-      :header="val.title"
-    >
-      <a-form label-align="right" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
-        <a-form-item v-for="item in val.data" :key="item.key" :label="item.label">
-          <color-picker
-            v-if="item.type === FormEnum.COLOR_PICKER"
-            v-model="curComponent.style[item.key]"
-          />
-          <component
-            :is="`a-${item.type}`"
-            v-else
-            v-model:value="curComponent.style[item.key]"
-            v-bind="item.props"
-            size="small"
-          >
-            <template v-if="item.type === 'select'">
-              <a-select-option v-for="option in item.data" :key="option.id" :value="option.id">
-                {{ option.label }}
-              </a-select-option>
-            </template>
-          </component>
-        </a-form-item>
-      </a-form>
-    </a-collapse-panel>
-  </a-collapse>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
-import { FormEnum } from '@/enum';
-import { presetComponentAttr } from '@/config';
-import { ColorPicker } from '@/components';
+import { FormGenerator } from '@/components';
 import { RotateLeftOutlined, RotateRightOutlined } from '@ant-design/icons-vue';
+import { FormEnum } from '@/enum';
+import FormItem from '@/components/form-generator/form-item.vue';
 
 const store = useStore();
 const { board } = store.state;
 
-const activeName = ref('');
+const activeKey = ref('');
 
 const curComponent = computed(() => board.data[board.selected[0]]);
 
@@ -133,14 +60,138 @@ const rotate = (reverse = false) => {
   curComponent.value.style.rotate += deg;
 };
 
+const basicField: Array<Field> = [
+  {
+    label: '尺寸',
+    extra: ['宽度', '高度'],
+    item: [
+      { type: FormEnum.INPUT_NUMBER, model: 'width' },
+      { type: FormEnum.INPUT_NUMBER, model: 'height' },
+    ],
+  },
+  {
+    label: '位置',
+    extra: ['x轴', 'y轴'],
+    item: [
+      { type: FormEnum.INPUT_NUMBER, model: 'left' },
+      { type: FormEnum.INPUT_NUMBER, model: 'top' },
+    ],
+  },
+  {
+    label: '透明度',
+    item: [
+      { type: FormEnum.SLIDER, model: 'opacity', props: { min: 0, max: 1, step: 0.1 } },
+      { type: FormEnum.INPUT_NUMBER, model: 'opacity', props: { min: 0, max: 1, step: 0.1 } },
+    ],
+  },
+];
+
+const schema: Array<SchemaItem> = [
+  {
+    title: '边框&圆角',
+    fields: [
+      {
+        label: '圆角',
+        item: {
+          type: FormEnum.INPUT_NUMBER,
+          model: 'borderRadius',
+        },
+      },
+      {
+        label: '边框',
+        extra: ['大小', '颜色'],
+        item: [
+          {
+            type: FormEnum.INPUT_NUMBER,
+            model: 'borderWidth',
+          },
+          {
+            type: FormEnum.COLOR_PICKER,
+            model: 'borderColor',
+          },
+        ],
+      },
+      {
+        label: '边框线型',
+        item: {
+          type: FormEnum.SELECT,
+          model: 'borderStyle',
+          data: [
+            { id: 'none', label: '无边框' },
+            { id: 'dotted', label: '点状' },
+            { id: 'dashed', label: '虚线' },
+            { id: 'solid', label: '实线' },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    title: '字体',
+    fields: [
+      {
+        label: '字体',
+        extra: ['大小', '粗细'],
+        item: [
+          { model: 'fontSize', type: FormEnum.INPUT_NUMBER, default: 14 },
+          {
+            model: 'fontWeight',
+            type: FormEnum.INPUT_NUMBER,
+            default: 500,
+            props: { step: 100, min: 100, max: 900 },
+          },
+        ],
+      },
+      {
+        label: '文字',
+        extra: ['行高', '间距'],
+        item: [
+          {
+            model: 'lineHeight',
+            type: FormEnum.INPUT_NUMBER,
+            default: 1,
+            props: { step: 0.1 },
+          },
+          {
+            model: 'letterSpacing',
+            type: FormEnum.INPUT_NUMBER,
+            default: 0,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: '颜色',
+    fields: [
+      {
+        label: '颜色',
+        extra: ['字体颜色', '背景色'],
+        item: [
+          {
+            model: 'color',
+            type: FormEnum.COLOR_PICKER,
+          },
+          {
+            model: 'backgroundColor',
+            type: FormEnum.COLOR_PICKER,
+          },
+        ],
+      },
+    ],
+  },
+];
+
 watchEffect(() => {
   if (board.selected.length === 1) {
+    const setVal = (val: FieldItem) => {
+      if (val.default !== undefined && !style[val.model]) style[val.model] = val.default;
+    };
     const { style } = board.data[board.selected[0]];
-    presetComponentAttr.forEach(val => {
-      const { data } = val;
-      data.forEach(item => {
-        const { key, default: defaultVal } = item;
-        if (!style[key]) style[key] = defaultVal;
+    schema.forEach(val => {
+      val.fields.forEach(field => {
+        const { item } = field;
+        Array.isArray(item) ? item.forEach(setVal) : setVal(item);
       });
     });
   }
@@ -154,6 +205,7 @@ watchEffect(() => {
     display: flex;
 
     span {
+      font-size: 12px;
       flex: 1;
     }
   }

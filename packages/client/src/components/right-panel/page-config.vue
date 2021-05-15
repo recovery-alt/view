@@ -5,64 +5,18 @@
       <a-form
         :model="pageConfig"
         hide-required-mark
-        :label-col="{ span: 6 }"
-        :wrapper-col="{ span: 14 }"
+        label-align="right"
+        :label-col="{ span: 5, offset: 2 }"
+        :wrapper-col="{ span: 16, offset: 1 }"
       >
-        <a-form-item label="页面标题">
-          <a-input v-model:value="pageConfig.title" size="small" />
-        </a-form-item>
-        <a-form-item label="页面描述">
-          <a-textarea v-model:value="pageConfig.description" size="small"></a-textarea>
-        </a-form-item>
-        <a-form-item label="屏幕尺寸">
-          <a-row>
-            <a-col span="8">
-              <a-input-number v-model:value="pageConfig.width" size="small" />
-            </a-col>
-            <a-col span="8" offset="4">
-              <a-input-number v-model:value="pageConfig.height" size="small" />
-            </a-col>
-          </a-row>
-          <template #extra>
-            <div class="page-config__extra">
-              <span>宽度</span>
-              <span>高度</span>
-            </div>
-          </template>
-        </a-form-item>
-        <a-form-item label="背景颜色">
-          <color-picker v-model="pageConfig.backgroundColor" />
-        </a-form-item>
-        <a-form-item label="背景图片">
-          <a-input v-model:value="pageConfig.url" size="small" placeholder="图片地址" />
-        </a-form-item>
-        <a-form-item label="缩放方式">
-          <a-tooltip
-            v-for="(item, i) in zoomOptions"
-            :key="item.icon"
-            :title="item.tip"
-            placement="bottom"
-          >
-            <a-button
-              class="page-config__btn"
-              size="small"
-              :type="pageConfig.zoom === i ? 'primary' : 'default'"
-              @click="pageConfig.zoom = i"
-            >
-              <component :is="item.icon" />
-            </a-button>
-          </a-tooltip>
-        </a-form-item>
-        <a-form-item label="栅格间距">
-          <a-input-number v-model:value="pageConfig.gap" size="small" />
-        </a-form-item>
+        <form-item v-for="field in fields" :key="field.label" :field="field" :model="pageConfig" />
       </a-form>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ColorPicker } from '@/components';
+import { FormEnum } from '@/enum';
 import { pageConfig } from '@/hooks';
 import {
   ExpandOutlined,
@@ -71,13 +25,52 @@ import {
   DragOutlined,
   StopOutlined,
 } from '@ant-design/icons-vue';
+import { FormItem } from '@/components';
 
-const zoomOptions = [
-  { icon: ExpandOutlined, tip: '全屏铺满' },
-  { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满' },
-  { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满' },
-  { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）' },
-  { icon: StopOutlined, tip: '不缩放' },
+const fields: Array<Field> = [
+  {
+    label: '页面标题',
+    item: { type: FormEnum.INPUT, model: 'title', span: 22 },
+  },
+  {
+    label: '页面描述',
+    item: { type: FormEnum.TEXTAREA, model: 'description', span: 22 },
+  },
+  {
+    label: '屏幕尺寸',
+    extra: ['宽度', '高度'],
+    item: [
+      { type: FormEnum.INPUT_NUMBER, model: 'width' },
+      { type: FormEnum.INPUT_NUMBER, model: 'height' },
+    ],
+  },
+  {
+    label: '背景颜色',
+    item: { type: FormEnum.COLOR_PICKER, model: 'backgroundColor' },
+  },
+  {
+    label: '背景图片',
+    item: { type: FormEnum.INPUT, model: 'url' },
+  },
+  {
+    label: '缩放方式',
+    item: {
+      type: FormEnum.BTN_GROUP,
+      model: 'zoom',
+      span: 22,
+      data: [
+        { icon: ExpandOutlined, tip: '全屏铺满' },
+        { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满' },
+        { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满' },
+        { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）' },
+        { icon: StopOutlined, tip: '不缩放' },
+      ],
+    },
+  },
+  {
+    label: '栅格间距',
+    item: { type: FormEnum.INPUT_NUMBER, model: 'gap' },
+  },
 ];
 </script>
 

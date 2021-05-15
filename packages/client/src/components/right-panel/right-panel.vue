@@ -89,6 +89,14 @@ const gallery = computed(() => {
     padding-left: 27px;
   }
 
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0;
+  }
+
+  .ant-input-number {
+    width: 100%;
+  }
+
   .ant-tabs-nav {
     width: 100%;
 

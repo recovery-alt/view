@@ -5,6 +5,6 @@ set -e
 
 cd packages/client
 
-yarn vite
+yarn vite --host
 
 cd -
