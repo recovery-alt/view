@@ -1,5 +1,4 @@
-import FormElement from './form-element.vue';
-import FormItem from './form-item.vue';
 import FormGenerator from './form-generator.vue';
+import FormItem from './form-item.vue';
 
-export { FormElement, FormItem, FormGenerator };
+export { FormItem, FormGenerator };

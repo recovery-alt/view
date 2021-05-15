@@ -59,11 +59,11 @@ const fields: Array<Field> = [
       model: 'zoom',
       span: 22,
       data: [
-        { icon: ExpandOutlined, tip: '全屏铺满' },
-        { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满' },
-        { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满' },
-        { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）' },
-        { icon: StopOutlined, tip: '不缩放' },
+        { icon: ExpandOutlined, tip: '全屏铺满', value: 0 },
+        { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满', value: 1 },
+        { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满', value: 2 },
+        { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）', value: 3 },
+        { icon: StopOutlined, tip: '不缩放', value: 4 },
       ],
     },
   },
@@ -94,14 +94,6 @@ const fields: Array<Field> = [
 
     span {
       flex: 1;
-    }
-  }
-
-  &__btn {
-    margin-left: 10px;
-
-    &:first-child {
-      margin-left: 0;
     }
   }
 }

@@ -42,7 +42,7 @@ type Component = {
   component: string;
   label: string;
   group?: Array<Component>;
-  propsData?: unknown;
+  propsData?: Data<string | number>;
   locked?: boolean;
   icon?: string;
   attr?: Array<SchemaItem>;
@@ -117,9 +117,9 @@ type FieldItem = {
   model: string;
   span?: number;
   offset?: number;
-  props?: Data;
+  props?: Data<string | number>;
   default?: string | number;
-  data?: Array<Data>;
+  data?: Array<Data<any>>;
 };
 
 type Field = {

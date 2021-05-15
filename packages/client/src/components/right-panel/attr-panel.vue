@@ -36,15 +36,47 @@
         </a-col>
       </a-row>
     </a-form-item>
-    <form-generator v-model:activeKey="activeKey" :schema="schema" :model="curComponent.style" />
+    <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" size="small">
+      <a-collapse-panel
+        v-for="item in schema"
+        :key="item.title"
+        :title="item.title"
+        :header="item.title"
+      >
+        <form-item
+          v-for="field in item.fields"
+          :key="field.label"
+          :field="field"
+          :model="curComponent.style"
+        />
+      </a-collapse-panel>
+      <a-collapse-panel
+        v-for="item in curComponent.attr"
+        :key="item.title"
+        :title="item.title"
+        :header="item.title"
+      >
+        <form-item
+          v-for="field in item.fields"
+          :key="field.label"
+          :field="field"
+          :model="curComponent.propsData"
+        />
+      </a-collapse-panel>
+    </a-collapse>
   </a-form>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
-import { FormGenerator } from '@/components';
-import { RotateLeftOutlined, RotateRightOutlined } from '@ant-design/icons-vue';
+import {
+  AlignCenterOutlined,
+  AlignLeftOutlined,
+  AlignRightOutlined,
+  RotateLeftOutlined,
+  RotateRightOutlined,
+} from '@ant-design/icons-vue';
 import { FormEnum } from '@/enum';
 import FormItem from '@/components/form-generator/form-item.vue';
 
@@ -159,6 +191,18 @@ const schema: Array<SchemaItem> = [
           },
         ],
       },
+      {
+        label: '水平对齐',
+        item: {
+          model: 'textAlign',
+          type: FormEnum.BTN_GROUP,
+          data: [
+            { icon: AlignLeftOutlined, tip: '居左', value: 'left' },
+            { icon: AlignCenterOutlined, tip: '居中', value: 'center' },
+            { icon: AlignRightOutlined, tip: '居右', value: 'right' },
+          ],
+        },
+      },
     ],
   },
   {
@@ -182,32 +226,36 @@ const schema: Array<SchemaItem> = [
   },
 ];
 
+const setDefaultVal = (val: FieldItem | Array<FieldItem>, data: Data<string | number>) => {
+  const setVal = (val: FieldItem) => {
+    if (val.default !== undefined && data[val.model] === undefined) {
+      data[val.model] = val.default;
+    }
+  };
+  Array.isArray(val) ? val.forEach(item => setVal(item)) : setVal(val);
+};
+
 watchEffect(() => {
   if (board.selected.length === 1) {
-    const setVal = (val: FieldItem) => {
-      if (val.default !== undefined && !style[val.model]) style[val.model] = val.default;
-    };
     const { style } = board.data[board.selected[0]];
     schema.forEach(val => {
       val.fields.forEach(field => {
         const { item } = field;
-        Array.isArray(item) ? item.forEach(setVal) : setVal(item);
+        setDefaultVal(item, style);
+      });
+    });
+  }
+});
+
+watchEffect(() => {
+  if (!curComponent.value) return;
+  const { attr, propsData } = curComponent.value;
+  if (board.selected.length === 1 && attr && propsData) {
+    attr.forEach(item => {
+      item.fields.forEach(field => {
+        setDefaultVal(field.item, propsData);
       });
     });
   }
 });
 </script>
-
-<style lang="less">
-.attr-panel {
-  &__extra {
-    width: 100%;
-    display: flex;
-
-    span {
-      font-size: 12px;
-      flex: 1;
-    }
-  }
-}
-</style>

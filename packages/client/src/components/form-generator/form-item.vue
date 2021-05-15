@@ -8,15 +8,15 @@
           :span="formItem.span || 10"
           :offset="multiOffset(formItem, i)"
         >
-          <form-element :field="formItem" :model="model" />
+          <form-generator :field="formItem" :model="model" />
         </a-col>
       </template>
       <a-col v-else :span="singleSpan(field.item)" :offset="field.item.offset">
-        <form-element :field="field.item" :model="model" />
+        <form-generator :field="field.item" :model="model" />
       </a-col>
     </a-row>
     <template v-if="field.extra" #extra>
-      <div class="attr-panel__extra">
+      <div class="form-item__extra">
         <span v-for="extra in field.extra" :key="extra">{{ extra }}</span>
       </div>
     </template>
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 import { FormEnum } from '@/enum';
-import FormElement from './form-element.vue';
+import FormGenerator from './form-generator.vue';
 
 defineProps({
   field: {
@@ -49,3 +49,17 @@ const multiOffset = (item: FieldItem, i: number) => {
   return i > 0 ? 2 : 0;
 };
 </script>
+
+<style lang="less">
+.form-item {
+  &__extra {
+    width: 100%;
+    display: flex;
+
+    span {
+      font-size: 12px;
+      flex: 1;
+    }
+  }
+}
+</style>
