@@ -27,38 +27,48 @@
       :width="400"
       @close="handleDrawerClose"
     >
-      <div class="data-panel__drawer-row">
-        <div>
-          <label class="data-panel__label">数据源类型：</label>
-          <a-select
-            v-model:value="curComponent.data.type"
-            size="small"
-            @change="handleDataTypeChange"
-          >
-            <a-select-option v-for="item in drawer.options" :key="item.value" :value="item.value">
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </div>
-        <a-button v-if="curComponent.data.type === 'url'" type="primary" size="small">
-          获取数据
-        </a-button>
-      </div>
-      <div class="data-panel__drawer-row">
-        <div>
-          <label class="data-panel__label">开启过滤器：</label>
-          <a-switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
-        </div>
-        <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
-      </div>
-      <div v-if="curComponent.data.type === 'url'" class="data-panel__drawer-row">
-        <label class="data-panel__label">接口地址：</label>
-        <div class="data-panel__drawer-input">
+      <a-form label-align="right" :label-col="{ span: 6 }" :wrapper-col="{ span: 17, offset: 1 }">
+        <a-form-item label="数据源类型">
+          <a-row justify="space-between">
+            <a-col>
+              <a-select
+                v-model:value="curComponent.data.type"
+                size="small"
+                @change="handleDataTypeChange"
+              >
+                <a-select-option
+                  v-for="item in drawer.options"
+                  :key="item.value"
+                  :value="item.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </a-col>
+            <a-col offset="2">
+              <a-button v-if="curComponent.data.type === 'url'" type="primary" size="small">
+                获取数据
+              </a-button>
+            </a-col>
+          </a-row>
+        </a-form-item>
+        <a-form-item label="开启过滤器">
+          <a-row justify="space-between">
+            <a-col>
+              <a-switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
+            </a-col>
+            <a-col offset="2">
+              <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
+            </a-col>
+          </a-row>
+        </a-form-item>
+        <a-form-item v-if="curComponent.data.type === 'url'" label="接口地址">
           <a-input v-model="curComponent.data.url" />
-        </div>
-      </div>
+        </a-form-item>
+      </a-form>
+      <a-divider></a-divider>
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <a-divider>响应结果</a-divider>
+      <a-divider orientation="right"> 响应结果 <ReloadOutlined /> </a-divider>
       <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
     </a-drawer>
     <a-modal
@@ -146,6 +156,7 @@ const timeline = reactive([
 ]);
 
 const resolveDataset = () => {
+  if (!curComponent.value) return;
   const { data } = curComponent.value;
   if (!data) return;
   const { type, static: dataset } = data;
@@ -253,5 +264,9 @@ onMounted(() => {
   .code-box {
     margin: 0 10px;
   }
+}
+
+.ant-drawer-body .ant-divider-inner-text span:hover {
+  color: var(--primary-color);
 }
 </style>
