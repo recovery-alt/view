@@ -65,12 +65,14 @@ onMounted(() => {
   margin-bottom: 5px;
   border: 1px solid var(--border-color-base);
 
-  :deep(.cm-editor) {
-    height: 100%;
-  }
+  :deep {
+    .cm-editor {
+      height: 100%;
+    }
 
-  :deep(.ͼ1.cm-focused) {
-    outline: none;
+    .ͼ1.cm-focused {
+      outline: none;
+    }
   }
 }
 </style>

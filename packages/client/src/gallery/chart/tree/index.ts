@@ -7,7 +7,7 @@ const gallery: Gallery = {
     width: 700,
     height: 500,
   },
-  dataset: {
+  data: {
     type: 'static',
     static: [
       {

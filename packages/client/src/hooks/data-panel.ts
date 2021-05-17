@@ -27,8 +27,8 @@ export const useDrawer = (
     if (!drawer.viewer) return;
     const doc = drawer.viewer.state.doc.toJSON();
     dataStringify.value = doc.reduce((acc, val) => acc + val, '');
-    if (curComponent.value.dataset) {
-      curComponent.value.dataset.static = json.parse(dataStringify.value);
+    if (curComponent.value.data) {
+      curComponent.value.data.static = json.parse(dataStringify.value);
     }
   };
 

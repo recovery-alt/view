@@ -2,7 +2,7 @@
   <component
     :is="`cq-${data.component}`"
     :group="data.group"
-    :data="data.dataset"
+    :data="data.data"
     :props-data="data.propsData"
     :style="patchAll ? patchUnit(data.style) : splitStyleAndPatch(data.style, false)"
   />

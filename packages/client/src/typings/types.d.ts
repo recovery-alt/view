@@ -46,7 +46,7 @@ type Component = {
   locked?: boolean; // 是否加锁
   animations?: Array<string>; // 动画
   events?: Array<Event>; // 组件事件
-  dataset?: ComponentData; // 数据集
+  data?: ComponentData; // 数据集
   style: CSSStyleDataWithRotate; // 样式
 };
 

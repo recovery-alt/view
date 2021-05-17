@@ -20,6 +20,7 @@
     <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" class="code-box" readonly />
     <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <a-drawer
+      v-if="curComponent.data"
       v-model:visible="drawer.show"
       placement="right"
       title="设置数据源"
@@ -30,16 +31,18 @@
         <div>
           <label class="data-panel__label">数据源类型：</label>
           <a-select
-            v-if="curComponent.dataset"
-            v-model:value="curComponent.dataset.type"
+            v-model:value="curComponent.data.type"
             size="small"
+            @change="handleDataTypeChange"
           >
             <a-select-option v-for="item in drawer.options" :key="item.value" :value="item.value">
               {{ item.label }}
             </a-select-option>
           </a-select>
         </div>
-        <a-button type="primary" size="small">获取数据</a-button>
+        <a-button v-if="curComponent.data.type === 'url'" type="primary" size="small">
+          获取数据
+        </a-button>
       </div>
       <div class="data-panel__drawer-row">
         <div>
@@ -48,8 +51,15 @@
         </div>
         <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
       </div>
-      <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
+      <div v-if="curComponent.data.type === 'url'" class="data-panel__drawer-row">
+        <label class="data-panel__label">接口地址：</label>
+        <div class="data-panel__drawer-input">
+          <a-input v-model="curComponent.data.url" />
+        </div>
+      </div>
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
+      <a-divider>响应结果</a-divider>
+      <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
     </a-drawer>
     <a-modal
       v-model:visible="modal.show"
@@ -111,15 +121,15 @@ const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
 const timeline = reactive([
   {
     actived: true,
-    text: DataSource[curComponent.value.dataset!.type],
+    text: DataSource[curComponent.value.data!.type],
     btnText: '设置数据源',
     event: () => {
       drawer.show = true;
-      drawer.openFilter = !!curComponent.value.dataset!.filter;
+      drawer.openFilter = !!curComponent.value.data!.filter;
     },
   },
   {
-    actived: !!curComponent.value.dataset!.filter,
+    actived: !!curComponent.value.data!.filter,
     text: '数据过滤器',
     btnText: '添加过滤器',
     event: () => {
@@ -136,16 +146,16 @@ const timeline = reactive([
 ]);
 
 const resolveDataset = () => {
-  const { dataset } = curComponent.value;
-  if (!dataset) return;
-  const { type, static: data } = dataset;
+  const { data } = curComponent.value;
+  if (!data) return;
+  const { type, static: dataset } = data;
 
   const strategy: Record<DataSourceKey, () => void> = {
-    url: () => {
+    url() {
       // TODO
     },
-    static: () => {
-      dataStringify.value = json.stringify(data);
+    static() {
+      dataStringify.value = json.stringify(dataset);
     },
   };
   const handler = strategy[type] || strategy.static;
@@ -153,31 +163,46 @@ const resolveDataset = () => {
 };
 
 const handleFilterChange = (open: boolean) => {
-  const { dataset } = curComponent.value;
-  if (!dataset) return;
+  const { data } = curComponent.value;
+  if (!data) return;
   if (open) {
-    dataset.filter = modal.doc;
-    drawer.openFilter = !!curComponent.value.dataset!.filter;
+    data.filter = modal.doc;
+    drawer.openFilter = !!curComponent.value.data!.filter;
     modal.show = false;
   } else {
-    delete dataset.filter;
+    delete data.filter;
   }
+};
+
+const handleDataTypeChange = (type: DataSourceKey) => {
+  const strategy = {
+    url() {
+      // TODO
+    },
+    static() {
+      // TODO
+    },
+  };
+
+  const handler = strategy[type];
+
+  handler();
 };
 
 watchEffect(() => {
   if (!curComponent.value) return;
-  const { dataset } = curComponent.value;
-  if (dataset) {
-    timeline[0].text = DataSource[dataset!.type];
-    timeline[1].actived = !!dataset.filter;
+  const { data } = curComponent.value;
+  if (data) {
+    timeline[0].text = DataSource[data!.type];
+    timeline[1].actived = !!data.filter;
   }
 });
 
 watchEffect(() => {
   if (!curComponent.value) return;
-  const { dataset } = curComponent.value;
-  if (dataset?.static?.[0]) {
-    table.data = Object.keys(dataset.static[0]).map(key => ({
+  const { data } = curComponent.value;
+  if (data?.static?.[0]) {
+    table.data = Object.keys(data.static[0]).map(key => ({
       key,
       mapping: '-',
       status: '匹配成功',
@@ -186,7 +211,9 @@ watchEffect(() => {
 });
 
 onMounted(() => {
-  resolveDataset();
+  watchEffect(() => {
+    resolveDataset();
+  });
 });
 </script>
 
@@ -194,11 +221,17 @@ onMounted(() => {
 .data-panel {
   background-color: var(--body-bg);
 
-  &__drawer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  &__drawer {
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    &-input {
+      flex: 1;
+    }
   }
 
   &__label {

@@ -98,7 +98,7 @@ const actions: Data<Action<Board, RootStateType>> = {
   append({ commit }, { top = 0, left = 0, type = '' }) {
     const gallery = getGallery(type);
     if (!gallery) throw new Error('获取不到该组件信息');
-    const { style: defaultStyle, dataset, propsData } = cloneDeep(gallery);
+    const { style: defaultStyle, data, propsData } = cloneDeep(gallery);
     const rotate = 0;
     const opacity = 1;
     const component = type;
@@ -112,7 +112,7 @@ const actions: Data<Action<Board, RootStateType>> = {
       ...defaultStyle,
     };
     const label = gallery.name;
-    commit('append', { id, component, label, propsData, style, dataset });
+    commit('append', { id, component, label, propsData, style, data });
   },
   del({ state, commit }) {
     if (state.selected.length > 0) {
