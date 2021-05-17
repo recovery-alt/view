@@ -51,7 +51,7 @@
         />
       </a-collapse-panel>
       <a-collapse-panel
-        v-for="item in curComponent.attr"
+        v-for="item in gallery?.attr"
         :key="item.title"
         :title="item.title"
         :header="item.title"
@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import {
   AlignCenterOutlined,
@@ -79,6 +79,7 @@ import {
 } from '@ant-design/icons-vue';
 import { FormEnum } from '@/enum';
 import FormItem from '@/components/form-generator/form-item.vue';
+import { getGallery } from '@/gallery';
 
 const store = useStore();
 const { board } = store.state;
@@ -91,6 +92,8 @@ const rotate = (reverse = false) => {
   const deg = reverse ? -45 : 45;
   curComponent.value.style.rotate += deg;
 };
+
+const gallery = shallowRef<Gallery>();
 
 const basicField: Array<Field> = [
   {
@@ -249,7 +252,10 @@ watchEffect(() => {
 
 watchEffect(() => {
   if (!curComponent.value) return;
-  const { attr, propsData } = curComponent.value;
+  const { component, propsData } = curComponent.value;
+  gallery.value = getGallery(component);
+  if (!gallery.value) return;
+  const { attr } = gallery.value;
   if (board.selected.length === 1 && attr && propsData) {
     attr.forEach(item => {
       item.fields.forEach(field => {

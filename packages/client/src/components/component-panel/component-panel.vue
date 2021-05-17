@@ -42,14 +42,12 @@
 </template>
 
 <script lang="ts" setup>
-import { getGalleryGroup } from '@/gallery';
+import { galleryGroup } from '@/gallery';
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
 
 const activeTab = ref('基础');
-
-const galleryGroup = getGalleryGroup();
 
 const handleDragStart = (e: DragEvent) => {
   const target = e.target as HTMLDataListElement;

@@ -7,18 +7,18 @@ import config from '@/config';
 import { Router } from 'vue-router';
 
 const pageConfig = reactive<Page>({
-  _id: '',
+  _id: '', // 页面唯一标识
   ...config.defaultPageSize,
-  title: '',
-  description: '',
-  backgroundColor: '',
-  scale: 100,
-  gap: 1,
-  url: '',
-  zoom: 0,
-  author: '',
-  pageMode: 0,
-  config: [],
+  title: '', // 标题
+  description: '', // 描述文案
+  backgroundColor: '', // 背景色
+  scale: 100, // 缩放百分比
+  gap: 1, // 删格大小
+  url: '', // 背景图片
+  zoom: 0, // 页面是否放缩
+  author: '', // 作者
+  pageMode: 0, // 页面模式 0 可视化大屏 1 h5
+  config: [], // 组件配置
 });
 
 const setPageConfig = async (config: PageConfig) => {

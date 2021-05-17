@@ -29,7 +29,11 @@
       <div class="data-panel__drawer-row">
         <div>
           <label class="data-panel__label">数据源类型：</label>
-          <a-select v-model:value="drawer.selected" size="small">
+          <a-select
+            v-if="curComponent.dataset"
+            v-model:value="curComponent.dataset.type"
+            size="small"
+          >
             <a-select-option v-for="item in drawer.options" :key="item.value" :value="item.value">
               {{ item.label }}
             </a-select-option>
@@ -40,14 +44,19 @@
       <div class="data-panel__drawer-row">
         <div>
           <label class="data-panel__label">开启过滤器：</label>
-          <a-switch v-model:checked="drawer.openFilter" />
+          <a-switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
         </div>
         <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
       </div>
       <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
     </a-drawer>
-    <a-modal v-model:visible="modal.show" title="过滤器" :z-index="1001">
+    <a-modal
+      v-model:visible="modal.show"
+      title="过滤器"
+      :z-index="1001"
+      @ok="handleFilterChange(true)"
+    >
       <code-mirror v-model:viewer="modal.viewer" v-model:doc="modal.doc" type="javascript" />
     </a-modal>
   </div>
@@ -56,13 +65,14 @@
 <script lang="ts" setup>
 import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
-import { computed, onMounted, reactive, ref, shallowReactive, shallowRef } from 'vue';
+import { computed, onMounted, reactive, ref, shallowReactive, shallowRef, watchEffect } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
 import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
 import { useDrawer } from '@/hooks';
+import { DataSource } from '@/config';
 
 const store = useStore();
 const { board } = store.state;
@@ -80,24 +90,8 @@ const curComponent = computed(() => board.data[board.selected[0]]);
 
 const { drawer, handleDrawerClose } = useDrawer(dataStringify, curComponent);
 
-const table = reactive({
-  data: [
-    {
-      key: 'x',
-      mapping: '-',
-      status: '匹配成功',
-    },
-    {
-      key: 'y',
-      mapping: '-',
-      status: '匹配成功',
-    },
-    {
-      key: 'z',
-      mapping: '-',
-      status: '匹配成功',
-    },
-  ],
+const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
+  data: [],
   columns: generateColumns([
     {
       title: '字段',
@@ -117,15 +111,15 @@ const table = reactive({
 const timeline = reactive([
   {
     actived: true,
-    text: curComponent.value.dataset?.type,
+    text: DataSource[curComponent.value.dataset!.type],
     btnText: '设置数据源',
     event: () => {
       drawer.show = true;
-      // TODO
+      drawer.openFilter = !!curComponent.value.dataset!.filter;
     },
   },
   {
-    actived: !!curComponent.value.dataset?.filter,
+    actived: !!curComponent.value.dataset!.filter,
     text: '数据过滤器',
     btnText: '添加过滤器',
     event: () => {
@@ -157,6 +151,39 @@ const resolveDataset = () => {
   const handler = strategy[type] || strategy.static;
   handler();
 };
+
+const handleFilterChange = (open: boolean) => {
+  const { dataset } = curComponent.value;
+  if (!dataset) return;
+  if (open) {
+    dataset.filter = modal.doc;
+    drawer.openFilter = !!curComponent.value.dataset!.filter;
+    modal.show = false;
+  } else {
+    delete dataset.filter;
+  }
+};
+
+watchEffect(() => {
+  if (!curComponent.value) return;
+  const { dataset } = curComponent.value;
+  if (dataset) {
+    timeline[0].text = DataSource[dataset!.type];
+    timeline[1].actived = !!dataset.filter;
+  }
+});
+
+watchEffect(() => {
+  if (!curComponent.value) return;
+  const { dataset } = curComponent.value;
+  if (dataset?.static?.[0]) {
+    table.data = Object.keys(dataset.static[0]).map(key => ({
+      key,
+      mapping: '-',
+      status: '匹配成功',
+    }));
+  }
+});
 
 onMounted(() => {
   resolveDataset();

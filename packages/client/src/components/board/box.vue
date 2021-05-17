@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="data.component"
+    :is="`cq-${data.component}`"
     :group="data.group"
     :data="data.dataset"
     :props-data="data.propsData"

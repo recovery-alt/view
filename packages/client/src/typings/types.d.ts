@@ -33,24 +33,21 @@ interface CSSStyleDataWithRotate extends CSSStyleDataWithSize {
 type ComponentData = {
   type: import('@/config').DataSourceKey;
   url?: string;
-  static?: Array<Data | Array>;
-  filter?: (data: unknown) => unknown;
+  static?: Array<Data | Array<Data> | Array<number>>;
+  filter?: string;
 };
 
 type Component = {
-  id: string;
-  component: string;
-  label: string;
-  group?: Array<Component>;
-  propsData?: Data<string | number>;
-  locked?: boolean;
-  icon?: string;
-  attr?: Array<SchemaItem>;
-  animations?: Array<string>;
-  events?: Array<Event>;
-  dataConfig?: boolean;
-  dataset?: ComponentData;
-  style: CSSStyleDataWithRotate;
+  id: string; // 组件唯一标识
+  component: string; // 组件名
+  label: string; // 组件标签
+  group?: Array<Component>; // 成组包含的所有组件
+  propsData?: Data<string | number>; // 传入props
+  locked?: boolean; // 是否加锁
+  animations?: Array<string>; // 动画
+  events?: Array<Event>; // 组件事件
+  dataset?: ComponentData; // 数据集
+  style: CSSStyleDataWithRotate; // 样式
 };
 
 type Board = {
@@ -64,19 +61,19 @@ type Snapshot = {
 };
 
 type Page = {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  width: number;
-  height: number;
-  backgroundColor: string;
-  scale: number;
-  zoom: number;
-  gap: number;
-  url: string;
-  pageMode: number;
-  config: Array<Component>;
+  _id: string; // 页面唯一标识
+  title: string; // 标题
+  description: string; // 描述文案
+  author: string; // 作者
+  width: number; // 宽
+  height: number; // 高
+  backgroundColor: string; // 背景色
+  scale: number; // 缩放百分比
+  zoom: number; // 页面放缩方式
+  gap: number; // 删格大小
+  url: string; // 背景图片
+  pageMode: number; // 页面模式 0 可视化大屏 1 h5
+  config: Array<Component>; // 页面所有组件
 };
 
 type RootStateType = {
@@ -95,6 +92,9 @@ interface Gallery extends Omit<Component, 'id' | 'label'> {
   name: string;
   version: string;
   component: import('vue').Component;
+  icon?: string; // 组件对应的图表
+  attr?: Array<SchemaItem>; // 额外的组件配置
+  dataConfig?: boolean; // 是否需要配置数据
   style?: Partial<CSSStyleDataWithRotate>;
 }
 

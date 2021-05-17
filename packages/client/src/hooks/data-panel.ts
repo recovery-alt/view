@@ -11,15 +11,13 @@ export const useDrawer = (
 ) => {
   const drawer = shallowReactive<{
     show: boolean;
-    selected: number;
     openFilter: boolean;
-    options: { value: DataSourceKey; label: string }[];
+    options: Array<{ value: DataSourceKey; label: string }>;
     viewer?: EditorView;
   }>({
-    selected: 0,
     openFilter: false,
     show: false,
-    options: Object.values(DataSource).map(key => {
+    options: Object.keys(DataSource).map(key => {
       const value = key as DataSourceKey;
       return { value, label: DataSource[value] };
     }),

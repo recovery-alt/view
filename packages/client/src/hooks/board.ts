@@ -55,8 +55,8 @@ export const useSelectMask = (store: Store<RootStateType>) => {
 
       const mousemove = (e: MouseEvent) => {
         const { pageX, pageY } = e;
-        const diffX = pageX - startX;
-        const diffY = pageY - startY;
+        const diffX = wrapScale(pageX - startX);
+        const diffY = wrapScale(pageY - startY);
         if (diffX < 0) {
           selectMask.style.left = mousePosition.left + diffX;
         }
@@ -385,11 +385,13 @@ export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => 
 
   const keydown = (e: KeyboardEvent) => {
     if (!document.querySelector('.canvas-wrapper')?.contains(document.activeElement)) return;
-    e.preventDefault();
-    e.stopPropagation();
     const handleKeydown = strategy[e.key];
-    const ctrl = e.ctrlKey || e.metaKey;
-    handleKeydown?.(ctrl);
+    if (handleKeydown) {
+      e.preventDefault();
+      e.stopPropagation();
+      const ctrl = e.ctrlKey || e.metaKey;
+      handleKeydown(ctrl);
+    }
   };
 
   onMounted(() => on('keydown', keydown));

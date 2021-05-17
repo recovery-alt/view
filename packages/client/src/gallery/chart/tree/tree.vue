@@ -5,7 +5,6 @@
 <script lang="ts">
 import type { TreeSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
-import type { DatasetComponentOption } from 'echarts/index';
 import type { PropType } from 'vue';
 import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
 import { use, init } from 'echarts/core';
@@ -28,7 +27,7 @@ export default defineComponent({
 
     const setOption = () => {
       if (!chart.value) return;
-      const option: ComposeOption<TreeSeriesOption | DatasetComponentOption> = {
+      const option: ComposeOption<TreeSeriesOption> = {
         series: [
           {
             type: 'tree',

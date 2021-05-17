@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { App } from 'vue';
 import ComponentGroup from './group.vue';
 
@@ -12,9 +13,9 @@ for (const [key, module] of Object.entries(modules)) {
   }
 }
 
-const galleryGroup: GalleryGroup = [];
+export const galleryGroup: GalleryGroup = [];
 
-const galleryList: Array<Gallery> = [];
+export const galleryList: Array<Gallery> = [];
 
 export default async (app: App) => {
   const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
@@ -42,6 +43,7 @@ export default async (app: App) => {
   }
 };
 
-export const getGalleryGroup = () => galleryGroup;
-
-export const getGalleryList = () => galleryList;
+export const getGallery = (name: string) => {
+  const gallery = galleryList.find(val => val.type === name);
+  if (gallery) return cloneDeep(gallery);
+};

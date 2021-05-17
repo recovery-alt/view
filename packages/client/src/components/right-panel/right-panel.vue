@@ -19,11 +19,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import type { Component } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';
-import { getGalleryList } from '@/gallery';
+import { getGallery } from '@/gallery';
 
 const store = useStore();
 const { board } = store.state;
@@ -33,25 +34,26 @@ const curComponent = computed(() =>
   board.selected.length === 1 ? board.data[board.selected[0]] : null
 );
 
-const tabs = computed(() => {
-  const tabs = [
+const gallery = ref<Gallery>();
+const tabs = ref<Array<{ title: string; component: Component }>>();
+const activeTab = ref(tabs.value?.[0].title);
+const width = computed(() => (panel.config ? '332px' : '0'));
+
+watchEffect(() => {
+  if (!curComponent.value) return;
+  const { component } = curComponent.value;
+  gallery.value = getGallery(component);
+});
+
+watchEffect(() => {
+  if (!gallery.value) return;
+  const tabsData = [
     { title: '配置', component: AttrPanel },
     { title: '数据', component: DataPanel },
     { title: '动画', component: AnimatePanel },
   ];
-  curComponent.value?.dataConfig || tabs.splice(1, 1);
-  return tabs;
-});
-
-const activeTab = ref(tabs.value[0].title);
-
-const width = computed(() => (panel.config ? '332px' : '0'));
-
-const gallery = computed(() => {
-  if (!curComponent.value) return;
-  const galleryList = getGalleryList();
-  const type = curComponent.value.component.slice(3);
-  return galleryList.find(gallery => gallery.type === type);
+  gallery.value.dataConfig || tabsData.splice(1, 1);
+  tabs.value = tabsData;
 });
 </script>
 

@@ -1,6 +1,6 @@
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
-import { getGalleryList } from '@/gallery';
+import { getGallery } from '@/gallery';
 import { message } from 'ant-design-vue';
 import config from '@/config';
 import { useEchartsResize } from '@/hooks';
@@ -95,14 +95,13 @@ const mutations: Data<Mutation<Board>> = {
 };
 
 const actions: Data<Action<Board, RootStateType>> = {
-  append({ commit }, { top = 0, left = 0, type = 'area' }) {
-    const gallery = getGalleryList();
-    const componentConfig = gallery.find(val => val.type === type);
-    if (!componentConfig) throw new Error('获取不到该组件信息');
-    const { style: defaultStyle, ...resConfig } = componentConfig;
+  append({ commit }, { top = 0, left = 0, type = '' }) {
+    const gallery = getGallery(type);
+    if (!gallery) throw new Error('获取不到该组件信息');
+    const { style: defaultStyle, dataset, propsData } = cloneDeep(gallery);
     const rotate = 0;
     const opacity = 1;
-    const component = `cq-${type}`;
+    const component = type;
     const id = uuid();
     const style = {
       top,
@@ -112,14 +111,8 @@ const actions: Data<Action<Board, RootStateType>> = {
       ...config.defaultComponentSize,
       ...defaultStyle,
     };
-    const label = componentConfig.name;
-    commit('append', {
-      ...resConfig,
-      id,
-      label,
-      component,
-      style,
-    });
+    const label = gallery.name;
+    commit('append', { id, component, label, propsData, style, dataset });
   },
   del({ state, commit }) {
     if (state.selected.length > 0) {

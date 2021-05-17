@@ -25,6 +25,7 @@ module.exports = {
     'vue/no-v-html': process.env.NODE_ENV === 'production' ? 1 : 0,
     'vue/require-default-prop': process.env.NODE_ENV === 'production' ? 1 : 0,
     '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,
   },
   overrides: [
     {

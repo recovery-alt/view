@@ -645,9 +645,9 @@
     minimist "^1.2.0"
 
 "@codemirror/autocomplete@^0.18.0":
-  version "0.18.3"
-  resolved "https://registry.npm.taobao.org/@codemirror/autocomplete/download/@codemirror/autocomplete-0.18.3.tgz#6c75904c1156e4d9a00e56b9a3e559dda6149e1e"
-  integrity sha1-bHWQTBFW5NmgDla5o+VZ3aYUnh4=
+  version "0.18.5"
+  resolved "https://registry.nlark.com/@codemirror/autocomplete/download/@codemirror/autocomplete-0.18.5.tgz#5c25ddbef858503920fa4912b48bf78be93ee462"
+  integrity sha1-XCXdvvhYUDkg+kkStIv3i+k+5GI=
   dependencies:
     "@codemirror/language" "^0.18.0"
     "@codemirror/state" "^0.18.0"
@@ -657,9 +657,9 @@
     lezer-tree "^0.13.0"
 
 "@codemirror/basic-setup@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/basic-setup/download/@codemirror/basic-setup-0.18.0.tgz#721c50ca06581d9c31e45e2ccea5a280b4933a35"
-  integrity sha1-chxQygZYHZwx5F4szqWigLSTOjU=
+  version "0.18.1"
+  resolved "https://registry.nlark.com/@codemirror/basic-setup/download/@codemirror/basic-setup-0.18.1.tgz#3be5a5b5cc922eaef7f2c0009ea02b598f5a5831"
+  integrity sha1-O+WltcySLq738sAAnqArWY9aWDE=
   dependencies:
     "@codemirror/autocomplete" "^0.18.0"
     "@codemirror/closebrackets" "^0.18.0"
@@ -679,7 +679,7 @@
 
 "@codemirror/closebrackets@^0.18.0":
   version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/closebrackets/download/@codemirror/closebrackets-0.18.0.tgz#4bd7e9227ed6e90e590fa6d289d34b0c065cb8cf"
+  resolved "https://registry.nlark.com/@codemirror/closebrackets/download/@codemirror/closebrackets-0.18.0.tgz#4bd7e9227ed6e90e590fa6d289d34b0c065cb8cf"
   integrity sha1-S9fpIn7W6Q5ZD6bSidNLDAZcuM8=
   dependencies:
     "@codemirror/language" "^0.18.0"
@@ -689,9 +689,9 @@
     "@codemirror/view" "^0.18.0"
 
 "@codemirror/commands@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/commands/download/@codemirror/commands-0.18.0.tgz#10344d7d7a0fecad826e9853c1e6069d706298c6"
-  integrity sha1-EDRNfXoP7K2CbphTweYGnXBimMY=
+  version "0.18.2"
+  resolved "https://registry.nlark.com/@codemirror/commands/download/@codemirror/commands-0.18.2.tgz#a90067b1e3127ffe2c1be2daa68c0f4aeda59308"
+  integrity sha1-qQBnseMSf/4sG+LapowPSu2lkwg=
   dependencies:
     "@codemirror/language" "^0.18.0"
     "@codemirror/matchbrackets" "^0.18.0"
@@ -701,18 +701,18 @@
     lezer-tree "^0.13.0"
 
 "@codemirror/comment@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/comment/download/@codemirror/comment-0.18.0.tgz#f42e3baaacbeb57f22f4a3eabe5738b3d2bca1f7"
-  integrity sha1-9C47qqy+tX8i9KPqvlc4s9K8ofc=
+  version "0.18.1"
+  resolved "https://registry.nlark.com/@codemirror/comment/download/@codemirror/comment-0.18.1.tgz#e39c8b6937b86852246decb3441683c66b03abf4"
+  integrity sha1-45yLaTe4aFIkbeyzRBaDxmsDq/Q=
   dependencies:
     "@codemirror/state" "^0.18.0"
     "@codemirror/text" "^0.18.0"
     "@codemirror/view" "^0.18.0"
 
 "@codemirror/fold@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/fold/download/@codemirror/fold-0.18.0.tgz#40fc5195b997bf796f948cc3b4ce92e19b30999d"
-  integrity sha1-QPxRlbmXv3lvlIzDtM6S4ZswmZ0=
+  version "0.18.1"
+  resolved "https://registry.nlark.com/@codemirror/fold/download/@codemirror/fold-0.18.1.tgz#118019ad79f6e0d48dc932823385d4d9f2e0eaf5"
+  integrity sha1-EYAZrXn24NSNyTKCM4XU2fLg6vU=
   dependencies:
     "@codemirror/gutter" "^0.18.0"
     "@codemirror/language" "^0.18.0"
@@ -721,9 +721,9 @@
     "@codemirror/view" "^0.18.0"
 
 "@codemirror/gutter@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/gutter/download/@codemirror/gutter-0.18.0.tgz#b6fb340f7cc7b4ed1a67687e145489b3ed93098d"
-  integrity sha1-tvs0D3zHtO0aZ2h+FFSJs+2TCY0=
+  version "0.18.3"
+  resolved "https://registry.nlark.com/@codemirror/gutter/download/@codemirror/gutter-0.18.3.tgz#d195e2f69c6bdba037ec9c4d97eee0b46b1f02b7"
+  integrity sha1-0ZXi9pxr26A37JxNl+7gtGsfArc=
   dependencies:
     "@codemirror/rangeset" "^0.18.0"
     "@codemirror/state" "^0.18.0"
@@ -731,7 +731,7 @@
 
 "@codemirror/highlight@^0.18.0":
   version "0.18.3"
-  resolved "https://registry.npm.taobao.org/@codemirror/highlight/download/@codemirror/highlight-0.18.3.tgz#50e268630f113c322a2dc97c9f68d71934fffcb0"
+  resolved "https://registry.nlark.com/@codemirror/highlight/download/@codemirror/highlight-0.18.3.tgz#50e268630f113c322a2dc97c9f68d71934fffcb0"
   integrity sha1-UOJoYw8RPDIqLcl8n2jXGTT//LA=
   dependencies:
     "@codemirror/language" "^0.18.0"
@@ -743,7 +743,7 @@
 
 "@codemirror/history@^0.18.0":
   version "0.18.1"
-  resolved "https://registry.npm.taobao.org/@codemirror/history/download/@codemirror/history-0.18.1.tgz#853cde4b138b172235d58f945871f0fc08b7310a"
+  resolved "https://registry.nlark.com/@codemirror/history/download/@codemirror/history-0.18.1.tgz#853cde4b138b172235d58f945871f0fc08b7310a"
   integrity sha1-hTzeSxOLFyI11Y+UWHHw/Ai3MQo=
   dependencies:
     "@codemirror/state" "^0.18.3"
@@ -772,9 +772,9 @@
     lezer-json "^0.13.0"
 
 "@codemirror/language@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/language/download/@codemirror/language-0.18.0.tgz#16c3beaf372d0ecfcb76d708a8f55efccaa25563"
-  integrity sha1-FsO+rzctDs/LdtcIqPVe/MqiVWM=
+  version "0.18.1"
+  resolved "https://registry.nlark.com/@codemirror/language/download/@codemirror/language-0.18.1.tgz#23682324228606c4ae5b6a9f7cd0a4b9fdff83dd"
+  integrity sha1-I2gjJCKGBsSuW2qffNCkuf3/g90=
   dependencies:
     "@codemirror/state" "^0.18.0"
     "@codemirror/text" "^0.18.0"
@@ -783,9 +783,9 @@
     lezer-tree "^0.13.0"
 
 "@codemirror/lint@^0.18.0":
-  version "0.18.1"
-  resolved "https://registry.npm.taobao.org/@codemirror/lint/download/@codemirror/lint-0.18.1.tgz#ef5502d3bc27eaf23c670fa888bd23d09b59af55"
-  integrity sha1-71UC07wn6vI8Zw+oiL0j0JtZr1U=
+  version "0.18.3"
+  resolved "https://registry.nlark.com/@codemirror/lint/download/@codemirror/lint-0.18.3.tgz#31c629485e910b3f145e2b819d2f012cd17be016"
+  integrity sha1-McYpSF6RCz8UXiuBnS8BLNF74BY=
   dependencies:
     "@codemirror/panel" "^0.18.1"
     "@codemirror/state" "^0.18.0"
@@ -795,7 +795,7 @@
 
 "@codemirror/matchbrackets@^0.18.0":
   version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/matchbrackets/download/@codemirror/matchbrackets-0.18.0.tgz#64a493090d942de19f15a9ed3cb0fa19ed55f18b"
+  resolved "https://registry.nlark.com/@codemirror/matchbrackets/download/@codemirror/matchbrackets-0.18.0.tgz#64a493090d942de19f15a9ed3cb0fa19ed55f18b"
   integrity sha1-ZKSTCQ2ULeGfFantPLD6Ge1V8Ys=
   dependencies:
     "@codemirror/language" "^0.18.0"
@@ -805,22 +805,22 @@
 
 "@codemirror/panel@^0.18.1":
   version "0.18.1"
-  resolved "https://registry.npm.taobao.org/@codemirror/panel/download/@codemirror/panel-0.18.1.tgz#b2179cdfb7d7c2913ba682d61d00edff160cfad0"
+  resolved "https://registry.nlark.com/@codemirror/panel/download/@codemirror/panel-0.18.1.tgz#b2179cdfb7d7c2913ba682d61d00edff160cfad0"
   integrity sha1-shec37fXwpE7poLWHQDt/xYM+tA=
   dependencies:
     "@codemirror/state" "^0.18.0"
     "@codemirror/view" "^0.18.0"
 
 "@codemirror/rangeset@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/rangeset/download/@codemirror/rangeset-0.18.0.tgz#8b3bec00c1cee8c3db3827a752a76819ead2dfab"
-  integrity sha1-izvsAMHO6MPbOCenUqdoGerS36s=
+  version "0.18.1"
+  resolved "https://registry.nlark.com/@codemirror/rangeset/download/@codemirror/rangeset-0.18.1.tgz#0e51e1117fa5aae0134073735a07c659f334a699"
+  integrity sha1-DlHhEX+lquATQHNzWgfGWfM0ppk=
   dependencies:
     "@codemirror/state" "^0.18.0"
 
 "@codemirror/rectangular-selection@^0.18.0":
   version "0.18.0"
-  resolved "https://registry.npm.taobao.org/@codemirror/rectangular-selection/download/@codemirror/rectangular-selection-0.18.0.tgz#87e1a4d319b5d55b4e97294e6df0070164e836c0"
+  resolved "https://registry.nlark.com/@codemirror/rectangular-selection/download/@codemirror/rectangular-selection-0.18.0.tgz#87e1a4d319b5d55b4e97294e6df0070164e836c0"
   integrity sha1-h+Gk0xm11VtOlylObfAHAWToNsA=
   dependencies:
     "@codemirror/state" "^0.18.0"
@@ -829,7 +829,7 @@
 
 "@codemirror/search@^0.18.0":
   version "0.18.2"
-  resolved "https://registry.npm.taobao.org/@codemirror/search/download/@codemirror/search-0.18.2.tgz#7f6311ce4d5749d92aefb41b2f8628d28d90918c"
+  resolved "https://registry.nlark.com/@codemirror/search/download/@codemirror/search-0.18.2.tgz#7f6311ce4d5749d92aefb41b2f8628d28d90918c"
   integrity sha1-f2MRzk1XSdkq77QbL4Yo0o2QkYw=
   dependencies:
     "@codemirror/panel" "^0.18.1"
@@ -840,9 +840,9 @@
     crelt "^1.0.5"
 
 "@codemirror/state@^0.18.0", "@codemirror/state@^0.18.3":
-  version "0.18.3"
-  resolved "https://registry.npm.taobao.org/@codemirror/state/download/@codemirror/state-0.18.3.tgz#f275293b077d6c3867c0343320d6b29c10e54f84"
-  integrity sha1-8nUpOwd9bDhnwDQzINaynBDlT4Q=
+  version "0.18.7"
+  resolved "https://registry.nlark.com/@codemirror/state/download/@codemirror/state-0.18.7.tgz#3339a732387bb2c034987c57ccf0649ef2f7c4c1"
+  integrity sha1-MzmnMjh7ssA0mHxXzPBknvL3xME=
   dependencies:
     "@codemirror/text" "^0.18.0"
 
@@ -853,16 +853,16 @@
 
 "@codemirror/tooltip@^0.18.4":
   version "0.18.4"
-  resolved "https://registry.npm.taobao.org/@codemirror/tooltip/download/@codemirror/tooltip-0.18.4.tgz#981bc0ced792c6754148edbc1f60092f3fa54207"
+  resolved "https://registry.nlark.com/@codemirror/tooltip/download/@codemirror/tooltip-0.18.4.tgz#981bc0ced792c6754148edbc1f60092f3fa54207"
   integrity sha1-mBvAzteSxnVBSO28H2AJLz+lQgc=
   dependencies:
     "@codemirror/state" "^0.18.0"
     "@codemirror/view" "^0.18.0"
 
 "@codemirror/view@^0.18.0":
-  version "0.18.3"
-  resolved "https://registry.npm.taobao.org/@codemirror/view/download/@codemirror/view-0.18.3.tgz#31ffcd0a073124b95feac47d2a3a03bfb3546fca"
-  integrity sha1-Mf/NCgcxJLlf6sR9KjoDv7NUb8o=
+  version "0.18.12"
+  resolved "https://registry.nlark.com/@codemirror/view/download/@codemirror/view-0.18.12.tgz#28d6fdefd7362481bff3b05ab893c10710311e13"
+  integrity sha1-KNb979c2JIG/87BauJPBBxAxHhM=
   dependencies:
     "@codemirror/rangeset" "^0.18.0"
     "@codemirror/state" "^0.18.0"
@@ -2024,21 +2024,6 @@
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/@vue/shared/download/@vue/shared-3.0.7.tgz#96d52988efc07444c108c7c6803ba7cc93e40045"
   integrity sha1-ltUpiO/AdETBCMfGgDunzJPkAEU=
-
-"@vueuse/core@^4.8.2":
-  version "4.10.0"
-  resolved "https://registry.nlark.com/@vueuse/core/download/@vueuse/core-4.10.0.tgz#d7da6df9ec7c703bb6e7127faf59fec22b3b9eb3"
-  integrity sha1-19pt+ex8cDu25xJ/r1n+wis7nrM=
-  dependencies:
-    "@vueuse/shared" "4.10.0"
-    vue-demi "*"
-
-"@vueuse/shared@4.10.0":
-  version "4.10.0"
-  resolved "https://registry.nlark.com/@vueuse/shared/download/@vueuse/shared-4.10.0.tgz#a0279af6fa332b3f47fb84e078841743a74d94fa"
-  integrity sha1-oCea9vozKz9H+4TgeIQXQ6dNlPo=
-  dependencies:
-    vue-demi "*"
 
 JSONStream@^1.0.4:
   version "1.3.5"
@@ -6227,13 +6212,20 @@ lezer-json@^0.13.0:
 
 lezer-tree@^0.13.0, lezer-tree@^0.13.2:
   version "0.13.2"
-  resolved "https://registry.npm.taobao.org/lezer-tree/download/lezer-tree-0.13.2.tgz#00f4671309b15c27b131f637e430ce2d4d5f7065"
+  resolved "https://registry.nlark.com/lezer-tree/download/lezer-tree-0.13.2.tgz#00f4671309b15c27b131f637e430ce2d4d5f7065"
   integrity sha1-APRnEwmxXCexMfY35DDOLU1fcGU=
 
-lezer@^0.13.0, lezer@^0.13.4:
+lezer@^0.13.0:
   version "0.13.4"
   resolved "https://registry.npm.taobao.org/lezer/download/lezer-0.13.4.tgz#f0396a3447c7a8f40391623f3f47a4d95559c42f"
   integrity sha1-8DlqNEfHqPQDkWI/P0ek2VVZxC8=
+  dependencies:
+    lezer-tree "^0.13.2"
+
+lezer@^0.13.4:
+  version "0.13.5"
+  resolved "https://registry.nlark.com/lezer/download/lezer-0.13.5.tgz#6000536bca7e24a5bd62e8cb4feff28b37e7dd8f"
+  integrity sha1-YABTa8p+JKW9YujLT+/yizfn3Y8=
   dependencies:
     lezer-tree "^0.13.2"
 
@@ -8746,7 +8738,7 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
 
 style-mod@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npm.taobao.org/style-mod/download/style-mod-4.0.0.tgz#97e7c2d68b592975f2ca7a63d0dd6fcacfe35a01"
+  resolved "https://registry.nlark.com/style-mod/download/style-mod-4.0.0.tgz#97e7c2d68b592975f2ca7a63d0dd6fcacfe35a01"
   integrity sha1-l+fC1otZKXXyynpj0N1vys/jWgE=
 
 supports-color@^5.3.0:
@@ -9356,11 +9348,6 @@ vizion@2.2.1:
     git-node-fs "^1.0.0"
     ini "^1.3.5"
     js-git "^0.7.8"
-
-vue-demi@*:
-  version "0.9.0"
-  resolved "https://registry.nlark.com/vue-demi/download/vue-demi-0.9.0.tgz#b30da61450079d60a132d7aaf9e86d1949e8445e"
-  integrity sha1-sw2mFFAHnWChMteq+ehtGUnoRF4=
 
 vue-eslint-parser@^7.6.0:
   version "7.6.0"

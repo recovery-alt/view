@@ -365,7 +365,7 @@ onMounted(() => {
     position: absolute;
     left: 5px;
     background-color: var(--primary-color);
-    color: var(--text-color-inverse);
+    color: var(--white);
     padding: 0 3px;
   }
 }

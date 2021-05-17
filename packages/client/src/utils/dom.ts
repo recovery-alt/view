@@ -1,19 +1,13 @@
 import { local } from './storage';
 import { LocalKeys } from '@/enum';
 import { theme } from '@/hooks';
+import { wrapScale } from '@/hooks';
 
 export const getBoardReletedPosition = (left: number, top: number, className = '.board') => {
   const boardDom = document.querySelector(className);
   if (!boardDom) return;
   const boardRec = boardDom.getBoundingClientRect();
-  return { top: top - boardRec.top, left: left - boardRec.left };
-};
-
-export const getBoardMenuPosition = (className = '.board-menu') => {
-  const menuDom = document.querySelector(className);
-  if (!menuDom) return;
-  const { top, left } = menuDom.getBoundingClientRect();
-  return getBoardReletedPosition(left, top);
+  return { top: wrapScale(top - boardRec.top), left: wrapScale(left - boardRec.left) };
 };
 
 export const changeTheme = () => {
