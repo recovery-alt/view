@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
+import { NotFound } from '@/views/error';
 
 const modules = import.meta.glob('../views/manage/*.vue');
 
@@ -43,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/manage/page',
     component: () => import('@/views/layout/'),
     children,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: NotFound,
   },
 ];
 

@@ -61,6 +61,7 @@ type Snapshot = {
 };
 
 type Page = {
+  __v: number;
   _id: string; // 页面唯一标识
   title: string; // 标题
   description: string; // 描述文案
@@ -73,7 +74,7 @@ type Page = {
   gap: number; // 删格大小
   url: string; // 背景图片
   pageMode: number; // 页面模式 0 可视化大屏 1 h5
-  config: Array<Component>; // 页面所有组件
+  components: Array<Component>; // 页面所有组件
 };
 
 type RootStateType = {
@@ -81,7 +82,7 @@ type RootStateType = {
   snapshot: Snapshot;
 };
 
-type PageConfig = Omit<Page, '_id' | 'config'>;
+type PageConfig = Omit<Page, 'components'>;
 
 type UserInfo = { token: string; name: string };
 

@@ -12,8 +12,7 @@ const schema = new Schema({
   zoom: Number,
   gap: Number,
   url: String,
-  group: Array,
-  config: Object,
+  components: Object,
 });
 
 export interface Page extends Document {
@@ -28,8 +27,7 @@ export interface Page extends Document {
   zoom: number;
   gap: number;
   url: string;
-  group: Array<Page>;
-  config: Array<{
+  components: Array<{
     id: string;
     component: string;
     label: string;

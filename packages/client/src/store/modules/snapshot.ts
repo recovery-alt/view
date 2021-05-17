@@ -11,8 +11,9 @@ const state: Snapshot = {
 };
 
 const mutations: Data<Mutation<Snapshot>> = {
-  recordSnapshot(state) {
-    state.data[++state.index] = cloneDeep(pageConfig);
+  recordSnapshot(state, page: Page) {
+    // TODO
+    state.data[++state.index] = page;
     if (state.index < state.data.length - 1) {
       state.data = state.data.slice(0, state.index + 1);
     }
@@ -42,8 +43,11 @@ const actions: Data<Action<Snapshot, RootStateType>> = {
       });
     }
   },
-  recordSnapshot({ commit }) {
-    commit('recordSnapshot');
+  recordSnapshot({ commit, rootState }) {
+    const { board } = rootState;
+    const components = cloneDeep(board.data);
+    const page: Page = { ...pageConfig, components };
+    commit('recordSnapshot', page);
   },
 };
 

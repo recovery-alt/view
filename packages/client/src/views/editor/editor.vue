@@ -56,8 +56,8 @@
 <script lang="ts" setup>
 import { on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
-import { pageConfig, setPageConfig, savePage, panel } from '@/hooks';
-import { computed, defineProps, onMounted, ref } from 'vue';
+import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
+import { computed, createVNode, defineProps, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
   FileDoneOutlined,
@@ -71,16 +71,19 @@ import {
   SendOutlined,
   DesktopOutlined,
   SkinOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { getPage } from '@/api';
 import { cloneDeep } from 'lodash';
+import { Modal } from 'ant-design-vue';
 
 const props = defineProps({ id: { type: String, default: () => '' } });
 const store = useStore();
 const router = useRouter();
 
 const modalOpen = ref(false);
+let letgo = false;
 
 const icons = [
   { key: 'layer', icon: LayoutOutlined },
@@ -131,15 +134,46 @@ const buttonGroup = [
   },
 ];
 
+const interceptor = (e: BeforeUnloadEvent) => {
+  if (isModified(store)) e.returnValue = false;
+};
+
 onMounted(async () => {
   on('contextmenu', e => e.preventDefault());
+  window.addEventListener('beforeunload', interceptor);
   if (!props.id) return;
   const res = await getPage<Page>(props.id);
   if (res.code !== 0) return;
-  Object.assign(pageConfig, res.data);
-  const { config } = res.data;
-  setPageConfig(res.data);
-  store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(config), selected: [] });
+  const { components, ...config } = res.data;
+  Object.assign(pageConfig, config);
+  store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(components), selected: [] });
+  updateCachePage(store);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', interceptor);
+});
+
+onBeforeRouteLeave((to, from) => {
+  const modified = isModified(store);
+
+  if (!letgo && modified) {
+    Modal.confirm({
+      title: '警告',
+      content: '系统可能不会保存您所做的更改，是否离开？',
+      icon: createVNode(ExclamationCircleOutlined),
+      onOk() {
+        letgo = true;
+        router.push(to);
+      },
+      onCancel() {
+        letgo = false;
+        router.push(from);
+      },
+    });
+
+    return false;
+  }
 });
 </script>
 
