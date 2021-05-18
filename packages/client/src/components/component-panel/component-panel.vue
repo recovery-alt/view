@@ -46,6 +46,7 @@ import { galleryGroup } from '@/gallery';
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
+import DefaultIcon from '@/assets/img/gallery/default.png';
 
 const activeTab = ref('基础');
 
@@ -61,17 +62,17 @@ const searchComponent = () => {
 };
 
 const getImgSrc = (type?: string) => {
-  const modules = import.meta.glob('/src/assets/img/gallery/*.png');
-  let canFindIcon = false;
+  const modules = import.meta.globEager('/src/assets/img/gallery/*.png');
+  let Icon;
 
   for (const key of Object.keys(modules)) {
     const matcher = key.match(/gallery\/(.*)\.png/);
     if (matcher?.[1] && type === matcher[1]) {
-      canFindIcon = true;
+      Icon = modules[key].default;
       break;
     }
   }
-  return `/src/assets/img/gallery/${canFindIcon ? type : 'default'}.png`;
+  return Icon || DefaultIcon;
 };
 </script>
 

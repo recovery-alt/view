@@ -18,6 +18,7 @@ import { BoardEnum, useStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import { Tooltip, Empty } from 'ant-design-vue';
+import Logo from '@/assets/img/logo.svg';
 import './layer-panel.less';
 
 export default defineComponent({
@@ -169,11 +170,7 @@ export default defineComponent({
               {board.data.map((item, index) => {
                 const { group, id, locked } = item;
                 const { display } = item.style;
-                const icon = showList.value ? (
-                  <DatabaseOutlined />
-                ) : (
-                  <img src="/src/assets/img/logo.svg" />
-                );
+                const icon = showList.value ? <DatabaseOutlined /> : <img src={Logo} />;
                 let children;
                 let parentIcon = icon;
 

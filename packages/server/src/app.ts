@@ -14,6 +14,8 @@ import { getIPAdress } from '@/utils';
 
 const app = new Koa();
 
+// 处理history模式中间件
+app.use(historyApiFallback({ whiteList: ['/api'] }));
 // 日志中间件
 app.use(logger());
 // 路由中间件
@@ -26,8 +28,6 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(verifyToken);
 // 包裹response
 app.use(wrapResponse);
-// 处理history模式中间件
-app.use(historyApiFallback({ whiteList: ['/api'] }));
 // 处理请求体内容中间件
 app.use(parser());
 // 初始化连接mongoose
