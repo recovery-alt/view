@@ -31,6 +31,7 @@ export default defineComponent({
         series: [
           {
             type: 'tree',
+            //@ts-expect-error data type cannot infer
             data: props.data.static,
             top: '1%',
             left: '7%',

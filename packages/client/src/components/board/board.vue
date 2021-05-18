@@ -46,11 +46,7 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <board-box
-            :ref="el => el && boardRefs.push(el.$el)"
-            class="board__component"
-            :data="item"
-          />
+          <board-box :ref="setBoardRefs" class="board__component" :data="item" />
         </board-shape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
@@ -142,6 +138,12 @@ const pageStyle = computed(() => {
   const { width, height, backgroundColor, scale } = pageConfig;
   return { width, height, backgroundColor, scale };
 });
+
+/* eslint-disable-next-line @typescript-eslint/ban-types */
+const setBoardRefs = (el: object | null) => {
+  // @ts-expect-error cannot infer the $el's type
+  el && boardRefs.push(el.$el);
+};
 
 const handleDrop = (e: DragEvent) => {
   e.preventDefault();

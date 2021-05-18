@@ -24,7 +24,7 @@ onMounted(async () => {
   if (!props.id) return;
   const res = await getPage<Page>(props.id);
   document.title = res.data.title;
-  data.value = res.data.config;
+  data.value = res.data.components;
   document.body.style.width = res.data.width + 'px';
   document.body.style.height = res.data.height + 'px';
 });
