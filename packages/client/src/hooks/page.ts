@@ -1,3 +1,4 @@
+import type { Page, PageConfig, RootStateType } from '@/typings';
 import { shallowReactive, toRaw } from 'vue';
 import { addPage, updatePage } from '@/api';
 import { Store } from 'vuex';

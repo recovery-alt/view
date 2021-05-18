@@ -1,3 +1,4 @@
+import type { Data, Gallery } from '@/typings';
 import { LineChartOutlined } from '@ant-design/icons-vue';
 
 const components: Data<() => Promise<{ [key: string]: Gallery }>> = {};

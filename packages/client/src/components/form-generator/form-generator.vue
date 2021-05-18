@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { FieldItem, Data } from '@/typings';
 import type { PropType } from 'vue';
 import { defineProps } from 'vue';
 import { ColorPicker } from '../color-picker';

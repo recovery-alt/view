@@ -1,3 +1,4 @@
+import { Data } from '@/typings';
 import Router from '@koa/router';
 import { userService } from '@/service';
 import { decrypt } from '@/utils';

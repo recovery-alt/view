@@ -83,6 +83,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Data } from '@/typings';
 import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
 import { computed, onMounted, reactive, ref, shallowReactive, shallowRef, watchEffect } from 'vue';

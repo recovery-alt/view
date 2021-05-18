@@ -1,3 +1,4 @@
+import type { Board, Component, CSSStyleDataWithSize, Data, RootStateType } from '@/typings';
 import { Module, Mutation, Action } from 'vuex';
 import { cloneDeep } from 'lodash';
 import { getGallery } from '@/gallery';

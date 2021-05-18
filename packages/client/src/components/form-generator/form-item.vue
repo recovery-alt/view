@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { FieldItem } from '@/typings';
 import { defineProps } from 'vue';
 import { FormEnum } from '@/enum';
 import FormGenerator from './form-generator.vue';

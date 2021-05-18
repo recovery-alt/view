@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Page } from '@/typings';
 import { on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
 import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';

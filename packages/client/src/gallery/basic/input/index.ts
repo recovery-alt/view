@@ -1,3 +1,4 @@
+import type { Gallery } from '@/typings';
 import { FormEnum } from '@/enum';
 import { defineAsyncComponent, Component } from 'vue';
 

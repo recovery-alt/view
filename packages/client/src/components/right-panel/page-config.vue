@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Field } from '@/typings';
 import { FormEnum } from '@/enum';
 import { pageConfig } from '@/hooks';
 import {

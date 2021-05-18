@@ -1,3 +1,4 @@
+import type { Data, Gallery } from '@/typings';
 import { BankOutlined } from '@ant-design/icons-vue';
 
 const components: Data<() => Promise<{ [key: string]: Gallery }>> = {};

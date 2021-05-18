@@ -1,3 +1,4 @@
+import { Data } from '@/typings';
 import { model, Schema, Document, Model } from 'mongoose';
 
 const schema = new Schema({
@@ -12,7 +13,7 @@ const schema = new Schema({
   zoom: Number,
   gap: Number,
   url: String,
-  components: Object,
+  components: Array,
 });
 
 export interface Page extends Document {

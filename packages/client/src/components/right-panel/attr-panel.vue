@@ -68,6 +68,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Gallery, Field, SchemaItem, FieldItem, Data } from '@/typings';
 import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import {
@@ -244,7 +245,7 @@ watchEffect(() => {
     schema.forEach(val => {
       val.fields.forEach(field => {
         const { item } = field;
-        setDefaultVal(item, style);
+        setDefaultVal(item, style as unknown as Data<string | number>);
       });
     });
   }

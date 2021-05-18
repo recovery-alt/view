@@ -1,4 +1,6 @@
-export const patchUnit = (style: Data) => {
+import type { Data, CSSStyleDataWithRotate } from '@/typings';
+
+export const patchUnit = (style: Data | CSSStyleDataWithRotate) => {
   const needAddPixelList = [
     'width',
     'height',
@@ -30,7 +32,7 @@ export const patchUnit = (style: Data) => {
   return result;
 };
 
-export const splitStyleAndPatch = (style: Data, position = true) => {
+export const splitStyleAndPatch = (style: CSSStyleDataWithRotate, position = true) => {
   const { width, height, left, top, ...resStyle } = style;
   const data = position ? { width, height, left, top } : { ...resStyle };
   return patchUnit(data);

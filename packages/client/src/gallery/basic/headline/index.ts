@@ -1,3 +1,4 @@
+import type { Gallery } from '@/typings';
 import { FormEnum } from '@/enum';
 import { defineAsyncComponent, Component } from 'vue';
 
@@ -9,9 +10,9 @@ const gallery: Gallery = {
     width: 240,
     height: 40,
     textAlign: 'center',
-    fontSize: '20',
-    fontWeight: '900',
-    lineHeight: '1.7',
+    fontSize: 20,
+    fontWeight: 900,
+    lineHeight: 1.7,
   },
   propsData: {
     value: '我是标题',

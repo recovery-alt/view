@@ -1,3 +1,4 @@
+import type { RootStateType } from '@/typings';
 import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { InjectionKey } from 'vue';
 import { board, BoardEnum } from './modules/board';

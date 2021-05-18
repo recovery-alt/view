@@ -1,3 +1,4 @@
+import type { Board, CSSStyleDataWithSize, Data } from '@/typings';
 import { nextTick, reactive } from 'vue';
 
 export type Menu = {

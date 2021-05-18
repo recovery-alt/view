@@ -19,6 +19,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Gallery } from '@/typings';
 import type { Component } from 'vue';
 import { ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';

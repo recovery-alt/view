@@ -1,3 +1,4 @@
+import type { Data } from '@/typings';
 import {
   AppstoreOutlined,
   DatabaseOutlined,

@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+import type { Component } from '@/typings';
 import type { PropType } from 'vue';
 import { defineComponent } from 'vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';

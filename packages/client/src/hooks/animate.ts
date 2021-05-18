@@ -1,3 +1,4 @@
+import type { RootStateType, Component } from '@/typings';
 import { computed, shallowReactive } from 'vue';
 import { Store } from 'vuex';
 import { boardRefs } from '@/hooks';

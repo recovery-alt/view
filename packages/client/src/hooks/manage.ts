@@ -1,3 +1,4 @@
+import type { Page } from '@/typings';
 import { getPages } from '@/api';
 import { message } from 'ant-design-vue';
 import { onMounted, ref } from 'vue';

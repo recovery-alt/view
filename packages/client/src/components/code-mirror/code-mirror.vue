@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Data } from '@/typings';
 import type { PropType } from 'vue';
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { language, LezerLanguage } from '@codemirror/language';

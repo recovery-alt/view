@@ -1,3 +1,4 @@
+import type { ResponseData, Data } from '@/typings';
 import axios, { AxiosResponse } from 'axios';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';

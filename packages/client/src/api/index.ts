@@ -1,3 +1,4 @@
+import type { Data } from '@/typings';
 import { get } from './api';
 
 export * from './user';

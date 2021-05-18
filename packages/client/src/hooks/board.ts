@@ -1,3 +1,4 @@
+import type { Board, CSSStyleDataWithSize, Data, RootStateType } from '@/typings';
 import type { Router } from 'vue-router';
 import { Ref } from 'vue';
 import {

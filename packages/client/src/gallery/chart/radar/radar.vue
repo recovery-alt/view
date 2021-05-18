@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts">
+import type { ComponentData } from '@/typings';
 import type { RadarSeriesOption } from 'echarts/charts';
 import type { ComposeOption, ECharts } from 'echarts/core';
 import type { PropType } from 'vue';

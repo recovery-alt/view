@@ -1,3 +1,4 @@
+import type { Component } from '@/typings';
 import type { ComputedRef, Ref } from 'vue';
 import type { DataSourceKey } from '@/config';
 import { EditorView } from '@codemirror/basic-setup';

@@ -1,3 +1,4 @@
+import type { Gallery } from '@/typings';
 import { defineAsyncComponent, Component } from 'vue';
 
 const gallery: Gallery = {

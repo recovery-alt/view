@@ -1,3 +1,4 @@
+import type { Data } from '@/typings';
 import { get, del, put, post } from './api';
 
 const prefix = 'user';

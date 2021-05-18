@@ -1,3 +1,5 @@
+import type { Board, ColumnConfig } from '@/typings';
+
 export const generateColumns = (columns: ColumnConfig[]) =>
   columns.map(item => ({
     ...item,

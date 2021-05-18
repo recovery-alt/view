@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { UserInfo } from '@/typings';
 import { reactive, defineProps } from 'vue';
 import { login } from '@/api';
 import { message } from 'ant-design-vue';
