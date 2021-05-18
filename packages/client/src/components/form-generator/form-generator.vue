@@ -21,7 +21,7 @@
     :placeholder="field.type === FormEnum.SELECT ? '请选择' : '请输入'"
     size="small"
   >
-    <template v-if="field.type === 'select'">
+    <template v-if="field.type === FormEnum.SELECT">
       <a-select-option v-for="option in field.data" :key="option.id" :value="option.id">
         {{ option.label }}
       </a-select-option>

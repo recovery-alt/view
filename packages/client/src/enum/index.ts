@@ -9,6 +9,7 @@ export enum FormEnum {
   COLOR_PICKER = 'color-picker',
   BTN_GROUP = 'btn-group',
   TEXTAREA = 'textarea',
+  CUSTOM = 'custom',
 }
 
 export enum LocalKeys {

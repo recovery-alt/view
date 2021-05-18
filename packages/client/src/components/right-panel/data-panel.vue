@@ -31,11 +31,7 @@
         <a-form-item label="数据源类型">
           <a-row justify="space-between">
             <a-col>
-              <a-select
-                v-model:value="curComponent.data.type"
-                size="small"
-                @change="handleDataTypeChange"
-              >
+              <a-select v-model:value="curComponent.data.type" size="small">
                 <a-select-option
                   v-for="item in drawer.options"
                   :key="item.value"
@@ -46,7 +42,12 @@
               </a-select>
             </a-col>
             <a-col offset="2">
-              <a-button v-if="curComponent.data.type === 'url'" type="primary" size="small">
+              <a-button
+                v-if="curComponent.data.type === 'url'"
+                type="primary"
+                size="small"
+                @click="fetchData"
+              >
                 获取数据
               </a-button>
             </a-col>
@@ -63,8 +64,9 @@
           </a-row>
         </a-form-item>
         <a-form-item v-if="curComponent.data.type === 'url'" label="接口地址">
-          <a-input v-model="curComponent.data.url" />
+          <a-input v-model:value="curComponent.data.url" size="small" />
         </a-form-item>
+        <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
       </a-form>
       <a-divider></a-divider>
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
@@ -88,7 +90,7 @@ import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
 import { computed, onMounted, reactive, ref, shallowReactive, shallowRef, watchEffect } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
-import { generateColumns } from '@/utils';
+import { generateColumns, isUrl } from '@/utils';
 import { CodeMirror } from '@/components';
 import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
@@ -186,19 +188,16 @@ const handleFilterChange = (open: boolean) => {
   }
 };
 
-const handleDataTypeChange = (type: DataSourceKey) => {
-  const strategy = {
-    url() {
-      // TODO
-    },
-    static() {
-      // TODO
-    },
-  };
-
-  const handler = strategy[type];
-
-  handler();
+const fetchData = () => {
+  if (!curComponent.value?.data) return;
+  const { url } = curComponent.value.data;
+  if (url && isUrl(url)) {
+    fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+      });
+  }
 };
 
 watchEffect(() => {

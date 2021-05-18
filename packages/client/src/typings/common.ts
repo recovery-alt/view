@@ -1,4 +1,5 @@
 import { FormEnum } from '@/enum';
+import { VNode } from 'vue';
 
 export type ResponseData<T = any> = {
   code: number;
@@ -20,6 +21,7 @@ export type FieldItem = {
   props?: Data<string | number>;
   default?: string | number;
   data?: Array<Data<any>>;
+  customNode?: VNode;
 };
 
 export type Field = {
