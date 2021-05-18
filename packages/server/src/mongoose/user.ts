@@ -4,7 +4,7 @@ const schema = new Schema({
   name: String,
   password: String,
 });
-interface User extends Document {
+export interface User extends Document {
   name: string;
   password: string;
 }
