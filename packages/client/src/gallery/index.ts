@@ -39,9 +39,7 @@ export default async (app: App) => {
   };
 
   app.component('cq-group', ComponentGroup);
-  for (const key in groups) {
-    await resolveGroup(groups[key]);
-  }
+  for (const key in groups) await resolveGroup(groups[key]);
 };
 
 export const getGallery = (name: string) => {

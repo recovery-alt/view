@@ -66,11 +66,18 @@
         <a-form-item v-if="curComponent.data.type === 'url'" label="接口地址">
           <a-input v-model:value="curComponent.data.url" size="small" />
         </a-form-item>
-        <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
+        <code-mirror
+          v-if="curComponent.data.type === 'static'"
+          v-model:viewer="viewer"
+          v-model:doc="dataStringify"
+          readonly
+        />
       </a-form>
       <a-divider></a-divider>
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <a-divider orientation="right"> 响应结果 <ReloadOutlined /> </a-divider>
+      <a-divider orientation="right">
+        响应结果 <ReloadOutlined v-if="curComponent.data.type === 'url'" @click="fetchData" />
+      </a-divider>
       <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
     </a-drawer>
     <a-modal
@@ -96,6 +103,8 @@ import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
 import { useDrawer } from '@/hooks';
 import { DataSource } from '@/config';
+import { format } from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 
 const store = useStore();
 const { board } = store.state;
@@ -195,7 +204,16 @@ const fetchData = () => {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
+        dataStringify.value = format(JSON.stringify(res), {
+          parser: 'json5',
+          plugins: [parserBabel],
+        });
+      })
+      .catch(() => {
+        dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
+          parser: 'json5',
+          plugins: [parserBabel],
+        });
       });
   }
 };

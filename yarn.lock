@@ -1511,7 +1511,7 @@
 
 "@types/bson@*":
   version "4.0.3"
-  resolved "https://registry.npm.taobao.org/@types/bson/download/@types/bson-4.0.3.tgz#30889d2ffde6262abbe38659364c631454999fbf"
+  resolved "https://registry.nlark.com/@types/bson/download/@types/bson-4.0.3.tgz?cache=0&sync_timestamp=1621240634613&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fbson%2Fdownload%2F%40types%2Fbson-4.0.3.tgz#30889d2ffde6262abbe38659364c631454999fbf"
   integrity sha1-MIidL/3mJiq744ZZNkxjFFSZn78=
   dependencies:
     "@types/node" "*"
@@ -1702,10 +1702,18 @@
   resolved "https://registry.nlark.com/@types/minimist/download/@types/minimist-1.2.1.tgz#283f669ff76d7b8260df8ab7a4262cc83d988256"
   integrity sha1-KD9mn/dte4Jg34q3pCYsyD2YglY=
 
-"@types/mongodb@*", "@types/mongodb@^3.5.27":
+"@types/mongodb@*":
   version "3.6.12"
   resolved "https://registry.npm.taobao.org/@types/mongodb/download/@types/mongodb-3.6.12.tgz#727960d34f35054d2f2ce68909e16094f742d935"
   integrity sha1-cnlg0081BU0vLOaJCeFglPdC2TU=
+  dependencies:
+    "@types/bson" "*"
+    "@types/node" "*"
+
+"@types/mongodb@^3.5.27":
+  version "3.6.13"
+  resolved "https://registry.nlark.com/@types/mongodb/download/@types/mongodb-3.6.13.tgz#bb530d09878c14df4f6d18abbadae244dc419159"
+  integrity sha1-u1MNCYeMFN9PbRirutriRNxBkVk=
   dependencies:
     "@types/bson" "*"
     "@types/node" "*"
@@ -1726,9 +1734,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "15.0.3"
-  resolved "https://registry.nlark.com/@types/node/download/@types/node-15.0.3.tgz?cache=0&sync_timestamp=1620848454678&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-15.0.3.tgz#ee09fcaac513576474c327da5818d421b98db88a"
-  integrity sha1-7gn8qsUTV2R0wyfaWBjUIbmNuIo=
+  version "15.3.0"
+  resolved "https://registry.nlark.com/@types/node/download/@types/node-15.3.0.tgz#d6fed7d6bc6854306da3dea1af9f874b00783e26"
+  integrity sha1-1v7X1rxoVDBto96hr5+HSwB4PiY=
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -2537,7 +2545,7 @@ binary@~0.3.0:
 
 bl@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.npm.taobao.org/bl/download/bl-2.2.1.tgz#8c11a7b730655c5d56898cdc871224f40fd901d5"
+  resolved "https://registry.nlark.com/bl/download/bl-2.2.1.tgz#8c11a7b730655c5d56898cdc871224f40fd901d5"
   integrity sha1-jBGntzBlXF1WiYzchxIk9A/ZAdU=
   dependencies:
     readable-stream "^2.3.5"
@@ -2559,7 +2567,7 @@ blessed@0.1.81:
 
 bluebird@3.5.1:
   version "3.5.1"
-  resolved "https://registry.npm.taobao.org/bluebird/download/bluebird-3.5.1.tgz?cache=0&sync_timestamp=1602657218976&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbluebird%2Fdownload%2Fbluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
+  resolved "https://registry.nlark.com/bluebird/download/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha1-2VUfnemPH82h5oPRfukaBgLuLrk=
 
 bluebird@^3.7.2:
@@ -2633,7 +2641,7 @@ bser@2.1.1:
 
 bson@^1.1.4:
   version "1.1.6"
-  resolved "https://registry.npm.taobao.org/bson/download/bson-1.1.6.tgz?cache=0&sync_timestamp=1617727242694&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbson%2Fdownload%2Fbson-1.1.6.tgz#fb819be9a60cd677e0853aee4ca712a785d6618a"
+  resolved "https://registry.nlark.com/bson/download/bson-1.1.6.tgz#fb819be9a60cd677e0853aee4ca712a785d6618a"
   integrity sha1-+4Gb6aYM1nfghTruTKcSp4XWYYo=
 
 buffer-equal-constant-time@1.0.1:
@@ -6768,7 +6776,7 @@ moment-timezone@^0.5.x:
 
 mongodb@3.6.6:
   version "3.6.6"
-  resolved "https://registry.npm.taobao.org/mongodb/download/mongodb-3.6.6.tgz#92e3658f45424c34add3003e3046c1535c534449"
+  resolved "https://registry.nlark.com/mongodb/download/mongodb-3.6.6.tgz?cache=0&sync_timestamp=1621365986417&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmongodb%2Fdownload%2Fmongodb-3.6.6.tgz#92e3658f45424c34add3003e3046c1535c534449"
   integrity sha1-kuNlj0VCTDSt0wA+MEbBU1xTREk=
   dependencies:
     bl "^2.2.1"
@@ -6785,9 +6793,9 @@ mongoose-legacy-pluralize@1.0.2:
   integrity sha1-O6n5H6UHtRhtOZ+0CFS/8Y+1Y+Q=
 
 mongoose@^5.11.14:
-  version "5.12.9"
-  resolved "https://registry.nlark.com/mongoose/download/mongoose-5.12.9.tgz#71ab1bff7691fb651d5fdd04dfcc9d624695aff4"
-  integrity sha1-casb/3aR+2UdX90E38ydYkaVr/Q=
+  version "5.12.10"
+  resolved "https://registry.nlark.com/mongoose/download/mongoose-5.12.10.tgz#dea5e0ab8718c4cc96f1d608949e3fa0a48730aa"
+  integrity sha1-3qXgq4cYxMyW8dYIlJ4/oKSHMKo=
   dependencies:
     "@types/mongodb" "^3.5.27"
     bson "^1.1.4"
@@ -6804,7 +6812,7 @@ mongoose@^5.11.14:
 
 mpath@0.8.3:
   version "0.8.3"
-  resolved "https://registry.npm.taobao.org/mpath/download/mpath-0.8.3.tgz#828ac0d187f7f42674839d74921970979abbdd8f"
+  resolved "https://registry.npm.taobao.org/mpath/download/mpath-0.8.3.tgz?cache=0&sync_timestamp=1609342572300&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmpath%2Fdownload%2Fmpath-0.8.3.tgz#828ac0d187f7f42674839d74921970979abbdd8f"
   integrity sha1-gorA0Yf39CZ0g510khlwl5q73Y8=
 
 mquery@3.2.5:
@@ -6820,12 +6828,12 @@ mquery@3.2.5:
 
 ms@2.0.0:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz?cache=0&sync_timestamp=1607433856030&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fms%2Fdownload%2Fms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+  resolved "https://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz?cache=0&sync_timestamp=1607433899126&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fms%2Fdownload%2Fms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
 ms@2.1.2:
   version "2.1.2"
-  resolved "https://registry.npm.taobao.org/ms/download/ms-2.1.2.tgz?cache=0&sync_timestamp=1607433856030&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fms%2Fdownload%2Fms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
+  resolved "https://registry.npm.taobao.org/ms/download/ms-2.1.2.tgz?cache=0&sync_timestamp=1607433899126&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fms%2Fdownload%2Fms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=
 
 ms@^2.1.1:
@@ -8139,7 +8147,7 @@ rxjs@^6.6.6:
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
-  resolved "https://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
+  resolved "https://registry.nlark.com/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha1-mR7GnSluAxN0fVm9/St0XDX4go0=
 
 safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
@@ -8325,7 +8333,7 @@ shimmer@^1.1.0, shimmer@^1.2.0:
 
 sift@13.5.2:
   version "13.5.2"
-  resolved "https://registry.nlark.com/sift/download/sift-13.5.2.tgz#24a715e13c617b086166cd04917d204a591c9da6"
+  resolved "https://registry.nlark.com/sift/download/sift-13.5.2.tgz?cache=0&sync_timestamp=1621382950890&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsift%2Fdownload%2Fsift-13.5.2.tgz#24a715e13c617b086166cd04917d204a591c9da6"
   integrity sha1-JKcV4TxhewhhZs0EkX0gSlkcnaY=
 
 signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
@@ -8640,7 +8648,7 @@ string_decoder@~0.10.x:
 
 string_decoder@~1.1.1:
   version "1.1.1"
-  resolved "https://registry.npm.taobao.org/string_decoder/download/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  resolved "https://registry.nlark.com/string_decoder/download/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   integrity sha1-nPFhG6YmhdcDCunkujQUnDrwP8g=
   dependencies:
     safe-buffer "~5.1.0"

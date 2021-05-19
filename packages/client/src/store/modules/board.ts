@@ -222,7 +222,7 @@ const actions: Data<Action<Board, RootStateType>> = {
 
     const group: Component = {
       id: uuid(),
-      component: 'cq-group',
+      component: 'group',
       label: '成组',
       group: components,
       style: { top, left, width, height, rotate: 0, opacity: 1 },
