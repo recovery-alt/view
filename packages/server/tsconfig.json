@@ -4,7 +4,6 @@
     "outDir": "dist",
     "module": "CommonJS",
     "rootDir": "./src",
-    "declaration": true,
     "baseUrl": ".",
     "paths": { "@/*": ["src/*"] },
     "types": ["node"]
