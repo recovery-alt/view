@@ -42,14 +42,7 @@
               </a-select>
             </a-col>
             <a-col offset="2">
-              <a-button
-                v-if="curComponent.data.type === 'url'"
-                type="primary"
-                size="small"
-                @click="fetchData"
-              >
-                获取数据
-              </a-button>
+              <a-button type="primary" size="small" @click="fetchData"> 更新数据 </a-button>
             </a-col>
           </a-row>
         </a-form-item>
@@ -68,9 +61,8 @@
         </a-form-item>
         <code-mirror
           v-if="curComponent.data.type === 'static'"
-          v-model:viewer="viewer"
+          v-model:viewer="drawer.viewer"
           v-model:doc="dataStringify"
-          readonly
         />
       </a-form>
       <a-divider></a-divider>
@@ -78,7 +70,7 @@
       <a-divider orientation="right">
         响应结果 <ReloadOutlined v-if="curComponent.data.type === 'url'" @click="fetchData" />
       </a-divider>
-      <code-mirror v-model:viewer="drawer.viewer" v-model:doc="dataStringify" />
+      <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
     </a-drawer>
     <a-modal
       v-model:visible="modal.show"
@@ -199,23 +191,36 @@ const handleFilterChange = (open: boolean) => {
 
 const fetchData = () => {
   if (!curComponent.value?.data) return;
-  const { url } = curComponent.value.data;
-  if (url && isUrl(url)) {
-    fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        dataStringify.value = format(JSON.stringify(res), {
-          parser: 'json5',
-          plugins: [parserBabel],
-        });
-      })
-      .catch(() => {
-        dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
-          parser: 'json5',
-          plugins: [parserBabel],
-        });
-      });
-  }
+
+  const { url, type } = curComponent.value.data;
+
+  const strategy = {
+    url() {
+      if (url && isUrl(url)) {
+        fetch(url)
+          .then(res => res.json())
+          .then(res => {
+            dataStringify.value = format(JSON.stringify(res), {
+              parser: 'json5',
+              plugins: [parserBabel],
+            });
+          })
+          .catch(() => {
+            dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
+              parser: 'json5',
+              plugins: [parserBabel],
+            });
+          });
+      }
+    },
+    static() {
+      handleDrawerClose();
+    },
+  };
+
+  const handler = strategy[type];
+
+  handler();
 };
 
 watchEffect(() => {
