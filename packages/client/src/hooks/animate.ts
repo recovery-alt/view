@@ -1,10 +1,9 @@
-import type { RootStateType, Component } from '@/typings';
-import { computed, shallowReactive } from 'vue';
-import { Store } from 'vuex';
+import type { Component } from '@/typings';
+import { ComputedRef, shallowReactive } from 'vue';
 import { boardRefs } from '@/hooks';
 
-export const useAnimation = (store?: Store<RootStateType>) => {
-  const animations = [
+export const useAnimation = (curComponent: ComputedRef<Component>) => {
+  const animationPreset = [
     {
       title: '强调',
       data: [
@@ -447,8 +446,8 @@ export const useAnimation = (store?: Store<RootStateType>) => {
 
   const drawer = shallowReactive({
     show: false,
-    selected: animations[0].title,
-    data: animations,
+    selected: animationPreset[0].title,
+    data: animationPreset,
     previewAnimation: '',
   });
 
@@ -465,30 +464,27 @@ export const useAnimation = (store?: Store<RootStateType>) => {
     drawer.previewAnimation = '';
   };
 
-  const addAnimation = (name: string) => {
-    if (!store) return;
-    const { board } = store.state;
-
-    // 当前选中组件
-    const curComponent = computed(() => {
-      return board.selected.length === 1 ? board.data[board.selected[0]] : null;
+  const addAnimation = (animation: { name: string; label: string }) => {
+    // 没有的时候要新创建
+    if (!curComponent.value.animations) curComponent.value.animations = [];
+    const { animations } = curComponent.value;
+    animations.push({
+      ...animation,
+      animationDelay: 0,
+      animationDuration: 0,
+      animationIterationCount: 1,
+      repeat: false,
     });
-    if (curComponent.value) {
-      if (!curComponent.value.animations) {
-        curComponent.value.animations = [];
-      }
-      if (!curComponent.value.animations.includes(name)) {
-        curComponent.value.animations.push(name);
-      }
-      drawer.show = false;
-    }
+    drawer.show = false;
   };
 
-  const play = (animation: string, ref: HTMLElement) => {
+  const play = (index: number, ref: HTMLElement) => {
     const dom = ref.parentElement || ref;
     return new Promise<void>(resolve => {
+      const { animations } = curComponent.value;
+
       const animated = 'animate__animated';
-      const name = `animate__${animation}`;
+      const name = `animate__${animations?.[index].name}`;
       dom.classList.add(animated, name);
       const removeAnimation = () => {
         dom.removeEventListener('animationend', removeAnimation);
@@ -502,20 +498,18 @@ export const useAnimation = (store?: Store<RootStateType>) => {
     });
   };
 
-  const previewAnimation = async (curComponent: Component | null, index: number) => {
-    if (!curComponent) return;
+  const previewAnimation = async (index: number) => {
     const ref = boardRefs[index];
     if (!ref) return;
 
-    if (curComponent.animations) {
-      for (let i = 0; i < animations.length; i++) {
-        await play(curComponent.animations[i], ref);
+    if (curComponent.value.animations) {
+      for (let i = 0; i < animationPreset.length; i++) {
+        await play(i, ref);
       }
     }
   };
 
   return {
-    animations,
     drawer,
     handleMouseover,
     handleMouseleave,

@@ -12,11 +12,17 @@
       </a-button>
     </a-tooltip>
   </template>
+  <a-switch
+    v-else-if="field.type === FormEnum.SWITCH"
+    v-model:checked="model[field.model]"
+    v-bind="field.propsData"
+    size="small"
+  />
   <component
     :is="`a-${field.type}`"
     v-else
     v-model:value="model[field.model]"
-    v-bind="field.props"
+    v-bind="field.propsData"
     allow-clear
     :placeholder="field.type === FormEnum.SELECT ? '请选择' : '请输入'"
     size="small"

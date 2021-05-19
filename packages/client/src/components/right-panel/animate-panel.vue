@@ -4,26 +4,38 @@
       <template #icon><PlusOutlined /></template>
       添加
     </a-button>
-    <a-button type="primary" @click="previewAnimation(curComponent, board.selected[0])">
+    <a-button type="primary" @click="previewAnimation(board.selected[0])">
       <template #icon><PlayCircleOutlined /></template>
       预览
     </a-button>
   </div>
-  <a-collapse v-if="curComponent?.animations?.length" v-model="active">
-    <a-collapse-panel v-for="animation in curComponent.animations" :key="animation">
+  <a-collapse v-if="curComponent.animations?.length" v-model="active" accordion>
+    <a-collapse-panel v-for="(animation, i) in curComponent.animations" :key="animation">
       <template #header>
         <div class="animation-title">
-          <span>{{ animation }}</span>
+          <span class="animation-title__left">{{ animation.label }}</span>
           <div class="animation-title__right">
-            <a-button size="small" type="primary" @click.stop="preview(animation)">
+            <a-button size="small" type="primary" @click.stop="preview(i)">
               <template #icon><PlayCircleOutlined /></template>
             </a-button>
-            <a-button size="small" type="primary" @click.stop="del(animation)">
+            <a-button size="small" type="primary" @click.stop="del(i)">
               <template #icon><DeleteOutlined /></template>
             </a-button>
           </div>
         </div>
       </template>
+      <a-form
+        label-align="right"
+        :label-col="{ span: 5, offset: 2 }"
+        :wrapper-col="{ span: 16, offset: 1 }"
+      >
+        <form-item
+          v-for="field in fields"
+          :key="field.label"
+          :field="field"
+          :model="curComponent.animations[i]"
+        />
+      </a-form>
     </a-collapse-panel>
   </a-collapse>
   <a-empty v-else description="尚未选择任何动画" />
@@ -38,7 +50,7 @@
             class="animation-box__item"
             @mouseover="handleMouseover(animation.name)"
             @mouseleave="handleMouseleave"
-            @click="addAnimation(animation.name)"
+            @click="addAnimation(animation)"
           >
             <div :class="getAnimationClass(animation.name)" />
             {{ animation.label }}
@@ -50,10 +62,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { Field } from '@/typings';
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, boardRefs } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+import { FormItem } from '@/components';
+import { FormEnum } from '@/enum';
 
 const active = ref('');
 
@@ -63,6 +78,25 @@ const { board } = store.state;
 // 当前选中组件
 const curComponent = computed(() => board.data[board.selected[0]]);
 
+const fields: Array<Field> = [
+  {
+    label: '时长',
+    item: { type: FormEnum.INPUT_NUMBER, model: 'animationDuration', propsData: { min: 0 } },
+  },
+  {
+    label: '延迟',
+    item: { type: FormEnum.INPUT_NUMBER, model: 'animationDelay', propsData: { min: 0 } },
+  },
+  {
+    label: '循环',
+    extra: ['次数', '开关'],
+    item: [
+      { type: FormEnum.INPUT_NUMBER, model: 'animationIterationCount', propsData: { min: 0 } },
+      { type: FormEnum.SWITCH, model: 'repeat' },
+    ],
+  },
+];
+
 const {
   drawer,
   play,
@@ -71,16 +105,15 @@ const {
   getAnimationClass,
   addAnimation,
   previewAnimation,
-} = useAnimation(store);
+} = useAnimation(curComponent);
 
-const preview = (name: string) => {
+const preview = (index: number) => {
   const ref = boardRefs[board.selected[0]];
-  play(name, ref);
+  play(index, ref);
 };
 
-const del = (animation: string) => {
+const del = (index: number) => {
   if (!curComponent.value.animations) return;
-  const index = curComponent.value.animations.findIndex(val => val === animation);
   curComponent.value.animations.splice(index, 1);
 };
 </script>
@@ -90,7 +123,11 @@ const del = (animation: string) => {
   &-title {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+
+    &__left {
+      padding-left: 10px;
+    }
 
     &__right button:first-child {
       margin-right: 10px;

@@ -25,7 +25,7 @@
       placement="right"
       title="设置数据源"
       :width="400"
-      @close="handleDrawerClose"
+      @close="refreshData"
     >
       <a-form label-align="right" :label-col="{ span: 6 }" :wrapper-col="{ span: 17, offset: 1 }">
         <a-form-item label="数据源类型">
@@ -67,9 +67,7 @@
       </a-form>
       <a-divider></a-divider>
       <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <a-divider orientation="right">
-        响应结果 <ReloadOutlined v-if="curComponent.data.type === 'url'" @click="fetchData" />
-      </a-divider>
+      <a-divider orientation="right"> 响应结果 <ReloadOutlined @click="fetchData" /> </a-divider>
       <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
     </a-drawer>
     <a-modal
@@ -89,30 +87,23 @@ import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
 import { computed, onMounted, reactive, ref, shallowReactive, shallowRef, watchEffect } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
-import { generateColumns, isUrl } from '@/utils';
+import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
 import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
 import { useDrawer } from '@/hooks';
 import { DataSource } from '@/config';
-import { format } from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
 
 const store = useStore();
 const { board } = store.state;
 const viewer = shallowRef<EditorView>();
 const dataStringify = ref<string>();
-
-const modal = shallowReactive<{ show: boolean; doc: string; viewer?: EditorView }>({
-  show: false,
-  doc: `function filter(data) {
-  return data;
-}`,
-});
-
 const curComponent = computed(() => board.data[board.selected[0]]);
 
-const { drawer, handleDrawerClose } = useDrawer(dataStringify, curComponent);
+const { drawer, modal, refreshData, handleFilterChange, fetchData } = useDrawer(
+  dataStringify,
+  curComponent
+);
 
 const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
   data: [],
@@ -174,52 +165,6 @@ const resolveDataset = () => {
     },
   };
   const handler = strategy[type] || strategy.static;
-  handler();
-};
-
-const handleFilterChange = (open: boolean) => {
-  const { data } = curComponent.value;
-  if (!data) return;
-  if (open) {
-    data.filter = modal.doc;
-    drawer.openFilter = !!curComponent.value.data!.filter;
-    modal.show = false;
-  } else {
-    delete data.filter;
-  }
-};
-
-const fetchData = () => {
-  if (!curComponent.value?.data) return;
-
-  const { url, type } = curComponent.value.data;
-
-  const strategy = {
-    url() {
-      if (url && isUrl(url)) {
-        fetch(url)
-          .then(res => res.json())
-          .then(res => {
-            dataStringify.value = format(JSON.stringify(res), {
-              parser: 'json5',
-              plugins: [parserBabel],
-            });
-          })
-          .catch(() => {
-            dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
-              parser: 'json5',
-              plugins: [parserBabel],
-            });
-          });
-      }
-    },
-    static() {
-      handleDrawerClose();
-    },
-  };
-
-  const handler = strategy[type];
-
   handler();
 };
 

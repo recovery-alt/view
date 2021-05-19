@@ -116,8 +116,8 @@ const basicField: Array<Field> = [
   {
     label: '透明度',
     item: [
-      { type: FormEnum.SLIDER, model: 'opacity', props: { min: 0, max: 1, step: 0.1 } },
-      { type: FormEnum.INPUT_NUMBER, model: 'opacity', props: { min: 0, max: 1, step: 0.1 } },
+      { type: FormEnum.SLIDER, model: 'opacity', propsData: { min: 0, max: 1, step: 0.1 } },
+      { type: FormEnum.INPUT_NUMBER, model: 'opacity', propsData: { min: 0, max: 1, step: 0.1 } },
     ],
   },
 ];
@@ -174,7 +174,7 @@ const schema: Array<SchemaItem> = [
             model: 'fontWeight',
             type: FormEnum.INPUT_NUMBER,
             default: 500,
-            props: { step: 100, min: 100, max: 900 },
+            propsData: { step: 100, min: 100, max: 900 },
           },
         ],
       },
@@ -186,7 +186,7 @@ const schema: Array<SchemaItem> = [
             model: 'lineHeight',
             type: FormEnum.INPUT_NUMBER,
             default: 1,
-            props: { step: 0.1 },
+            propsData: { step: 0.1 },
           },
           {
             model: 'letterSpacing',

@@ -37,7 +37,7 @@ export interface Page extends Document {
     locked?: boolean;
     icon?: string;
     attr?: Array<Data>;
-    animations?: Array<string>;
+    animations?: Array<Data>;
     events?: Array<Event>;
     style: Data;
   }>;

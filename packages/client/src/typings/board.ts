@@ -21,6 +21,15 @@ export type ComponentData = {
   filter?: string;
 };
 
+export type Animation = {
+  name: string;
+  label: string;
+  animationDuration: number;
+  animationDelay: number;
+  animationIterationCount: number;
+  repeat: boolean;
+};
+
 export type Component = {
   id: string; // 组件唯一标识
   component: string; // 组件名
@@ -28,7 +37,7 @@ export type Component = {
   group?: Array<Component>; // 成组包含的所有组件
   propsData?: Data<string | number>; // 传入props
   locked?: boolean; // 是否加锁
-  animations?: Array<string>; // 动画
+  animations?: Array<Animation>; // 动画
   events?: Array<Event>; // 组件事件
   data?: ComponentData; // 数据集
   style: CSSStyleDataWithRotate; // 样式

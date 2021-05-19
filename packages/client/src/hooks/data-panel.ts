@@ -5,6 +5,9 @@ import { EditorView } from '@codemirror/basic-setup';
 import { shallowReactive } from 'vue';
 import json from 'json5';
 import { DataSource } from '@/config';
+import { isUrl } from '@/utils';
+import { format } from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 
 export const useDrawer = (
   dataStringify: Ref<string | undefined>,
@@ -24,7 +27,14 @@ export const useDrawer = (
     }),
   });
 
-  const handleDrawerClose = () => {
+  const modal = shallowReactive<{ show: boolean; doc: string; viewer?: EditorView }>({
+    show: false,
+    doc: `function filter(data) {
+    return data;
+  }`,
+  });
+
+  const refreshData = () => {
     if (!drawer.viewer) return;
     const doc = drawer.viewer.state.doc.toJSON();
     dataStringify.value = doc.reduce((acc, val) => acc + val, '');
@@ -33,5 +43,47 @@ export const useDrawer = (
     }
   };
 
-  return { drawer, handleDrawerClose };
+  const handleFilterChange = (open: boolean) => {
+    const { data } = curComponent.value;
+    if (!data) return;
+    if (open) {
+      data.filter = modal.doc;
+      drawer.openFilter = !!curComponent.value.data!.filter;
+      modal.show = false;
+    } else {
+      delete data.filter;
+    }
+  };
+
+  const fetchData = () => {
+    if (!curComponent.value?.data) return;
+    const { url, type } = curComponent.value.data;
+    const strategy = {
+      url() {
+        if (url && isUrl(url)) {
+          fetch(url)
+            .then(res => res.json())
+            .then(res => {
+              dataStringify.value = format(JSON.stringify(res), {
+                parser: 'json5',
+                plugins: [parserBabel],
+              });
+            })
+            .catch(() => {
+              dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
+                parser: 'json5',
+                plugins: [parserBabel],
+              });
+            });
+        }
+      },
+      static: refreshData,
+    };
+
+    const handler = strategy[type];
+
+    handler();
+  };
+
+  return { drawer, modal, refreshData, handleFilterChange, fetchData };
 };
