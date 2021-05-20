@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - name: 'Mirror to gitee'
         uses: pixta-dev/repository-mirroring-action@v1
         with:
-          target_repo_url: git@gitlab.com:cq360/view.git
+          target_repo_url: git@gitee.com:cq360/view.git
           ssh_private_key: ${{ secrets.GITEE_SECRET }}
