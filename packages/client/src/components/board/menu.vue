@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import type { MenuType } from '@/hooks';
-import type { PropType } from 'vue';
+import type { Component, PropType } from 'vue';
 import { useStore, BoardEnum } from '@/store';
 import { judgeCancelGroupDisabled, judgeGroupDisabled, on, patchUnit } from '@/utils';
 import {
@@ -54,7 +54,9 @@ const { board } = store.state;
 
 const menuRef = shallowRef<HTMLElement>();
 
-const data = reactive([
+type MenuList = Array<{ name: string; icon: Component; event: () => void; disable?: boolean }>;
+
+const data = reactive<MenuList>([
   {
     name: '置顶',
     icon: VerticalAlignTopOutlined,

@@ -19,7 +19,7 @@
       <div class="header__publish">
         <a-tooltip
           v-for="item in buttonGroup"
-          :key="item.icon"
+          :key="item.name"
           :title="item.name"
           placement="bottom"
         >
@@ -55,6 +55,7 @@
 
 <script lang="ts" setup>
 import type { Page } from '@/typings';
+import type { Component } from 'vue';
 import { on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
 import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
@@ -86,7 +87,7 @@ const router = useRouter();
 const modalOpen = ref(false);
 let letgo = false;
 
-const icons = [
+const icons: Array<{ key: string; icon: Component }> = [
   { key: 'layer', icon: LayoutOutlined },
   { key: 'component', icon: UnorderedListOutlined },
   { key: 'config', icon: FileDoneOutlined },
@@ -98,7 +99,7 @@ const switchPanelShow = (key: string) => {
   panel[key] = !panel[key];
 };
 
-const buttonGroup = [
+const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> = [
   {
     name: '组件删除备份',
     icon: RestOutlined,
@@ -118,7 +119,7 @@ const buttonGroup = [
     name: '发布',
     icon: SendOutlined,
     event: () => {
-      modalOpen.value = true;
+      if (props.id) window.open(`/share.html#/pc/${props.id}`);
     },
   },
   {
