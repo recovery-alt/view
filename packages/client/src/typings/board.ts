@@ -22,6 +22,7 @@ export type ComponentData = {
 };
 
 export type Animation = {
+  id: string;
   name: string;
   label: string;
   animationDuration: number;

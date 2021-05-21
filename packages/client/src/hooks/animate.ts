@@ -1,6 +1,7 @@
 import type { Component } from '@/typings';
 import { ComputedRef, shallowReactive } from 'vue';
 import { boardRefs } from '@/hooks';
+import { v4 } from 'uuid';
 
 export const useAnimation = (curComponent: ComputedRef<Component>) => {
   const animationPreset = [
@@ -469,6 +470,7 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
     if (!curComponent.value.animations) curComponent.value.animations = [];
     const { animations } = curComponent.value;
     animations.push({
+      id: v4(),
       ...animation,
       animationDelay: 0,
       animationDuration: 0,

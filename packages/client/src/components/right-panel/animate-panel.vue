@@ -10,7 +10,7 @@
     </a-button>
   </div>
   <a-collapse v-if="curComponent.animations?.length" v-model="active" accordion>
-    <a-collapse-panel v-for="(animation, i) in curComponent.animations" :key="animation">
+    <a-collapse-panel v-for="(animation, i) in curComponent.animations" :key="animation.id">
       <template #header>
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
