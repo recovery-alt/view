@@ -19,7 +19,7 @@ declare module 'vue' {
     ACollapse: typeof import('ant-design-vue').Collapse;
     ACollapsePanel: typeof import('ant-design-vue/lib/collapse/CollapsePanel').default;
     ATooltip: typeof import('ant-design-vue').Tooltip;
-    AEmpty: typeof import('ant-design-vue').Empty;
+    // AEmpty: typeof import('ant-design-vue').Empty;
     AConfigProvider: typeof import('ant-design-vue').ConfigProvider;
     ALayout: typeof import('ant-design-vue').Layout;
     ALayoutHeader: typeof import('ant-design-vue').Layout;

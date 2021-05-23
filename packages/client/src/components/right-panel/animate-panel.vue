@@ -4,7 +4,7 @@
       <template #icon><PlusOutlined /></template>
       添加
     </a-button>
-    <a-button type="primary" @click="previewAnimation(board.selected[0])">
+    <a-button type="primary" @click="playAll(boardRefs[board.selected[0]])">
       <template #icon><PlayCircleOutlined /></template>
       预览
     </a-button>
@@ -15,7 +15,11 @@
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
           <div class="animation-title__right">
-            <a-button size="small" type="primary" @click.stop="preview(i)">
+            <a-button
+              size="small"
+              type="primary"
+              @click.stop="play(i, boardRefs[board.selected[0]])"
+            >
               <template #icon><PlayCircleOutlined /></template>
             </a-button>
             <a-button size="small" type="primary" @click.stop="del(i)">
@@ -80,37 +84,28 @@ const curComponent = computed(() => board.data[board.selected[0]]);
 
 const fields: Array<Field> = [
   {
-    label: '时长',
-    item: { type: FormEnum.INPUT_NUMBER, model: 'animationDuration', propsData: { min: 0 } },
-  },
-  {
-    label: '延迟',
-    item: { type: FormEnum.INPUT_NUMBER, model: 'animationDelay', propsData: { min: 0 } },
-  },
-  {
-    label: '循环',
-    extra: ['次数', '开关'],
+    label: '动画',
+    extra: ['时长', '延迟'],
     item: [
-      { type: FormEnum.INPUT_NUMBER, model: 'animationIterationCount', propsData: { min: 0 } },
-      { type: FormEnum.SWITCH, model: 'repeat' },
+      { type: FormEnum.INPUT_NUMBER, model: 'animationDuration', propsData: { min: 0 } },
+      { type: FormEnum.INPUT_NUMBER, model: 'animationDelay', propsData: { min: 0 } },
     ],
+  },
+  {
+    label: '循环次数',
+    item: { type: FormEnum.INPUT_NUMBER, model: 'animationIterationCount', propsData: { min: 1 } },
   },
 ];
 
 const {
   drawer,
   play,
+  playAll,
   handleMouseover,
   handleMouseleave,
   getAnimationClass,
   addAnimation,
-  previewAnimation,
 } = useAnimation(curComponent);
-
-const preview = (index: number) => {
-  const ref = boardRefs[board.selected[0]];
-  play(index, ref);
-};
 
 const del = (index: number) => {
   if (!curComponent.value.animations) return;

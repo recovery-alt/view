@@ -18,7 +18,7 @@ export type FieldItem = {
   model: string;
   span?: number;
   offset?: number;
-  propsData?: Data<string | number>;
+  propsData?: Data<unknown>;
   default?: string | number;
   data?: Array<Data<any>>;
   customNode?: VNode;

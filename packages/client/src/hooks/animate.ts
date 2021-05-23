@@ -1,6 +1,5 @@
 import type { Component } from '@/typings';
 import { ComputedRef, shallowReactive } from 'vue';
-import { boardRefs } from '@/hooks';
 import { v4 } from 'uuid';
 
 export const useAnimation = (curComponent: ComputedRef<Component>) => {
@@ -449,20 +448,20 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
     show: false,
     selected: animationPreset[0].title,
     data: animationPreset,
-    previewAnimation: '',
+    curAnimation: '',
   });
 
   const getAnimationClass = (name: string) => {
-    const animation = name === drawer.previewAnimation ? ` animate__animated animate__${name}` : '';
+    const animation = name === drawer.curAnimation ? ` animate__animated animate__${name}` : '';
     return animation;
   };
 
   const handleMouseover = (name: string) => {
-    drawer.previewAnimation = name;
+    drawer.curAnimation = name;
   };
 
   const handleMouseleave = () => {
-    drawer.previewAnimation = '';
+    drawer.curAnimation = '';
   };
 
   const addAnimation = (animation: { name: string; label: string }) => {
@@ -473,24 +472,38 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
       id: v4(),
       ...animation,
       animationDelay: 0,
-      animationDuration: 0,
+      animationDuration: 1,
       animationIterationCount: 1,
       repeat: false,
     });
     drawer.show = false;
   };
 
-  const play = (index: number, ref: HTMLElement) => {
-    const dom = ref.parentElement || ref;
+  const play = async (index: number, dom: HTMLElement) => {
     return new Promise<void>(resolve => {
       const { animations } = curComponent.value;
 
+      if (!animations?.[index]) return resolve();
+
+      const {
+        name: animate,
+        animationDelay,
+        animationDuration,
+        animationIterationCount,
+      } = animations[index];
+
       const animated = 'animate__animated';
-      const name = `animate__${animations?.[index].name}`;
+      const name = `animate__${animate}`;
+      dom.style.animationDelay = `${animationDelay}s`;
+      dom.style.animationDuration = `${animationDuration}s`;
+      dom.style.animationIterationCount = `${animationIterationCount}`;
       dom.classList.add(animated, name);
       const removeAnimation = () => {
         dom.removeEventListener('animationend', removeAnimation);
         dom.removeEventListener('animationcancel', removeAnimation);
+        dom.style.animationDelay = '';
+        dom.style.animationDuration = '';
+        dom.style.animationIterationCount = '';
         dom.classList.remove(animated, name);
         resolve();
       };
@@ -500,10 +513,8 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
     });
   };
 
-  const previewAnimation = async (index: number) => {
-    const ref = boardRefs[index];
+  const playAll = async (ref: HTMLElement) => {
     if (!ref) return;
-
     if (curComponent.value.animations) {
       for (let i = 0; i < animationPreset.length; i++) {
         await play(i, ref);
@@ -517,7 +528,7 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
     handleMouseleave,
     getAnimationClass,
     addAnimation,
-    previewAnimation,
+    playAll,
     play,
   };
 };

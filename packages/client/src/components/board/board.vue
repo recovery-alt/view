@@ -46,7 +46,7 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <board-box :ref="setBoardRefs" class="board__component" :data="item" />
+          <board-box :ref="setBoardRefs" class="board__component" :data="item" editor-mode />
         </board-shape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />

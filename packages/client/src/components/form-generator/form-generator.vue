@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FieldItem, Data } from '@/typings';
+import type { FieldItem } from '@/typings';
 import type { PropType } from 'vue';
 import { defineProps } from 'vue';
 import { ColorPicker } from '../color-picker';
@@ -48,7 +48,7 @@ defineProps({
     default: () => ({}),
   },
   model: {
-    type: Object as PropType<Data<string | number>>,
+    type: Object,
     default: () => ({}),
   },
 });

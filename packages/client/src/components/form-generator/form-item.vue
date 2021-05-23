@@ -24,14 +24,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { FieldItem } from '@/typings';
+import type { FieldItem, Field } from '@/typings';
+import type { PropType } from 'vue';
 import { defineProps } from 'vue';
 import { FormEnum } from '@/enum';
 import FormGenerator from './form-generator.vue';
 
 defineProps({
   field: {
-    type: Object,
+    type: Object as PropType<Field>,
     default: () => ({}),
   },
   model: {
