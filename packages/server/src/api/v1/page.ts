@@ -15,12 +15,12 @@ router.get('/:id', async ctx => {
 });
 
 router.post('/', async ctx => {
-  const body = ctx.request.body as Page;
+  const body = ctx.request.body as unknown as Page;
   ctx.body = await pageService.add(body);
 });
 
 router.put('/', async ctx => {
-  const body = ctx.request.body as Page;
+  const body = ctx.request.body as unknown as Page;
   await pageService.update(body);
   ctx.body = ResponseEnum.SUCCESS;
 });

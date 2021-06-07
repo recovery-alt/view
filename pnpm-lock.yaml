@@ -141,6 +141,7 @@ importers:
       mongoose: ^5.12.13
       ts-node-dev: ^1.1.6
       tsconfig-paths: ^3.9.0
+      tslib: ^2.2.0
     dependencies:
       '@koa/cors': 3.1.0
       '@koa/router': registry.nlark.com/@koa/router/10.0.0
@@ -162,6 +163,7 @@ importers:
     devDependencies:
       ts-node-dev: registry.nlark.com/ts-node-dev/1.1.6
       tsconfig-paths: 3.9.0
+      tslib: 2.2.0
 
 packages:
 
@@ -3105,8 +3107,6 @@ packages:
       debug: 4.3.1
       http-errors: 1.8.0
       resolve-path: 1.4.0
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /koa-static/5.0.0:
@@ -3115,8 +3115,6 @@ packages:
     dependencies:
       debug: 3.2.7
       koa-send: 5.0.1
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /koa/2.13.1:
@@ -6740,8 +6738,6 @@ packages:
       koa-compose: 4.1.0
       methods: 1.1.2
       path-to-regexp: 6.2.0
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   registry.nlark.com/@ls-lint/ls-lint/1.9.2:
@@ -9636,7 +9632,7 @@ packages:
     dev: true
 
   registry.nlark.com/typescript/4.3.2:
-    resolution: {integrity: sha1-OZqxiqxFgC1vJJjeUFT8u+cWqAU=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/typescript/download/typescript-4.3.2.tgz?cache=0&sync_timestamp=1622965441407&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftypescript%2Fdownload%2Ftypescript-4.3.2.tgz}
+    resolution: {integrity: sha1-OZqxiqxFgC1vJJjeUFT8u+cWqAU=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/typescript/download/typescript-4.3.2.tgz}
     name: typescript
     version: 4.3.2
     engines: {node: '>=4.2.0'}

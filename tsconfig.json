@@ -12,15 +12,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
-    "baseUrl": ".",
-    "paths": { "@/*": ["packages/client/src/*"] },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    "types": ["vite/client", "jest"]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": [
-    "packages/client/src/**/*.ts",
-    "packages/client/src/**/*.tsx",
-    "packages/client/src/**/*.vue"
-  ],
   "exclude": ["node_modules"]
 }

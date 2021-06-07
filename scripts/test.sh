@@ -4,7 +4,6 @@
 set -e
 
 cd packages/client
-
-npx vite --host
+npx jest
 
 cd -

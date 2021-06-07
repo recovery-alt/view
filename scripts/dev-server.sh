@@ -5,6 +5,8 @@ set -e
 
 cd packages/server
 
-yarn ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts
+npx tsc --noEmit
+
+npx ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts
 
 cd -

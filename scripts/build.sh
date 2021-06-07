@@ -7,7 +7,7 @@ rm -rf dist
 
 cd packages/server
 
-tsc
+npx tsc
 
 printf '服务端打包完成！\n'
 mv dist ../../
@@ -16,7 +16,7 @@ cp -r src/public ../../dist
 
 cd ../client
 
-vue-tsc --noEmit && vite build
+npx vue-tsc --noEmit && npx vite build
 
 cp -r dist/* ../../dist/public
 
