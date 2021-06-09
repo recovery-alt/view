@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <div class="container">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo">
         <img width="40" height="40" src="/src/assets/img/logo.svg" />
@@ -15,21 +15,17 @@
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-    <a-layout>
+    <div class="main">
       <a-layout-header class="layout-header">
-        <MenuUnfoldOutlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <MenuFoldOutlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <MenuUnfoldOutlined v-if="collapsed" class="trigger" @click="collapsed = !collapsed" />
+        <MenuFoldOutlined v-else class="trigger" @click="collapsed = !collapsed" />
         <exit-dropdown />
       </a-layout-header>
       <a-layout-content class="layout-content">
         <router-view />
       </a-layout-content>
-    </a-layout>
-  </a-layout>
+    </div>
+  </div>
 </template>
 <script lang="ts" setup>
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
@@ -42,6 +38,18 @@ const collapsed = ref(false);
 </script>
 
 <style lang="less" scoped>
+.container {
+  display: flex;
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: var(--component-bg);
+}
+
 .logo {
   color: var(--text-color);
   display: flex;
@@ -52,7 +60,7 @@ const collapsed = ref(false);
 
 .layout-header {
   background: var(--body-bg);
-  padding: 0 10px;
+  padding: 10px;
   font-size: 20px;
   display: flex;
   justify-content: space-between;
@@ -60,13 +68,10 @@ const collapsed = ref(false);
 }
 
 .layout-content {
+  flex: 1;
   background: var(--body-bg);
   margin: 24px 16px;
   padding: 24px;
   min-height: 280px;
-}
-
-:deep.ant-layout {
-  height: 100%;
 }
 </style>

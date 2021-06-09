@@ -22,6 +22,7 @@ declare module 'vue' {
     // AEmpty: typeof import('ant-design-vue').Empty;
     AConfigProvider: typeof import('ant-design-vue').ConfigProvider;
     ALayout: typeof import('ant-design-vue').Layout;
+    ALayoutSider: typeof import('ant-design-vue').Layout;
     ALayoutHeader: typeof import('ant-design-vue').Layout;
     ALayoutContent: typeof import('ant-design-vue').Layout;
     AMenu: typeof import('ant-design-vue').Menu;
