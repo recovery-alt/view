@@ -103,12 +103,8 @@ export default defineComponent({
     };
 
     const toggleState = reactive<Data<boolean>>({});
-    board.data.map(item => {
-      const { group } = item;
-
-      if (group?.length) {
-        toggleState[item.id] = false;
-      }
+    board.data.forEach(item => {
+      if (item?.group?.length) toggleState[item.id] = false;
     });
 
     const toggleGroup = (id: string) => {
