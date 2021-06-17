@@ -123,12 +123,10 @@ export const useThumbnail = (
     const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
     const ratioX = viewW / width;
     const ratioY = viewH / height;
-    viewportSize.width = ratioX * parentW;
-    viewportSize.height = ratioY * parentH;
+    viewportSize.width = Math.min(ratioX * parentW, parentW);
+    viewportSize.height = Math.min(ratioY * parentH, parentH);
     rulerKey.value++;
   };
-
-  const debounceResizeViewport = debounce(resizeViewport, 100);
 
   // 鼠标按下事件
   const handleThumbnailMousedown = (e: MouseEvent) => {
@@ -191,16 +189,6 @@ export const useThumbnail = (
     on('mouseup', mouseup);
   };
 
-  // 同步滚动
-  const syncScroll = () => {
-    if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
-    const { width, height } = screenShotRef.value.getBoundingClientRect();
-    const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
-    const { scrollLeft, scrollTop } = canvasWrapperRef.value;
-    viewportSize.left = (scrollLeft / width) * parentW;
-    viewportSize.top = (scrollTop / height) * parentH;
-  };
-
   // 初始化画布
   const initCanvas = () => {
     if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
@@ -212,8 +200,8 @@ export const useThumbnail = (
     const { width: thumbnailW, height: thumbnailH } = thumbnailRef.value.getBoundingClientRect();
     const { width: screenW, height: screenH } = screenShotRef.value.getBoundingClientRect();
     const { width: pageW, height: pageH } = pageConfig;
-    const ratioX = thumbnailW / screenW;
-    const ratioY = thumbnailH / screenH;
+    const ratioX = thumbnailW / wrapScale(screenW);
+    const ratioY = thumbnailH / wrapScale(screenH);
 
     const canvasRatioX = ratioX * 2;
     const canvasRatioY = ratioY * 2;
@@ -227,8 +215,22 @@ export const useThumbnail = (
     ctx.strokeRect(startX, startY, reflectW, reflectH);
   };
 
+  const debounceResizeViewport = debounce(resizeViewport, 100);
+  const debounceInitCanvas = debounce(initCanvas, 100);
+
+  // 同步滚动
+  const syncScroll = () => {
+    if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
+    const { width, height } = screenShotRef.value.getBoundingClientRect();
+    const { width: parentW, height: parentH } = thumbnailRef.value.getBoundingClientRect();
+    const { scrollLeft, scrollTop } = canvasWrapperRef.value;
+    viewportSize.left = (scrollLeft / width) * parentW;
+    viewportSize.top = (scrollTop / height) * parentH;
+  };
+
   onMounted(() => {
     window.addEventListener('resize', debounceResizeViewport);
+    window.addEventListener('resize', debounceInitCanvas);
 
     nextTick(() => {
       resizeViewport();
@@ -238,6 +240,7 @@ export const useThumbnail = (
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', debounceResizeViewport);
+    window.removeEventListener('resize', debounceInitCanvas);
   });
 
   watchEffect(() => {
@@ -259,6 +262,7 @@ export const useThumbnail = (
   watchEffect(() => {
     if (pageConfig.scale) {
       debounceResizeViewport();
+      debounceInitCanvas();
     }
   });
 

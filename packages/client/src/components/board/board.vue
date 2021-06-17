@@ -94,6 +94,8 @@
         size="small"
         :min="30"
         :max="150"
+        :step="10"
+        dots
         :tip-formatter="sliderFormatter"
         @change="handleSliderChange"
       />
