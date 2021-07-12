@@ -30,7 +30,7 @@ import { BoardEnum, useStore } from '@/store';
 import { boardOffset, wrapScale, showMenu, boardRefs, useEchartsResize } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import { throttle } from 'lodash';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { RedoOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps({

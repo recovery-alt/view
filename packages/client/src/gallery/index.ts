@@ -18,7 +18,7 @@ export const galleryGroup: GalleryGroup = [];
 
 export const galleryList: Array<Gallery> = [];
 
-export default async (app: App) => {
+export default async (app: App<Element>) => {
   const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
     const module = await getGroup();
     const group = module.default as Group;

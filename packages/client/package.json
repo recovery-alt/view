@@ -9,27 +9,27 @@
     "@codemirror/lang-javascript": "^0.18.0",
     "@codemirror/lang-json": "^0.18.0",
     "@codemirror/language": "^0.18.2",
-    "@vitejs/plugin-vue-jsx": "^1.1.5",
-    "@vue/runtime-core": "^3.1.1",
+    "@vitejs/plugin-vue-jsx": "^1.1.6",
+    "@vue/runtime-core": "^3.1.4",
     "animate.css": "^4.1.1",
-    "ant-design-vue": "^2.1.6",
+    "ant-design-vue": "^2.2.2",
     "axios": "^0.21.1",
     "echarts": "^5.1.2",
     "json5": "^2.2.0",
     "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
-    "vue-router": "^4.0.9",
-    "vuex": "^4.0.1"
+    "vue-router": "^4.0.10",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@ehutch79/vite-eslint": "^0.0.1",
-    "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.14.170",
-    "@vitejs/plugin-vue": "^1.2.3",
-    "@vue/compiler-sfc": "^3.1.1",
+    "@types/jest": "^26.0.24",
+    "@types/lodash": "^4.14.171",
+    "@vitejs/plugin-vue": "^1.2.4",
+    "@vue/compiler-sfc": "^3.1.4",
     "jest": "^26.6.3",
     "less": "^4.1.1",
-    "vite-plugin-importer": "^0.2.2",
+    "vite-plugin-importer": "^0.2.5",
     "vue-tsc": "^0.0.16"
   }
 }

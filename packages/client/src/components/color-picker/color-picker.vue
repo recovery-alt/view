@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, watchEffect, shallowRef, defineProps, useContext } from 'vue';
+import { ref, watch, watchEffect, shallowRef } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -26,7 +26,7 @@ const props = defineProps({
   },
 });
 
-const { emit } = useContext();
+const emit = defineEmits(['update:modelValue']);
 
 const inputValue = ref('');
 

@@ -59,7 +59,7 @@ import type { Component } from 'vue';
 import { on, changeTheme } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
 import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
-import { computed, createVNode, defineProps, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
   FileDoneOutlined,

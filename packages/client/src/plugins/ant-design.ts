@@ -57,7 +57,7 @@ import {
   Switch,
 } from 'ant-design-vue';
 
-export const useAntDesign = (app: App) => {
+export const useAntDesign = (app: App<Element>) => {
   app.use(Button);
   app.use(Input);
   app.use(Tabs);

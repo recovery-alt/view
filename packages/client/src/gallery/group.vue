@@ -7,7 +7,6 @@
 <script lang="ts" setup>
 import type { Component } from '@/typings';
 import type { PropType } from 'vue';
-import { defineProps } from 'vue';
 import { BoardBox } from '@/components';
 
 defineProps({ group: { type: Array as PropType<Array<Component>>, default: () => [] } });

@@ -9,7 +9,7 @@ import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { language, LezerLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
-import { onMounted, watchEffect, shallowRef, defineProps, useContext } from 'vue';
+import { onMounted, watchEffect, shallowRef } from 'vue';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 
@@ -32,7 +32,7 @@ const props = defineProps({
   },
 });
 
-const { emit } = useContext();
+const emit = defineEmits(['update:viewer']);
 
 const cm = shallowRef<HTMLElement>();
 

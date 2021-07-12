@@ -38,7 +38,6 @@
 <script lang="ts" setup>
 import type { FieldItem } from '@/typings';
 import type { PropType } from 'vue';
-import { defineProps } from 'vue';
 import { ColorPicker } from '../color-picker';
 import { FormEnum } from '@/enum';
 

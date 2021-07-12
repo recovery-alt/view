@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, useContext } from 'vue';
+import { computed } from 'vue';
 import { pageConfig } from '@/hooks';
 import { useStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
@@ -34,7 +34,7 @@ import BoardBox from './box.vue';
 
 defineProps({ modelValue: Boolean });
 
-const { emit } = useContext();
+const emit = defineEmits(['update:modelValue']);
 
 const store = useStore();
 

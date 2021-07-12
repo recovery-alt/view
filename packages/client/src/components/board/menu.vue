@@ -37,7 +37,7 @@ import {
   LockOutlined,
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
-import { reactive, onMounted, shallowRef, defineProps } from 'vue';
+import { reactive, onMounted, shallowRef } from 'vue';
 import { menu } from '@/hooks';
 
 const props = defineProps({

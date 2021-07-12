@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import type { Component, Page } from '@/typings';
-import { onMounted, ref, defineProps } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getPage } from '@/api';
 import { splitStyleAndPatch } from '@/utils';
 import { BoardBox } from '@/components';
