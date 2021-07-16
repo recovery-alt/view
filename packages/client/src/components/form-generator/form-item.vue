@@ -1,26 +1,26 @@
 <template>
-  <a-form-item :label="field.label">
-    <a-row>
+  <FormItem :label="field.label">
+    <Row>
       <template v-if="Array.isArray(field.item)">
-        <a-col
+        <Col
           v-for="(formItem, i) in field.item"
           :key="formItem.model"
           :span="formItem.span || 10"
           :offset="multiOffset(formItem, i)"
         >
-          <form-generator :field="formItem" :model="model" />
-        </a-col>
+          <FormGenerator :field="formItem" :model="model" />
+        </Col>
       </template>
-      <a-col v-else :span="singleSpan(field.item)" :offset="field.item.offset">
-        <form-generator :field="field.item" :model="model" />
-      </a-col>
-    </a-row>
+      <Col v-else :span="singleSpan(field.item)" :offset="field.item.offset">
+        <FormGenerator :field="field.item" :model="model" />
+      </Col>
+    </Row>
     <template v-if="field.extra" #extra>
       <div class="form-item__extra">
         <span v-for="extra in field.extra" :key="extra">{{ extra }}</span>
       </div>
     </template>
-  </a-form-item>
+  </FormItem>
 </template>
 
 <script lang="ts" setup>
@@ -28,6 +28,7 @@ import type { FieldItem, Field } from '@/typings';
 import type { PropType } from 'vue';
 import { FormEnum } from '@/enum';
 import FormGenerator from './form-generator.vue';
+import { FormItem, Row, Col } from 'ant-design-vue';
 
 defineProps({
   field: {

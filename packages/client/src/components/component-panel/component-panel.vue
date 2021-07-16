@@ -9,15 +9,15 @@
       <LeftOutlined @click="panel.component = !panel.component" />
     </header>
     <div class="component-panel__select-box">
-      <a-input-search
+      <InputSearch
         v-show="panel.component"
         enter-button
         placeholder="请输入组件名"
         @search="searchComponent"
       />
     </div>
-    <a-tabs v-model:activeKey="activeTab" tab-position="left">
-      <a-tab-pane v-for="tab in galleryGroup" :key="tab.groupName">
+    <Tabs v-model:activeKey="activeTab" tab-position="left">
+      <TabPane v-for="tab in galleryGroup" :key="tab.groupName">
         <template #tab>
           <div class="component-panel__label">
             <component :is="tab.icon" />
@@ -36,8 +36,8 @@
             <img :src="getImgSrc(item.type)" />
           </li>
         </ul>
-      </a-tab-pane>
-    </a-tabs>
+      </TabPane>
+    </Tabs>
   </section>
 </template>
 
@@ -47,6 +47,7 @@ import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
 import { panel } from '@/hooks';
 import DefaultIcon from '@/assets/img/gallery/default.png';
+import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
 
 const activeTab = ref('基础');
 

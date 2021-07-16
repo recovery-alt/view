@@ -2,23 +2,23 @@
   <div class="login">
     <div class="login-box">
       <span>用户登录</span>
-      <a-form
+      <Form
         hide-required-mark
         label-align="left"
         :label-col="{ span: 8 }"
         :wrapper-col="{ span: 16 }"
         :model="form"
       >
-        <a-form-item name="name" label="用户名" :rules="rules.name">
-          <a-input v-model:value="form.name" placeholder="用户名" />
-        </a-form-item>
-        <a-form-item name="password" label="密码" :rules="rules.password">
-          <a-input v-model:value="form.password" placeholder="密码" />
-        </a-form-item>
-        <a-form-item :wrapper-col="{ span: 8, offset: 8 }">
-          <a-button type="primary" @click="submitLogin">登录</a-button>
-        </a-form-item>
-      </a-form>
+        <FormItem name="name" label="用户名" :rules="rules.name">
+          <Input v-model:value="form.name" placeholder="用户名" />
+        </FormItem>
+        <FormItem name="password" label="密码" :rules="rules.password">
+          <Input v-model:value="form.password" placeholder="密码" />
+        </FormItem>
+        <FormItem :wrapper-col="{ span: 8, offset: 8 }">
+          <Button type="primary" @click="submitLogin">登录</Button>
+        </FormItem>
+      </Form>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@
 import type { UserInfo } from '@/typings';
 import { reactive } from 'vue';
 import { login } from '@/api';
-import { message, Form } from 'ant-design-vue';
+import { message, Form, FormItem, Button, Input } from 'ant-design-vue';
 import { encrypt, to } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';

@@ -16,7 +16,20 @@ export default defineConfig({
           libraryName: 'ant-design-vue',
           esModule: true,
           resolveStyle: name => {
-            return `ant-design-vue/es/${name}/style/index`;
+            const exclude = [
+              'select-option',
+              'form-item',
+              'collapse-panel',
+              'tab-pane',
+              'timeline-item',
+              'menu-item',
+              'input-search',
+              'layout-sider',
+              'layout-header',
+              'layout-content',
+              'textarea',
+            ];
+            if (!exclude.includes(name)) return `ant-design-vue/es/${name}/style/index`;
           },
         },
       ],

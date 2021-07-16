@@ -1,7 +1,7 @@
 <template>
   <section class="right-panel" :style="{ width }">
-    <a-tabs v-if="curComponent" v-model="activeTab" type="card" size="small">
-      <a-tab-pane v-for="item in tabs" :key="item.title">
+    <Tabs v-if="curComponent" v-model="activeTab" type="card" size="small">
+      <TabPane v-for="item in tabs" :key="item.title">
         <template #tab>
           <span>{{ item.title }}</span>
         </template>
@@ -12,9 +12,9 @@
         <h2 v-else class="right-panel__title">组容器</h2>
 
         <component :is="item.component" />
-      </a-tab-pane>
-    </a-tabs>
-    <page-config v-else-if="panel.config" />
+      </TabPane>
+    </Tabs>
+    <PageConfig v-else-if="panel.config" />
   </section>
 </template>
 
@@ -26,6 +26,7 @@ import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
 import { useStore } from '@/store';
 import { getGallery } from '@/gallery';
+import { Tabs, TabPane } from 'ant-design-vue';
 
 const store = useStore();
 const { board } = store.state;

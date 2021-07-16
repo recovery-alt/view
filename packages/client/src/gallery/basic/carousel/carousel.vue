@@ -1,15 +1,17 @@
 <template>
   <div class="carousel">
-    <a-carousel>
+    <Carousel>
       <div><h3>1</h3></div>
       <div><h3>2</h3></div>
       <div><h3>3</h3></div>
       <div><h3>4</h3></div>
-    </a-carousel>
+    </Carousel>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { Carousel } from 'ant-design-vue';
+</script>
 
 <style lang="less" scoped>
 .carousel {

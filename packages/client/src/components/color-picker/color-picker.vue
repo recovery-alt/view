@@ -1,5 +1,5 @@
 <template>
-  <a-input
+  <Input
     v-model:value="inputValue"
     size="small"
     :placeholder="placeholder"
@@ -9,11 +9,12 @@
     <template #suffix>
       <input ref="inputColor" v-model="inputValue" type="color" />
     </template>
-  </a-input>
+  </Input>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch, watchEffect, shallowRef } from 'vue';
+import { Input } from 'ant-design-vue';
 
 const props = defineProps({
   modelValue: {

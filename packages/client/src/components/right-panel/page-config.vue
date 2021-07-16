@@ -2,15 +2,15 @@
   <div class="page-config">
     <header class="page-config__header">页面设置</header>
     <section class="page-config__wrapper">
-      <a-form
+      <Form
         :model="pageConfig"
         hide-required-mark
         label-align="right"
         :label-col="{ span: 5, offset: 2 }"
         :wrapper-col="{ span: 16, offset: 1 }"
       >
-        <form-item v-for="field in fields" :key="field.label" :field="field" :model="pageConfig" />
-      </a-form>
+        <Item v-for="field in fields" :key="field.label" :field="field" :model="pageConfig" />
+      </Form>
     </section>
   </div>
 </template>
@@ -26,7 +26,8 @@ import {
   DragOutlined,
   StopOutlined,
 } from '@ant-design/icons-vue';
-import { FormItem } from '@/components';
+import { FormItem as Item } from '@/components';
+import { Form } from 'ant-design-vue';
 
 const fields: Array<Field> = [
   {

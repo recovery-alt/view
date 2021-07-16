@@ -1,37 +1,38 @@
 <template>
-  <div class="container">
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
+  <Layout class="container">
+    <LayoutSider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo">
         <img width="40" height="40" src="/src/assets/img/logo.svg" />
       </div>
-      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        <a-menu-item
+      <Menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+        <MenuItem
           v-for="item in routeList"
           :key="item.key"
           @click="$router.push({ name: item.key })"
         >
           <component :is="item.icon" />
           <span>{{ item.name }}</span>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
+        </MenuItem>
+      </Menu>
+    </LayoutSider>
     <div class="main">
-      <a-layout-header class="layout-header">
+      <LayoutHeader class="layout-header">
         <MenuUnfoldOutlined v-if="collapsed" class="trigger" @click="collapsed = !collapsed" />
         <MenuFoldOutlined v-else class="trigger" @click="collapsed = !collapsed" />
-        <exit-dropdown />
-      </a-layout-header>
-      <a-layout-content class="layout-content">
-        <router-view />
-      </a-layout-content>
+        <ExitDropdown />
+      </LayoutHeader>
+      <LayoutContent class="layout-content">
+        <RouterView />
+      </LayoutContent>
     </div>
-  </div>
+  </Layout>
 </template>
 <script lang="ts" setup>
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { ExitDropdown } from '@/components';
 import { ref } from 'vue';
 import { routeList } from '@/router';
+import { Layout, LayoutSider, Menu, MenuItem, LayoutHeader, LayoutContent } from 'ant-design-vue';
 
 const selectedKeys = ref(['page']);
 const collapsed = ref(false);

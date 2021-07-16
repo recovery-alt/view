@@ -1,25 +1,25 @@
 <template>
   <div class="data-panel">
     <div class="timeline-wrapper">
-      <a-timeline>
-        <a-timeline-item
+      <Timeline>
+        <TimelineItem
           v-for="item in timeline"
           :key="item.text"
           :color="item.actived ? 'blue' : 'gray'"
         >
           <div class="timeline-wrapper__item">
             <span>{{ item.text }}</span>
-            <a-button v-if="item.btnText" type="primary" size="small" @click="item.event">
+            <Button v-if="item.btnText" type="primary" size="small" @click="item.event">
               {{ item.btnText }}
-            </a-button>
+            </Button>
             <ReloadOutlined v-else @click="item.event" />
           </div>
-        </a-timeline-item>
-      </a-timeline>
+        </TimelineItem>
+      </Timeline>
     </div>
-    <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" class="code-box" readonly />
-    <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-    <a-drawer
+    <CodeMirror v-model:viewer="viewer" v-model:doc="dataStringify" class="code-box" readonly />
+    <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
+    <Drawer
       v-if="curComponent.data"
       v-model:visible="drawer.show"
       placement="right"
@@ -27,57 +27,53 @@
       :width="400"
       @close="refreshData"
     >
-      <a-form label-align="right" :label-col="{ span: 6 }" :wrapper-col="{ span: 17, offset: 1 }">
-        <a-form-item label="数据源类型">
-          <a-row justify="space-between">
-            <a-col>
-              <a-select v-model:value="curComponent.data.type" size="small">
-                <a-select-option
-                  v-for="item in drawer.options"
-                  :key="item.value"
-                  :value="item.value"
-                >
+      <Form label-align="right" :label-col="{ span: 6 }" :wrapper-col="{ span: 17, offset: 1 }">
+        <FormItem label="数据源类型">
+          <Row justify="space-between">
+            <Col>
+              <Select v-model:value="curComponent.data.type" size="small">
+                <SelectOption v-for="item in drawer.options" :key="item.value" :value="item.value">
                   {{ item.label }}
-                </a-select-option>
-              </a-select>
-            </a-col>
-            <a-col offset="2">
-              <a-button type="primary" size="small" @click="fetchData"> 更新数据 </a-button>
-            </a-col>
-          </a-row>
-        </a-form-item>
-        <a-form-item label="开启过滤器">
-          <a-row justify="space-between">
-            <a-col>
-              <a-switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
-            </a-col>
-            <a-col offset="2">
-              <a-button type="primary" size="small" @click="modal.show = true">设置过滤器</a-button>
-            </a-col>
-          </a-row>
-        </a-form-item>
-        <a-form-item v-if="curComponent.data.type === 'url'" label="接口地址">
-          <a-input v-model:value="curComponent.data.url" size="small" />
-        </a-form-item>
-        <code-mirror
+                </SelectOption>
+              </Select>
+            </Col>
+            <Col offset="2">
+              <Button type="primary" size="small" @click="fetchData"> 更新数据 </Button>
+            </Col>
+          </Row>
+        </FormItem>
+        <FormItem label="开启过滤器">
+          <Row justify="space-between">
+            <Col>
+              <Switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
+            </Col>
+            <Col offset="2">
+              <Button type="primary" size="small" @click="modal.show = true">设置过滤器</Button>
+            </Col>
+          </Row>
+        </FormItem>
+        <FormItem v-if="curComponent.data.type === 'url'" label="接口地址">
+          <Input v-model:value="curComponent.data.url" size="small" />
+        </FormItem>
+        <CodeMirror
           v-if="curComponent.data.type === 'static'"
           v-model:viewer="drawer.viewer"
           v-model:doc="dataStringify"
         />
-      </a-form>
-      <a-divider></a-divider>
-      <a-table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <a-divider orientation="right"> 响应结果 <ReloadOutlined @click="fetchData" /> </a-divider>
-      <code-mirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
-    </a-drawer>
-    <a-modal
+      </Form>
+      <Divider />
+      <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
+      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="fetchData" /> </Divider>
+      <CodeMirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
+    </Drawer>
+    <Modal
       v-model:visible="modal.show"
       title="过滤器"
       :z-index="1001"
       @ok="handleFilterChange(true)"
     >
-      <code-mirror v-model:viewer="modal.viewer" v-model:doc="modal.doc" type="javascript" />
-    </a-modal>
+      <CodeMirror v-model:viewer="modal.viewer" v-model:doc="modal.doc" type="javascript" />
+    </Modal>
   </div>
 </template>
 
@@ -93,6 +89,23 @@ import type { EditorView } from '@codemirror/basic-setup';
 import json from 'json5';
 import { useDrawer } from '@/hooks';
 import { DataSource } from '@/config';
+import {
+  Timeline,
+  TimelineItem,
+  Drawer,
+  Modal,
+  Form,
+  FormItem,
+  Row,
+  Col,
+  Select,
+  SelectOption,
+  Button,
+  Switch,
+  Divider,
+  Table,
+  Input,
+} from 'ant-design-vue';
 
 const store = useStore();
 const { board } = store.state;

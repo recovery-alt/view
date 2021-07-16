@@ -8,7 +8,7 @@
           :class="`ruler-wrapper --${item.direction}`"
           :style="getStyle(item.direction, position)"
         >
-          <board-ruler
+          <BoardRuler
             :key="rulerKey"
             :width="screenShotSize[getUnit(item.direction)] * 2"
             :style="{ width: screenShotSize[getUnit(item.direction)] + 'px' }"
@@ -37,7 +37,7 @@
         @dragover.prevent
         @mousedown="handleMousedown"
       >
-        <board-shape
+        <BoardShape
           v-for="(item, index) in board.data"
           :key="item.id"
           tabindex="0"
@@ -46,8 +46,8 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <board-box :ref="setBoardRefs" class="board__component" :data="item" editor-mode />
-        </board-shape>
+          <BoardBox :ref="setBoardRefs" class="board__component" :data="item" editor-mode />
+        </BoardShape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
       </div>
@@ -60,8 +60,8 @@
   </section>
 
   <footer class="edit-slider">
-    <a-col span="1">
-      <a-tooltip>
+    <Col span="1">
+      <Tooltip>
         <template #title>
           <div class="edit-slider__text">
             <span> 切换图层面板 </span>
@@ -77,19 +77,19 @@
           </div>
         </template>
         <MacCommandOutlined class="edit-slider__icon" />
-      </a-tooltip>
-    </a-col>
-    <a-col span="2">
-      <a-input-number
+      </Tooltip>
+    </Col>
+    <Col span="2">
+      <InputNumber
         v-model:value="pageConfig.scale"
         size="small"
         :min="30"
         :max="150"
         :formatter="sliderFormatter"
       />
-    </a-col>
-    <a-col span="4" class="edit-slider__col">
-      <a-slider
+    </Col>
+    <Col span="4" class="edit-slider__col">
+      <Slider
         v-model:value="pageConfig.scale"
         size="small"
         :min="30"
@@ -99,13 +99,13 @@
         :tip-formatter="sliderFormatter"
         @change="handleSliderChange"
       />
-    </a-col>
-    <a-col span="1" class="edit-slider__col">
+    </Col>
+    <Col span="1" class="edit-slider__col">
       <BlockOutlined class="edit-slider__icon" @click="switchThumbnail" />
-    </a-col>
+    </Col>
   </footer>
 
-  <board-menu v-if="menu.board.show" menu-type="board" :container="canvasWrapperRef" />
+  <BoardMenu v-if="menu.board.show" menu-type="board" :container="canvasWrapperRef" />
 </template>
 
 <script lang="ts" setup>
@@ -126,6 +126,7 @@ import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
+import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
 
 const store = useStore();
 const { board } = store.state;

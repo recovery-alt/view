@@ -1,7 +1,7 @@
 <template>
-  <a-config-provider :locale="locale">
-    <router-view />
-  </a-config-provider>
+  <ConfigProvider :locale="locale">
+    <RouterView />
+  </ConfigProvider>
 </template>
 
 <script lang="ts" setup>
@@ -10,6 +10,7 @@ import locale from 'ant-design-vue/es/locale/zh_CN';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { theme } from '@/hooks';
+import { ConfigProvider } from 'ant-design-vue';
 
 onMounted(() => {
   const isDark = local.get(LocalKeys.IS_DARK);

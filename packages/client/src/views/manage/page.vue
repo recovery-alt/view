@@ -1,20 +1,20 @@
 <template>
-  <a-table bordered size="small" :data-source="pages" :columns="columns" row-key="_id">
+  <Table bordered size="small" :data-source="pages" :columns="columns" row-key="_id">
     <template #width="{ text }"> {{ text }}px </template>
     <template #height="{ text }"> {{ text }}px </template>
     <template #action="{ record }">
       <a @click="toEdit(record._id)">查看</a>
-      <a-divider type="vertical" />
+      <Divider type="vertical" />
       <a @click="handleDelete(record._id)">删除</a>
     </template>
-  </a-table>
+  </Table>
 </template>
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { useManage } from '@/hooks';
 import { generateColumns } from '@/utils';
 import { deletePage } from '@/api';
-import { message } from 'ant-design-vue';
+import { message, Divider, Table } from 'ant-design-vue';
 
 const { pages, getAllPage } = useManage();
 const router = useRouter();

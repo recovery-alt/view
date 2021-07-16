@@ -1,70 +1,70 @@
 <template>
-  <a-form
+  <Form
     label-align="right"
     :label-col="{ span: 5, offset: 2 }"
     :wrapper-col="{ span: 16, offset: 1 }"
   >
-    <a-form-item label="名称">
-      <a-col span="16">
-        <a-input v-model:value="curComponent.label" size="small" />
-      </a-col>
-    </a-form-item>
-    <form-item
+    <FormItem label="名称">
+      <Col span="16">
+        <Input v-model:value="curComponent.label" size="small" />
+      </Col>
+    </FormItem>
+    <Item
       v-for="field in basicField"
       :key="field.label"
       :field="field"
       :model="curComponent.style"
     />
-    <a-form-item label="旋转角度">
-      <a-row>
-        <a-col span="10">
-          <a-input-number v-model:value="curComponent.style.rotate" :precision="0" size="small" />
-        </a-col>
-        <a-col span="3" offset="2">
-          <a-button size="small" @click="rotate(true)">
+    <FormItem label="旋转角度">
+      <Row>
+        <Col span="10">
+          <InputNumber v-model:value="curComponent.style.rotate" :precision="0" size="small" />
+        </Col>
+        <Col span="3" offset="2">
+          <Button size="small" @click="rotate(true)">
             <template #icon>
               <RotateLeftOutlined />
             </template>
-          </a-button>
-        </a-col>
-        <a-col span="3">
-          <a-button size="small" @click="rotate()">
+          </Button>
+        </Col>
+        <Col span="3">
+          <Button size="small" @click="rotate()">
             <template #icon>
               <RotateRightOutlined />
             </template>
-          </a-button>
-        </a-col>
-      </a-row>
-    </a-form-item>
-    <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" size="small">
-      <a-collapse-panel
+          </Button>
+        </Col>
+      </Row>
+    </FormItem>
+    <Collapse v-model:activeKey="activeKey" expand-icon-position="right" size="small">
+      <CollapsePanel
         v-for="item in schema"
         :key="item.title"
         :title="item.title"
         :header="item.title"
       >
-        <form-item
+        <Item
           v-for="field in item.fields"
           :key="field.label"
           :field="field"
           :model="curComponent.style"
         />
-      </a-collapse-panel>
-      <a-collapse-panel
+      </CollapsePanel>
+      <CollapsePanel
         v-for="item in gallery?.attr"
         :key="item.title"
         :title="item.title"
         :header="item.title"
       >
-        <form-item
+        <Item
           v-for="field in item.fields"
           :key="field.label"
           :field="field"
           :model="curComponent.propsData"
         />
-      </a-collapse-panel>
-    </a-collapse>
-  </a-form>
+      </CollapsePanel>
+    </Collapse>
+  </Form>
 </template>
 
 <script lang="ts" setup>
@@ -79,8 +79,19 @@ import {
   RotateRightOutlined,
 } from '@ant-design/icons-vue';
 import { FormEnum } from '@/enum';
-import FormItem from '@/components/form-generator/form-item.vue';
+import Item from '@/components/form-generator/form-item.vue';
 import { getGallery } from '@/gallery';
+import {
+  Form,
+  FormItem,
+  Col,
+  Row,
+  Collapse,
+  CollapsePanel,
+  Input,
+  InputNumber,
+  Button,
+} from 'ant-design-vue';
 
 const store = useStore();
 const { board } = store.state;

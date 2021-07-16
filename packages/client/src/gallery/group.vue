@@ -1,6 +1,6 @@
 <template>
   <div class="board-group">
-    <board-box v-for="item in group" :key="item.id" :data="item" patch-all />
+    <BoardBox v-for="item in group" :key="item.id" :data="item" patch-all />
   </div>
 </template>
 

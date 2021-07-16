@@ -1,51 +1,47 @@
 <template>
   <div class="animation-btn_group">
-    <a-button type="primary" @click="drawer.show = true">
+    <Button type="primary" @click="drawer.show = true">
       <template #icon><PlusOutlined /></template>
       添加
-    </a-button>
-    <a-button type="primary" @click="playAll(boardRefs[board.selected[0]])">
+    </Button>
+    <Button type="primary" @click="playAll(boardRefs[board.selected[0]])">
       <template #icon><PlayCircleOutlined /></template>
       预览
-    </a-button>
+    </Button>
   </div>
-  <a-collapse v-if="curComponent.animations?.length" v-model="active" accordion>
-    <a-collapse-panel v-for="(animation, i) in curComponent.animations" :key="animation.id">
+  <Collapse v-if="curComponent.animations?.length" v-model="active" accordion>
+    <CollapsePanel v-for="(animation, i) in curComponent.animations" :key="animation.id">
       <template #header>
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
           <div class="animation-title__right">
-            <a-button
-              size="small"
-              type="primary"
-              @click.stop="play(i, boardRefs[board.selected[0]])"
-            >
+            <Button size="small" type="primary" @click.stop="play(i, boardRefs[board.selected[0]])">
               <template #icon><PlayCircleOutlined /></template>
-            </a-button>
-            <a-button size="small" type="primary" @click.stop="del(i)">
+            </Button>
+            <Button size="small" type="primary" @click.stop="del(i)">
               <template #icon><DeleteOutlined /></template>
-            </a-button>
+            </Button>
           </div>
         </div>
       </template>
-      <a-form
+      <Form
         label-align="right"
         :label-col="{ span: 5, offset: 2 }"
         :wrapper-col="{ span: 16, offset: 1 }"
       >
-        <form-item
+        <Item
           v-for="field in fields"
           :key="field.label"
           :field="field"
           :model="curComponent.animations[i]"
         />
-      </a-form>
-    </a-collapse-panel>
-  </a-collapse>
-  <a-empty v-else description="尚未选择任何动画" />
-  <a-drawer v-model:visible="drawer.show" placement="right" :width="400" :closable="false">
-    <a-tabs v-model="drawer.selected" size="small">
-      <a-tab-pane v-for="item in drawer.data" :key="item.title" :label="item.title">
+      </Form>
+    </CollapsePanel>
+  </Collapse>
+  <Empty v-else description="尚未选择任何动画" />
+  <Drawer v-model:visible="drawer.show" placement="right" :width="400" :closable="false">
+    <Tabs v-model="drawer.selected" size="small">
+      <TabPane v-for="item in drawer.data" :key="item.title" :label="item.title">
         <template #tab>{{ item.title }}</template>
         <ul class="animation-box">
           <li
@@ -60,9 +56,9 @@
             {{ animation.label }}
           </li>
         </ul>
-      </a-tab-pane>
-    </a-tabs>
-  </a-drawer>
+      </TabPane>
+    </Tabs>
+  </Drawer>
 </template>
 
 <script lang="ts" setup>
@@ -71,8 +67,19 @@ import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useAnimation, boardRefs } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-import { FormItem } from '@/components';
+import { FormItem as Item } from '@/components';
 import { FormEnum } from '@/enum';
+import {
+  Button,
+  Collapse,
+  CollapsePanel,
+  Empty,
+  Drawer,
+  Tabs,
+  TabPane,
+  Form,
+  FormItem,
+} from 'ant-design-vue';
 
 const active = ref('');
 

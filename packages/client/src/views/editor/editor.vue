@@ -3,7 +3,7 @@
     <img width="40" height="40" src="/src/assets/img/logo.svg" @click="$router.push('/')" />
     <div class="header__wrapper">
       <div class="header__panel-box">
-        <a-button
+        <Button
           v-for="item in panelStatus"
           :key="item.key"
           class="header__button"
@@ -14,21 +14,16 @@
           <template #icon>
             <component :is="item.icon" />
           </template>
-        </a-button>
+        </Button>
       </div>
       <div class="header__publish">
-        <a-tooltip
-          v-for="item in buttonGroup"
-          :key="item.name"
-          :title="item.name"
-          placement="bottom"
-        >
-          <a-button class="header__button" size="small" @click="item.event()">
+        <Tooltip v-for="item in buttonGroup" :key="item.name" :title="item.name" placement="bottom">
+          <Button class="header__button" size="small" @click="item.event()">
             <template #icon>
               <component :is="item.icon" />
             </template>
-          </a-button>
-        </a-tooltip>
+          </Button>
+        </Tooltip>
       </div>
     </div>
 
@@ -38,8 +33,8 @@
     </div>
   </header>
   <main class="main">
-    <layer-panel />
-    <component-panel />
+    <LayerPanel />
+    <ComponentPanel />
     <section class="mid-panel">
       <header class="mid-panel__toolbar"></header>
       <div class="mid-panel__wrapper">
@@ -48,9 +43,9 @@
         </section>
       </div>
     </section>
-    <right-panel />
+    <RightPanel />
   </main>
-  <board-preview v-model="modalOpen" />
+  <BoardPreview v-model="modalOpen" />
 </template>
 
 <script lang="ts" setup>
@@ -78,7 +73,7 @@ import {
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { getPage } from '@/api';
 import { cloneDeep } from 'lodash';
-import { Modal } from 'ant-design-vue';
+import { Modal, Button, Tooltip } from 'ant-design-vue';
 
 const props = defineProps({ id: { type: String, default: () => '' } });
 const store = useStore();

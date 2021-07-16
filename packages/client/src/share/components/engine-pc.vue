@@ -6,7 +6,7 @@
     :z-index="index"
     :style="splitStyleAndPatch(item.style)"
   >
-    <board-box :data="item" class="board-component" />
+    <BoardBox :data="item" class="board-component" />
   </div>
 </template>
 

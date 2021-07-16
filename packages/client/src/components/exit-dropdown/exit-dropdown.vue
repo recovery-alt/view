@@ -1,44 +1,44 @@
 <template>
   <div class="header-right">
-    <a-dropdown>
+    <Dropdown>
       <div class="exit-dropdown">
-        <a-avatar>
+        <Avatar>
           <template #icon>
             <UserOutlined />
           </template>
-        </a-avatar>
+        </Avatar>
         <span class="header-right_span">{{ userInfo.name }}</span>
       </div>
       <template #overlay>
-        <a-menu>
-          <a-menu-item key="0" @click="visible = true">修改密码</a-menu-item>
-          <a-menu-item v-if="$route.path.includes('editor')" key="1" @click="$router.push('/')">
+        <Menu>
+          <MenuItem key="0" @click="visible = true">修改密码</MenuItem>
+          <MenuItem v-if="$route.path.includes('editor')" key="1" @click="$router.push('/')">
             返回管理页
-          </a-menu-item>
-          <a-menu-item key="2" @click="logout">退出</a-menu-item>
-        </a-menu>
+          </MenuItem>
+          <MenuItem key="2" @click="logout">退出</MenuItem>
+        </Menu>
       </template>
-    </a-dropdown>
+    </Dropdown>
     <SkinOutlined class="theme-change" @click="changeTheme()" />
   </div>
-  <a-modal
+  <Modal
     v-model:visible="visible"
     title="修改密码"
     :after-close="resetFields"
     @ok="submitPasswordChange"
   >
-    <a-form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
-      <a-form-item label="原密码" v-bind="validateInfos.password">
-        <a-input v-model:value="form.password" type="password" />
-      </a-form-item>
-      <a-form-item label="新密码" v-bind="validateInfos.newPassword">
-        <a-input v-model:value="form.newPassword" type="password" />
-      </a-form-item>
-      <a-form-item label="确认密码" v-bind="validateInfos.confirmPassword">
-        <a-input v-model:value="form.confirmPassword" type="password" />
-      </a-form-item>
-    </a-form>
-  </a-modal>
+    <Form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
+      <FormItem label="原密码" v-bind="validateInfos.password">
+        <Input v-model:value="form.password" type="password" />
+      </FormItem>
+      <FormItem label="新密码" v-bind="validateInfos.newPassword">
+        <Input v-model:value="form.newPassword" type="password" />
+      </FormItem>
+      <FormItem label="确认密码" v-bind="validateInfos.confirmPassword">
+        <Input v-model:value="form.confirmPassword" type="password" />
+      </FormItem>
+    </Form>
+  </Modal>
 </template>
 
 <script lang="ts" setup>
@@ -47,10 +47,20 @@ import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
-import { message, Form } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 import { changePassword } from '@/api';
 import json from 'json5';
+import {
+  message,
+  Dropdown,
+  Avatar,
+  Menu,
+  MenuItem,
+  Modal,
+  Form,
+  FormItem,
+  Input,
+} from 'ant-design-vue';
 
 const userInfoStr = local.get(LocalKeys.USER_INFO);
 const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
