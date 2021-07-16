@@ -29,8 +29,8 @@
     "@ls-lint/ls-lint": "^1.9.2",
     "@types/node-forge": "^0.9.10",
     "@types/uuid": "^8.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.2",
-    "@typescript-eslint/parser": "^4.28.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
     "chalk": "^4.1.1",
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
@@ -46,7 +46,7 @@
     "prettier": "^2.3.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.3.5",
-    "vite": "^2.4.1",
+    "vite": "^2.4.2",
     "vitepress": "^0.15.6"
   },
   "prettier": {

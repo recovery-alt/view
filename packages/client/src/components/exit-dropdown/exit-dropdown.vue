@@ -47,9 +47,8 @@ import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt, changeTheme } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
-import { message } from 'ant-design-vue';
+import { message, Form } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
-import { useForm } from '@ant-design-vue/use';
 import { changePassword } from '@/api';
 import json from 'json5';
 
@@ -97,7 +96,7 @@ const rules = reactive({
   confirmPassword: [{ required: true, validator: checkPasswordSync, trigger: 'blur' }],
 });
 
-const { resetFields, validate, validateInfos } = useForm(form, rules);
+const { resetFields, validate, validateInfos } = Form.useForm(form, rules);
 
 const submitPasswordChange = async () => {
   const [err] = await to(validate());

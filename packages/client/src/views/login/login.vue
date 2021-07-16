@@ -27,9 +27,8 @@
 import type { UserInfo } from '@/typings';
 import { reactive } from 'vue';
 import { login } from '@/api';
-import { message } from 'ant-design-vue';
-import { useForm } from '@ant-design-vue/use';
-import { encrypt } from '@/utils';
+import { message, Form } from 'ant-design-vue';
+import { encrypt, to } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
@@ -42,22 +41,23 @@ const rules = reactive({
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 });
 const router = useRouter();
-const { validate } = useForm(form, rules);
+const { validate } = Form.useForm(form, rules);
 
-const submitLogin = () => {
-  validate().then(async () => {
-    const { name, password } = form;
-    const res = await login<UserInfo>({ name, password: encrypt(password) });
-    if (res.code === 0) {
-      const { token, name } = res.data;
-      local.set(LocalKeys.AUTHORIZATION, token);
-      local.set(LocalKeys.USER_INFO, { name });
-      message.success('登录成功！');
-      router.push(props.redirect || '/');
-    } else {
-      message.error('登录失败！');
-    }
-  });
+const submitLogin = async () => {
+  const [err] = await to(validate());
+  if (err) return;
+
+  const { name, password } = form;
+  const res = await login<UserInfo>({ name, password: encrypt(password) });
+  if (res.code === 0) {
+    const { token, name } = res.data;
+    local.set(LocalKeys.AUTHORIZATION, token);
+    local.set(LocalKeys.USER_INFO, { name });
+    message.success('登录成功！');
+    router.push(props.redirect || '/');
+  } else {
+    message.error('登录失败！');
+  }
 };
 </script>
 
