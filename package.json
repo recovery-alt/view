@@ -6,8 +6,7 @@
     "@": "dist"
   },
   "scripts": {
-    "dev:server": "sh scripts/dev-server.sh",
-    "dev:client": "sh scripts/dev-client.sh",
+    "dev": "concurrently \"cd packages/client && vite --host\" \"cd packages/server && tsc --noEmit && npx ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts\"",
     "build": "sh scripts/build.sh",
     "test": "sh scripts/test.sh",
     "start": "pm2 start dist/app.js",
@@ -21,7 +20,7 @@
     "module-alias": "^2.2.2",
     "node-forge": "^0.10.0",
     "uuid": "^8.3.2",
-    "vue": "^3.1.4"
+    "vue": "^3.1.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -33,6 +32,7 @@
     "@typescript-eslint/parser": "^4.28.3",
     "chalk": "^4.1.1",
     "commitizen": "^4.2.4",
+    "concurrently": "^6.2.0",
     "conventional-changelog-cli": "^2.1.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.30.0",
