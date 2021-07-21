@@ -32,7 +32,7 @@
       <span>{{ pageConfig.title }}</span>
     </div>
   </header>
-  <main class="main">
+  <main class="main-container">
     <LayerPanel />
     <ComponentPanel />
     <section class="mid-panel">
@@ -221,7 +221,7 @@ onBeforeRouteLeave((to, from) => {
   }
 }
 
-.main {
+.main-container {
   height: calc(100% - 41px);
   display: flex;
 }

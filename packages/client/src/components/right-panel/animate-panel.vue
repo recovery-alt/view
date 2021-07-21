@@ -78,7 +78,6 @@ import {
   Tabs,
   TabPane,
   Form,
-  FormItem,
 } from 'ant-design-vue';
 
 const active = ref('');

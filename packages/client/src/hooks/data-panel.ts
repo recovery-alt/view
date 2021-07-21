@@ -43,7 +43,7 @@ export const useDrawer = (
     }
   };
 
-  const handleFilterChange = (open: boolean) => {
+  const handleFilterChange = (open: boolean | string | number) => {
     const { data } = curComponent.value;
     if (!data) return;
     if (open) {

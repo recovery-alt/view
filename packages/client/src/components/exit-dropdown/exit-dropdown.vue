@@ -146,6 +146,7 @@ const logout = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--text-color);
 
   &_span {
     margin-left: 5px;

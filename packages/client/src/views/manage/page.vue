@@ -64,33 +64,3 @@ const handleDelete = async (id: string) => {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.logo {
-  color: var(--text-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
-}
-
-.layout-header {
-  background: var(--body-bg);
-  padding: 0 10px;
-  font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.layout-content {
-  background: var(--body-bg);
-  margin: 24px 16px;
-  padding: 24px;
-  min-height: 280px;
-}
-
-:deep.ant-layout {
-  height: 100%;
-}
-</style>

@@ -66,6 +66,7 @@ const collapsed = ref(false);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--text-color);
 }
 
 .layout-content {

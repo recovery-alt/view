@@ -28,19 +28,7 @@ export interface Page extends Document {
   zoom: number;
   gap: number;
   url: string;
-  components: Array<{
-    id: string;
-    component: string;
-    label: string;
-    group?: Array<unknown>;
-    propsData?: unknown;
-    locked?: boolean;
-    icon?: string;
-    attr?: Array<Data>;
-    animations?: Array<Data>;
-    events?: Array<Event>;
-    style: Data;
-  }>;
+  components: Array<Data>;
 }
 
 const page: Model<Page> = model<Page>('page', schema);

@@ -5,7 +5,12 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 
-defineProps({ propsData: { type: Object as PropType<{ value: string }>, default: () => '' } });
+defineProps({
+  propsData: {
+    type: Object as PropType<{ value: string }>,
+    default: () => ({ value: '' }),
+  },
+});
 </script>
 
 <style lang="less" scoped>
