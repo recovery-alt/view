@@ -17,7 +17,7 @@ import { BoardEnum } from '@/store';
 import { Store } from 'vuex';
 import { getInstanceByDom } from 'echarts';
 import { panel, pageConfig, savePage } from '.';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { Direction } from '@/enum';
 import { wrapScale } from './page';
 

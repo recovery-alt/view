@@ -72,7 +72,7 @@ import {
 } from '@ant-design/icons-vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { getPage } from '@/api';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { Modal, Button, Tooltip } from 'ant-design-vue';
 
 const props = defineProps({ id: { type: String, default: () => '' } });

@@ -2,7 +2,7 @@ import type { Page, PageConfig, RootStateType } from '@/typings';
 import { shallowReactive, toRaw } from 'vue';
 import { addPage, updatePage } from '@/api';
 import { Store } from 'vuex';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { message } from 'ant-design-vue';
 import config from '@/config';
 import { Router } from 'vue-router';

@@ -1,5 +1,5 @@
 import type { Gallery, Data, GalleryGroup, Group } from '@/typings';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { App } from 'vue';
 import ComponentGroup from './group.vue';
 

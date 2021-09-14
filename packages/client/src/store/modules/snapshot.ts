@@ -1,6 +1,6 @@
 import type { Data, Page, RootStateType, Snapshot } from '@/typings';
 import { Module, Mutation, Action } from 'vuex';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { BoardEnum } from './board';
 import config from '@/config';
 import { pageConfig } from '@/hooks';
