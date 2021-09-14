@@ -27,7 +27,7 @@ export const verifyToken: Middleware = async (ctx, next) => {
     }
     ctx.state.userId = data;
     await next();
-  } catch (e) {
+  } catch (e: any) {
     throw new Error(e);
   }
 };
