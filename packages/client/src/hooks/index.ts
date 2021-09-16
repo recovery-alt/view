@@ -5,4 +5,3 @@ export * from './page';
 export * from './manage';
 export * from './panel';
 export * from './theme';
-export * from './data-panel';

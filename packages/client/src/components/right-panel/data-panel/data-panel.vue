@@ -38,7 +38,7 @@
               </Select>
             </Col>
             <Col offset="2">
-              <Button type="primary" size="small" @click="fetchData"> 更新数据 </Button>
+              <Button type="primary" size="small" @click="resolveData"> 更新数据 </Button>
             </Col>
           </Row>
         </FormItem>
@@ -63,7 +63,7 @@
       </Form>
       <Divider />
       <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="fetchData" /> </Divider>
+      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="resolveData" /> </Divider>
       <CodeMirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
     </Drawer>
     <Modal
@@ -78,17 +78,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { Data } from '@/typings';
-import type { DataSourceKey } from '@/config';
 import { useStore } from '@/store';
-import { computed, onMounted, reactive, ref, shallowReactive, shallowRef, watchEffect } from 'vue';
+import { computed, ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
-import { generateColumns } from '@/utils';
 import { CodeMirror } from '@/components';
 import type { EditorView } from '@codemirror/basic-setup';
-import json from 'json5';
-import { useDrawer } from '@/hooks';
-import { DataSource } from '@/config';
+import { useDrawer, useModal, useTimeline, useTable } from './hook';
 import {
   Timeline,
   TimelineItem,
@@ -113,100 +108,13 @@ const viewer = shallowRef<EditorView>();
 const dataStringify = ref<string>();
 const curComponent = computed(() => board.data[board.selected[0]]);
 
-const { drawer, modal, refreshData, handleFilterChange, fetchData } = useDrawer(
-  dataStringify,
-  curComponent
-);
+const { drawer, refreshData, resolveData } = useDrawer(dataStringify, curComponent);
 
-const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
-  data: [],
-  columns: generateColumns([
-    {
-      title: '字段',
-      key: 'key',
-    },
-    {
-      title: '映射',
-      key: 'mapping',
-    },
-    {
-      title: '状态',
-      key: 'status',
-    },
-  ]),
-});
+const { modal, handleFilterChange } = useModal(curComponent, drawer);
 
-const timeline = reactive([
-  {
-    actived: true,
-    text: DataSource[curComponent.value.data!.type],
-    btnText: '设置数据源',
-    event: () => {
-      drawer.show = true;
-      drawer.openFilter = !!curComponent.value.data!.filter;
-    },
-  },
-  {
-    actived: !!curComponent.value.data!.filter,
-    text: '数据过滤器',
-    btnText: '添加过滤器',
-    event: () => {
-      modal.show = true;
-    },
-  },
-  {
-    actived: true,
-    text: '数据响应结果（只读）',
-    event: () => {
-      // TODO
-    },
-  },
-]);
+const { timeline } = useTimeline(curComponent, drawer, modal);
 
-const resolveDataset = () => {
-  if (!curComponent.value) return;
-  const { data } = curComponent.value;
-  if (!data) return;
-  const { type, static: dataset } = data;
-
-  const strategy: Record<DataSourceKey, () => void> = {
-    url() {
-      // TODO
-    },
-    static() {
-      dataStringify.value = json.stringify(dataset);
-    },
-  };
-  const handler = strategy[type] || strategy.static;
-  handler();
-};
-
-watchEffect(() => {
-  if (!curComponent.value) return;
-  const { data } = curComponent.value;
-  if (data) {
-    timeline[0].text = DataSource[data!.type];
-    timeline[1].actived = !!data.filter;
-  }
-});
-
-watchEffect(() => {
-  if (!curComponent.value) return;
-  const { data } = curComponent.value;
-  if (data?.static?.[0]) {
-    table.data = Object.keys(data.static[0]).map(key => ({
-      key,
-      mapping: '-',
-      status: '匹配成功',
-    }));
-  }
-});
-
-onMounted(() => {
-  watchEffect(() => {
-    resolveDataset();
-  });
-});
+const { table } = useTable(curComponent);
 </script>
 
 <style lang="less">

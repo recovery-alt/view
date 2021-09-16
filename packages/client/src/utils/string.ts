@@ -1,4 +1,5 @@
 import { pki } from 'node-forge';
+import json from 'json5';
 
 export const encrypt = (input: string) => {
   const publicKey = `-----BEGIN PUBLIC KEY-----
@@ -18,4 +19,9 @@ export const encrypt = (input: string) => {
   } catch (err) {
     return err;
   }
+};
+
+export const callFilter = (filterStr: string, data?: string) => {
+  const filter = new Function('data', `return (${filterStr})(data)`);
+  return json.stringify(filter(json.parse(data || '[]')));
 };
