@@ -55,26 +55,30 @@ export const useDrawer = (
     }
   };
 
-  const fetchData = () => {
+  const fetchData = async () => {
     if (!curComponent.value?.data) return;
     const { url, type } = curComponent.value.data;
     const strategy = {
       url() {
         if (url && isUrl(url)) {
-          fetch(url)
-            .then(res => res.json())
-            .then(res => {
-              dataStringify.value = format(JSON.stringify(res), {
-                parser: 'json5',
-                plugins: [parserBabel],
+          return new Promise<void>((resolve, reject) => {
+            fetch(url)
+              .then(res => res.json())
+              .then(res => {
+                dataStringify.value = format(JSON.stringify(res), {
+                  parser: 'json5',
+                  plugins: [parserBabel],
+                });
+                resolve();
+              })
+              .catch(() => {
+                reject();
+                dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
+                  parser: 'json5',
+                  plugins: [parserBabel],
+                });
               });
-            })
-            .catch(() => {
-              dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
-                parser: 'json5',
-                plugins: [parserBabel],
-              });
-            });
+          });
         }
       },
       static: refreshData,
@@ -82,7 +86,10 @@ export const useDrawer = (
 
     const handler = strategy[type];
 
-    handler();
+    await handler();
+    if (!curComponent.value.data?.filter) return;
+    const filter = new Function(curComponent.value.data.filter);
+    dataStringify.value = filter(dataStringify.value);
   };
 
   return { drawer, modal, refreshData, handleFilterChange, fetchData };

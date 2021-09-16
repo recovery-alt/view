@@ -156,9 +156,9 @@ onBeforeRouteLeave((to, from) => {
 
   if (!letgo && modified) {
     Modal.confirm({
-      title: '警告',
-      content: '系统可能不会保存您所做的更改，是否离开？',
-      icon: createVNode(ExclamationCircleOutlined),
+      title: () => '警告',
+      content: () => '系统可能不会保存您所做的更改，是否离开？',
+      icon: () => createVNode(ExclamationCircleOutlined),
       onOk() {
         letgo = true;
         router.push(to);
