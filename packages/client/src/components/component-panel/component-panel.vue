@@ -83,10 +83,10 @@ const getImgSrc = (type?: string) => {
   flex-shrink: 0;
   box-sizing: border-box;
   z-index: 4;
-  background-color: var(--body-bg);
-  transition: width 0.3s var(--ease-in-out);
+  background-color: @component-background;
+  transition: width 0.3s @ease-in-out;
   white-space: nowrap;
-  border-right: 1px solid var(--border-color-base);
+  border-right: 1px solid @border-color-base;
 
   &--hide {
     width: 0;
@@ -95,7 +95,7 @@ const getImgSrc = (type?: string) => {
 
   &__header {
     height: 30px;
-    background-color: var(--heading-bg);
+    background-color: @layout-body-background;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -132,14 +132,14 @@ const getImgSrc = (type?: string) => {
       height: 22px;
       box-sizing: border-box;
       padding: 0 5px;
-      background-color: var(--heading-bg);
+      background-color: @layout-body-background;
       text-align: center;
-      border-bottom: 1px solid var(--border-color-base);
+      border-bottom: 1px solid @border-color-base;
     }
 
     img {
       width: 100%;
-      background-color: var(--background-color-light);
+      background-color: @background-color-light;
       pointer-events: none;
       height: calc(100% - 22px);
     }

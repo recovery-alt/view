@@ -133,12 +133,12 @@ const logout = () => {
 .exit-dropdown {
   padding: 0 8px;
   font-size: 16px;
-  color: var(--text-color);
+  color: @text-color;
   cursor: pointer;
   margin-left: 20px;
 
   &:hover {
-    background-color: var(--item-hover-bg);
+    background-color: @item-hover-bg;
   }
 }
 
@@ -146,7 +146,7 @@ const logout = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--text-color);
+  color: @text-color;
 
   &_span {
     margin-left: 5px;
@@ -156,7 +156,7 @@ const logout = () => {
 .theme-change {
   margin-left: 10px;
   &:hover {
-    color: var(--primary-color);
+    color: @primary-color;
   }
 }
 </style>

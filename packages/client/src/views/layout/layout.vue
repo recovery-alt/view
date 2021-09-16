@@ -48,11 +48,11 @@ const collapsed = ref(false);
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: var(--component-bg);
+  background-color: @layout-body-background;
 }
 
 .logo {
-  color: var(--text-color);
+  color: @text-color;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,18 +60,18 @@ const collapsed = ref(false);
 }
 
 .layout-header {
-  background: var(--body-bg);
+  background: @component-background;
   padding: 10px;
   font-size: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--text-color);
+  color: @text-color;
 }
 
 .layout-content {
   flex: 1;
-  background: var(--body-bg);
+  background: @component-background;
   margin: 24px 16px;
   padding: 24px;
   min-height: 280px;

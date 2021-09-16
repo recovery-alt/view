@@ -5,11 +5,18 @@ import jsx from '@vitejs/plugin-vue-jsx';
 import eslintPlugin from 'vite-plugin-eslint';
 import styleImport from 'vite-plugin-style-import';
 import visualizer from 'rollup-plugin-visualizer';
+import { configThemePlugin } from './build/theme';
+import { generateModifyVars } from './build';
+
+const isProd = process.env.NODE_ENV === 'produciton';
+
+const themePlugins = configThemePlugin(isProd);
 
 const plugins = [
   vue(),
   jsx(),
   eslintPlugin(),
+  ...themePlugins,
   styleImport({
     libs: [
       {
@@ -68,8 +75,6 @@ export default defineConfig({
             return 'ant-design-vue';
           } else if (id.includes('lodash')) {
             return 'lodash';
-          } else if (id.includes('vue')) {
-            return 'vue';
           } else if (id.includes('echarts')) {
             return 'echarts';
           } else if (id.includes('node_modules')) {
@@ -82,6 +87,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
+        modifyVars: generateModifyVars(),
         javascriptEnabled: true,
       },
     },

@@ -70,7 +70,7 @@ const handleClose = () => {
     max-width: 80vw;
     max-height: 80vh;
     overflow: hidden;
-    color: var(--black);
+    color: @black;
     display: flex;
     flex-direction: column;
   }
@@ -80,9 +80,9 @@ const handleClose = () => {
     height: 50px;
     line-height: 50px;
     text-align: center;
-    background-color: var(--heading-bg);
-    color: var(--text-color);
-    border-bottom: 1px solid var(--border-color-base);
+    background-color: @layout-body-background;
+    color: @text-color;
+    border-bottom: 1px solid @border-color-base;
   }
 
   &__close {
@@ -93,7 +93,7 @@ const handleClose = () => {
     cursor: pointer;
 
     &:hover {
-      color: var(--primary-color);
+      color: @primary-color;
     }
   }
 

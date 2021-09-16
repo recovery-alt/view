@@ -64,7 +64,7 @@ const submitLogin = async () => {
 <style lang="less" scoped>
 .login {
   height: 100%;
-  background-color: var(--component-bg);
+  background-color: @layout-body-background;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +72,7 @@ const submitLogin = async () => {
   &-box {
     box-sizing: border-box;
     padding: 20px;
-    background-color: var(--body-bg);
+    background-color: @component-background;
     display: flex;
     flex-direction: column;
     align-items: center;

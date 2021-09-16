@@ -82,7 +82,7 @@ const fields: Array<Field> = [
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background-color: var(--heading-bg);
+    background-color: @layout-body-background;
   }
 
   &__wrapper {

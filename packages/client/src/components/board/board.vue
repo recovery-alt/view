@@ -95,7 +95,6 @@
         :min="30"
         :max="150"
         :step="10"
-        dots
         :tip-formatter="sliderFormatter"
         @change="handleSliderChange"
       />
@@ -200,16 +199,16 @@ onMounted(() => {
 <style lang="less">
 .board {
   position: absolute;
-  background-color: var(--body-bg);
+  background-color: @component-background;
   top: 60px;
   left: 60px;
   transform-origin: 0 0;
-  transition: 0.2s all var(--ease-in-out);
+  transition: 0.2s all @ease-in-out;
   background-size: cover, contain;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
-  box-shadow: var(--box-shadow-base);
-  color: var(--black);
+  box-shadow: @box-shadow-base;
+  color: @black;
 
   &__component {
     pointer-events: none;
@@ -218,8 +217,8 @@ onMounted(() => {
   &__mask {
     position: absolute;
     opacity: 0.5;
-    background-color: var(--primary-1);
-    border: 1px solid var(--border-color-base);
+    background-color: @primary-1;
+    border: 1px solid @border-color-base;
   }
 }
 
@@ -231,13 +230,13 @@ onMounted(() => {
 
   &:focus {
     outline: none;
-    box-shadow: var(--box-shadow-base);
+    box-shadow: @box-shadow-base;
   }
 }
 
 .screen-shot {
-  background-image: linear-gradient(90deg, transparent 50%, var(--body-bg) 50%),
-    linear-gradient(180deg, var(--body-bg) 50%, transparent 50%);
+  background-image: linear-gradient(90deg, transparent 50%, @component-background) 50%,
+    linear-gradient(180deg, @component-background) 50%, transparent 50%;
   background-size: 10px 10px;
 }
 
@@ -259,8 +258,8 @@ onMounted(() => {
 
 .guide-line {
   &__controller {
-    border-right: 1px solid var(--border-color-base);
-    border-bottom: 1px solid var(--border-color-base);
+    border-right: 1px solid @border-color-base;
+    border-bottom: 1px solid @border-color-base;
     width: 20px;
     height: 20px;
     font-size: 14px;
@@ -270,7 +269,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: var(--body-bg);
+    background-color: @component-background;
   }
 }
 
@@ -278,7 +277,7 @@ onMounted(() => {
   position: absolute;
   right: 0;
   bottom: 40px;
-  background-color: var(--component-bg);
+  background-color: @layout-body-background;
   height: 30px;
   width: 100%;
   display: flex;
@@ -299,7 +298,7 @@ onMounted(() => {
     cursor: pointer;
 
     &:hover {
-      color: var(--text-color);
+      color: @text-color;
     }
   }
 
@@ -323,7 +322,7 @@ onMounted(() => {
   position: absolute;
   right: 5px;
   bottom: 70px;
-  transition: 0.3s transform var(--ease-in-out);
+  transition: 0.3s transform @ease-in-out;
 
   &__canvas {
     width: 190px;
@@ -333,7 +332,7 @@ onMounted(() => {
 
   span {
     position: absolute;
-    outline: 1px solid var(--white);
+    outline: 1px solid @white;
     z-index: 2;
     top: 0;
     left: 0;
@@ -345,7 +344,7 @@ onMounted(() => {
 
 .markline {
   position: absolute;
-  background-color: var(--primary-color);
+  background-color: @primary-color;
 
   width: 1px;
 
@@ -369,8 +368,8 @@ onMounted(() => {
   span {
     position: absolute;
     left: 5px;
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: @primary-color;
+    color: @white;
     padding: 0 3px;
   }
 }

@@ -17,7 +17,7 @@
         </TimelineItem>
       </Timeline>
     </div>
-    <CodeMirror v-model:viewer="viewer" v-model:doc="dataStringify" class="code-box" readonly />
+    <CodeMirror v-model:viewer="viewer" :doc="dataStringify" class="code-box" readonly />
     <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <Drawer
       v-if="curComponent.data"
@@ -58,13 +58,13 @@
         <CodeMirror
           v-if="curComponent.data.type === 'static'"
           v-model:viewer="drawer.viewer"
-          v-model:doc="dataStringify"
+          :doc="dataStringify"
         />
       </Form>
       <Divider />
       <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
       <Divider orientation="right"> 响应结果 <ReloadOutlined @click="resolveData" /> </Divider>
-      <CodeMirror v-model:viewer="viewer" v-model:doc="dataStringify" readonly />
+      <CodeMirror v-model:viewer="drawer.readonlyViewer" :doc="dataStringify" readonly />
     </Drawer>
     <Modal
       v-model:visible="modal.show"
@@ -72,7 +72,7 @@
       :z-index="1001"
       @ok="handleFilterChange(true)"
     >
-      <CodeMirror v-model:viewer="modal.viewer" v-model:doc="modal.doc" type="javascript" />
+      <CodeMirror v-model:viewer="modal.viewer" :doc="modal.doc" type="javascript" />
     </Modal>
   </div>
 </template>
@@ -119,7 +119,7 @@ const { table } = useTable(curComponent);
 
 <style lang="less">
 .data-panel {
-  background-color: var(--body-bg);
+  background-color: @component-background;
 
   &__drawer {
     &-row {
@@ -156,6 +156,6 @@ const { table } = useTable(curComponent);
 }
 
 .ant-drawer-body .ant-divider-inner-text span:hover {
-  color: var(--primary-color);
+  color: @primary-color;
 }
 </style>

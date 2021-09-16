@@ -1,6 +1,5 @@
 @import 'normalize.css';
 @import 'animate.css';
-@import 'css-vars.less';
 @import 'rewrite.less';
 
 ::-webkit-scrollbar {
@@ -9,21 +8,21 @@
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset var(--box-shadow-base);
-  border-radius: var(--border-radius-base);
-  background: var(--white);
+  box-shadow: inset @box-shadow-base;
+  border-radius: @border-radius-base;
+  background: @white;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: var(--border-radius-base);
-  box-shadow: inset var(--box-shadow-base);
-  background-color: var(--normal-color);
+  border-radius: @border-radius-base;
+  box-shadow: inset @box-shadow-base;
+  background-color: @normal-color;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--black);
+  background: @black;
 }
 
 ::-webkit-scrollbar-corner {
-  background: var(--white);
+  background: @white;
 }

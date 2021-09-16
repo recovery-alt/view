@@ -14,6 +14,7 @@ type Drawer = {
   openFilter: boolean;
   options: Array<{ value: DataSourceKey; label: string }>;
   viewer?: EditorView;
+  readonlyViewer?: EditorView;
 };
 
 type Modal = { show: boolean; doc: string; viewer?: EditorView };

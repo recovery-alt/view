@@ -6,12 +6,15 @@
 import type { Data } from '@/typings';
 import type { PropType } from 'vue';
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
-import { language, LezerLanguage } from '@codemirror/language';
+import { language, LRLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
 import { onMounted, watchEffect, shallowRef } from 'vue';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
+import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark';
+import { defaultHighlightStyle } from '@codemirror/highlight';
+import { theme } from '@/hooks';
 
 const props = defineProps({
   viewer: {
@@ -34,9 +37,14 @@ const props = defineProps({
 
 const emit = defineEmits(['update:viewer']);
 
+const themeExtensions = {
+  light: [defaultHighlightStyle],
+  dark: [oneDarkTheme, oneDarkHighlightStyle],
+};
+
 const cm = shallowRef<HTMLElement>();
 
-const strategy: Data<LezerLanguage> = {
+const strategy: Data<LRLanguage> = {
   json: jsonLanguage,
   javascript: javascriptLanguage,
 };
@@ -48,7 +56,12 @@ watchEffect(() => {
   const lang = strategy[props.type] || strategy.json;
   const state = EditorState.create({
     doc,
-    extensions: [basicSetup, language.of(lang), EditorView.editable.of(!props.readonly)],
+    extensions: [
+      basicSetup,
+      language.of(lang),
+      EditorView.editable.of(!props.readonly),
+      ...themeExtensions[theme.value],
+    ],
   });
   props.viewer.setState(state);
 });
@@ -64,7 +77,7 @@ onMounted(() => {
   overflow: auto;
   height: 200px;
   margin-bottom: 5px;
-  border: 1px solid var(--border-color-base);
+  border: 1px solid @border-color-base;
 
   :deep {
     .cm-editor {

@@ -149,12 +149,12 @@ onMounted(() => {
 .board-menu {
   position: absolute;
   z-index: 2;
-  color: var(--text-color);
+  color: @text-color;
 
   ul {
-    background-color: var(--component-bg);
+    background-color: @layout-body-background;
     border-radius: 5px;
-    box-shadow: var(--box-shadow-base);
+    box-shadow: @box-shadow-base;
     padding: 5px 0;
   }
 
@@ -165,13 +165,13 @@ onMounted(() => {
     padding-right: 3em;
 
     &:hover {
-      background-color: var(--primary-color);
-      color: var(--text-color-inverse);
+      background-color: @primary-color;
+      color: @text-color-inverse;
     }
 
     &:nth-child(4),
     &:nth-child(8) {
-      border-bottom: 1px solid var(--border-color-base);
+      border-bottom: 1px solid @border-color-base;
     }
 
     &.--disable {
@@ -179,8 +179,8 @@ onMounted(() => {
       opacity: 0.3;
 
       &:hover {
-        color: var(--text-color);
-        background-color: var(--item-hover-bg);
+        color: @text-color;
+        background-color: @item-hover-bg;
       }
     }
   }

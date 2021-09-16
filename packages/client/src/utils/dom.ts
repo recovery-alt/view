@@ -19,7 +19,7 @@ export const changeTheme = () => {
     theme.value = 'dark';
     local.set(LocalKeys.IS_DARK, 1);
   }
-  document.documentElement.setAttribute('theme', theme.value);
+  document.documentElement.setAttribute('data-theme', theme.value);
 };
 
 export const getCurrentCSSVar = (cssVar: string) =>

@@ -2,12 +2,12 @@
   position: relative;
   width: 200px;
   height: 100%;
-  border-right: 1px solid var(--border-color-base);
-  transition: width 0.3s var(--ease-in-out);
+  border-right: 1px solid @border-color-base;
+  transition: width 0.3s @ease-in-out;
   z-index: 4;
   overflow: hidden;
   white-space: nowrap;
-  background-color: var(--body-bg);
+  background-color: @component-background;
 
   .ant-empty {
     margin-top: 20px;
@@ -24,7 +24,7 @@
 
   &__header {
     height: 30px;
-    background-color: var(--heading-bg);
+    background-color: @layout-body-background;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,11 +41,11 @@
       font-size: 16px;
 
       &:hover {
-        color: var(--primary-color);
+        color: @primary-color;
       }
 
       &.--active {
-        color: var(--primary-color);
+        color: @primary-color;
       }
     }
   }
@@ -61,16 +61,16 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0 27px;
-    border-bottom: 1px solid var(--border-color-base);
-    background-color: var(--body-bg);
+    border-bottom: 1px solid @border-color-base;
+    background-color: @component-background;
 
     span {
       padding: 3px;
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-color);
-        color: var(--white);
+        background-color: @primary-color;
+        color: @white;
       }
     }
   }
@@ -89,12 +89,12 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--item-hover-bg);
+        background-color: @item-hover-bg;
       }
 
       &.--active {
-        color: var(--white);
-        background-color: var(--primary-color);
+        color: @white;
+        background-color: @primary-color;
       }
     }
 
@@ -117,8 +117,8 @@
       img {
         width: 51px;
         height: 34px;
-        border: 1px solid var(--border-color-base);
-        background-color: var(--hight-contrast-bg);
+        border: 1px solid @border-color-base;
+        background-color: @body-background;
       }
 
       b {
@@ -128,7 +128,7 @@
     }
 
     .--animated {
-      transition: transform 0.3s var(--ease-in-out);
+      transition: transform 0.3s @ease-in-out;
     }
 
     .--icon {
@@ -140,7 +140,7 @@
 
   &__footer {
     height: 30px;
-    border-top: 1px solid var(--border-color-base);
+    border-top: 1px solid @border-color-base;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -152,14 +152,14 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--primary-color);
-        color: var(--white);
+        background-color: @primary-color;
+        color: @white;
       }
     }
 
     .--icon {
-      background-color: var(--primary-color);
-      color: var(--text-color-inverse);
+      background-color: @primary-color;
+      color: @text-color-inverse;
     }
   }
 }

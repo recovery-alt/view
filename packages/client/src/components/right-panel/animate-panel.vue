@@ -153,7 +153,7 @@ const del = (index: number) => {
         height: 0;
         border-left: 20px solid transparent;
         border-right: 20px solid transparent;
-        border-bottom: 40px solid var(--primary-color);
+        border-bottom: 40px solid @primary-color;
         margin-bottom: 10px;
       }
     }

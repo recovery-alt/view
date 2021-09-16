@@ -56,7 +56,7 @@ onMounted(() => {
 
 <style lang="less">
 .board-ruler {
-  background-color: var(--hight-contrast-bg);
+  background-color: @body-background;
   height: 20px;
 }
 </style>

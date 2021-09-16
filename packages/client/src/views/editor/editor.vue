@@ -177,7 +177,7 @@ onBeforeRouteLeave((to, from) => {
 <style lang="less">
 .header {
   height: 41px;
-  border-bottom: 1px solid var(--border-color-base);
+  border-bottom: 1px solid @border-color-base;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -185,7 +185,7 @@ onBeforeRouteLeave((to, from) => {
   padding: 0 20px;
   position: relative;
   z-index: 100;
-  background-color: var(--body-bg);
+  background-color: @component-background;
 
   img {
     cursor: pointer;
@@ -229,7 +229,7 @@ onBeforeRouteLeave((to, from) => {
 .mid-panel {
   flex: 1;
   height: 100%;
-  background-color: var(--component-bg);
+  background-color: @layout-body-background;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -240,9 +240,9 @@ onBeforeRouteLeave((to, from) => {
     align-items: center;
     box-sizing: border-box;
     padding-left: 30px;
-    border-bottom: 1px solid var(--border-color-base);
+    border-bottom: 1px solid @border-color-base;
     z-index: 10;
-    background-color: var(--body-bg);
+    background-color: @component-background;
   }
 
   &__wrapper {

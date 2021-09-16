@@ -222,7 +222,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   box-sizing: border-box;
 
   &:hover {
-    outline: 1px dashed var(--outline-color);
+    outline: 1px dashed @outline-color;
   }
 
   & > *:first-child {
@@ -237,7 +237,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
 
   .shape-rotate {
     position: absolute;
-    color: var(--primary-color);
+    color: @primary-color;
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
@@ -249,7 +249,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   }
 
   &.--active {
-    outline: 1px solid var(--outline-color);
+    outline: 1px solid @outline-color;
   }
 
   &__graticule {
@@ -257,12 +257,12 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
 
     &.--x {
       top: -1px;
-      border-top: 1px solid var(--primary-color);
+      border-top: 1px solid @primary-color;
       height: 0;
     }
     &.--y {
       left: -1px;
-      border-left: 1px solid var(--primary-color);
+      border-left: 1px solid @primary-color;
       width: 0;
     }
   }
@@ -273,7 +273,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     left: -5px;
     font-size: 16px;
     font-weight: bold;
-    color: var(--primary-color);
+    color: @primary-color;
     transform: translate(-100%, -100%);
   }
 
@@ -281,10 +281,10 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     position: absolute;
     width: @radius * 2;
     height: @radius * 2;
-    border: 1px solid var(--primary-color);
+    border: 1px solid @primary-color;
     box-sizing: border-box;
     border-radius: 50%;
-    background-color: var(--white);
+    background-color: @white;
     z-index: 1;
   }
 

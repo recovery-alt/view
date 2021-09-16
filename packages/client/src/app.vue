@@ -15,6 +15,6 @@ import { ConfigProvider } from 'ant-design-vue';
 onMounted(() => {
   const isDark = local.get(LocalKeys.IS_DARK);
   theme.value = isDark ? 'dark' : 'light';
-  document.documentElement.setAttribute('theme', theme.value);
+  document.documentElement.setAttribute('data-theme', theme.value);
 });
 </script>
