@@ -101,6 +101,10 @@ watchEffect(() => {
     width: 100%;
   }
 
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+
   .ant-tabs-nav {
     width: 100%;
 

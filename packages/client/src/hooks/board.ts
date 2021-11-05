@@ -285,7 +285,7 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
   const screenShotSize = reactive({ width: 0, height: 0 });
   const rulerKey = ref(0);
 
-  const sliderFormatter = (value: number) => value + '%';
+  const sliderFormatter = (value?: number) => value + '%';
 
   const resizeScreenShot = () => {
     if (!canvasWrapperRef.value) return;
