@@ -5,7 +5,6 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
 import { wrapScale, theme } from '@/hooks';
-import { getCurrentCSSVar } from '@/utils';
 
 const canvas = shallowRef<HTMLCanvasElement>();
 const color = ref<string>('');
@@ -47,7 +46,7 @@ onMounted(() => {
 
   watchEffect(() => {
     if (theme.value) {
-      color.value = getCurrentCSSVar('--text-color');
+      color.value = theme.value === 'dark' ? '#fff' : '#000';
       reRenderCanvas();
     }
   });

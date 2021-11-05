@@ -38,7 +38,7 @@
               </Select>
             </Col>
             <Col offset="2">
-              <Button type="primary" size="small" @click="resolveData"> 更新数据 </Button>
+              <Button type="primary" size="small" @click="resolveData()"> 更新数据 </Button>
             </Col>
           </Row>
         </FormItem>
@@ -63,7 +63,7 @@
       </Form>
       <Divider />
       <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="resolveData" /> </Divider>
+      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="resolveData()" /> </Divider>
       <CodeMirror v-model:viewer="drawer.readonlyViewer" :doc="dataStringify" readonly />
     </Drawer>
     <Modal

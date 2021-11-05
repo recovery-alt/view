@@ -1,5 +1,4 @@
 import type { Data, CSSStyleDataWithRotate } from '@/typings';
-import { darkCssIsReady, loadDarkThemeCss } from 'vite-plugin-theme/es/client';
 
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false;
@@ -88,22 +87,3 @@ export const splitStyleAndPatch = (style: CSSStyleDataWithRotate, position = tru
   const data = position ? { width, height, left, top } : { ...resStyle };
   return patchUnit(data);
 };
-
-export async function updateDarkTheme(mode: string | null = 'light') {
-  const htmlRoot = document.documentElement;
-  const hasDarkClass = hasClass(htmlRoot, 'dark');
-  if (mode === 'dark') {
-    if (import.meta.env.PROD && !darkCssIsReady) {
-      await loadDarkThemeCss();
-    }
-    htmlRoot.setAttribute('data-theme', 'dark');
-    if (!hasDarkClass) {
-      addClass(htmlRoot, 'dark');
-    }
-  } else {
-    htmlRoot.setAttribute('data-theme', 'light');
-    if (hasDarkClass) {
-      removeClass(htmlRoot, 'dark');
-    }
-  }
-}

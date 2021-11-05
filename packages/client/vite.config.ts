@@ -8,7 +8,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import { configThemePlugin } from './build/theme';
 import { generateModifyVars } from './build';
 
-const isProd = process.env.NODE_ENV === 'produciton';
+const isProd = process.env.NODE_ENV === 'production';
 
 const themePlugins = configThemePlugin(isProd);
 

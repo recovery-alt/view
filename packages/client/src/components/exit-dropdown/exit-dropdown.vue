@@ -44,12 +44,13 @@
 <script lang="ts" setup>
 import type { RuleType } from 'ant-design-vue/lib/form/interface';
 import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
-import { local, to, encrypt, changeTheme } from '@/utils';
+import { local, to, encrypt } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
 import { reactive, ref } from 'vue';
 import { changePassword } from '@/api';
 import json from 'json5';
+import { changeTheme } from '@/hooks';
 import {
   message,
   Dropdown,

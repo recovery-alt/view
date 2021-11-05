@@ -51,9 +51,9 @@
 <script lang="ts" setup>
 import type { Page } from '@/typings';
 import type { Component } from 'vue';
-import { on, changeTheme } from '@/utils';
+import { on } from '@/utils';
 import { useStore, SnapshotEnum, BoardEnum } from '@/store';
-import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
+import { pageConfig, updateCachePage, savePage, isModified, panel, changeTheme } from '@/hooks';
 import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
