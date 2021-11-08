@@ -1,8 +1,7 @@
 {
-  "name": "view-server",
+  "name": "view-be",
   "private": true,
-  "version": "1.0.0",
-  "license": "MIT",
+  "version": "0.3.0",
   "_moduleAliases": {
     "@": "."
   },
