@@ -3,9 +3,8 @@
   "private": true,
   "version": "0.3.0",
   "scripts": {
-    "dev": "concurrently \"cd packages/client && vite --host\" \"cd packages/server && tsc --noEmit && npx ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts\"",
-    "build": "sh scripts/build.sh",
-    "test": "sh scripts/test.sh",
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "docs:dev": "vitepress dev docs --host",
@@ -16,9 +15,9 @@
     "@commitlint/cli": "^14.1.0",
     "@commitlint/config-conventional": "^14.1.0",
     "@ls-lint/ls-lint": "^1.10.0",
-    "@types/node-forge": "^0.10.8",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
+    "chalk": "^4.1.2",
     "concurrently": "^6.3.0",
     "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.32.0",
@@ -26,12 +25,12 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "execa": "^5.1.1",
+    "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.13",
+    "rimraf": "^3.0.2",
     "vitepress": "^0.20.1"
   }
 }
