@@ -13,6 +13,7 @@ printf '服务端打包完成！\n'
 mv dist ../../
 cp -r src/key ../../dist
 cp -r src/public ../../dist
+cp package.json ../../dist
 
 cd ../client
 

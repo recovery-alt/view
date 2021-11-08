@@ -56,7 +56,7 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(config => {
   const authorization = local.get(LocalKeys.AUTHORIZATION);
-  if (authorization) {
+  if (authorization && config.headers) {
     config.headers.authorization = authorization;
   }
   return config;

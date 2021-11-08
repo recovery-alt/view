@@ -88,6 +88,25 @@ const getImgSrc = (type?: string) => {
   white-space: nowrap;
   border-right: 1px solid @border-color-base;
 
+  .ant-tabs {
+    &.ant-tabs-left {
+      height: 100%;
+
+      > .ant-tabs-nav .ant-tabs-tab {
+        padding: 4px 10px;
+      }
+
+      > .ant-tabs-content-holder > .ant-tabs-content {
+        height: 100%;
+
+        > .ant-tabs-tabpane {
+          padding-left: 0;
+          overflow-y: auto;
+        }
+      }
+    }
+  }
+
   &--hide {
     width: 0;
     border: 0;
@@ -112,20 +131,16 @@ const getImgSrc = (type?: string) => {
   }
 
   &__list {
-    height: calc(100% - 30px);
     box-sizing: border-box;
     padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     margin-bottom: 0;
-    overflow: auto;
   }
 
   &__item {
     width: 80px;
     height: 80px;
-    margin-bottom: 6px;
     cursor: pointer;
 
     header {
@@ -151,7 +166,8 @@ const getImgSrc = (type?: string) => {
     justify-content: center;
     align-items: center;
 
-    span {
+    .anticon {
+      margin-right: 0;
       margin-top: 6px;
       font-size: 16px;
     }

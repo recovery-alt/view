@@ -27,6 +27,8 @@ module.exports = {
     'vue/no-mutating-props': process.env.NODE_ENV === 'production' ? 1 : 0,
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
+    'vue/multi-word-component-names': 0,
+    'vue/valid-define-props': 0,
   },
   overrides: [
     {

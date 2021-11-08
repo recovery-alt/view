@@ -2,70 +2,36 @@
   "name": "view",
   "private": true,
   "version": "0.3.0",
-  "_moduleAliases": {
-    "@": "dist"
-  },
   "scripts": {
     "dev": "concurrently \"cd packages/client && vite --host\" \"cd packages/server && tsc --noEmit && npx ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts\"",
     "build": "sh scripts/build.sh",
     "test": "sh scripts/test.sh",
-    "start": "pm2 start dist/app.js",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "docs:dev": "vitepress dev docs --host",
     "docs:build": "vitepress build docs",
     "postinstall": "husky install"
   },
-  "dependencies": {
-    "module-alias": "^2.2.2",
-    "node-forge": "^0.10.0",
-    "pm2": "^5.1.2",
-    "uuid": "^8.3.2",
-    "vue": "^3.2.21"
-  },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/cli": "^14.1.0",
+    "@commitlint/config-conventional": "^14.1.0",
     "@ls-lint/ls-lint": "^1.10.0",
-    "@types/node-forge": "^0.9.10",
-    "@types/uuid": "^8.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
-    "chalk": "^4.1.2",
-    "commitizen": "^4.2.4",
+    "@types/node-forge": "^0.10.8",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
     "concurrently": "^6.3.0",
     "conventional-changelog-cli": "^2.1.1",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.1",
-    "eslint-plugin-vue": "^7.20.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
     "husky": "^7.0.4",
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
     "vite": "^2.6.13",
-    "vitepress": "^0.15.6"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "printWidth": 100,
-    "semi": true,
-    "arrowParens": "avoid"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": "eslint --fix",
-    "*.{css,html,less,json,md}": "prettier -w"
-  },
-  "commitlint": {
-    "extends": "@commitlint/config-conventional"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "vitepress": "^0.20.1"
   }
 }

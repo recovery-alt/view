@@ -6,7 +6,7 @@ export * from './user';
 export * from './page';
 
 export const initMongoose = () => {
-  mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(mongoUri);
   mongoose.connection.on('connected', () => {
     console.log(chalk.green('Mongoose connection success'));
   });

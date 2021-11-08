@@ -1,4 +1,4 @@
-import NotFound from './404.vue';
-import Forbidden from './403.vue';
+import NotFound from './not-found.vue';
+import Forbidden from './forbidden.vue';
 
 export { NotFound, Forbidden };

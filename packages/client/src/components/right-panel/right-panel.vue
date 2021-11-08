@@ -105,27 +105,23 @@ watchEffect(() => {
     margin-bottom: 0;
   }
 
-  .ant-tabs-nav {
+  .ant-tabs-nav-list {
     width: 100%;
+    display: flex;
 
-    & > div {
+    .ant-tabs-tab {
+      flex: 1;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0;
+      border-top: 2px solid @layout-body-background;
+      border-radius: 0;
 
-      .ant-tabs-tab {
-        text-align: center;
-        flex: 1;
+      &.ant-tabs-tab-active {
+        border-top: 2px solid @primary-color;
       }
     }
-  }
-
-  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-    margin-right: 0;
-    border-top: 2px solid @layout-body-background;
-    border-radius: 0;
-  }
-
-  .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
-    border-top: 2px solid @primary-color;
   }
 }
 </style>
