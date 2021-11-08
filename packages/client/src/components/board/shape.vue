@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BoardEnum, useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { boardOffset, wrapScale, showMenu, boardRefs, useEchartsResize } from '@/hooks';
 import { on, off, patchUnit } from '@/utils';
 import throttle from 'lodash/throttle';
@@ -38,9 +38,7 @@ const props = defineProps({
   active: { type: Boolean, default: () => false },
 });
 
-const store = useStore();
-
-const { board } = store.state;
+const board = useBoardStore();
 
 const { handleEchartsResize } = useEchartsResize();
 
@@ -78,7 +76,7 @@ const disable = computed(() => {
 const handleRightClick = (e: MouseEvent) => {
   e.preventDefault();
   if (!board.selected.includes(props.index)) {
-    store.dispatch(BoardEnum.SET_INDEX, props.index);
+    board.setIndex(props.index);
   }
   showMenu(e, 'board', board);
 };
@@ -88,7 +86,7 @@ const handleMousedown = (e: MouseEvent) => {
   // 没有按住ctrl的情况
   if (!e.ctrlKey && !e.metaKey) {
     if (!board.selected.includes(props.index)) {
-      store.dispatch(BoardEnum.SET_INDEX, props.index);
+      board.setIndex(props.index);
     }
     const curComponents = board.selected.map(index => board.data[index]);
     const startX = e.clientX;
@@ -124,7 +122,7 @@ const handleMousedown = (e: MouseEvent) => {
 
 const handleMouseup = (e: MouseEvent) => {
   if (e.ctrlKey || e.metaKey) {
-    store.dispatch(BoardEnum.CHANGE_SELECTED, props.index);
+    board.changeSelected(props.index);
   }
 };
 
@@ -132,14 +130,14 @@ const handleMousedownOnPoint = (e: MouseEvent) => {
   e.stopPropagation();
   e.preventDefault();
   // 多选情况下，强制改变为单选
-  store.dispatch(BoardEnum.SET_INDEX, props.index);
+  board.setIndex(props.index);
 
   const { className } = e.target as HTMLElement;
   const hasLeft = className.includes('left');
   const hasRight = className.includes('right');
   const hasTop = className.includes('top');
   const hasBottom = className.includes('bottom');
-  const { selected, data } = store.state.board;
+  const { selected, data } = board;
   const curComponent = data[selected[0]];
   const { top, left, width, height } = curComponent.style;
 
@@ -184,7 +182,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   e.stopPropagation();
   e.preventDefault();
   // 多选情况下，强制改变为单选
-  store.dispatch(BoardEnum.SET_INDEX, props.index);
+  board.setIndex(props.index);
 
   const startX = e.clientX;
   const startY = e.clientY;

@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { pageConfig } from '@/hooks';
-import { useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';
 import BoardBox from './box.vue';
@@ -36,9 +36,7 @@ defineProps({ modelValue: Boolean });
 
 const emit = defineEmits(['update:modelValue']);
 
-const store = useStore();
-
-const { board } = store.state;
+const board = useBoardStore();
 
 const pageStyle = computed(() => {
   const { width, height, backgroundColor } = pageConfig;
@@ -80,7 +78,7 @@ const handleClose = () => {
     height: 50px;
     line-height: 50px;
     text-align: center;
-    background-color: @layout-body-background;
+    background-color: @modal-header-bg;
     color: @text-color;
     border-bottom: 1px solid @border-color-base;
   }

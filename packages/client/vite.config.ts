@@ -36,7 +36,7 @@ const plugins = [
             'layout-content',
             'textarea',
           ];
-          if (!exclude.includes(name)) return `ant-design-vue/es/${name}/style/index`;
+          return exclude.includes(name) ? '' : `ant-design-vue/es/${name}/style/index`;
         },
       },
     ],

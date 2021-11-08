@@ -15,7 +15,7 @@ import {
 } from '@ant-design/icons-vue';
 import { panel, menu, showMenu } from '@/hooks';
 import { computed, reactive, ref, defineComponent, shallowRef } from 'vue';
-import { BoardEnum, useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import { Tooltip, Empty } from 'ant-design-vue';
@@ -25,43 +25,41 @@ import './layer-panel.less';
 export default defineComponent({
   name: 'layer-panel',
   setup() {
-    const store = useStore();
+    const board = useBoardStore();
 
     const showList = ref(false);
-
-    const { board } = store.state;
 
     const layerRef = shallowRef<HTMLElement>();
 
     const unlock = (e: MouseEvent, index: number) => {
       e.stopPropagation();
-      store.dispatch(BoardEnum.TOGGLE_LOCKED, index);
+      board.toggleLocked(index);
     };
     const show = (e: MouseEvent, index: number) => {
       e.stopPropagation();
-      store.dispatch(BoardEnum.SHOW, index);
+      board.show(index);
     };
 
     const moveActions = [
       {
         tip: '置顶',
         icon: VerticalAlignTopOutlined,
-        event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+        event: () => board.moveUp(true),
       },
       {
         tip: '置底',
         icon: VerticalAlignBottomOutlined,
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+        event: () => board.moveDown(true),
       },
       {
         tip: '上移',
         icon: ArrowUpOutlined,
-        event: () => store.dispatch(BoardEnum.MOVE_UP),
+        event: () => board.moveUp(),
       },
       {
         tip: '下移',
         icon: ArrowDownOutlined,
-        event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+        event: () => board.moveDown(),
       },
     ];
 
@@ -69,30 +67,30 @@ export default defineComponent({
       {
         tip: '成组',
         icon: FolderOutlined,
-        event: () => store.dispatch(BoardEnum.GROUP),
+        event: () => board.group(),
       },
       {
         tip: '取消成组',
         icon: FolderOpenOutlined,
-        event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
+        event: () => board.cancelGroup(),
       },
       {
         tip: '锁定',
         icon: LockOutlined,
-        event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
+        event: () => board.toggleLocked(board.selected),
       },
       {
         tip: '隐藏',
         icon: EyeInvisibleOutlined,
-        event: () => store.dispatch(BoardEnum.HIDE, board.selected),
+        event: () => board.hide(board.selected),
       },
     ];
 
     const changeSelected = (e: MouseEvent, index: number) => {
       if (e.ctrlKey || e.metaKey) {
-        store.dispatch(BoardEnum.CHANGE_SELECTED, index);
+        board.changeSelected(index);
       } else {
-        store.dispatch(BoardEnum.SET_INDEX, index);
+        board.setIndex(index);
       }
     };
 
@@ -114,7 +112,7 @@ export default defineComponent({
     const handleRightClick = (e: MouseEvent, index: number) => {
       e.preventDefault();
       if (!board.selected.includes(index)) {
-        store.dispatch(BoardEnum.SET_INDEX, index);
+        board.setIndex(index);
       }
       showMenu(e, 'layer', board);
     };

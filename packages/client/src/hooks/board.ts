@@ -1,5 +1,4 @@
-import type { Board, CSSStyleDataWithSize, Data, RootStateType } from '@/typings';
-import type { Router } from 'vue-router';
+import type { Board, CSSStyleDataWithSize, Data } from '@/typings';
 import { Ref } from 'vue';
 import {
   nextTick,
@@ -13,8 +12,7 @@ import {
   watchEffect,
 } from 'vue';
 import { getBoardReletedPosition, on, off } from '@/utils';
-import { BoardEnum } from '@/store';
-import { Store } from 'vuex';
+import { useBoardStore } from '@/store';
 import { getInstanceByDom } from 'echarts';
 import { panel, pageConfig, savePage } from '.';
 import debounce from 'lodash/debounce';
@@ -25,7 +23,8 @@ export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
 export const boardOffset = ref<{ left: number; top: number }>({ left: 0, top: 0 });
 
-export const useSelectMask = (store: Store<RootStateType>) => {
+export const useSelectMask = () => {
+  const board = useBoardStore();
   type SelectMask = {
     show: boolean;
     style: CSSStyleDataWithSize;
@@ -66,7 +65,7 @@ export const useSelectMask = (store: Store<RootStateType>) => {
         }
         selectMask.style.width = Math.abs(diffX);
         selectMask.style.height = Math.abs(diffY);
-        store.dispatch(BoardEnum.CALC_SELECTED_BY_RECT, selectMask.style);
+        board.calcSelectedByRect(selectMask.style);
       };
 
       const mouseup = (e: MouseEvent) => {
@@ -76,7 +75,7 @@ export const useSelectMask = (store: Store<RootStateType>) => {
         selectMask.show = false;
         // 如果重合的话，代表点击事件
         if (e.clientX == startX && e.clientY == startY) {
-          store.dispatch(BoardEnum.CANCEL_SELECTED);
+          board.cancelSelected();
         }
       };
 
@@ -345,15 +344,15 @@ export const useRuler = () => {
   return { rulerData, getStyle, getUnit, addMarkline, cancelMarkline };
 };
 
-export const useBoardKeydown = (store: Store<RootStateType>, router: Router) => {
-  const { board } = store.state;
+export const useBoardKeydown = () => {
+  const board = useBoardStore();
 
   // 快捷键事件策略
   const strategy: Data<(ctrl: boolean) => void> = {
-    Backspace: () => store.dispatch(BoardEnum.DEL),
-    a: ctrl => ctrl && store.dispatch(BoardEnum.SELECT_ALL),
-    s: ctrl => ctrl && savePage(store, router),
-    c: ctrl => ctrl && store.dispatch(BoardEnum.COPY),
+    Backspace: () => board.del(),
+    a: ctrl => ctrl && board.selectAll(),
+    s: ctrl => ctrl && savePage(),
+    c: ctrl => ctrl && board.copy(),
     ArrowLeft: ctrl => {
       if (ctrl) {
         panel.layer = !panel.layer;

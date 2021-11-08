@@ -64,7 +64,7 @@
 <script lang="ts" setup>
 import type { Field } from '@/typings';
 import { ref, computed } from 'vue';
-import { useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { useAnimation, boardRefs } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
@@ -82,8 +82,7 @@ import {
 
 const active = ref('');
 
-const store = useStore();
-const { board } = store.state;
+const board = useBoardStore();
 
 // 当前选中组件
 const curComponent = computed(() => board.data[board.selected[0]]);
@@ -125,10 +124,6 @@ const del = (index: number) => {
     width: 100%;
     display: flex;
     justify-content: space-between;
-
-    &__left {
-      padding-left: 10px;
-    }
 
     &__right button:first-child {
       margin-right: 10px;

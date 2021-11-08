@@ -39,7 +39,7 @@
       <header class="mid-panel__toolbar"></header>
       <div class="mid-panel__wrapper">
         <section class="canvas-main">
-          <board />
+          <Board />
         </section>
       </div>
     </section>
@@ -52,7 +52,7 @@
 import type { Page } from '@/typings';
 import type { Component } from 'vue';
 import { on } from '@/utils';
-import { useStore, SnapshotEnum, BoardEnum } from '@/store';
+import { useSnapshotStore, useBoardStore } from '@/store';
 import { pageConfig, updateCachePage, savePage, isModified, panel, changeTheme } from '@/hooks';
 import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
@@ -76,7 +76,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import { Modal, Button, Tooltip } from 'ant-design-vue';
 
 const props = defineProps({ id: { type: String, default: () => '' } });
-const store = useStore();
+const snapshot = useSnapshotStore();
+const board = useBoardStore();
 const router = useRouter();
 
 const modalOpen = ref(false);
@@ -103,12 +104,12 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
   {
     name: '生成快照',
     icon: CameraOutlined,
-    event: () => store.dispatch(SnapshotEnum.RECORD_SNAPSHOT),
+    event: () => snapshot.recordSnapshot(),
   },
   {
     name: '保存',
     icon: SaveOutlined,
-    event: () => savePage(store, router),
+    event: () => savePage(),
   },
   {
     name: '发布',
@@ -132,7 +133,7 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
 ];
 
 const interceptor = (e: BeforeUnloadEvent) => {
-  if (isModified(store)) e.returnValue = false;
+  if (isModified()) e.returnValue = false;
 };
 
 onMounted(async () => {
@@ -143,8 +144,8 @@ onMounted(async () => {
   if (res.code !== 0) return;
   const { components, ...config } = res.data;
   Object.assign(pageConfig, config);
-  store.dispatch(BoardEnum.SET_BOARD, { data: cloneDeep(components), selected: [] });
-  updateCachePage(store);
+  board.setBoard({ data: cloneDeep(components), selected: [] });
+  updateCachePage();
 });
 
 onBeforeUnmount(() => {
@@ -152,7 +153,7 @@ onBeforeUnmount(() => {
 });
 
 onBeforeRouteLeave((to, from) => {
-  const modified = isModified(store);
+  const modified = isModified();
 
   if (!letgo && modified) {
     Modal.confirm({

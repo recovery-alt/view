@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { computed, ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { CodeMirror } from '@/components';
@@ -102,8 +102,7 @@ import {
   Input,
 } from 'ant-design-vue';
 
-const store = useStore();
-const { board } = store.state;
+const board = useBoardStore();
 const viewer = shallowRef<EditorView>();
 const dataStringify = ref<string>();
 const curComponent = computed(() => board.data[board.selected[0]]);

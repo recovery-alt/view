@@ -70,7 +70,7 @@
 <script lang="ts" setup>
 import type { Gallery, Field, SchemaItem, FieldItem, Data } from '@/typings';
 import { computed, ref, shallowRef, watchEffect } from 'vue';
-import { useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import {
   AlignCenterOutlined,
   AlignLeftOutlined,
@@ -93,8 +93,7 @@ import {
   Button,
 } from 'ant-design-vue';
 
-const store = useStore();
-const { board } = store.state;
+const board = useBoardStore();
 
 const activeKey = ref('');
 

@@ -24,12 +24,11 @@ import type { Component } from 'vue';
 import { ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { panel } from '@/hooks';
-import { useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import { getGallery } from '@/gallery';
 import { Tabs, TabPane } from 'ant-design-vue';
 
-const store = useStore();
-const { board } = store.state;
+const board = useBoardStore();
 
 // 当前选中组件
 const curComponent = computed(() =>
@@ -91,6 +90,9 @@ watchEffect(() => {
 
   .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding-left: 27px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .ant-collapse-content > .ant-collapse-content-box {

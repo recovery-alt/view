@@ -7,7 +7,7 @@ export type Board = {
 
 export type Snapshot = {
   index: number;
-  data: Array<Page>;
+  data: Array<{ page: Page; selected: number[] }>;
 };
 
 export type RootStateType = {

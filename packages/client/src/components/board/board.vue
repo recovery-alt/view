@@ -109,7 +109,7 @@
 
 <script lang="ts" setup>
 import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
-import { BoardEnum, useStore } from '@/store';
+import { useBoardStore } from '@/store';
 import {
   menu,
   pageConfig,
@@ -124,17 +124,14 @@ import {
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
-import { useRouter } from 'vue-router';
 import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
 
-const store = useStore();
-const { board } = store.state;
-const { selectMask, handleMousedown } = useSelectMask(store);
+const board = useBoardStore();
+const { selectMask, handleMousedown } = useSelectMask();
 const position = reactive({ left: 0, top: 0 });
 const screenShotRef = shallowRef<HTMLElement>();
 const canvasWrapperRef = shallowRef<HTMLElement>();
 const boardDom = shallowRef<HTMLElement>();
-const router = useRouter();
 
 const pageStyle = computed(() => {
   const { width, height, backgroundColor, scale } = pageConfig;
@@ -153,7 +150,7 @@ const handleDrop = (e: DragEvent) => {
   const type = e.dataTransfer?.getData('type');
   if (!type || !canvasWrapperRef.value) return;
   const { offsetX: left, offsetY: top } = e;
-  store.dispatch(BoardEnum.APEEND, { type, left, top });
+  board.append({ type, left, top });
   canvasWrapperRef.value.click();
 };
 
@@ -181,7 +178,7 @@ const handleScroll = (e: Event) => {
 
 const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
 
-useBoardKeydown(store, router);
+useBoardKeydown();
 
 onBeforeUpdate(() => {
   boardRefs.length = 0;
@@ -277,7 +274,7 @@ onMounted(() => {
   position: absolute;
   right: 0;
   bottom: 40px;
-  background-color: @layout-body-background;
+  background-color: @modal-footer-border-color-split;
   height: 30px;
   width: 100%;
   display: flex;

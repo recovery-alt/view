@@ -1,11 +1,11 @@
-import type { Page, PageConfig, RootStateType } from '@/typings';
+import type { Page, PageConfig } from '@/typings';
 import { shallowReactive, toRaw } from 'vue';
 import { addPage, updatePage } from '@/api';
-import { Store } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import { message } from 'ant-design-vue';
 import config from '@/config';
-import { Router } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useBoardStore } from '@/store';
 
 const pageConfig = shallowReactive<PageConfig>({
   _id: '', // 页面唯一标识
@@ -24,13 +24,15 @@ const pageConfig = shallowReactive<PageConfig>({
 
 const cachePage: Page = { ...pageConfig, components: [] };
 
-const updateCachePage = (store: Store<RootStateType>) => {
+const updateCachePage = () => {
+  const board = useBoardStore();
   Object.assign(cachePage, pageConfig);
-  cachePage.components = cloneDeep(toRaw(store.state.board.data));
+  cachePage.components = cloneDeep(toRaw(board.data));
 };
 
-const savePage = async (store: Store<RootStateType>, router: Router) => {
-  const { board } = store.state;
+const savePage = async () => {
+  const board = useBoardStore();
+  const router = useRouter();
   if (board.data.length === 0) {
     message.error('尚未添加任何组件！');
     return;
@@ -43,14 +45,14 @@ const savePage = async (store: Store<RootStateType>, router: Router) => {
     const res = await updatePage(toRaw(page));
     if (res.code === 0) {
       message.success('保存成功！');
-      updateCachePage(store);
+      updateCachePage();
     }
   } else {
     const res = await addPage<Page>({ ...resConfig });
     if (res.code === 0) {
       message.success('创建成功！');
       pageConfig._id = res.data._id;
-      updateCachePage(store);
+      updateCachePage();
       router.push(`/editor/${res.data._id}`);
     }
   }
@@ -62,8 +64,8 @@ const wrapScale = (size: number, isMultiply = false) => {
   return Math.floor(result);
 };
 
-const isModified = (store: Store<RootStateType>) => {
-  const { board } = store.state;
+const isModified = () => {
+  const board = useBoardStore();
   const now = { ...pageConfig, components: toRaw(board.data) };
   return JSON.stringify(now) !== JSON.stringify(cachePage);
 };

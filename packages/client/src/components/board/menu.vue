@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import type { MenuType } from '@/hooks';
 import type { Component, PropType } from 'vue';
-import { useStore, BoardEnum } from '@/store';
+import { useBoardStore } from '@/store';
 import { judgeCancelGroupDisabled, judgeGroupDisabled, on, patchUnit } from '@/utils';
 import {
   CopyOutlined,
@@ -48,9 +48,7 @@ const props = defineProps({
   container: Object as PropType<HTMLElement>,
 });
 
-const store = useStore();
-
-const { board } = store.state;
+const board = useBoardStore();
 
 const menuRef = shallowRef<HTMLElement>();
 
@@ -60,58 +58,58 @@ const data = reactive<MenuList>([
   {
     name: '置顶',
     icon: VerticalAlignTopOutlined,
-    event: () => store.dispatch(BoardEnum.MOVE_UP, true),
+    event: () => board.moveUp(true),
   },
   {
     name: '置底',
     icon: VerticalAlignBottomOutlined,
-    event: () => store.dispatch(BoardEnum.MOVE_DOWN, true),
+    event: () => board.moveDown(true),
   },
   {
     name: '上移一层',
     icon: ArrowUpOutlined,
-    event: () => store.dispatch(BoardEnum.MOVE_UP),
+    event: () => board.moveUp(),
   },
   {
     name: '下移一层',
     icon: ArrowDownOutlined,
-    event: () => store.dispatch(BoardEnum.MOVE_DOWN),
+    event: () => board.moveDown(),
   },
 
   {
     name: '成组',
     icon: FolderOutlined,
     disable: false,
-    event: () => store.dispatch(BoardEnum.GROUP),
+    event: () => board.group(),
   },
   {
     name: '取消成组',
     icon: FolderOpenOutlined,
     disable: false,
-    event: () => store.dispatch(BoardEnum.CANCEL_GROUP),
+    event: () => board.cancelGroup(),
   },
 
   {
     name: '锁定',
     icon: LockOutlined,
     disable: false,
-    event: () => store.dispatch(BoardEnum.TOGGLE_LOCKED, board.selected),
+    event: () => board.toggleLocked(board.selected),
   },
   {
     name: '隐藏',
     icon: EyeInvisibleOutlined,
     disable: false,
-    event: () => store.dispatch(BoardEnum.HIDE, board.selected),
+    event: () => board.hide(board.selected),
   },
   {
     name: '复制',
     icon: CopyOutlined,
-    event: () => store.dispatch(BoardEnum.COPY),
+    event: () => board.copy(),
   },
   {
     name: '删除',
     icon: DeleteOutlined,
-    event: () => store.dispatch(BoardEnum.DEL),
+    event: () => board.del(),
   },
 ]);
 

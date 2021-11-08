@@ -46,7 +46,7 @@ onMounted(() => {
 
   watchEffect(() => {
     if (theme.value) {
-      color.value = theme.value === 'dark' ? '#fff' : '#000';
+      color.value = theme.value === 'dark' ? '#c9d1d9' : '#000';
       reRenderCanvas();
     }
   });

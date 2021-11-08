@@ -1,10 +1,11 @@
 {
   "name": "view-fe",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "scripts": {
     "dev": "vite --host",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "npm run type-check && vite build",
+    "type-check": "vue-tsc --noEmit",
     "test": "jest"
   },
   "dependencies": {
@@ -26,11 +27,11 @@
     "lodash": "^4.17.21",
     "node-forge": "^0.10.0",
     "normalize.css": "^8.0.1",
+    "pinia": "^2.0.2",
     "uuid": "^8.3.2",
     "vite-plugin-theme": "^0.8.1",
     "vue": "^3.2.21",
-    "vue-router": "^4.0.12",
-    "vuex": "^4.0.2"
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@ant-design/colors": "^6.0.0",
