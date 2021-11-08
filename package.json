@@ -6,7 +6,9 @@
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "release:patch": "standard-version -r patch",
+    "release:minor": "standard-version -r minor",
+    "release:major": "standard-version -r major",
     "postinstall": "husky install"
   },
   "devDependencies": {
@@ -17,7 +19,6 @@
     "@typescript-eslint/parser": "^5.3.0",
     "chalk": "^4.1.2",
     "concurrently": "^6.3.0",
-    "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -28,6 +29,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "standard-version": "^9.3.2"
   }
 }
