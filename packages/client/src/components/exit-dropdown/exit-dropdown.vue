@@ -19,7 +19,7 @@
         </Menu>
       </template>
     </Dropdown>
-    <SkinOutlined class="theme-change" @click="changeTheme()" />
+    <SkinOutlined class="theme-change" @click="theme.switchTheme()" />
   </div>
   <Modal
     v-model:visible="visible"
@@ -50,7 +50,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { reactive, ref } from 'vue';
 import { changePassword } from '@/api';
 import json from 'json5';
-import { changeTheme } from '@/hooks';
 import {
   message,
   Dropdown,
@@ -62,11 +61,13 @@ import {
   FormItem,
   Input,
 } from 'ant-design-vue';
+import { useThemeStore } from '@/store';
 
 const userInfoStr = local.get(LocalKeys.USER_INFO);
 const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
 const router = useRouter();
 const route = useRoute();
+const theme = useThemeStore();
 
 const visible = ref(false);
 

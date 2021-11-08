@@ -4,4 +4,3 @@ export * from './animate';
 export * from './page';
 export * from './manage';
 export * from './panel';
-export * from './theme';

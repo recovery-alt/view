@@ -52,8 +52,8 @@
 import type { Page } from '@/typings';
 import type { Component } from 'vue';
 import { on } from '@/utils';
-import { useSnapshotStore, useBoardStore } from '@/store';
-import { pageConfig, updateCachePage, savePage, isModified, panel, changeTheme } from '@/hooks';
+import { useSnapshotStore, useBoardStore, useThemeStore } from '@/store';
+import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
 import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
@@ -79,6 +79,7 @@ const props = defineProps({ id: { type: String, default: () => '' } });
 const snapshot = useSnapshotStore();
 const board = useBoardStore();
 const router = useRouter();
+const store = useThemeStore();
 
 const modalOpen = ref(false);
 let letgo = false;
@@ -128,7 +129,7 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
   {
     name: '换肤',
     icon: SkinOutlined,
-    event: changeTheme,
+    event: () => store.switchTheme(),
   },
 ];
 

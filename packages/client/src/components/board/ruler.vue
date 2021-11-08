@@ -4,10 +4,12 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
-import { wrapScale, theme } from '@/hooks';
+import { wrapScale } from '@/hooks';
+import { useThemeStore } from '@/store';
 
 const canvas = shallowRef<HTMLCanvasElement>();
 const color = ref<string>('');
+const theme = useThemeStore();
 
 const reRenderCanvas = () => {
   if (!canvas.value) return;

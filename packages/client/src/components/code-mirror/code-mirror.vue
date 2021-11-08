@@ -14,7 +14,7 @@ import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark';
 import { defaultHighlightStyle } from '@codemirror/highlight';
-import { theme } from '@/hooks';
+import { useThemeStore } from '@/store';
 
 const props = defineProps({
   viewer: {
@@ -36,6 +36,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:viewer']);
+const theme = useThemeStore();
 
 const themeExtensions = {
   light: [defaultHighlightStyle],
