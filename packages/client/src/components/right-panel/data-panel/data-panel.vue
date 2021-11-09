@@ -20,7 +20,7 @@
     <CodeMirror v-model:viewer="viewer" :doc="dataStringify" class="code-box" readonly />
     <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <Drawer
-      v-if="curComponent.data"
+      v-if="board.curCom?.data"
       v-model:visible="drawer.show"
       placement="right"
       title="设置数据源"
@@ -31,7 +31,7 @@
         <FormItem label="数据源类型">
           <Row justify="space-between">
             <Col>
-              <Select v-model:value="curComponent.data.type" size="small">
+              <Select v-model:value="board.curCom!.data.type" size="small">
                 <SelectOption v-for="item in drawer.options" :key="item.value" :value="item.value">
                   {{ item.label }}
                 </SelectOption>
@@ -52,11 +52,11 @@
             </Col>
           </Row>
         </FormItem>
-        <FormItem v-if="curComponent.data.type === 'url'" label="接口地址">
-          <Input v-model:value="curComponent.data.url" size="small" />
+        <FormItem v-if="board.curCom?.data.type === 'url'" label="接口地址">
+          <Input v-model:value="board.curCom!.data.url" size="small" />
         </FormItem>
         <CodeMirror
-          v-if="curComponent.data.type === 'static'"
+          v-if="board.curCom?.data.type === 'static'"
           v-model:viewer="drawer.viewer"
           :doc="dataStringify"
         />
@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 import { useBoardStore } from '@/store';
-import { computed, ref, shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { CodeMirror } from '@/components';
 import type { EditorView } from '@codemirror/basic-setup';
@@ -105,15 +105,14 @@ import {
 const board = useBoardStore();
 const viewer = shallowRef<EditorView>();
 const dataStringify = ref<string>();
-const curComponent = computed(() => board.data[board.selected[0]]);
 
-const { drawer, refreshData, resolveData } = useDrawer(dataStringify, curComponent);
+const { drawer, refreshData, resolveData } = useDrawer(dataStringify);
 
-const { modal, handleFilterChange } = useModal(curComponent, drawer);
+const { modal, handleFilterChange } = useModal(drawer);
 
-const { timeline } = useTimeline(curComponent, drawer, modal);
+const { timeline } = useTimeline(drawer, modal);
 
-const { table } = useTable(curComponent);
+const { table } = useTable();
 </script>
 
 <style lang="less">

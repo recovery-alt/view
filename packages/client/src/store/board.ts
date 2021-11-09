@@ -14,6 +14,14 @@ export const useBoardStore = defineStore('board', {
     const state: BoardState = { selected: [], data: [], refs: [], offset: { left: 0, top: 0 } };
     return state;
   },
+  getters: {
+    curCom(state) {
+      return state.selected.length > 0 ? state.data[state.selected[0]] : void 0;
+    },
+    curComs(state) {
+      return state.selected.map(index => state.data[index]);
+    },
+  },
   actions: {
     rawAppend(component: Component | Array<Component>) {
       const componentArr: Array<Component> = [];

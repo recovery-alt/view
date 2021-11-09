@@ -34,13 +34,13 @@ export default defineComponent({
   setup(props) {
     const box = shallowRef<ComponentPublicInstance>();
 
-    const curComponent = computed(() => props.data);
+    const curCom = computed(() => props.data);
 
     onMounted(() => {
-      const { animations } = curComponent.value;
+      const { animations } = curCom.value;
       if (props.editorMode || !animations || !box.value?.$el) return;
 
-      const { playAll } = useAnimation(curComponent);
+      const { playAll } = useAnimation(curCom.value);
       playAll(box.value.$el);
     });
     return { splitStyleAndPatch, patchUnit, box };

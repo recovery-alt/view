@@ -1,6 +1,6 @@
 <template>
   <section class="right-panel" :style="{ width }">
-    <Tabs v-if="curComponent" v-model="activeTab" type="card" size="small">
+    <Tabs v-if="board.curCom" v-model="activeTab" type="card" size="small">
       <TabPane v-for="item in tabs" :key="item.title">
         <template #tab>
           <span>{{ item.title }}</span>
@@ -30,19 +30,14 @@ import { Tabs, TabPane } from 'ant-design-vue';
 const board = useBoardStore();
 const panel = usePanelStore();
 
-// 当前选中组件
-const curComponent = computed(() =>
-  board.selected.length === 1 ? board.data[board.selected[0]] : null
-);
-
 const gallery = ref<Gallery>();
 const tabs = ref<Array<{ title: string; component: Component }>>();
 const activeTab = ref(tabs.value?.[0].title);
 const width = computed(() => (panel.config ? '332px' : '0'));
 
 watchEffect(() => {
-  if (!curComponent.value) return;
-  const { component } = curComponent.value;
+  if (!board.curCom) return;
+  const { component } = board.curCom;
   gallery.value = getGallery(component);
 });
 

@@ -70,8 +70,7 @@ const points = [
 ];
 
 const disable = computed(() => {
-  const curComponent = board.data[props.index];
-  return curComponent.locked || curComponent.style.display === 'none';
+  return board.curCom?.locked || board.curCom?.style.display === 'none';
 });
 
 const handleRightClick = (e: MouseEvent) => {
@@ -89,10 +88,9 @@ const handleMousedown = (e: MouseEvent) => {
     if (!board.selected.includes(props.index)) {
       board.setIndex(props.index);
     }
-    const curComponents = board.selected.map(index => board.data[index]);
     const startX = e.clientX;
     const startY = e.clientY;
-    const curPositions = curComponents.map(component => {
+    const curPositions = board.curComs.map(component => {
       const { left, top } = component.style;
       return { left, top };
     });
@@ -101,13 +99,13 @@ const handleMousedown = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       const diffX = wrapScale(clientX - startX);
       const diffY = wrapScale(clientY - startY);
-      curComponents.forEach((component, index) => {
+      board.curComs.forEach((component, index) => {
         const { left, top } = curPositions[index];
         component.style.left = diffX + left;
         component.style.top = diffY + top;
       });
       // 计算吸附情况
-      // judgeLineShow(board, curComponents);
+      // judgeLineShow(board, board.curComs);
     };
 
     const mouseup = (e: MouseEvent) => {
@@ -138,9 +136,7 @@ const handleMousedownOnPoint = (e: MouseEvent) => {
   const hasRight = className.includes('right');
   const hasTop = className.includes('top');
   const hasBottom = className.includes('bottom');
-  const { selected, data } = board;
-  const curComponent = data[selected[0]];
-  const { top, left, width, height } = curComponent.style;
+  const { top, left, width, height } = board.curCom!.style;
 
   const startX = e.clientX;
   const startY = e.clientY;
@@ -150,21 +146,21 @@ const handleMousedownOnPoint = (e: MouseEvent) => {
     const { clientX, clientY } = e;
     if (hasLeft) {
       const diffX = wrapScale(clientX - startX);
-      curComponent.style.width = width - diffX;
-      curComponent.style.left = left + diffX;
+      board.curCom!.style.width = width - diffX;
+      board.curCom!.style.left = left + diffX;
     }
     if (hasRight) {
       const diffX = wrapScale(clientX - startX);
-      curComponent.style.width = width + diffX;
+      board.curCom!.style.width = width + diffX;
     }
     if (hasTop) {
       const diffY = wrapScale(clientY - startY);
-      curComponent.style.height = height - diffY;
-      curComponent.style.top = top + diffY;
+      board.curCom!.style.height = height - diffY;
+      board.curCom!.style.top = top + diffY;
     }
     if (hasBottom) {
       const diffY = wrapScale(clientY - startY);
-      curComponent.style.height = height + diffY;
+      board.curCom!.style.height = height + diffY;
     }
   }, 16);
 
@@ -187,8 +183,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
 
   const startX = e.clientX;
   const startY = e.clientY;
-  const curComponent = board.data[board.selected[0]];
-  const { rotate: startRotate } = curComponent.style;
+  const { rotate: startRotate } = board.curCom!.style;
   const { left, top, width, height } = board.refs[props.index].getBoundingClientRect();
   const centerX = left + width / 2;
   const centerY = top + height / 2;
@@ -198,7 +193,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   const mousemove = throttle((e: MouseEvent) => {
     const { clientX, clientY } = e;
     const curAngle = Math.atan2(clientY - centerY, clientX - centerX) / (Math.PI / 180);
-    curComponent.style.rotate = startRotate + curAngle - startAngle;
+    board.curCom!.style.rotate = startRotate + curAngle - startAngle;
   }, 16);
 
   const mouseup = (e: MouseEvent) => {

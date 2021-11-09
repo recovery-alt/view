@@ -1,8 +1,8 @@
 import type { Component } from '@/typings';
-import { ComputedRef, shallowReactive } from 'vue';
+import { shallowReactive } from 'vue';
 import { v4 } from 'uuid';
 
-export const useAnimation = (curComponent: ComputedRef<Component>) => {
+export const useAnimation = (curCom: Component) => {
   const animationPreset = [
     {
       title: '强调',
@@ -466,8 +466,8 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
 
   const addAnimation = (animation: { name: string; label: string }) => {
     // 没有的时候要新创建
-    if (!curComponent.value.animations) curComponent.value.animations = [];
-    const { animations } = curComponent.value;
+    if (!curCom.animations) curCom.animations = [];
+    const { animations } = curCom;
     animations.push({
       id: v4(),
       ...animation,
@@ -481,7 +481,7 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
 
   const play = async (index: number, dom: HTMLElement) => {
     return new Promise<void>(resolve => {
-      const { animations } = curComponent.value;
+      const { animations } = curCom;
 
       if (!animations?.[index]) return resolve();
 
@@ -515,7 +515,7 @@ export const useAnimation = (curComponent: ComputedRef<Component>) => {
 
   const playAll = async (ref: HTMLElement) => {
     if (!ref) return;
-    if (curComponent.value.animations) {
+    if (curCom.animations) {
       for (let i = 0; i < animationPreset.length; i++) {
         await play(i, ref);
       }

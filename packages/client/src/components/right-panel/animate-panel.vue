@@ -10,12 +10,12 @@
     </Button>
   </div>
   <Collapse
-    v-if="curComponent.animations?.length"
+    v-if="board.curCom?.animations?.length"
     v-model="active"
     class="animation-wrapper"
     accordion
   >
-    <CollapsePanel v-for="(animation, i) in curComponent.animations" :key="animation.id">
+    <CollapsePanel v-for="(animation, i) in board.curCom?.animations" :key="animation.id">
       <template #header>
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
@@ -42,7 +42,7 @@
           v-for="field in fields"
           :key="field.label"
           :field="field"
-          :model="curComponent.animations[i]"
+          :model="board.curCom?.animations[i]"
         />
       </Form>
     </CollapsePanel>
@@ -72,7 +72,7 @@
 
 <script lang="ts" setup>
 import type { Field } from '@/typings';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useBoardStore } from '@/store';
 import { useAnimation } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
@@ -92,9 +92,6 @@ import {
 const active = ref('');
 
 const board = useBoardStore();
-
-// 当前选中组件
-const curComponent = computed(() => board.data[board.selected[0]]);
 
 const fields: Array<Field> = [
   {
@@ -119,11 +116,10 @@ const {
   handleMouseleave,
   getAnimationClass,
   addAnimation,
-} = useAnimation(curComponent);
+} = useAnimation(board.curCom!);
 
 const del = (index: number) => {
-  if (!curComponent.value.animations) return;
-  curComponent.value.animations.splice(index, 1);
+  if (board.curCom?.animations) board.curCom?.animations.splice(index, 1);
 };
 </script>
 

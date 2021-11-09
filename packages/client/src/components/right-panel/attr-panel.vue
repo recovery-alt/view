@@ -6,19 +6,19 @@
   >
     <FormItem label="名称">
       <Col span="16">
-        <Input v-model:value="curComponent.label" size="small" />
+        <Input v-model:value="board.curCom!.label" size="small" />
       </Col>
     </FormItem>
     <Item
       v-for="field in basicField"
       :key="field.label"
       :field="field"
-      :model="curComponent.style"
+      :model="board.curCom?.style"
     />
     <FormItem label="旋转角度">
       <Row>
         <Col span="10">
-          <InputNumber v-model:value="curComponent.style.rotate" :precision="0" size="small" />
+          <InputNumber v-model:value="board.curCom!.style.rotate" :precision="0" size="small" />
         </Col>
         <Col span="3" offset="2">
           <Button size="small" @click="rotate(true)">
@@ -47,7 +47,7 @@
           v-for="field in item.fields"
           :key="field.label"
           :field="field"
-          :model="curComponent.style"
+          :model="board.curCom?.style"
         />
       </CollapsePanel>
       <CollapsePanel
@@ -60,7 +60,7 @@
           v-for="field in item.fields"
           :key="field.label"
           :field="field"
-          :model="curComponent.propsData"
+          :model="board.curCom?.propsData"
         />
       </CollapsePanel>
     </Collapse>
@@ -69,7 +69,7 @@
 
 <script lang="ts" setup>
 import type { Gallery, Field, SchemaItem, FieldItem, Data } from '@/typings';
-import { computed, ref, shallowRef, watchEffect } from 'vue';
+import { ref, shallowRef, watchEffect } from 'vue';
 import { useBoardStore } from '@/store';
 import {
   AlignCenterOutlined,
@@ -97,11 +97,9 @@ const board = useBoardStore();
 
 const activeKey = ref('');
 
-const curComponent = computed(() => board.data[board.selected[0]]);
-
 const rotate = (reverse = false) => {
   const deg = reverse ? -45 : 45;
-  curComponent.value.style.rotate += deg;
+  board.curCom!.style.rotate += deg;
 };
 
 const gallery = shallowRef<Gallery>();
@@ -262,8 +260,8 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (!curComponent.value) return;
-  const { component, propsData } = curComponent.value;
+  if (!board.curCom) return;
+  const { component, propsData } = board.curCom;
   gallery.value = getGallery(component);
   if (!gallery.value) return;
   const { attr } = gallery.value;

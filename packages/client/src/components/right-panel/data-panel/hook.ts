@@ -1,5 +1,5 @@
-import type { Component, Data } from '@/typings';
-import { ComputedRef, onMounted, reactive, Ref, watchEffect } from 'vue';
+import type { Data } from '@/typings';
+import { onMounted, reactive, Ref, watchEffect } from 'vue';
 import type { DataSourceKey } from '@/config';
 import { EditorView } from '@codemirror/basic-setup';
 import { shallowReactive } from 'vue';
@@ -8,6 +8,7 @@ import { DataSource } from '@/config';
 import { isUrl, callFilter, generateColumns } from '@/utils';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
+import { useBoardStore } from '@/store';
 
 type Drawer = {
   show: boolean;
@@ -19,10 +20,8 @@ type Drawer = {
 
 type Modal = { show: boolean; doc: string; viewer?: EditorView };
 
-export function useDrawer(
-  dataStringify: Ref<string | undefined>,
-  curComponent: ComputedRef<Component>
-) {
+export function useDrawer(dataStringify: Ref<string | undefined>) {
+  const board = useBoardStore();
   const drawer = shallowReactive<Drawer>({
     openFilter: false,
     show: false,
@@ -36,8 +35,8 @@ export function useDrawer(
     if (!drawer.viewer) return;
     const doc = drawer.viewer.state.doc.toJSON();
     dataStringify.value = doc.reduce((acc, val) => acc + val, '');
-    if (curComponent.value.data) {
-      curComponent.value.data.static = json.parse(dataStringify.value);
+    if (board.curCom?.data) {
+      board.curCom.data.static = json.parse(dataStringify.value);
     }
   }
 
@@ -65,8 +64,8 @@ export function useDrawer(
   }
 
   async function resolveData(init = false) {
-    if (!curComponent.value?.data) return;
-    const { url, type, static: dataset, filter } = curComponent.value.data;
+    if (!board.curCom?.data) return;
+    const { url, type, static: dataset, filter } = board.curCom.data;
     const strategy = {
       url: fetchUrl,
       static: init ? () => (dataStringify.value = json.stringify(dataset)) : refreshData,
@@ -86,7 +85,8 @@ export function useDrawer(
   return { drawer, refreshData, resolveData };
 }
 
-export function useModal(curComponent: ComputedRef<Component>, drawer: Drawer) {
+export function useModal(drawer: Drawer) {
+  const board = useBoardStore();
   const modal = shallowReactive<Modal>({
     show: false,
     doc: `function filter(data) {
@@ -95,11 +95,11 @@ export function useModal(curComponent: ComputedRef<Component>, drawer: Drawer) {
   });
 
   const handleFilterChange = (open: boolean | string | number) => {
-    const { data } = curComponent.value;
+    const data = board.curCom?.data;
     if (!data || !modal.viewer) return;
     if (open) {
       data.filter = modal.viewer.state.doc.sliceString(0);
-      drawer.openFilter = !!curComponent.value.data!.filter;
+      drawer.openFilter = !!board.curCom.data!.filter;
       modal.show = false;
     } else {
       delete data.filter;
@@ -109,19 +109,20 @@ export function useModal(curComponent: ComputedRef<Component>, drawer: Drawer) {
   return { modal, handleFilterChange };
 }
 
-export function useTimeline(curComponent: ComputedRef<Component>, drawer: Drawer, modal: Modal) {
+export function useTimeline(drawer: Drawer, modal: Modal) {
+  const board = useBoardStore();
   const timeline = reactive([
     {
       actived: true,
-      text: DataSource[curComponent.value.data!.type],
+      text: DataSource[board.curCom!.data!.type],
       btnText: '设置数据源',
       event: () => {
         drawer.show = true;
-        drawer.openFilter = !!curComponent.value.data!.filter;
+        drawer.openFilter = !!board.curCom!.data!.filter;
       },
     },
     {
-      actived: !!curComponent.value.data!.filter,
+      actived: !!board.curCom!.data!.filter,
       text: '数据过滤器',
       btnText: '添加过滤器',
       event: () => {
@@ -138,8 +139,8 @@ export function useTimeline(curComponent: ComputedRef<Component>, drawer: Drawer
   ]);
 
   watchEffect(() => {
-    if (!curComponent.value) return;
-    const { data } = curComponent.value;
+    if (!board.curCom) return;
+    const { data } = board.curCom;
     if (data) {
       timeline[0].text = DataSource[data!.type];
       timeline[1].actived = !!data.filter;
@@ -149,7 +150,8 @@ export function useTimeline(curComponent: ComputedRef<Component>, drawer: Drawer
   return { timeline };
 }
 
-export function useTable(curComponent: ComputedRef<Component>) {
+export function useTable() {
+  const board = useBoardStore();
   const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
     data: [],
     columns: generateColumns([
@@ -169,8 +171,8 @@ export function useTable(curComponent: ComputedRef<Component>) {
   });
 
   watchEffect(() => {
-    if (!curComponent.value) return;
-    const { data } = curComponent.value;
+    if (!board.curCom) return;
+    const { data } = board.curCom;
     if (data?.static?.[0]) {
       table.data = Object.keys(data.static[0]).map(key => ({
         key,
