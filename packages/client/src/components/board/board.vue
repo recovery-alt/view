@@ -104,14 +104,13 @@
     </Col>
   </footer>
 
-  <BoardMenu v-if="menu.board.show" menu-type="board" :container="canvasWrapperRef" />
+  <BoardMenu v-if="menu.board.show" :menu-type="MenuEnum.BOARD" :container="canvasWrapperRef" />
 </template>
 
 <script lang="ts" setup>
 import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
-import { useBoardStore, usePageStore } from '@/store';
+import { useBoardStore, useMenuStore, usePageStore, MenuEnum } from '@/store';
 import {
-  menu,
   useSelectMask,
   boardRefs,
   useThumbnail,
@@ -127,6 +126,7 @@ import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
 
 const board = useBoardStore();
 const page = usePageStore();
+const menu = useMenuStore();
 const { selectMask, handleMousedown } = useSelectMask();
 const position = reactive({ left: 0, top: 0 });
 const screenShotRef = shallowRef<HTMLElement>();

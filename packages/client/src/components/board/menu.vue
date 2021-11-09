@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MenuType } from '@/hooks';
+import { MenuEnum, useMenuStore } from '@/store';
 import type { Component, PropType } from 'vue';
 import { useBoardStore } from '@/store';
 import { judgeCancelGroupDisabled, judgeGroupDisabled, on, patchUnit } from '@/utils';
@@ -38,17 +38,17 @@ import {
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
 import { reactive, onMounted, shallowRef } from 'vue';
-import { menu } from '@/hooks';
 
 const props = defineProps({
   menuType: {
-    type: String as PropType<MenuType>,
+    type: String as PropType<MenuEnum>,
     default: () => 'board',
   },
   container: Object as PropType<HTMLElement>,
 });
 
 const board = useBoardStore();
+const menu = useMenuStore();
 
 const menuRef = shallowRef<HTMLElement>();
 
@@ -120,7 +120,7 @@ const handleClick = (e: MouseEvent, disable: boolean | undefined, cb: () => void
     e.preventDefault();
     return;
   }
-  menu[props.menuType].show = false;
+  menu.hide(props.menuType);
   cb();
 };
 
@@ -128,17 +128,14 @@ const handleCancelMenu = () => {
   on('click', e => {
     e.stopPropagation();
     e.preventDefault();
-    Object.keys(menu).forEach(key => {
-      menu[key].show = false;
-    });
+    menu.hideAll();
   });
 };
 
 onMounted(() => {
   data[4].disable = judgeGroupDisabled(board);
   data[5].disable = judgeCancelGroupDisabled(board);
-  menu[props.menuType].ref = menuRef.value;
-  menu[props.menuType].container = props.container;
+  menu.setRefAndContainer(props.menuType, menuRef.value, props.container);
   handleCancelMenu();
 });
 </script>

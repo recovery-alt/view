@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useBoardStore } from '@/store';
-import { boardOffset, showMenu, boardRefs, useEchartsResize } from '@/hooks';
+import { useBoardStore, useMenuStore, MenuEnum } from '@/store';
+import { boardOffset, boardRefs, useEchartsResize } from '@/hooks';
 import { on, off, patchUnit, wrapScale } from '@/utils';
 import throttle from 'lodash/throttle';
 import { computed } from 'vue';
@@ -39,6 +39,7 @@ const props = defineProps({
 });
 
 const board = useBoardStore();
+const menu = useMenuStore();
 
 const { handleEchartsResize } = useEchartsResize();
 
@@ -78,7 +79,7 @@ const handleRightClick = (e: MouseEvent) => {
   if (!board.selected.includes(props.index)) {
     board.setIndex(props.index);
   }
-  showMenu(e, 'board', board);
+  menu.show(e, MenuEnum.BOARD, board);
 };
 
 const handleMousedown = (e: MouseEvent) => {

@@ -13,9 +13,8 @@ import {
   ArrowDownOutlined,
   RightOutlined,
 } from '@ant-design/icons-vue';
-import { menu, showMenu } from '@/hooks';
 import { computed, reactive, ref, defineComponent, shallowRef } from 'vue';
-import { useBoardStore, usePanelStore } from '@/store';
+import { useBoardStore, useMenuStore, usePanelStore, MenuEnum } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import { Tooltip, Empty } from 'ant-design-vue';
@@ -27,6 +26,7 @@ export default defineComponent({
   setup() {
     const board = useBoardStore();
     const panel = usePanelStore();
+    const menu = useMenuStore();
 
     const showList = ref(false);
 
@@ -115,7 +115,7 @@ export default defineComponent({
       if (!board.selected.includes(index)) {
         board.setIndex(index);
       }
-      showMenu(e, 'layer', board);
+      menu.show(e, MenuEnum.LAYER, board);
     };
 
     const operationActions = computed(() => {
@@ -220,7 +220,7 @@ export default defineComponent({
               })}
             </ul>
           )}
-          {menu.layer.show && <BoardMenu menu-type="layer" container={layerRef.value} />}
+          {menu.layer.show && <BoardMenu menu-type={MenuEnum.LAYER} container={layerRef.value} />}
         </section>
         <footer class="layer-panel__footer">
           {operations.map((Item, i) => {
