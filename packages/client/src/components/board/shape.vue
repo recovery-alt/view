@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { useBoardStore, useMenuStore, MenuEnum } from '@/store';
-import { boardOffset, boardRefs, useEchartsResize } from '@/hooks';
+import { useEchartsResize } from '@/hooks';
 import { on, off, patchUnit, wrapScale } from '@/utils';
 import throttle from 'lodash/throttle';
 import { computed } from 'vue';
@@ -45,16 +45,16 @@ const { handleEchartsResize } = useEchartsResize();
 
 const graticule = computed(() => {
   const { left: boardLeft, top: boardTop } = board.data[props.index].style;
-  const width = boardLeft + wrapScale(boardOffset.value.left);
-  const height = boardTop + wrapScale(boardOffset.value.top);
+  const width = boardLeft + wrapScale(board.offset.left);
+  const height = boardTop + wrapScale(board.offset.top);
   const left = -width;
   const top = -height;
   return { x: { width, left }, y: { height, top } };
 });
 
 const sizeText = computed(() => {
-  const width = graticule.value.x.width - wrapScale(boardOffset.value.left);
-  const height = graticule.value.y.height - wrapScale(boardOffset.value.top);
+  const width = graticule.value.x.width - wrapScale(board.offset.left);
+  const height = graticule.value.y.height - wrapScale(board.offset.top);
   return `${width},${height}`;
 });
 
@@ -189,7 +189,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   const startY = e.clientY;
   const curComponent = board.data[board.selected[0]];
   const { rotate: startRotate } = curComponent.style;
-  const { left, top, width, height } = boardRefs[props.index].getBoundingClientRect();
+  const { left, top, width, height } = board.refs[props.index].getBoundingClientRect();
   const centerX = left + width / 2;
   const centerY = top + height / 2;
   // 旋转前的角度

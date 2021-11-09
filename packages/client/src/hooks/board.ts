@@ -6,7 +6,6 @@ import {
   onMounted,
   reactive,
   ref,
-  shallowReactive,
   shallowRef,
   watch,
   watchEffect,
@@ -16,10 +15,6 @@ import { useBoardStore, usePageStore, usePanelStore } from '@/store';
 import { getInstanceByDom } from 'echarts';
 import debounce from 'lodash/debounce';
 import { Direction } from '@/enum';
-
-export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
-
-export const boardOffset = ref<{ left: number; top: number }>({ left: 0, top: 0 });
 
 export const useSelectMask = () => {
   const board = useBoardStore();
@@ -87,7 +82,8 @@ export const useSelectMask = () => {
 
 export const useEchartsResize = () => {
   const handleEchartsResize = (index: number) => {
-    const dom = boardRefs[index];
+    const board = useBoardStore();
+    const dom = board.refs[index];
     if (dom) {
       const chart = getInstanceByDom(dom);
       chart?.resize();

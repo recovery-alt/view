@@ -110,15 +110,7 @@
 <script lang="ts" setup>
 import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
 import { useBoardStore, useMenuStore, usePageStore, MenuEnum } from '@/store';
-import {
-  useSelectMask,
-  boardRefs,
-  useThumbnail,
-  useEditSlider,
-  useRuler,
-  useBoardKeydown,
-  boardOffset,
-} from '@/hooks';
+import { useSelectMask, useThumbnail, useEditSlider, useRuler, useBoardKeydown } from '@/hooks';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
@@ -141,7 +133,7 @@ const pageStyle = computed(() => {
 /* eslint-disable-next-line @typescript-eslint/ban-types */
 const setBoardRefs = (el: object | null) => {
   // @ts-expect-error cannot infer the $el's type
-  el && boardRefs.push(el.$el);
+  el && board.pushRef(el.$el);
 };
 
 const handleDrop = (e: DragEvent) => {
@@ -181,15 +173,14 @@ const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler()
 useBoardKeydown();
 
 onBeforeUpdate(() => {
-  boardRefs.length = 0;
+  board.clearRefs();
 });
 
 onMounted(() => {
   if (!boardDom.value || !canvasWrapperRef.value) return;
   const { left, top } = boardDom.value.getBoundingClientRect();
   const { left: parentLeft, top: parentTop } = canvasWrapperRef.value.getBoundingClientRect();
-  boardOffset.value.left = left - parentLeft;
-  boardOffset.value.top = top - parentTop;
+  board.setOffset({ left: left - parentLeft, top: top - parentTop });
 });
 </script>
 

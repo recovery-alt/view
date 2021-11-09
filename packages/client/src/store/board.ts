@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Board, Component, CSSStyleDataWithSize } from '@/typings';
+import type { Board, BoardState, Component, CSSStyleDataWithSize } from '@/typings';
 import { spliceItems } from '@/utils';
 import { getGallery } from '@/gallery';
 import cloneDeep from 'lodash/cloneDeep';
@@ -11,8 +11,8 @@ import { message } from 'ant-design-vue';
 
 export const useBoardStore = defineStore('board', {
   state: () => {
-    const data: Board = { selected: [], data: [] };
-    return data;
+    const state: BoardState = { selected: [], data: [], refs: [], offset: { left: 0, top: 0 } };
+    return state;
   },
   actions: {
     rawAppend(component: Component | Array<Component>) {
@@ -231,6 +231,15 @@ export const useBoardStore = defineStore('board', {
     selectAll() {
       const { data } = this;
       this.selected = data.map((_, i) => i);
+    },
+    clearRefs() {
+      this.refs.length = 0;
+    },
+    setOffset(offset: BoardState['offset']) {
+      this.offset = offset;
+    },
+    pushRef(ref: HTMLElement) {
+      this.refs.push(ref);
     },
   },
 });

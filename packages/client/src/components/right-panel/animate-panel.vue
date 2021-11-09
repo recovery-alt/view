@@ -4,7 +4,7 @@
       <template #icon><PlusOutlined /></template>
       添加
     </Button>
-    <Button type="primary" @click="playAll(boardRefs[board.selected[0]])">
+    <Button type="primary" @click="playAll(board.refs[board.selected[0]])">
       <template #icon><PlayCircleOutlined /></template>
       预览
     </Button>
@@ -20,7 +20,11 @@
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
           <div class="animation-title__right">
-            <Button size="small" type="primary" @click.stop="play(i, boardRefs[board.selected[0]])">
+            <Button
+              size="small"
+              type="primary"
+              @click.stop="play(i, board.refs[board.selected[0]])"
+            >
               <template #icon><PlayCircleOutlined /></template>
             </Button>
             <Button size="small" type="primary" @click.stop="del(i)">
@@ -70,7 +74,7 @@
 import type { Field } from '@/typings';
 import { ref, computed } from 'vue';
 import { useBoardStore } from '@/store';
-import { useAnimation, boardRefs } from '@/hooks';
+import { useAnimation } from '@/hooks';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
 import { FormEnum } from '@/enum';

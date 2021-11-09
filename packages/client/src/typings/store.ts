@@ -5,6 +5,11 @@ export type Board = {
   data: Array<Component>;
 };
 
+export type BoardState = {
+  refs: Array<HTMLElement>;
+  offset: { left: number; top: number };
+} & Board;
+
 export type Snapshot = {
   index: number;
   data: Array<{ page: Page; selected: number[] }>;
