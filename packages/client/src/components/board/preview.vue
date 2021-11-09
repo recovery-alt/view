@@ -3,7 +3,7 @@
     <div v-if="modelValue" class="preview__mask">
       <div class="preview__box">
         <div class="preview__title">
-          {{ pageConfig.title }}
+          {{ page.config.title }}
           <CloseSquareOutlined class="preview__close" @click="handleClose" />
         </div>
         <div class="preview__container">
@@ -26,8 +26,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { pageConfig } from '@/hooks';
-import { useBoardStore } from '@/store';
+import { useBoardStore, usePageStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';
 import BoardBox from './box.vue';
@@ -37,9 +36,10 @@ defineProps({ modelValue: Boolean });
 const emit = defineEmits(['update:modelValue']);
 
 const board = useBoardStore();
+const page = usePageStore();
 
 const pageStyle = computed(() => {
-  const { width, height, backgroundColor } = pageConfig;
+  const { width, height, backgroundColor } = page.config;
   return { width, height, backgroundColor };
 });
 

@@ -81,7 +81,7 @@
     </Col>
     <Col span="2">
       <InputNumber
-        v-model:value="pageConfig.scale"
+        v-model:value="page.config.scale"
         size="small"
         :min="30"
         :max="150"
@@ -90,7 +90,7 @@
     </Col>
     <Col span="4" class="edit-slider__col">
       <Slider
-        v-model:value="pageConfig.scale"
+        v-model:value="page.config.scale"
         size="small"
         :min="30"
         :max="150"
@@ -109,10 +109,9 @@
 
 <script lang="ts" setup>
 import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
-import { useBoardStore } from '@/store';
+import { useBoardStore, usePageStore } from '@/store';
 import {
   menu,
-  pageConfig,
   useSelectMask,
   boardRefs,
   useThumbnail,
@@ -127,6 +126,7 @@ import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
 import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
 
 const board = useBoardStore();
+const page = usePageStore();
 const { selectMask, handleMousedown } = useSelectMask();
 const position = reactive({ left: 0, top: 0 });
 const screenShotRef = shallowRef<HTMLElement>();
@@ -134,7 +134,7 @@ const canvasWrapperRef = shallowRef<HTMLElement>();
 const boardDom = shallowRef<HTMLElement>();
 
 const pageStyle = computed(() => {
-  const { width, height, backgroundColor, scale } = pageConfig;
+  const { width, height, backgroundColor, scale } = page.config;
   return { width, height, backgroundColor, scale };
 });
 

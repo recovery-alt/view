@@ -6,3 +6,4 @@ export * from './storage';
 export * from './array';
 export * from './promise';
 export * from './reg-exp';
+export * from './number';

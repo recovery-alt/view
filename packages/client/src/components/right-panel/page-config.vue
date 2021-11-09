@@ -3,13 +3,13 @@
     <header class="page-config__header">页面设置</header>
     <section class="page-config__wrapper">
       <Form
-        :model="pageConfig"
+        :model="page.config"
         hide-required-mark
         label-align="right"
         :label-col="{ span: 5, offset: 2 }"
         :wrapper-col="{ span: 16, offset: 1 }"
       >
-        <Item v-for="field in fields" :key="field.label" :field="field" :model="pageConfig" />
+        <Item v-for="field in fields" :key="field.label" :field="field" :model="page.config" />
       </Form>
     </section>
   </div>
@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import type { Field } from '@/typings';
 import { FormEnum } from '@/enum';
-import { pageConfig } from '@/hooks';
+import { usePageStore } from '@/store';
 import {
   ExpandOutlined,
   ColumnWidthOutlined,
@@ -28,6 +28,8 @@ import {
 } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
 import { Form } from 'ant-design-vue';
+
+const page = usePageStore();
 
 const fields: Array<Field> = [
   {

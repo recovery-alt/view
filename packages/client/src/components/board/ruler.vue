@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
-import { wrapScale } from '@/hooks';
+import { wrapScale } from '@/utils';
 import { useThemeStore } from '@/store';
 
 const canvas = shallowRef<HTMLCanvasElement>();

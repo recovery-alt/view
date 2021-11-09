@@ -89,10 +89,7 @@ watchEffect(() => {
   }
 
   .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    padding-left: 27px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding-left: 18px;
   }
 
   .ant-collapse-content > .ant-collapse-content-box {

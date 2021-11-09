@@ -2,9 +2,9 @@ import { defineStore } from 'pinia';
 import type { Snapshot, Page } from '@/typings';
 import cloneDeep from 'lodash/cloneDeep';
 import config from '@/config';
-import { pageConfig } from '@/hooks';
 import { message } from 'ant-design-vue';
 import { useBoardStore } from './board';
+import { usePageStore } from './page';
 
 export const useSnapshotStore = defineStore('snapshot', {
   state: () => {
@@ -47,11 +47,12 @@ export const useSnapshotStore = defineStore('snapshot', {
       message.success('保存成功！');
     },
     recordSnapshot() {
+      const page = usePageStore();
       const board = useBoardStore();
       const { data, selected } = board;
       const components = cloneDeep(data);
-      const page: Page = { ...pageConfig, components };
-      this.rawRecordSnapshot(page, selected);
+      const newPage: Page = { ...page.config, components };
+      this.rawRecordSnapshot(newPage, selected);
     },
   },
 });

@@ -1,4 +1,4 @@
-import { wrapScale } from '@/hooks';
+import { wrapScale } from './number';
 
 export const getBoardReletedPosition = (left: number, top: number, className = '.board') => {
   const boardDom = document.querySelector(className);

@@ -29,7 +29,7 @@
 
     <div class="header__title">
       <FundProjectionScreenOutlined />
-      <span>{{ pageConfig.title }}</span>
+      <span>{{ page.config.title }}</span>
     </div>
   </header>
   <main class="main-container">
@@ -52,8 +52,8 @@
 import type { Page } from '@/typings';
 import type { Component } from 'vue';
 import { on } from '@/utils';
-import { useSnapshotStore, useBoardStore, useThemeStore } from '@/store';
-import { pageConfig, updateCachePage, savePage, isModified, panel } from '@/hooks';
+import { useSnapshotStore, useBoardStore, useThemeStore, usePageStore } from '@/store';
+import { panel } from '@/hooks';
 import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
@@ -78,8 +78,9 @@ import { Modal, Button, Tooltip } from 'ant-design-vue';
 const props = defineProps({ id: { type: String, default: () => '' } });
 const snapshot = useSnapshotStore();
 const board = useBoardStore();
+const page = usePageStore();
 const router = useRouter();
-const store = useThemeStore();
+const theme = useThemeStore();
 
 const modalOpen = ref(false);
 let letgo = false;
@@ -110,7 +111,7 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
   {
     name: '保存',
     icon: SaveOutlined,
-    event: () => savePage(),
+    event: () => page.savePage(),
   },
   {
     name: '发布',
@@ -129,12 +130,12 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
   {
     name: '换肤',
     icon: SkinOutlined,
-    event: () => store.switchTheme(),
+    event: () => theme.switchTheme(),
   },
 ];
 
 const interceptor = (e: BeforeUnloadEvent) => {
-  if (isModified()) e.returnValue = false;
+  if (page.isModified()) e.returnValue = false;
 };
 
 onMounted(async () => {
@@ -144,9 +145,9 @@ onMounted(async () => {
   const res = await getPage<Page>(props.id);
   if (res.code !== 0) return;
   const { components, ...config } = res.data;
-  Object.assign(pageConfig, config);
+  Object.assign(page.config, config);
   board.setBoard({ data: cloneDeep(components), selected: [] });
-  updateCachePage();
+  page.updateCache();
 });
 
 onBeforeUnmount(() => {
@@ -154,7 +155,7 @@ onBeforeUnmount(() => {
 });
 
 onBeforeRouteLeave((to, from) => {
-  const modified = isModified();
+  const modified = page.isModified();
 
   if (!letgo && modified) {
     Modal.confirm({

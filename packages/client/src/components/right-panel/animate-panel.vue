@@ -9,7 +9,12 @@
       预览
     </Button>
   </div>
-  <Collapse v-if="curComponent.animations?.length" v-model="active" accordion>
+  <Collapse
+    v-if="curComponent.animations?.length"
+    v-model="active"
+    class="animation-wrapper"
+    accordion
+  >
     <CollapsePanel v-for="(animation, i) in curComponent.animations" :key="animation.id">
       <template #header>
         <div class="animation-title">
@@ -120,6 +125,12 @@ const del = (index: number) => {
 
 <style lang="less">
 .animation {
+  &-wrapper.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &-title {
     width: 100%;
     display: flex;

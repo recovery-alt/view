@@ -11,13 +11,12 @@ import {
   watch,
   watchEffect,
 } from 'vue';
-import { getBoardReletedPosition, on, off } from '@/utils';
-import { useBoardStore } from '@/store';
+import { getBoardReletedPosition, on, off, wrapScale } from '@/utils';
+import { useBoardStore, usePageStore } from '@/store';
 import { getInstanceByDom } from 'echarts';
-import { panel, pageConfig, savePage } from '.';
+import { panel } from '.';
 import debounce from 'lodash/debounce';
 import { Direction } from '@/enum';
-import { wrapScale } from './page';
 
 export const boardRefs = shallowReactive<Array<HTMLElement>>([]);
 
@@ -113,6 +112,7 @@ export const useThumbnail = (
   const thumbnailRef = shallowRef<HTMLCanvasElement>();
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
   const showThumbnail = ref(true);
+  const page = usePageStore();
 
   // 初始化视窗尺寸
   const resizeViewport = () => {
@@ -191,6 +191,7 @@ export const useThumbnail = (
   // 初始化画布
   const initCanvas = () => {
     if (!screenShotRef.value || !canvasWrapperRef.value || !thumbnailRef.value) return;
+    const page = usePageStore();
     const ctx = thumbnailRef.value.getContext('2d');
     if (!ctx) return;
     const { width, height } = thumbnailRef.value;
@@ -198,7 +199,7 @@ export const useThumbnail = (
 
     const { width: thumbnailW, height: thumbnailH } = thumbnailRef.value.getBoundingClientRect();
     const { width: screenW, height: screenH } = screenShotRef.value.getBoundingClientRect();
-    const { width: pageW, height: pageH } = pageConfig;
+    const { width: pageW, height: pageH } = page.config;
     const ratioX = thumbnailW / wrapScale(screenW);
     const ratioY = thumbnailH / wrapScale(screenH);
 
@@ -259,7 +260,7 @@ export const useThumbnail = (
   });
 
   watchEffect(() => {
-    if (pageConfig.scale) {
+    if (page.config.scale) {
       debounceResizeViewport();
       debounceInitCanvas();
     }
@@ -281,6 +282,7 @@ export const useThumbnail = (
 };
 
 export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) => {
+  const page = usePageStore();
   const screenShotSize = reactive({ width: 0, height: 0 });
   const rulerKey = ref(0);
 
@@ -289,7 +291,7 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
   const resizeScreenShot = () => {
     if (!canvasWrapperRef.value) return;
     const { width: minW, height: minH } = canvasWrapperRef.value.getBoundingClientRect();
-    const { width: pageW, height: pageH } = pageConfig;
+    const { width: pageW, height: pageH } = page.config;
     const width = wrapScale(pageW + 400, true);
     const height = wrapScale(pageH + 400, true);
     // 减去滚动条宽高
@@ -304,7 +306,7 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
 
   onMounted(() => {
     watchEffect(() => {
-      pageConfig.scale && resizeScreenShot();
+      page.config.scale && resizeScreenShot();
     });
   });
 
@@ -345,20 +347,21 @@ export const useRuler = () => {
 };
 
 export const useBoardKeydown = () => {
+  const page = usePageStore();
   const board = useBoardStore();
 
   // 快捷键事件策略
   const strategy: Data<(ctrl: boolean) => void> = {
     Backspace: () => board.del(),
     a: ctrl => ctrl && board.selectAll(),
-    s: ctrl => ctrl && savePage(),
+    s: ctrl => ctrl && page.savePage(),
     c: ctrl => ctrl && board.copy(),
     ArrowLeft: ctrl => {
       if (ctrl) {
         panel.layer = !panel.layer;
       } else {
         board.selected.forEach(i => {
-          board.data[i].style.left -= pageConfig.gap;
+          board.data[i].style.left -= page.config.gap;
         });
       }
     },
@@ -367,7 +370,7 @@ export const useBoardKeydown = () => {
         panel.component = !panel.component;
       } else {
         board.selected.forEach(i => {
-          board.data[i].style.top -= pageConfig.gap;
+          board.data[i].style.top -= page.config.gap;
         });
       }
     },
@@ -376,13 +379,13 @@ export const useBoardKeydown = () => {
         panel.config = !panel.config;
       } else {
         board.selected.forEach(i => {
-          board.data[i].style.left += pageConfig.gap;
+          board.data[i].style.left += page.config.gap;
         });
       }
     },
     ArrowDown: () => {
       board.selected.forEach(i => {
-        board.data[i].style.top += pageConfig.gap;
+        board.data[i].style.top += page.config.gap;
       });
     },
   };

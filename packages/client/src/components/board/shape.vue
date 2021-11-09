@@ -27,8 +27,8 @@
 
 <script lang="ts" setup>
 import { useBoardStore } from '@/store';
-import { boardOffset, wrapScale, showMenu, boardRefs, useEchartsResize } from '@/hooks';
-import { on, off, patchUnit } from '@/utils';
+import { boardOffset, showMenu, boardRefs, useEchartsResize } from '@/hooks';
+import { on, off, patchUnit, wrapScale } from '@/utils';
 import throttle from 'lodash/throttle';
 import { computed } from 'vue';
 import { RedoOutlined } from '@ant-design/icons-vue';
