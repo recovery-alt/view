@@ -9,7 +9,7 @@
           class="header__button"
           size="small"
           :type="item.checked ? 'primary' : 'default'"
-          @click="switchPanelShow(item.key)"
+          @click="panel.switchPanelShow(item.key)"
         >
           <template #icon>
             <component :is="item.icon" />
@@ -51,9 +51,15 @@
 <script lang="ts" setup>
 import type { Page } from '@/typings';
 import type { Component } from 'vue';
+import type { PanelKey } from '@/store';
 import { on } from '@/utils';
-import { useSnapshotStore, useBoardStore, useThemeStore, usePageStore } from '@/store';
-import { panel } from '@/hooks';
+import {
+  useSnapshotStore,
+  useBoardStore,
+  useThemeStore,
+  usePageStore,
+  usePanelStore,
+} from '@/store';
 import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
@@ -81,21 +87,18 @@ const board = useBoardStore();
 const page = usePageStore();
 const router = useRouter();
 const theme = useThemeStore();
+const panel = usePanelStore();
 
 const modalOpen = ref(false);
 let letgo = false;
 
-const icons: Array<{ key: string; icon: Component }> = [
+const icons: Array<{ key: PanelKey; icon: Component }> = [
   { key: 'layer', icon: LayoutOutlined },
   { key: 'component', icon: UnorderedListOutlined },
   { key: 'config', icon: FileDoneOutlined },
   { key: 'util', icon: InsertRowRightOutlined },
 ];
 const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[item.key] })));
-
-const switchPanelShow = (key: string) => {
-  panel[key] = !panel[key];
-};
 
 const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> = [
   {

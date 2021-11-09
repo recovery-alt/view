@@ -23,12 +23,12 @@ import type { Gallery } from '@/typings';
 import type { Component } from 'vue';
 import { ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
-import { panel } from '@/hooks';
-import { useBoardStore } from '@/store';
+import { useBoardStore, usePanelStore } from '@/store';
 import { getGallery } from '@/gallery';
 import { Tabs, TabPane } from 'ant-design-vue';
 
 const board = useBoardStore();
+const panel = usePanelStore();
 
 // 当前选中组件
 const curComponent = computed(() =>

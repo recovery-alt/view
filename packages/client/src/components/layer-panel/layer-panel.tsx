@@ -13,9 +13,9 @@ import {
   ArrowDownOutlined,
   RightOutlined,
 } from '@ant-design/icons-vue';
-import { panel, menu, showMenu } from '@/hooks';
+import { menu, showMenu } from '@/hooks';
 import { computed, reactive, ref, defineComponent, shallowRef } from 'vue';
-import { useBoardStore } from '@/store';
+import { useBoardStore, usePanelStore } from '@/store';
 import { BoardMenu } from '@/components';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
 import { Tooltip, Empty } from 'ant-design-vue';
@@ -26,6 +26,7 @@ export default defineComponent({
   name: 'layer-panel',
   setup() {
     const board = useBoardStore();
+    const panel = usePanelStore();
 
     const showList = ref(false);
 
@@ -142,7 +143,7 @@ export default defineComponent({
             ))}
             <LeftOutlined
               onClick={() => {
-                panel.layer = !panel.layer;
+                panel.switchPanelShow('layer');
               }}
             />
           </section>

@@ -6,7 +6,7 @@
   >
     <header class="component-panel__header">
       <div>组件列表</div>
-      <LeftOutlined @click="panel.component = !panel.component" />
+      <LeftOutlined @click="panel.switchPanelShow('component')" />
     </header>
     <div class="component-panel__select-box">
       <InputSearch
@@ -45,11 +45,12 @@
 import { galleryGroup } from '@/gallery';
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
-import { panel } from '@/hooks';
+import { usePanelStore } from '@/store';
 import DefaultIcon from '@/assets/img/gallery/default.png';
 import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
 
 const activeTab = ref('基础');
+const panel = usePanelStore();
 
 const handleDragStart = (e: DragEvent) => {
   const target = e.target as HTMLDataListElement;

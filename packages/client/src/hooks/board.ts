@@ -12,9 +12,8 @@ import {
   watchEffect,
 } from 'vue';
 import { getBoardReletedPosition, on, off, wrapScale } from '@/utils';
-import { useBoardStore, usePageStore } from '@/store';
+import { useBoardStore, usePageStore, usePanelStore } from '@/store';
 import { getInstanceByDom } from 'echarts';
-import { panel } from '.';
 import debounce from 'lodash/debounce';
 import { Direction } from '@/enum';
 
@@ -113,6 +112,7 @@ export const useThumbnail = (
   const viewportSize = reactive({ width: 0, height: 0, top: 0, left: 0 });
   const showThumbnail = ref(true);
   const page = usePageStore();
+  const panel = usePanelStore();
 
   // 初始化视窗尺寸
   const resizeViewport = () => {
@@ -348,6 +348,7 @@ export const useRuler = () => {
 
 export const useBoardKeydown = () => {
   const page = usePageStore();
+  const panel = usePanelStore();
   const board = useBoardStore();
 
   // 快捷键事件策略
@@ -358,7 +359,7 @@ export const useBoardKeydown = () => {
     c: ctrl => ctrl && board.copy(),
     ArrowLeft: ctrl => {
       if (ctrl) {
-        panel.layer = !panel.layer;
+        panel.switchPanelShow('layer');
       } else {
         board.selected.forEach(i => {
           board.data[i].style.left -= page.config.gap;
@@ -367,7 +368,7 @@ export const useBoardKeydown = () => {
     },
     ArrowUp: ctrl => {
       if (ctrl) {
-        panel.component = !panel.component;
+        panel.switchPanelShow('component');
       } else {
         board.selected.forEach(i => {
           board.data[i].style.top -= page.config.gap;
@@ -376,7 +377,7 @@ export const useBoardKeydown = () => {
     },
     ArrowRight: ctrl => {
       if (ctrl) {
-        panel.config = !panel.config;
+        panel.switchPanelShow('config');
       } else {
         board.selected.forEach(i => {
           board.data[i].style.left += page.config.gap;
