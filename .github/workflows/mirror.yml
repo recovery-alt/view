@@ -1,14 +1,33 @@
-name: 'GitHub Actions Mirror'
+name: Publish page
 
-on: [push, delete]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  mirror_to_gitee:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout'
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        with:
+          persist-credentials: false
+
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm i -g pnpm
+          pnpm i
+          pnpm build
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: ./dist # The folder the action should deploy.
+      - name: Checkout 🛎️
         uses: actions/checkout@v1
-      - name: 'Mirror to gitee'
+      - name: Mirror to gitee 🚀
         uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url: git@gitee.com:cq360/view.git
