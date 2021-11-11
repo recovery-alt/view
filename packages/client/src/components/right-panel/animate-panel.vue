@@ -2,11 +2,11 @@
   <div class="animation-btn_group">
     <Button type="primary" @click="drawer.show = true">
       <template #icon><PlusOutlined /></template>
-      添加
+      {{ t('add') }}
     </Button>
     <Button type="primary" @click="playAll(board.refs[board.selected[0]])">
       <template #icon><PlayCircleOutlined /></template>
-      预览
+      {{ t('preview') }}
     </Button>
   </div>
   <Collapse
@@ -47,7 +47,7 @@
       </Form>
     </CollapsePanel>
   </Collapse>
-  <Empty v-else description="尚未选择任何动画" />
+  <Empty v-else :description="t('tip')" />
   <Drawer v-model:visible="drawer.show" placement="right" :width="400" :closable="false">
     <Tabs v-model="drawer.selected" size="small">
       <TabPane v-for="item in drawer.data" :key="item.title" :label="item.title">
@@ -88,22 +88,24 @@ import {
   TabPane,
   Form,
 } from 'ant-design-vue';
+import { animatePanel as messages } from '@/locales';
+import { useI18n } from 'vue-i18n';
 
 const active = ref('');
-
 const board = useBoardStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const fields: Array<Field> = [
   {
-    label: '动画',
-    extra: ['时长', '延迟'],
+    label: t('animation.name'),
+    extra: [t('animation.duration'), t('animation.delay')],
     item: [
       { type: FormEnum.INPUT_NUMBER, model: 'animationDuration', propsData: { min: 0 } },
       { type: FormEnum.INPUT_NUMBER, model: 'animationDelay', propsData: { min: 0 } },
     ],
   },
   {
-    label: '循环次数',
+    label: t('animation.times'),
     item: { type: FormEnum.INPUT_NUMBER, model: 'animationIterationCount', propsData: { min: 1 } },
   },
 ];

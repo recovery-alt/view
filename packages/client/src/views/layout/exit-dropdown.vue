@@ -1,5 +1,6 @@
 <template>
   <div class="header-right">
+    <Button @click="switchLocale()">{{ locale === 'cn' ? 'English' : '中文' }}</Button>
     <Dropdown>
       <div class="exit-dropdown">
         <Avatar>
@@ -11,11 +12,11 @@
       </div>
       <template #overlay>
         <Menu>
-          <MenuItem key="0" @click="visible = true">修改密码</MenuItem>
+          <MenuItem key="0" @click="visible = true">{{ t('dialog.modify') }}</MenuItem>
           <MenuItem v-if="$route.path.includes('editor')" key="1" @click="$router.push('/')">
-            返回管理页
+            {{ t('back') }}
           </MenuItem>
-          <MenuItem key="2" @click="logout">退出</MenuItem>
+          <MenuItem key="2" @click="logout">{{ t('exit') }}</MenuItem>
         </Menu>
       </template>
     </Dropdown>
@@ -23,18 +24,18 @@
   </div>
   <Modal
     v-model:visible="visible"
-    title="修改密码"
+    :title="t('dialog.modify')"
     :after-close="resetFields"
     @ok="submitPasswordChange"
   >
     <Form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
-      <FormItem label="原密码" v-bind="validateInfos.password">
+      <FormItem :label="t('dialog.old')" v-bind="validateInfos.password">
         <Input v-model:value="form.password" type="password" />
       </FormItem>
-      <FormItem label="新密码" v-bind="validateInfos.newPassword">
+      <FormItem :label="t('dialog.new')" v-bind="validateInfos.newPassword">
         <Input v-model:value="form.newPassword" type="password" />
       </FormItem>
-      <FormItem label="确认密码" v-bind="validateInfos.confirmPassword">
+      <FormItem :label="t('dialog.confirm')" v-bind="validateInfos.confirmPassword">
         <Input v-model:value="form.confirmPassword" type="password" />
       </FormItem>
     </Form>
@@ -60,16 +61,24 @@ import {
   Form,
   FormItem,
   Input,
+  Button,
 } from 'ant-design-vue';
 import { useThemeStore } from '@/store';
+import { useI18n } from 'vue-i18n';
+import { exitDropdown as messages } from '@/locales';
 
 const userInfoStr = local.get(LocalKeys.USER_INFO);
 const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
 const router = useRouter();
 const route = useRoute();
 const theme = useThemeStore();
-
+const { locale } = useI18n({ useScope: 'global' });
+const { t } = useI18n({ useScope: 'local', messages });
 const visible = ref(false);
+
+function switchLocale() {
+  locale.value = locale.value === 'en' ? 'cn' : 'en';
+}
 
 const form = reactive({
   password: '',
@@ -78,12 +87,12 @@ const form = reactive({
 });
 
 const checkPassword = async (rule: RuleType, value: string) => {
-  if (/S+/.test(value)) {
-    return Promise.reject('密码不能为空。');
+  if (!value) {
+    return Promise.reject(t('validator.empty'));
   }
 
   if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
-    return Promise.reject('密码需以字母开头，长度在6~18之间。');
+    return Promise.reject(t('validator.length'));
   }
 
   return Promise.resolve();
@@ -96,7 +105,7 @@ const checkPasswordSync = async (rule: RuleType, value: string) => {
   }
 
   if (value !== form.newPassword) {
-    return Promise.reject('两次输入不一致。');
+    return Promise.reject(t('validator.consistent'));
   }
 
   return Promise.resolve();
@@ -118,7 +127,7 @@ const submitPasswordChange = async () => {
   const res = await changePassword({ password, newPassword });
   if (res.code === 0) {
     visible.value = false;
-    message.success('修改成功！');
+    message.success(t('message.success.edit'));
   } else {
     message.error(res.msg);
   }
@@ -127,7 +136,7 @@ const submitPasswordChange = async () => {
 const logout = () => {
   local.remove(LocalKeys.AUTHORIZATION);
   router.push(`/login?redirect=${route.path}`);
-  message.success('已退出登录！');
+  message.success(t('message.success.logout'));
 };
 </script>
 

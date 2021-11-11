@@ -38,6 +38,8 @@ import {
   EyeInvisibleOutlined,
 } from '@ant-design/icons-vue';
 import { reactive, onMounted, shallowRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { menu as messages } from '@/locales';
 
 const props = defineProps({
   menuType: {
@@ -49,6 +51,7 @@ const props = defineProps({
 
 const board = useBoardStore();
 const menu = useMenuStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const menuRef = shallowRef<HTMLElement>();
 
@@ -56,58 +59,58 @@ type MenuList = Array<{ name: string; icon: Component; event: () => void; disabl
 
 const data = reactive<MenuList>([
   {
-    name: '置顶',
+    name: t('top'),
     icon: VerticalAlignTopOutlined,
     event: () => board.moveUp(true),
   },
   {
-    name: '置底',
+    name: t('bottom'),
     icon: VerticalAlignBottomOutlined,
     event: () => board.moveDown(true),
   },
   {
-    name: '上移一层',
+    name: t('up'),
     icon: ArrowUpOutlined,
     event: () => board.moveUp(),
   },
   {
-    name: '下移一层',
+    name: t('down'),
     icon: ArrowDownOutlined,
     event: () => board.moveDown(),
   },
 
   {
-    name: '成组',
+    name: t('group'),
     icon: FolderOutlined,
     disable: false,
     event: () => board.group(),
   },
   {
-    name: '取消成组',
+    name: t('cancelGroup'),
     icon: FolderOpenOutlined,
     disable: false,
     event: () => board.cancelGroup(),
   },
 
   {
-    name: '锁定',
+    name: t('lock'),
     icon: LockOutlined,
     disable: false,
     event: () => board.toggleLocked(board.selected),
   },
   {
-    name: '隐藏',
+    name: t('hide'),
     icon: EyeInvisibleOutlined,
     disable: false,
     event: () => board.hide(board.selected),
   },
   {
-    name: '复制',
+    name: t('copy'),
     icon: CopyOutlined,
     event: () => board.copy(),
   },
   {
-    name: '删除',
+    name: t('delete'),
     icon: DeleteOutlined,
     event: () => board.del(),
   },

@@ -5,14 +5,14 @@
     @dragstart="handleDragStart"
   >
     <header class="component-panel__header">
-      <div>组件列表</div>
+      <div>{{ t('componentList') }}</div>
       <LeftOutlined @click="panel.switchPanelShow('component')" />
     </header>
     <div class="component-panel__select-box">
       <InputSearch
         v-show="panel.component"
         enter-button
-        placeholder="请输入组件名"
+        :placeholder="t('placeholder')"
         @search="searchComponent"
       />
     </div>
@@ -48,9 +48,12 @@ import { LeftOutlined } from '@ant-design/icons-vue';
 import { usePanelStore } from '@/store';
 import DefaultIcon from '@/assets/img/gallery/default.png';
 import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { componentPanel as messages } from '@/locales';
 
 const activeTab = ref('基础');
 const panel = usePanelStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const handleDragStart = (e: DragEvent) => {
   const target = e.target as HTMLDataListElement;

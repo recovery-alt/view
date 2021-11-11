@@ -80,6 +80,8 @@ import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { getPage } from '@/api';
 import cloneDeep from 'lodash/cloneDeep';
 import { Modal, Button, Tooltip } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { editor as messages } from '@/locales';
 
 const props = defineProps({ id: { type: String, default: () => '' } });
 const snapshot = useSnapshotStore();
@@ -88,6 +90,7 @@ const page = usePageStore();
 const router = useRouter();
 const theme = useThemeStore();
 const panel = usePanelStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const modalOpen = ref(false);
 let letgo = false;
@@ -102,36 +105,36 @@ const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[
 
 const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> = [
   {
-    name: '组件删除备份',
+    name: t('backup'),
     icon: RestOutlined,
     event: () => null,
   },
   {
-    name: '生成快照',
+    name: t('snapshot'),
     icon: CameraOutlined,
     event: () => snapshot.recordSnapshot(),
   },
   {
-    name: '保存',
+    name: t('save'),
     icon: SaveOutlined,
     event: () => page.savePage(),
   },
   {
-    name: '发布',
+    name: t('publish'),
     icon: SendOutlined,
     event: () => {
       if (props.id) window.open(`/share.html#/pc/${props.id}`);
     },
   },
   {
-    name: '预览',
+    name: t('preview'),
     icon: DesktopOutlined,
     event: () => {
       modalOpen.value = true;
     },
   },
   {
-    name: '换肤',
+    name: t('theme'),
     icon: SkinOutlined,
     event: () => theme.switchTheme(),
   },
@@ -162,8 +165,8 @@ onBeforeRouteLeave((to, from) => {
 
   if (!letgo && modified) {
     Modal.confirm({
-      title: () => '警告',
-      content: () => '系统可能不会保存您所做的更改，是否离开？',
+      title: () => t('warning'),
+      content: () => t('tip'),
       icon: () => createVNode(ExclamationCircleOutlined),
       onOk() {
         letgo = true;

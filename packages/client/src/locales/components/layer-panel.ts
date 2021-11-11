@@ -1,0 +1,26 @@
+export const layerPanel = {
+  cn: {
+    top: '置顶',
+    bottom: '置底',
+    up: '上移',
+    down: '下移',
+    group: '成组',
+    cancelGroup: '取消成组',
+    lock: '锁定',
+    hide: '隐藏',
+    layer: '图层',
+    tip: '尚未添加任何组件',
+  },
+  en: {
+    top: 'Top',
+    bottom: 'Bottom',
+    up: 'Up',
+    down: 'Down',
+    group: 'Group',
+    cancelGroup: 'Cancel Group',
+    lock: 'Lock',
+    hide: 'Hide',
+    layer: 'Layer',
+    tip: 'There is No Component',
+  },
+};

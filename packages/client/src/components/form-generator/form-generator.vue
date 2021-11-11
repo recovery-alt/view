@@ -24,7 +24,7 @@
     v-model:value="model[field.model]"
     v-bind="field.propsData"
     allow-clear
-    :placeholder="field.type === FormEnum.SELECT ? '请选择' : '请输入'"
+    :placeholder="field.type === FormEnum.SELECT ? t('select') : t('input')"
     size="small"
   >
     <template v-if="field.type === FormEnum.SELECT">
@@ -53,6 +53,8 @@ import {
   Radio,
   Textarea,
 } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { formGenerator as messages } from '@/locales';
 
 const map: Data = {
   radio: Radio,
@@ -76,6 +78,8 @@ defineProps({
     default: () => ({}),
   },
 });
+
+const { t } = useI18n({ useScope: 'local', messages });
 </script>
 
 <style lang="less">

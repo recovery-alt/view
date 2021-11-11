@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-box">
-      <span>用户登录</span>
+      <span>{{ t('user.login') }}</span>
       <Form
         hide-required-mark
         label-align="left"
@@ -9,14 +9,14 @@
         :wrapper-col="{ span: 16 }"
         :model="form"
       >
-        <FormItem name="name" label="用户名" :rules="rules.name">
-          <Input v-model:value="form.name" placeholder="用户名" />
+        <FormItem name="name" :label="t('user.name')" :rules="rules.name">
+          <Input v-model:value="form.name" :placeholder="t('user.name')" />
         </FormItem>
-        <FormItem name="password" label="密码" :rules="rules.password">
-          <Input v-model:value="form.password" placeholder="密码" />
+        <FormItem name="password" :label="t('user.password')" :rules="rules.password">
+          <Input v-model:value="form.password" :placeholder="t('user.password')" />
         </FormItem>
         <FormItem :wrapper-col="{ span: 8, offset: 8 }">
-          <Button type="primary" @click="submitLogin">登录</Button>
+          <Button type="primary" @click="submitLogin">{{ t('login') }}</Button>
         </FormItem>
       </Form>
     </div>
@@ -32,13 +32,16 @@ import { encrypt, to } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';
 import { LocalKeys } from '@/enum';
+import { useI18n } from 'vue-i18n';
+import { login as messages } from '@/locales';
 
 const props = defineProps({ redirect: { type: String, default: () => '' } });
+const { t } = useI18n({ useScope: 'local', messages });
 
 const form = reactive({ name: 'ccq', password: 'a123456' });
 const rules = reactive({
-  name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  name: [{ required: true, message: t('validator.username'), trigger: 'blur' }],
+  password: [{ required: true, message: t('validator.password'), trigger: 'blur' }],
 });
 const router = useRouter();
 const { validate } = Form.useForm(form, rules);
@@ -53,10 +56,10 @@ const submitLogin = async () => {
     const { token, name } = res.data;
     local.set(LocalKeys.AUTHORIZATION, token);
     local.set(LocalKeys.USER_INFO, { name });
-    message.success('登录成功！');
+    message.success(t('notify.success'));
     router.push(props.redirect || '/');
   } else {
-    message.error('登录失败！');
+    message.error(t('notify.fail'));
   }
 };
 </script>

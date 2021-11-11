@@ -64,15 +64,15 @@
       <Tooltip>
         <template #title>
           <div class="edit-slider__text">
-            <span> 切换图层面板 </span>
+            <span> {{ t('layer') }} </span>
             <span> ctrl/cmd + &larr; </span>
           </div>
           <div class="edit-slider__text">
-            <span> 切换组件面板 </span>
+            <span> {{ t('component') }} </span>
             <span> ctrl/cmd + &uarr; </span>
           </div>
           <div class="edit-slider__text">
-            <span> 切换右侧面板 </span>
+            <span> {{ t('right') }} </span>
             <span> ctrl/cmd + &rarr; </span>
           </div>
         </template>
@@ -115,6 +115,8 @@ import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
 import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { board as messages } from '@/locales';
 
 const board = useBoardStore();
 const page = usePageStore();
@@ -124,6 +126,7 @@ const position = reactive({ left: 0, top: 0 });
 const screenShotRef = shallowRef<HTMLElement>();
 const canvasWrapperRef = shallowRef<HTMLElement>();
 const boardDom = shallowRef<HTMLElement>();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const pageStyle = computed(() => {
   const { width, height, backgroundColor, scale } = page.config;

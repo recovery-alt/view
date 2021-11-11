@@ -1,6 +1,6 @@
 <template>
   <div class="page-config">
-    <header class="page-config__header">页面设置</header>
+    <header class="page-config__header">{{ t('setting') }}</header>
     <section class="page-config__wrapper">
       <Form
         :model="page.config"
@@ -28,51 +28,54 @@ import {
 } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
 import { Form } from 'ant-design-vue';
+import { pageConfig as messages } from '@/locales';
+import { useI18n } from 'vue-i18n';
 
 const page = usePageStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const fields: Array<Field> = [
   {
-    label: '页面标题',
+    label: t('title'),
     item: { type: FormEnum.INPUT, model: 'title', span: 22 },
   },
   {
-    label: '页面描述',
+    label: t('description'),
     item: { type: FormEnum.TEXTAREA, model: 'description', span: 22 },
   },
   {
-    label: '屏幕尺寸',
-    extra: ['宽度', '高度'],
+    label: t('size'),
+    extra: [t('width'), t('height')],
     item: [
       { type: FormEnum.INPUT_NUMBER, model: 'width' },
       { type: FormEnum.INPUT_NUMBER, model: 'height' },
     ],
   },
   {
-    label: '背景颜色',
+    label: t('backgroundColor'),
     item: { type: FormEnum.COLOR_PICKER, model: 'backgroundColor' },
   },
   {
-    label: '背景图片',
+    label: t('backgroundImage'),
     item: { type: FormEnum.INPUT, model: 'url' },
   },
   {
-    label: '缩放方式',
+    label: t('zoom'),
     item: {
       type: FormEnum.BTN_GROUP,
       model: 'zoom',
       span: 22,
       data: [
-        { icon: ExpandOutlined, tip: '全屏铺满', value: 0 },
-        { icon: ColumnWidthOutlined, tip: '等比缩放宽度铺满', value: 1 },
-        { icon: ColumnHeightOutlined, tip: '等比缩放高度铺满', value: 2 },
-        { icon: DragOutlined, tip: '等比缩放高度铺满（可滚动）', value: 3 },
-        { icon: StopOutlined, tip: '不缩放', value: 4 },
+        { icon: ExpandOutlined, tip: t('fullScreen'), value: 0 },
+        { icon: ColumnWidthOutlined, tip: t('equalWidth'), value: 1 },
+        { icon: ColumnHeightOutlined, tip: t('equalHeight'), value: 2 },
+        { icon: DragOutlined, tip: t('equalHeightScrollable'), value: 3 },
+        { icon: StopOutlined, tip: t('noZoom'), value: 4 },
       ],
     },
   },
   {
-    label: '栅格间距',
+    label: t('gridGap'),
     item: { type: FormEnum.INPUT_NUMBER, model: 'gap' },
   },
 ];

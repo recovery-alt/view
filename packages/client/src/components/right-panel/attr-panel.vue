@@ -4,7 +4,7 @@
     :label-col="{ span: 5, offset: 2 }"
     :wrapper-col="{ span: 16, offset: 1 }"
   >
-    <FormItem label="名称">
+    <FormItem :label="t('name')">
       <Col span="16">
         <Input v-model:value="board.curCom!.label" size="small" />
       </Col>
@@ -15,7 +15,7 @@
       :field="field"
       :model="board.curCom?.style"
     />
-    <FormItem label="旋转角度">
+    <FormItem :label="t('angle')">
       <Row>
         <Col span="10">
           <InputNumber v-model:value="board.curCom!.style.rotate" :precision="0" size="small" />
@@ -92,10 +92,12 @@ import {
   InputNumber,
   Button,
 } from 'ant-design-vue';
+import { attrPanel as messages } from '@/locales';
+import { useI18n } from 'vue-i18n';
 
 const board = useBoardStore();
-
 const activeKey = ref('');
+const { t } = useI18n({ useScope: 'local', messages });
 
 const rotate = (reverse = false) => {
   const deg = reverse ? -45 : 45;
@@ -106,23 +108,23 @@ const gallery = shallowRef<Gallery>();
 
 const basicField: Array<Field> = [
   {
-    label: '尺寸',
-    extra: ['宽度', '高度'],
+    label: t('size'),
+    extra: [t('width'), t('height')],
     item: [
       { type: FormEnum.INPUT_NUMBER, model: 'width' },
       { type: FormEnum.INPUT_NUMBER, model: 'height' },
     ],
   },
   {
-    label: '位置',
-    extra: ['x轴', 'y轴'],
+    label: t('position'),
+    extra: [t('xAxis'), t('yAxis')],
     item: [
       { type: FormEnum.INPUT_NUMBER, model: 'left' },
       { type: FormEnum.INPUT_NUMBER, model: 'top' },
     ],
   },
   {
-    label: '透明度',
+    label: t('opacity'),
     item: [
       { type: FormEnum.SLIDER, model: 'opacity', propsData: { min: 0, max: 1, step: 0.1 } },
       { type: FormEnum.INPUT_NUMBER, model: 'opacity', propsData: { min: 0, max: 1, step: 0.1 } },
@@ -132,18 +134,18 @@ const basicField: Array<Field> = [
 
 const schema: Array<SchemaItem> = [
   {
-    title: '边框&圆角',
+    title: t('borderAndRadius'),
     fields: [
       {
-        label: '圆角',
+        label: t('radius'),
         item: {
           type: FormEnum.INPUT_NUMBER,
           model: 'borderRadius',
         },
       },
       {
-        label: '边框',
-        extra: ['大小', '颜色'],
+        label: t('border'),
+        extra: [t('width'), t('color')],
         item: [
           {
             type: FormEnum.INPUT_NUMBER,
@@ -156,26 +158,26 @@ const schema: Array<SchemaItem> = [
         ],
       },
       {
-        label: '边框线型',
+        label: t('borderStyle'),
         item: {
           type: FormEnum.SELECT,
           model: 'borderStyle',
           data: [
-            { id: 'none', label: '无边框' },
-            { id: 'dotted', label: '点状' },
-            { id: 'dashed', label: '虚线' },
-            { id: 'solid', label: '实线' },
+            { id: 'none', label: t('none') },
+            { id: 'dotted', label: t('dotted') },
+            { id: 'dashed', label: t('dashed') },
+            { id: 'solid', label: t('solid') },
           ],
         },
       },
     ],
   },
   {
-    title: '字体',
+    title: t('font'),
     fields: [
       {
-        label: '字体',
-        extra: ['大小', '粗细'],
+        label: t('font'),
+        extra: [t('width'), t('weight')],
         item: [
           { model: 'fontSize', type: FormEnum.INPUT_NUMBER, default: 14 },
           {
@@ -187,8 +189,8 @@ const schema: Array<SchemaItem> = [
         ],
       },
       {
-        label: '文字',
-        extra: ['行高', '间距'],
+        label: t('text'),
+        extra: [t('lineHeight'), t('letterSpacing')],
         item: [
           {
             model: 'lineHeight',
@@ -204,25 +206,25 @@ const schema: Array<SchemaItem> = [
         ],
       },
       {
-        label: '水平对齐',
+        label: t('textAlign'),
         item: {
           model: 'textAlign',
           type: FormEnum.BTN_GROUP,
           data: [
-            { icon: AlignLeftOutlined, tip: '居左', value: 'left' },
-            { icon: AlignCenterOutlined, tip: '居中', value: 'center' },
-            { icon: AlignRightOutlined, tip: '居右', value: 'right' },
+            { icon: AlignLeftOutlined, tip: t('left'), value: 'left' },
+            { icon: AlignCenterOutlined, tip: t('center'), value: 'center' },
+            { icon: AlignRightOutlined, tip: t('right'), value: 'right' },
           ],
         },
       },
     ],
   },
   {
-    title: '颜色',
+    title: t('color'),
     fields: [
       {
-        label: '颜色',
-        extra: ['字体颜色', '背景色'],
+        label: t('color'),
+        extra: [t('fontColor'), t('background')],
         item: [
           {
             model: 'color',

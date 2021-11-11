@@ -9,7 +9,7 @@
           <h2 class="right-panel__title">{{ gallery.name }}</h2>
           <h3 class="right-panel__subtitle">v{{ gallery.version }} | {{ gallery.name }}</h3>
         </template>
-        <h2 v-else class="right-panel__title">组容器</h2>
+        <h2 v-else class="right-panel__title">{{ t('container') }}</h2>
 
         <component :is="item.component" />
       </TabPane>
@@ -26,9 +26,12 @@ import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { useBoardStore, usePanelStore } from '@/store';
 import { getGallery } from '@/gallery';
 import { Tabs, TabPane } from 'ant-design-vue';
+import { rightPanel as messages } from '@/locales';
+import { useI18n } from 'vue-i18n';
 
 const board = useBoardStore();
 const panel = usePanelStore();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const gallery = ref<Gallery>();
 const tabs = ref<Array<{ title: string; component: Component }>>();
@@ -44,9 +47,9 @@ watchEffect(() => {
 watchEffect(() => {
   if (!gallery.value) return;
   const tabsData = [
-    { title: '配置', component: AttrPanel },
-    { title: '数据', component: DataPanel },
-    { title: '动画', component: AnimatePanel },
+    { title: t('config'), component: AttrPanel },
+    { title: t('data'), component: DataPanel },
+    { title: t('animation'), component: AnimatePanel },
   ];
   gallery.value.dataConfig || tabsData.splice(1, 1);
   tabs.value = tabsData;

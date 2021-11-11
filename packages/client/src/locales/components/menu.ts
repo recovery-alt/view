@@ -1,0 +1,26 @@
+export const menu = {
+  cn: {
+    top: '置顶',
+    bottom: '置底',
+    up: '上移一层',
+    down: '下移一层',
+    group: '成组',
+    cancelGroup: '取消成组',
+    lock: '锁定',
+    hide: '隐藏',
+    copy: '复制',
+    delete: '删除',
+  },
+  en: {
+    top: 'Top',
+    bottom: 'Bottom',
+    up: 'Up',
+    down: 'Down',
+    group: 'Group',
+    cancelGroup: 'Cancel Group',
+    lock: 'Lock',
+    hide: 'Hide',
+    copy: 'Copy',
+    delete: 'Delete',
+  },
+};

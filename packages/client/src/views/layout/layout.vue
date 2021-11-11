@@ -11,7 +11,7 @@
           @click="$router.push({ name: item.key })"
         >
           <component :is="item.icon" />
-          <span>{{ item.name }}</span>
+          <span>{{ t(item.key) }}</span>
         </MenuItem>
       </Menu>
     </LayoutSider>
@@ -29,13 +29,16 @@
 </template>
 <script lang="ts" setup>
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
-import { ExitDropdown } from '@/components';
+import ExitDropdown from './exit-dropdown.vue';
 import { ref } from 'vue';
 import { routeList } from '@/router';
 import { Layout, LayoutSider, Menu, MenuItem, LayoutHeader, LayoutContent } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { layout as messages } from '@/locales';
 
 const selectedKeys = ref(['page']);
 const collapsed = ref(false);
+const { t } = useI18n({ useScope: 'local', messages });
 </script>
 
 <style lang="less" scoped>

@@ -23,12 +23,12 @@
       v-if="board.curCom?.data"
       v-model:visible="drawer.show"
       placement="right"
-      title="设置数据源"
+      :title="t('configDataSource')"
       :width="400"
       @close="refreshData"
     >
       <Form label-align="right" :label-col="{ span: 6 }" :wrapper-col="{ span: 17, offset: 1 }">
-        <FormItem label="数据源类型">
+        <FormItem :label="t('dataSourceType')">
           <Row justify="space-between">
             <Col>
               <Select v-model:value="board.curCom!.data.type" size="small">
@@ -38,21 +38,25 @@
               </Select>
             </Col>
             <Col offset="2">
-              <Button type="primary" size="small" @click="resolveData()"> 更新数据 </Button>
+              <Button type="primary" size="small" @click="resolveData()">
+                {{ t('updateData') }}
+              </Button>
             </Col>
           </Row>
         </FormItem>
-        <FormItem label="开启过滤器">
+        <FormItem :label="t('openFilter')">
           <Row justify="space-between">
             <Col>
               <Switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
             </Col>
             <Col offset="2">
-              <Button type="primary" size="small" @click="modal.show = true">设置过滤器</Button>
+              <Button type="primary" size="small" @click="modal.show = true">{{
+                t('configFilter')
+              }}</Button>
             </Col>
           </Row>
         </FormItem>
-        <FormItem v-if="board.curCom?.data.type === 'url'" label="接口地址">
+        <FormItem v-if="board.curCom?.data.type === 'url'" :label="t('uri')">
           <Input v-model:value="board.curCom!.data.url" size="small" />
         </FormItem>
         <CodeMirror
@@ -63,12 +67,14 @@
       </Form>
       <Divider />
       <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
-      <Divider orientation="right"> 响应结果 <ReloadOutlined @click="resolveData()" /> </Divider>
+      <Divider orientation="right">
+        {{ t('response') }} <ReloadOutlined @click="resolveData()" />
+      </Divider>
       <CodeMirror v-model:viewer="drawer.readonlyViewer" :doc="dataStringify" readonly />
     </Drawer>
     <Modal
       v-model:visible="modal.show"
-      title="过滤器"
+      :title="t('filter')"
       :z-index="1001"
       @ok="handleFilterChange(true)"
     >
@@ -101,10 +107,13 @@ import {
   Table,
   Input,
 } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { dataPanel as messages } from '@/locales';
 
 const board = useBoardStore();
 const viewer = shallowRef<EditorView>();
 const dataStringify = ref<string>();
+const { t } = useI18n({ useScope: 'local', messages });
 
 const { drawer, refreshData, resolveData } = useDrawer(dataStringify);
 
