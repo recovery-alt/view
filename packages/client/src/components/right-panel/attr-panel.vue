@@ -51,7 +51,7 @@
         />
       </CollapsePanel>
       <CollapsePanel
-        v-for="item in gallery?.attr"
+        v-for="item in cloneGallery?.attr"
         :key="item.title"
         :title="item.title"
         :header="item.title"
@@ -70,7 +70,7 @@
 <script lang="ts" setup>
 import type { Gallery, Field, SchemaItem, FieldItem, Data } from '@/typings';
 import { ref, shallowRef, watchEffect } from 'vue';
-import { useBoardStore } from '@/store';
+import { useBoardStore, useGalleryStore } from '@/store';
 import {
   AlignCenterOutlined,
   AlignLeftOutlined,
@@ -80,7 +80,6 @@ import {
 } from '@ant-design/icons-vue';
 import { FormEnum } from '@/enum';
 import Item from '@/components/form-generator/form-item.vue';
-import { getGallery } from '@/gallery';
 import {
   Form,
   FormItem,
@@ -96,6 +95,7 @@ import { attrPanel as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
 
 const board = useBoardStore();
+const gallery = useGalleryStore();
 const activeKey = ref('');
 const { t } = useI18n({ useScope: 'local', messages });
 
@@ -104,7 +104,7 @@ const rotate = (reverse = false) => {
   board.curCom!.style.rotate += deg;
 };
 
-const gallery = shallowRef<Gallery>();
+const cloneGallery = shallowRef<Gallery>();
 
 const basicField: Array<Field> = [
   {
@@ -264,9 +264,9 @@ watchEffect(() => {
 watchEffect(() => {
   if (!board.curCom) return;
   const { component, propsData } = board.curCom;
-  gallery.value = getGallery(component);
-  if (!gallery.value) return;
-  const { attr } = gallery.value;
+  cloneGallery.value = gallery.getGallery(component);
+  if (!cloneGallery.value) return;
+  const { attr } = cloneGallery.value;
   if (board.selected.length === 1 && attr && propsData) {
     attr.forEach(item => {
       item.fields.forEach(field => {

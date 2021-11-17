@@ -21,8 +21,8 @@ export type Group = {
   components: Data<() => Promise<{ [key: string]: Gallery }>>;
 };
 
-export type GalleryGroup = Array<{
+export type GalleryGroup = {
   groupName: string;
   icon: VueComponent;
   list: Array<Gallery>;
-}>;
+};

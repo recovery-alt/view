@@ -8,10 +8,12 @@ import { createI18n } from 'vue-i18n';
 
 const start = async () => {
   const app = createApp(App);
-  const i18n = createI18n({ legacy: false, locale: 'cn' });
+  app.use(createPinia());
   await useGallery(app);
-
-  app.use(i18n).use(router).use(createPinia()).mount('#app');
+  app
+    .use(createI18n({ legacy: false, locale: 'cn' }))
+    .use(router)
+    .mount('#app');
 };
 
 start();

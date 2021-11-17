@@ -5,9 +5,11 @@
         <template #tab>
           <span>{{ item.title }}</span>
         </template>
-        <template v-if="gallery">
-          <h2 class="right-panel__title">{{ gallery.name }}</h2>
-          <h3 class="right-panel__subtitle">v{{ gallery.version }} | {{ gallery.name }}</h3>
+        <template v-if="cloneGallery">
+          <h2 class="right-panel__title">{{ cloneGallery.name }}</h2>
+          <h3 class="right-panel__subtitle">
+            v{{ cloneGallery.version }} | {{ cloneGallery.name }}
+          </h3>
         </template>
         <h2 v-else class="right-panel__title">{{ t('container') }}</h2>
 
@@ -23,17 +25,17 @@ import type { Gallery } from '@/typings';
 import type { Component } from 'vue';
 import { ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
-import { useBoardStore, usePanelStore } from '@/store';
-import { getGallery } from '@/gallery';
+import { useBoardStore, usePanelStore, useGalleryStore } from '@/store';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { rightPanel as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
 
 const board = useBoardStore();
 const panel = usePanelStore();
+const gallery = useGalleryStore();
 const { t } = useI18n({ useScope: 'local', messages });
 
-const gallery = ref<Gallery>();
+const cloneGallery = ref<Gallery>();
 const tabs = ref<Array<{ title: string; component: Component }>>();
 const activeTab = ref(tabs.value?.[0].title);
 const width = computed(() => (panel.config ? '332px' : '0'));
@@ -41,17 +43,17 @@ const width = computed(() => (panel.config ? '332px' : '0'));
 watchEffect(() => {
   if (!board.curCom) return;
   const { component } = board.curCom;
-  gallery.value = getGallery(component);
+  cloneGallery.value = gallery.getGallery(component);
 });
 
 watchEffect(() => {
-  if (!gallery.value) return;
+  if (!cloneGallery.value) return;
   const tabsData = [
     { title: t('config'), component: AttrPanel },
     { title: t('data'), component: DataPanel },
     { title: t('animation'), component: AnimatePanel },
   ];
-  gallery.value.dataConfig || tabsData.splice(1, 1);
+  cloneGallery.value.dataConfig || tabsData.splice(1, 1);
   tabs.value = tabsData;
 });
 </script>

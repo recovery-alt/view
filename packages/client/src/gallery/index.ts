@@ -1,7 +1,7 @@
-import type { Gallery, Data, GalleryGroup, Group } from '@/typings';
-import cloneDeep from 'lodash/cloneDeep';
+import type { Gallery, Data, Group } from '@/typings';
 import { App } from 'vue';
 import ComponentGroup from './group.vue';
+import { useGalleryStore } from '@/store';
 
 const modules = import.meta.glob('./*/index.ts');
 
@@ -14,11 +14,9 @@ for (const [key, module] of Object.entries(modules)) {
   }
 }
 
-export const galleryGroup: GalleryGroup = [];
-
-export const galleryList: Array<Gallery> = [];
-
 export default async (app: App<Element>) => {
+  const galleryStore = useGalleryStore();
+
   const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
     const module = await getGroup();
     const group = module.default as Group;
@@ -33,16 +31,11 @@ export default async (app: App<Element>) => {
       app.component(`cq-${key}`, gallery.component);
 
       list.push(gallery);
-      galleryList.push(gallery);
+      galleryStore.pushList(gallery);
     }
-    galleryGroup[order] = { groupName, icon, list };
+    galleryStore.setGroup(order, { groupName, icon, list });
   };
 
   app.component('cq-group', ComponentGroup);
   for (const key in groups) await resolveGroup(groups[key]);
-};
-
-export const getGallery = (name: string) => {
-  const gallery = galleryList.find(val => val.type === name);
-  if (gallery) return cloneDeep(gallery);
 };

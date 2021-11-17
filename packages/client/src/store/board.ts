@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 import type { Board, BoardState, Component, CSSStyleDataWithSize } from '@/typings';
 import { spliceItems } from '@/utils';
-import { getGallery } from '@/gallery';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuid } from 'uuid';
 import config from '@/config';
 import { nextTick } from 'vue';
 import { useEchartsResize } from '@/components/board/hooks/board';
 import { message } from 'ant-design-vue';
+import { useGalleryStore } from './gallery';
 
 export const useBoardStore = defineStore('board', {
   state: () => {
@@ -39,9 +39,10 @@ export const useBoardStore = defineStore('board', {
       this.selected = selected;
     },
     append({ top = 0, left = 0, type = '' }) {
-      const gallery = getGallery(type);
-      if (!gallery) throw new Error('获取不到该组件信息');
-      const { style: defaultStyle, data, propsData } = cloneDeep(gallery);
+      const gallery = useGalleryStore();
+      const cloneGallery = gallery.getGallery(type);
+      if (!cloneGallery) throw new Error('获取不到该组件信息');
+      const { style: defaultStyle, data, propsData } = cloneDeep(cloneGallery);
       const rotate = 0;
       const opacity = 1;
       const component = type;
@@ -54,7 +55,7 @@ export const useBoardStore = defineStore('board', {
         ...config.defaultComponentSize,
         ...defaultStyle,
       };
-      const label = gallery.name;
+      const label = cloneGallery.name;
       this.rawAppend({ id, component, label, propsData, style, data });
     },
     del() {

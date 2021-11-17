@@ -17,7 +17,7 @@
       />
     </div>
     <Tabs v-model:activeKey="activeTab" tab-position="left">
-      <TabPane v-for="tab in galleryGroup" :key="tab.groupName">
+      <TabPane v-for="tab in gallery.group" :key="tab.groupName">
         <template #tab>
           <div class="component-panel__label">
             <component :is="tab.icon" />
@@ -42,10 +42,9 @@
 </template>
 
 <script lang="ts" setup>
-import { galleryGroup } from '@/gallery';
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
-import { usePanelStore } from '@/store';
+import { usePanelStore, useGalleryStore } from '@/store';
 import DefaultIcon from '@/assets/img/gallery/default.png';
 import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -53,6 +52,7 @@ import { componentPanel as messages } from '@/locales';
 
 const activeTab = ref('基础');
 const panel = usePanelStore();
+const gallery = useGalleryStore();
 const { t } = useI18n({ useScope: 'local', messages });
 
 const handleDragStart = (e: DragEvent) => {
