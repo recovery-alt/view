@@ -110,7 +110,13 @@
 <script lang="ts" setup>
 import { BoardBox, BoardMenu, BoardShape, BoardRuler } from '@/components';
 import { useBoardStore, useMenuStore, usePageStore, MenuEnum } from '@/store';
-import { useSelectMask, useThumbnail, useEditSlider, useRuler, useBoardKeydown } from '@/hooks';
+import {
+  useSelectMask,
+  useThumbnail,
+  useEditSlider,
+  useRuler,
+  useBoardKeydown,
+} from './hooks/board';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
 import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';

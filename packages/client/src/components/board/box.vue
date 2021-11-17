@@ -14,7 +14,7 @@ import type { Component } from '@/typings';
 import type { PropType, ComponentPublicInstance } from 'vue';
 import { computed, onMounted, defineComponent, shallowRef } from 'vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';
-import { useAnimation } from '@/hooks';
+import { useAnimation } from './hooks/animate';
 
 export default defineComponent({
   props: {

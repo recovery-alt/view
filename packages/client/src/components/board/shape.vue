@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { useBoardStore, useMenuStore, MenuEnum } from '@/store';
-import { useEchartsResize } from '@/hooks';
+import { useEchartsResize } from './hooks/board';
 import { on, off, patchUnit, wrapScale } from '@/utils';
 import throttle from 'lodash/throttle';
 import { computed } from 'vue';

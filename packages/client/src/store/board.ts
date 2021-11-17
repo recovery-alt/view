@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuid } from 'uuid';
 import config from '@/config';
 import { nextTick } from 'vue';
-import { useEchartsResize } from '@/hooks';
+import { useEchartsResize } from '@/components/board/hooks/board';
 import { message } from 'ant-design-vue';
 
 export const useBoardStore = defineStore('board', {

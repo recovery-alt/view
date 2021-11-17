@@ -74,7 +74,7 @@
 import type { Field } from '@/typings';
 import { ref } from 'vue';
 import { useBoardStore } from '@/store';
-import { useAnimation } from '@/hooks';
+import { useAnimation } from '@/components/board/hooks/animate';
 import { PlusOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
 import { FormEnum } from '@/enum';

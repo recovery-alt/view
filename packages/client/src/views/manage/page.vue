@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { useManage } from '@/hooks';
+import { useManage } from './hooks/page';
 import { generateColumns } from '@/utils';
 import { deletePage } from '@/api';
 import { message, Divider, Table } from 'ant-design-vue';
