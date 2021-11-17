@@ -1,6 +1,6 @@
 <template>
   <div class="header-right">
-    <Button @click="switchLocale()">{{ locale === 'cn' ? 'English' : '中文' }}</Button>
+    <Button size="small" @click="switchLocale?.()">{{ locale }}</Button>
     <Dropdown>
       <div class="exit-dropdown">
         <Avatar>
@@ -48,7 +48,7 @@ import { UserOutlined, SkinOutlined } from '@ant-design/icons-vue';
 import { local, to, encrypt } from '@/utils';
 import { LocalKeys } from '@/enum';
 import { useRouter, useRoute } from 'vue-router';
-import { reactive, ref } from 'vue';
+import { reactive, ref, inject } from 'vue';
 import { changePassword } from '@/api';
 import json from 'json5';
 import {
@@ -75,10 +75,7 @@ const theme = useThemeStore();
 const { locale } = useI18n({ useScope: 'global' });
 const { t } = useI18n({ useScope: 'local', messages });
 const visible = ref(false);
-
-function switchLocale() {
-  locale.value = locale.value === 'en' ? 'cn' : 'en';
-}
+const switchLocale = inject<() => void>('switchLocale');
 
 const form = reactive({
   password: '',

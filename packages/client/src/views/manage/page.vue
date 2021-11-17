@@ -66,10 +66,10 @@ function toEdit(id: string) {
 async function handleDelete(id: string) {
   const res = await deletePage(id);
   if (res.code === 0) {
-    message.success('删除成功。');
+    message.success(t('deleteSucceed'));
     getAllPage();
   } else {
-    message.error('删除失败，请稍后重试～');
+    message.error(t('deleteFailed'));
   }
 }
 

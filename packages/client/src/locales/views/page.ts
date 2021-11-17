@@ -9,6 +9,8 @@ export const page = {
     width: '宽',
     height: '高',
     action: '操作',
+    deleteSucceed: '@:delete成功',
+    deleteFailed: '@:delete失败，请稍后重试～',
   },
   en: {
     author: 'Author',
@@ -20,5 +22,7 @@ export const page = {
     width: 'Width',
     height: 'Height',
     action: 'Action',
+    deleteSucceed: 'Success',
+    deleteFailed: '@:delete Failed. Please try again later.',
   },
 };

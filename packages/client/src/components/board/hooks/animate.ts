@@ -1,444 +1,448 @@
 import type { Component } from '@/typings';
 import { shallowReactive } from 'vue';
 import { v4 } from 'uuid';
+import { useI18n } from 'vue-i18n';
+import { animatePanel as messages } from '@/locales';
 
 export const useAnimation = (curCom: Component) => {
+  const { t } = useI18n({ useScope: 'local', messages });
+
   const animationPreset = [
     {
-      title: '强调',
+      title: t('title.emphasis'),
       data: [
         {
           name: 'bounce',
-          label: '弹跳',
+          label: t('animations.bounce'),
         },
         {
           name: 'flash',
-          label: '闪烁',
+          label: t('animations.flash'),
         },
         {
           name: 'pulse',
-          label: '放大缩小',
+          label: t('animations.pulse'),
         },
         {
           name: 'rubberBand',
-          label: '放大缩小弹簧',
+          label: t('animations.rubberBand'),
         },
         {
           name: 'shakeX',
-          label: '左右晃动',
+          label: t('animations.shakeX'),
         },
         {
           name: 'shakeY',
-          label: '上下晃动',
+          label: t('animations.shakeY'),
         },
         {
           name: 'headShake',
-          label: '左右小幅晃动',
+          label: t('animations.headShake'),
         },
         {
           name: 'swing',
-          label: '左右扇形摇摆',
+          label: t('animations.swing'),
         },
         {
           name: 'tada',
-          label: '放大晃动缩小',
+          label: t('animations.tada'),
         },
         {
           name: 'wobble',
-          label: '小幅扇形摇摆',
+          label: t('animations.wobble'),
         },
         {
           name: 'jello',
-          label: '果冻摇晃',
+          label: t('animations.jello'),
         },
         {
           name: 'heartBeat',
-          label: 'Y轴旋转',
+          label: t('animations.heartBeat'),
         },
       ],
     },
     {
-      title: '延迟',
+      title: t('title.delay'),
       data: [
         {
           name: 'backInDown',
-          label: '延迟上方进入',
+          label: t('animations.backInDown'),
         },
         {
           name: 'backInLeft',
-          label: '延迟左侧进入',
+          label: t('animations.backInLeft'),
         },
         {
           name: 'backInRight',
-          label: '延迟右侧进入',
+          label: t('animations.backInRight'),
         },
         {
           name: 'backInUp',
-          label: '延迟下方进入',
+          label: t('animations.backInUp'),
         },
         {
           name: 'backOutDown',
-          label: '延迟下方退出',
+          label: t('animations.backOutDown'),
         },
         {
           name: 'backOutLeft',
-          label: '延迟左侧退出',
+          label: t('animations.backOutLeft'),
         },
         {
           name: 'backOutRight',
-          label: '延迟右侧退出',
+          label: t('animations.backOutRight'),
         },
         {
           name: 'backOutUp',
-          label: '延迟上方退出',
+          label: t('animations.backOutUp'),
         },
       ],
     },
     {
-      title: '跳跃',
+      title: t('title.jump'),
       data: [
         {
           name: 'bounceIn',
-          label: '跳跃进入',
+          label: t('animations.bounceIn'),
         },
         {
           name: 'bounceInDown',
-          label: '上方跳跃进入',
+          label: t('animations.bounceInDown'),
         },
         {
           name: 'bounceInLeft',
-          label: '左侧跳跃进入',
+          label: t('animations.bounceInLeft'),
         },
         {
           name: 'bounceInRight',
-          label: '右侧跳跃进入',
+          label: t('animations.bounceInRight'),
         },
         {
           name: 'bounceInUp',
-          label: '下方跳跃进入',
+          label: t('animations.bounceInUp'),
         },
         {
           name: 'bounceOut',
-          label: '跳跃退出',
+          label: t('animations.bounceOut'),
         },
         {
           name: 'bounceOutDown',
-          label: '下方跳跃退出',
+          label: t('animations.bounceOutDown'),
         },
         {
           name: 'bounceOutLeft',
-          label: '左侧跳跃退出',
+          label: t('animations.bounceOutLeft'),
         },
         {
           name: 'bounceOutRight',
-          label: '右侧跳跃退出',
+          label: t('animations.bounceOutRight'),
         },
         {
           name: 'bounceOutUp',
-          label: '上方跳跃退出',
+          label: t('animations.bounceOutUp'),
         },
       ],
     },
     {
-      title: '淡入/淡出',
+      title: t('title.fade'),
       data: [
         {
           name: 'fadeIn',
-          label: '淡入',
+          label: t('animations.fadeIn'),
         },
         {
           name: 'fadeInDown',
-          label: '上方淡入',
+          label: t('animations.fadeInDown'),
         },
         {
           name: 'fadeInDownBig',
-          label: '上方远距离淡入',
+          label: t('animations.fadeInDownBig'),
         },
         {
           name: 'fadeInLeft',
-          label: '左侧淡入',
+          label: t('animations.fadeInLeft'),
         },
         {
           name: 'fadeInLeftBig',
-          label: '左侧远距离淡入',
+          label: t('animations.fadeInLeftBig'),
         },
         {
           name: 'fadeInRight',
-          label: '右侧淡入',
+          label: t('animations.fadeInRight'),
         },
         {
           name: 'fadeInRightBig',
-          label: '右侧远距离淡入',
+          label: t('animations.fadeInRightBig'),
         },
         {
           name: 'fadeInUp',
-          label: '上方淡入',
+          label: t('animations.fadeInUp'),
         },
         {
           name: 'fadeInUpBig',
-          label: '上方远距离淡入',
+          label: t('animations.fadeInUpBig'),
         },
         {
           name: 'fadeInTopLeft',
-          label: '左上淡入',
+          label: t('animations.fadeInTopLeft'),
         },
         {
           name: 'fadeInTopRight',
-          label: '右上淡入',
+          label: t('animations.fadeInTopRight'),
         },
         {
           name: 'fadeInBottomLeft',
-          label: '左下淡入',
+          label: t('animations.fadeInBottomLeft'),
         },
         {
           name: 'fadeInBottomRight',
-          label: '右下淡入',
+          label: t('animations.fadeInBottomRight'),
         },
         {
           name: 'fadeOut',
-          label: '淡出',
+          label: t('animations.fadeOut'),
         },
         {
           name: 'fadeOutDown',
-          label: '下方淡出',
+          label: t('animations.fadeOutDown'),
         },
         {
           name: 'fadeOutDownBig',
-          label: '下方远距离淡出',
+          label: t('animations.fadeOutDownBig'),
         },
         {
           name: 'fadeOutLeft',
-          label: '左侧淡出',
+          label: t('animations.fadeOutLeft'),
         },
         {
           name: 'fadeOutLeftBig',
-          label: '左侧远距离淡出',
+          label: t('animations.fadeOutLeftBig'),
         },
         {
           name: 'fadeOutRight',
-          label: '右侧淡出',
+          label: t('animations.fadeOutRight'),
         },
         {
           name: 'fadeOutRightBig',
-          label: '右侧远距离淡出',
+          label: t('animations.fadeOutRightBig'),
         },
         {
           name: 'fadeOutUp',
-          label: '上方淡出',
+          label: t('animations.fadeOutUp'),
         },
         {
           name: 'fadeOutUpBig',
-          label: '上方远距离淡出',
+          label: t('animations.fadeOutUpBig'),
         },
         {
           name: 'fadeOutTopLeft',
-          label: '左上淡出',
+          label: t('animations.fadeOutTopLeft'),
         },
         {
           name: 'fadeOutTopRight',
-          label: '右上淡出',
+          label: t('animations.fadeOutTopRight'),
         },
         {
           name: 'fadeOutBottomRight',
-          label: '左下淡出',
+          label: t('animations.fadeOutBottomRight'),
         },
         {
           name: 'fadeOutBottomLeft',
-          label: '右下淡出',
+          label: t('animations.fadeOutBottomLeft'),
         },
       ],
     },
     {
-      title: '翻转',
+      title: t('title.rotate'),
       data: [
         {
           name: 'flip',
-          label: '翻转',
+          label: t('animations.flip'),
         },
         {
           name: 'flipInX',
-          label: '横向翻转进入',
+          label: t('animations.flipInX'),
         },
         {
           name: 'flipInY',
-          label: '纵向翻转进入',
+          label: t('animations.flipInY'),
         },
         {
           name: 'flipOutX',
-          label: '横向翻转退出',
+          label: t('animations.flipOutX'),
         },
         {
           name: 'flipOutY',
-          label: '纵向翻转退出',
+          label: t('animations.flipOutY'),
         },
       ],
     },
     {
-      title: '光速',
+      title: t('title.lightSpeed'),
       data: [
         {
           name: 'lightSpeedInRight',
-          label: '右侧光速进入',
+          label: t('animations.lightSpeedInRight'),
         },
         {
           name: 'lightSpeedInLeft',
-          label: '左侧光速进入',
+          label: t('animations.lightSpeedInLeft'),
         },
         {
           name: 'lightSpeedOutRight',
-          label: '右侧光速退出',
+          label: t('animations.lightSpeedOutRight'),
         },
         {
           name: 'lightSpeedOutLeft',
-          label: '左侧光速退出',
+          label: t('animations.lightSpeedOutLeft'),
         },
       ],
     },
     {
-      title: '旋转',
+      title: t('title.rotate'),
       data: [
         {
           name: 'rotateIn',
-          label: '旋转进入',
+          label: t('animations.rotateIn'),
         },
         {
           name: 'rotateInDownLeft',
-          label: '左上旋转进入',
+          label: t('animations.rotateInDownLeft'),
         },
         {
           name: 'rotateInDownRight',
-          label: '右上旋转进入',
+          label: t('animations.rotateInDownRight'),
         },
         {
           name: 'rotateInUpLeft',
-          label: '右下旋转进入',
+          label: t('animations.rotateInUpLeft'),
         },
         {
           name: 'rotateInUpRight',
-          label: '左下旋转进入',
+          label: t('animations.rotateInUpRight'),
         },
         {
           name: 'rotateOut',
-          label: '旋转退出',
+          label: t('animations.rotateOut'),
         },
         {
           name: 'rotateOutDownLeft',
-          label: '左下旋转退出',
+          label: t('animations.rotateOutDownLeft'),
         },
         {
           name: 'rotateOutDownRight',
-          label: '右下旋转退出',
+          label: t('animations.rotateOutDownRight'),
         },
         {
           name: 'rotateOutUpLeft',
-          label: '左上旋转退出',
+          label: t('animations.rotateOutUpLeft'),
         },
         {
           name: 'rotateOutUpRight',
-          label: '右上旋转退出',
+          label: t('animations.rotateOutUpRight'),
         },
       ],
     },
     {
-      title: '放缩',
+      title: t('title.zoom'),
       data: [
         {
           name: 'zoomIn',
-          label: '放缩进入',
+          label: t('animations.zoomIn'),
         },
         {
           name: 'zoomInDown',
-          label: '上方放缩进入',
+          label: t('animations.zoomInDown'),
         },
         {
           name: 'zoomInLeft',
-          label: '左侧放缩进入',
+          label: t('animations.zoomInLeft'),
         },
         {
           name: 'zoomInRight',
-          label: '右侧放缩进入',
+          label: t('animations.zoomInRight'),
         },
         {
           name: 'zoomInUp',
-          label: '下方放缩进入',
+          label: t('animations.zoomInUp'),
         },
         {
           name: 'zoomOut',
-          label: '放缩退出',
+          label: t('animations.zoomOut'),
         },
         {
           name: 'zoomOutDown',
-          label: '下方放缩退出',
+          label: t('animations.zoomOutDown'),
         },
         {
           name: 'zoomOutLeft',
-          label: '左侧放缩退出',
+          label: t('animations.zoomOutLeft'),
         },
         {
           name: 'zoomOutRight',
-          label: '右侧放缩退出',
+          label: t('animations.zoomOutRight'),
         },
         {
           name: 'zoomOutUp',
-          label: '上方放缩退出',
+          label: t('animations.zoomOutUp'),
         },
       ],
     },
     {
-      title: '滑动',
+      title: t('title.slide'),
       data: [
         {
           name: 'slideInDown',
-          label: '上方滑入',
+          label: t('animations.slideInDown'),
         },
         {
           name: 'slideInLeft',
-          label: '左侧滑入',
+          label: t('animations.slideInLeft'),
         },
         {
           name: 'slideInRight',
-          label: '右侧滑入',
+          label: t('animations.slideInRight'),
         },
         {
           name: 'slideInUp',
-          label: '下方滑入',
+          label: t('animations.slideInUp'),
         },
         {
           name: 'slideOutDown',
-          label: '下方滑出',
+          label: t('animations.slideOutDown'),
         },
         {
           name: 'slideOutLeft',
-          label: '左侧滑出',
+          label: t('animations.slideOutLeft'),
         },
         {
           name: 'slideOutRight',
-          label: '右侧滑出',
+          label: t('animations.slideOutRight'),
         },
         {
           name: 'slideOutUp',
-          label: '上方滑出',
+          label: t('animations.slideOutUp'),
         },
       ],
     },
     {
-      title: '特殊',
+      title: t('title.special'),
       data: [
         {
           name: 'hinge',
-          label: '悬挂掉落',
+          label: t('animations.hinge'),
         },
         {
           name: 'jackInTheBox',
-          label: '下方飞入',
+          label: t('animations.jackInTheBox'),
         },
         {
           name: 'rollIn',
-          label: '飞入',
+          label: t('animations.rollIn'),
         },
         {
           name: 'rollOut',
-          label: '飞出',
+          label: t('animations.rollOut'),
         },
       ],
     },

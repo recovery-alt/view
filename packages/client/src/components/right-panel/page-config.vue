@@ -30,11 +30,12 @@ import { FormItem as Item } from '@/components';
 import { Form } from 'ant-design-vue';
 import { pageConfig as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
 const page = usePageStore();
 const { t } = useI18n({ useScope: 'local', messages });
 
-const fields: Array<Field> = [
+const fields = computed<Array<Field>>(() => [
   {
     label: t('title'),
     item: { type: FormEnum.INPUT, model: 'title', span: 22 },
@@ -78,7 +79,7 @@ const fields: Array<Field> = [
     label: t('gridGap'),
     item: { type: FormEnum.INPUT_NUMBER, model: 'gap' },
   },
-];
+]);
 </script>
 
 <style lang="less">

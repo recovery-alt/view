@@ -18,8 +18,11 @@
       </div>
       <div class="header__publish">
         <Tooltip v-for="item in buttonGroup" :key="item.name" :title="item.name" placement="bottom">
-          <Button class="header__button" size="small" @click="item.event()">
-            <template #icon>
+          <Button v-if="item.label" class="header__button" size="small" @click="item.event?.()">
+            {{ item.label }}
+          </Button>
+          <Button v-else class="header__button" size="small" @click="item.event?.()">
+            <template v-if="item.icon" #icon>
               <component :is="item.icon" />
             </template>
           </Button>
@@ -60,7 +63,7 @@ import {
   usePageStore,
   usePanelStore,
 } from '@/store';
-import { computed, createVNode, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, createVNode, onBeforeUnmount, onMounted, ref, inject } from 'vue';
 import { Board, BoardPreview, RightPanel, LayerPanel, ComponentPanel } from '@/components';
 import {
   FileDoneOutlined,
@@ -91,6 +94,8 @@ const router = useRouter();
 const theme = useThemeStore();
 const panel = usePanelStore();
 const { t } = useI18n({ useScope: 'local', messages });
+const { locale } = useI18n({ useScope: 'global' });
+const switchLocale = inject<() => void>('switchLocale');
 
 const modalOpen = ref(false);
 let letgo = false;
@@ -103,7 +108,19 @@ const icons: Array<{ key: PanelKey; icon: Component }> = [
 ];
 const panelStatus = computed(() => icons.map(item => ({ ...item, checked: panel[item.key] })));
 
-const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> = [
+type ButtonItem = {
+  name: string;
+  icon?: Component;
+  label?: string;
+  event?: () => void;
+};
+
+const buttonGroup = computed<Array<ButtonItem>>(() => [
+  {
+    name: t('language'),
+    label: locale.value as string,
+    event: switchLocale,
+  },
   {
     name: t('backup'),
     icon: RestOutlined,
@@ -138,7 +155,7 @@ const buttonGroup: Array<{ name: string; icon: Component; event: () => void }> =
     icon: SkinOutlined,
     event: () => theme.switchTheme(),
   },
-];
+]);
 
 const interceptor = (e: BeforeUnloadEvent) => {
   if (page.isModified()) e.returnValue = false;
