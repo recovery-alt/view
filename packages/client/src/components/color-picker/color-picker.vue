@@ -2,7 +2,7 @@
   <Input
     v-model:value="inputValue"
     size="small"
-    :placeholder="placeholder"
+    :placeholder="placeholder || t('placeholder.select')"
     allow-clear
     @click="clickInputColor"
   >
@@ -15,19 +15,19 @@
 <script lang="ts" setup>
 import { ref, watch, watchEffect, shallowRef } from 'vue';
 import { Input } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+import { global as messages } from '@/locales';
 
 const props = defineProps({
   modelValue: {
     type: [String, Number],
     default: () => '',
   },
-  placeholder: {
-    type: String,
-    default: () => '请选择颜色',
-  },
+  placeholder: String,
 });
 
 const emit = defineEmits(['update:modelValue']);
+const { t } = useI18n({ useScope: 'local', messages });
 
 const inputValue = ref('');
 

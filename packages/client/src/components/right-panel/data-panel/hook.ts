@@ -9,6 +9,8 @@ import { isUrl, callFilter, generateColumns } from '@/utils';
 import { format } from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 import { useBoardStore } from '@/store';
+import { useI18n } from 'vue-i18n';
+import { dataPanel as messages } from '@/locales';
 
 type Drawer = {
   show: boolean;
@@ -25,10 +27,7 @@ export function useDrawer(dataStringify: Ref<string | undefined>) {
   const drawer = shallowReactive<Drawer>({
     openFilter: false,
     show: false,
-    options: Object.keys(DataSource).map(key => {
-      const value = key as DataSourceKey;
-      return { value, label: DataSource[value] };
-    }),
+    options: DataSource.map((value, i) => ({ value, label: DataSource[i] })),
   });
 
   function refreshData() {
@@ -111,11 +110,12 @@ export function useModal(drawer: Drawer) {
 
 export function useTimeline(drawer: Drawer, modal: Modal) {
   const board = useBoardStore();
+  const { t } = useI18n({ useScope: 'local', messages });
   const timeline = reactive([
     {
       actived: true,
-      text: DataSource[board.curCom!.data!.type],
-      btnText: '设置数据源',
+      text: t(board.curCom!.data!.type),
+      btnText: t('configDataSource'),
       event: () => {
         drawer.show = true;
         drawer.openFilter = !!board.curCom!.data!.filter;
@@ -123,15 +123,15 @@ export function useTimeline(drawer: Drawer, modal: Modal) {
     },
     {
       actived: !!board.curCom!.data!.filter,
-      text: '数据过滤器',
-      btnText: '添加过滤器',
+      text: t('dataFilter'),
+      btnText: t('addFilter'),
       event: () => {
         modal.show = true;
       },
     },
     {
       actived: true,
-      text: '数据响应结果（只读）',
+      text: t('result'),
       event: () => {
         // TODO
       },
@@ -142,7 +142,7 @@ export function useTimeline(drawer: Drawer, modal: Modal) {
     if (!board.curCom) return;
     const { data } = board.curCom;
     if (data) {
-      timeline[0].text = DataSource[data!.type];
+      timeline[0].text = t(data!.type);
       timeline[1].actived = !!data.filter;
     }
   });
@@ -152,19 +152,20 @@ export function useTimeline(drawer: Drawer, modal: Modal) {
 
 export function useTable() {
   const board = useBoardStore();
-  const table = shallowReactive<{ data: Array<Data>; columns: Data<any> }>({
+  const { t } = useI18n({ useScope: 'local', messages });
+  const table = reactive<{ data: Array<Data>; columns: Data<any> }>({
     data: [],
     columns: generateColumns([
       {
-        title: '字段',
+        title: t('key'),
         key: 'key',
       },
       {
-        title: '映射',
+        title: t('mapping'),
         key: 'mapping',
       },
       {
-        title: '状态',
+        title: t('status'),
         key: 'status',
       },
     ]),
@@ -177,7 +178,7 @@ export function useTable() {
       table.data = Object.keys(data.static[0]).map(key => ({
         key,
         mapping: '-',
-        status: '匹配成功',
+        status: t('matchSuccess'),
       }));
     }
   });

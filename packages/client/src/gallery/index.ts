@@ -9,9 +9,7 @@ const groups: Data<any> = {};
 
 for (const [key, module] of Object.entries(modules)) {
   const matcher = key.match(/\.\/(.*)\/index\.ts/);
-  if (matcher?.[1]) {
-    groups[matcher[1]] = module;
-  }
+  if (matcher?.[1]) groups[matcher[1]] = module;
 }
 
 export default async (app: App<Element>) => {

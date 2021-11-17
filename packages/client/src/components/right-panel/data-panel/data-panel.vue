@@ -56,7 +56,7 @@
             </Col>
           </Row>
         </FormItem>
-        <FormItem v-if="board.curCom?.data.type === 'url'" :label="t('uri')">
+        <FormItem v-if="board.curCom?.data.type === 'url'" :label="t('url')">
           <Input v-model:value="board.curCom!.data.url" size="small" />
         </FormItem>
         <CodeMirror
