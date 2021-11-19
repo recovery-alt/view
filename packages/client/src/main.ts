@@ -5,13 +5,14 @@ import useGallery from '@/gallery';
 import '@/assets/style/index.less';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
+import { global as messages } from '@/locales';
 
 const start = async () => {
   const app = createApp(App);
   app.use(createPinia());
   await useGallery(app);
   app
-    .use(createI18n({ legacy: false, locale: 'cn' }))
+    .use(createI18n({ legacy: false, locale: 'cn', messages }))
     .use(router)
     .mount('#app');
 };

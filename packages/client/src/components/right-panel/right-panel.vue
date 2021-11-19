@@ -6,9 +6,9 @@
           <span>{{ item.title }}</span>
         </template>
         <template v-if="cloneGallery">
-          <h2 class="right-panel__title">{{ cloneGallery.name }}</h2>
+          <h2 class="right-panel__title">{{ gt(`gallery.${cloneGallery.name}`) }}</h2>
           <h3 class="right-panel__subtitle">
-            v{{ cloneGallery.version }} | {{ cloneGallery.name }}
+            v{{ cloneGallery.version }} | {{ gt(`gallery.${cloneGallery.name}`) }}
           </h3>
         </template>
         <h2 v-else class="right-panel__title">{{ t('container') }}</h2>
@@ -34,6 +34,7 @@ const board = useBoardStore();
 const panel = usePanelStore();
 const gallery = useGalleryStore();
 const { t } = useI18n({ useScope: 'local', messages });
+const { t: gt } = useI18n({ useScope: 'global' });
 
 const cloneGallery = ref<Gallery>();
 const tabs = ref<Array<{ title: string; component: Component }>>();

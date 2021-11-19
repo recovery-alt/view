@@ -2,7 +2,7 @@ import type { Gallery } from '@/typings';
 import { defineAsyncComponent, Component } from 'vue';
 
 const gallery: Gallery = {
-  name: '轮播图',
+  name: 'carousel',
   version: '0.1.0',
   style: {
     width: 300,

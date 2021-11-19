@@ -3,7 +3,7 @@ import { FormEnum } from '@/enum';
 import { defineAsyncComponent, Component } from 'vue';
 
 const gallery: Gallery = {
-  name: '输入框',
+  name: 'input',
   version: '0.1.0',
   component: defineAsyncComponent<Component>(() => import('./input.vue')),
   style: {

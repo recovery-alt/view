@@ -2,7 +2,7 @@ import type { Gallery } from '@/typings';
 import { defineAsyncComponent } from 'vue';
 
 const gallery: Gallery = {
-  name: '树图',
+  name: 'tree',
   version: '0.1.0',
   style: {
     width: 700,

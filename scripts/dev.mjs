@@ -1,6 +1,6 @@
-import execa from 'execa';
+import { execaSync } from 'execa';
 
-execa.sync(
+execaSync(
   'pnpm',
   [
     'concurrently',

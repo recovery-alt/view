@@ -21,7 +21,7 @@
         <template #tab>
           <div class="component-panel__label">
             <component :is="tab.icon" />
-            <span>{{ tab.groupName }}</span>
+            <span>{{ t(tab.groupName) }}</span>
           </div>
         </template>
         <ul class="component-panel__list">
@@ -32,7 +32,7 @@
             class="component-panel__item"
             :data-type="item.type"
           >
-            <header>{{ item.name }}</header>
+            <header>{{ gt(`gallery.${item.name}`) }}</header>
             <img :src="getImgSrc(item.type)" />
           </li>
         </ul>
@@ -50,10 +50,12 @@ import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { componentPanel as messages } from '@/locales';
 
-const activeTab = ref('基础');
+const { t } = useI18n({ useScope: 'local', messages });
+const { t: gt } = useI18n({ useScope: 'global' });
+const activeTab = ref(t('basic'));
 const panel = usePanelStore();
 const gallery = useGalleryStore();
-const { t } = useI18n({ useScope: 'local', messages });
+console.log(gallery.list);
 
 const handleDragStart = (e: DragEvent) => {
   const target = e.target as HTMLDataListElement;

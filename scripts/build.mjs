@@ -1,5 +1,5 @@
 import rimraf from 'rimraf';
-import { sync as execaSync } from 'execa';
+import { execaSync } from 'execa';
 import { resolve } from 'path';
 import chalk from 'chalk';
 import { copySync } from 'fs-extra';
