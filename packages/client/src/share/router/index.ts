@@ -1,17 +1,24 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import {
+  createRouter as _createRouter,
+  createWebHashHistory,
+  createMemoryHistory,
+  RouteRecordRaw,
+} from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/pc/:id?',
     name: 'pc',
     props: true,
-    component: () => import('@/share/components/engine-pc.vue'),
+    component: () => import('../components/engine-pc.vue'),
   },
 ];
 
-const router = createRouter({
-  routes,
-  history: createWebHashHistory(import.meta.env.BASE_URL),
-});
-
-export default router;
+export function createRouter() {
+  return _createRouter({
+    routes,
+    history: import.meta.env.SSR
+      ? createMemoryHistory()
+      : createWebHashHistory(import.meta.env.BASE_URL),
+  });
+}

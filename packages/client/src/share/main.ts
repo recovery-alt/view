@@ -1,12 +1,15 @@
-import { createApp } from 'vue';
+import { createSSRApp } from 'vue';
 import useGallery from '@/gallery';
 import App from './app.vue';
-import router from './router';
+import { createRouter } from './router';
 import 'normalize.css';
 import 'animate.css';
 
-const app = createApp(App);
+export function createApp() {
+  const app = createSSRApp(App);
+  useGallery(app);
+  const router = createRouter();
+  app.use(router);
 
-useGallery(app);
-
-app.use(router).mount('#app');
+  return { app, router };
+}

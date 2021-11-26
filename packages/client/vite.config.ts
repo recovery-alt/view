@@ -58,12 +58,14 @@ export default defineConfig({
   resolve: { alias: { '@': '/src' } },
   build: {
     sourcemap: false,
+    ssr: './src/share/entry-server.ts',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
         render: resolve(__dirname, 'share.html'),
       },
       output: {
+        inlineDynamicImports: false,
         manualChunks(id) {
           if (id.includes('@codemirror')) {
             return 'codemirror';
