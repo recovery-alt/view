@@ -10,8 +10,10 @@ export const verifyToken: Middleware = async (ctx, next) => {
   if (!token) {
     if (ctx.url.includes('api/v1/login')) {
       await next();
-    } else {
+    } else if (ctx.url.includes('api/v1')) {
       ctx.body = wrapError(ResponseEnum.UNAUTHORIZED);
+    } else {
+      await next();
     }
     return;
   }

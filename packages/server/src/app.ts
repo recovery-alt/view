@@ -1,7 +1,7 @@
 process.env.TS_NODE_DEV || require('module-alias/register');
 import Koa from 'koa';
 import { port } from '@/config';
-import { useRouter, wrapResponse, verifyToken } from '@/middleware';
+import { useRouter, wrapResponse, verifyToken, useViteSSR } from '@/middleware';
 import chalk from 'chalk';
 import { initMongoose } from '@/mongoose';
 import logger from 'koa-logger';
@@ -18,6 +18,8 @@ const app = new Koa();
 app.use(historyApiFallback({ whiteList: ['/api'] }));
 // 日志中间件
 app.use(logger());
+// 使用viteSSRServer
+useViteSSR(app);
 // 路由中间件
 useRouter(app);
 // 静态资源中间件

@@ -29,6 +29,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     'vue/multi-word-component-names': 0,
     'vue/valid-define-props': 0,
+    '@typescript-eslint/no-var-requires': 0,
   },
   overrides: [
     {
