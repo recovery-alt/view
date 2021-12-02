@@ -55,7 +55,6 @@ const { t: gt } = useI18n({ useScope: 'global' });
 const activeTab = ref(t('basic'));
 const panel = usePanelStore();
 const gallery = useGalleryStore();
-console.log(gallery.list);
 
 const handleDragStart = (e: DragEvent) => {
   const target = e.target as HTMLDataListElement;

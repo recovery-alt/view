@@ -7,3 +7,4 @@ export * from './array';
 export * from './promise';
 export * from './reg-exp';
 export * from './number';
+export * from './animation';

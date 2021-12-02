@@ -1,7 +1,6 @@
-import type { Gallery, Data, Group } from '@/typings';
+import type { Gallery, Data, GalleryGroup, Group } from '@/typings';
 import { App } from 'vue';
 import ComponentGroup from './group.vue';
-import { useGalleryStore } from '@/store';
 
 const modules = import.meta.glob('./*/index.ts');
 
@@ -13,9 +12,10 @@ for (const [key, module] of Object.entries(modules)) {
 }
 
 export default async (app: App<Element>) => {
-  const galleryStore = useGalleryStore();
+  const galleryList: Array<Gallery> = [];
+  const galleryGroup: Array<GalleryGroup> = [];
 
-  const resolveGroup = async (getGroup: () => Promise<{ [key: string]: any }>) => {
+  async function resolveGroup(getGroup: () => Promise<{ [key: string]: any }>) {
     const module = await getGroup();
     const group = module.default as Group;
     const { name: groupName, icon, components, order, dataConfig } = group;
@@ -29,11 +29,13 @@ export default async (app: App<Element>) => {
       app.component(`cq-${key}`, gallery.component);
 
       list.push(gallery);
-      galleryStore.pushList(gallery);
+      galleryList.push(gallery);
     }
-    galleryStore.setGroup(order, { groupName, icon, list });
-  };
+    galleryGroup[order] = { groupName, icon, list };
+  }
 
   app.component('cq-group', ComponentGroup);
   for (const key in groups) await resolveGroup(groups[key]);
+
+  return { list: galleryList, group: galleryGroup };
 };

@@ -4,7 +4,7 @@
       <template #icon><PlusOutlined /></template>
       {{ t('add') }}
     </Button>
-    <Button type="primary" @click="playAll(board.refs[board.selected[0]])">
+    <Button type="primary" @click="playAll">
       <template #icon><PlayCircleOutlined /></template>
       {{ t('preview') }}
     </Button>
@@ -20,11 +20,7 @@
         <div class="animation-title">
           <span class="animation-title__left">{{ animation.label }}</span>
           <div class="animation-title__right">
-            <Button
-              size="small"
-              type="primary"
-              @click.stop="play(i, board.refs[board.selected[0]])"
-            >
+            <Button size="small" type="primary" @click.stop="play(i)">
               <template #icon><PlayCircleOutlined /></template>
             </Button>
             <Button size="small" type="primary" @click.stop="del(i)">
@@ -55,14 +51,14 @@
         <ul class="animation-box">
           <li
             v-for="animation in item.data"
-            :key="animation.name"
+            :key="animation"
             class="animation-box__item"
-            @mouseover="handleMouseover(animation.name)"
+            @mouseover="handleMouseover(animation)"
             @mouseleave="handleMouseleave"
-            @click="addAnimation(animation)"
+            @click="addAnimation({ name: animation, label: t(`animations.${animation}`) })"
           >
-            <div :class="getAnimationClass(animation.name)" />
-            {{ animation.label }}
+            <div :class="getAnimationClass(animation)" />
+            {{ t(`animations.${animation}`) }}
           </li>
         </ul>
       </TabPane>
@@ -90,6 +86,7 @@ import {
 } from 'ant-design-vue';
 import { animatePanel as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
+import { playAnimation, playAnimations } from '@/utils';
 
 const active = ref('');
 const board = useBoardStore();
@@ -110,19 +107,25 @@ const fields: Array<Field> = [
   },
 ];
 
-const {
-  drawer,
-  play,
-  playAll,
-  handleMouseover,
-  handleMouseleave,
-  getAnimationClass,
-  addAnimation,
-} = useAnimation(board.curCom!);
+const { drawer, handleMouseover, handleMouseleave, getAnimationClass, addAnimation } = useAnimation(
+  board.curCom!
+);
 
 const del = (index: number) => {
   if (board.curCom?.animations) board.curCom?.animations.splice(index, 1);
 };
+
+function play(index: number) {
+  const { refs, selected, curCom } = board;
+  if (!curCom?.animations) return;
+  playAnimation(refs[selected[0]], curCom.animations[index]);
+}
+
+function playAll() {
+  const { refs, selected, curCom } = board;
+
+  playAnimations(refs[selected[0]], curCom?.animations);
+}
 </script>
 
 <style lang="less">

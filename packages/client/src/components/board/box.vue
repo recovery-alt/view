@@ -13,10 +13,10 @@
 import type { Component } from '@/typings';
 import type { PropType, ComponentPublicInstance } from 'vue';
 import { computed, onMounted, defineComponent, shallowRef } from 'vue';
-import { splitStyleAndPatch, patchUnit } from '@/utils';
-import { useAnimation } from './hooks/animate';
+import { playAnimations, splitStyleAndPatch, patchUnit } from '@/utils';
 
 export default defineComponent({
+  name: 'board-box',
   props: {
     data: {
       type: Object as PropType<Component>,
@@ -40,8 +40,7 @@ export default defineComponent({
       const { animations } = curCom.value;
       if (props.editorMode || !animations || !box.value?.$el) return;
 
-      const { playAll } = useAnimation(curCom.value);
-      playAll(box.value.$el);
+      playAnimations(box.value.$el, curCom.value.animations);
     });
     return { splitStyleAndPatch, patchUnit, box };
   },

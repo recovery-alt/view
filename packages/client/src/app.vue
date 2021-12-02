@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n';
 
 const { locale } = useI18n({ useScope: 'global' });
 
-const lang = computed(() => (locale.value === 'cn' ? cn : null));
+const lang = computed(() => (locale.value === 'cn' ? cn : void 0));
 
 function switchLocale() {
   locale.value = locale.value === 'en' ? 'cn' : 'en';

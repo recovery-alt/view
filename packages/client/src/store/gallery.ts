@@ -10,11 +10,11 @@ export const useGalleryStore = defineStore('gallery', {
     };
   },
   actions: {
-    setGroup(index: number, group: GalleryGroup) {
-      this.group[index] = group;
+    setGroup(group: Array<GalleryGroup>) {
+      this.group = group;
     },
-    pushList(gallery: Gallery) {
-      this.list.push(gallery);
+    setList(list: Array<Gallery>) {
+      this.list = list;
     },
     getGallery(name: string) {
       const gallery = this.list.find(val => val.type === name);
