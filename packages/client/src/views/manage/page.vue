@@ -2,13 +2,16 @@
   <Table bordered size="small" :data-source="pages" :columns="columns" row-key="_id">
     <template #width="{ text }"> {{ text }}px </template>
     <template #height="{ text }"> {{ text }}px </template>
-    <template #action="{ record }">
-      <a @click="toEdit(record._id)">{{ t('view') }}</a>
-      <Divider type="vertical" />
-      <a @click="handleDelete(record._id)">{{ t('delete') }}</a>
+    <template #bodyCell="{ column, record }">
+      <template v-if="column.dataIndex === 'action'">
+        <a @click="toEdit(record._id)">{{ t('view') }}</a>
+        <Divider type="vertical" />
+        <a @click="handleDelete(record._id)">{{ t('delete') }}</a>
+      </template>
     </template>
   </Table>
 </template>
+
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { useManage } from './hooks/page';

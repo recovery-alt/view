@@ -1,5 +1,6 @@
-import { user } from '@/mongoose/user';
+import { User, user } from '@/mongoose/user';
 import { ResponseEnum } from '@/enum';
+import { UpdateQuery } from 'mongoose';
 
 class UserService {
   async get() {
@@ -7,7 +8,7 @@ class UserService {
   }
 
   async changePassword(id: string, password: string, newPassword: string) {
-    const record = await user.findById(id);
+    const record = (await user.findById(id)) as UpdateQuery<User>;
     if (!record) {
       return Promise.resolve(ResponseEnum.CANNOT_FIND_USER);
     }

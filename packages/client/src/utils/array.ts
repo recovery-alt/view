@@ -1,12 +1,17 @@
 import type { Board, ColumnConfig } from '@/typings';
+import type { AlignType } from 'ant-design-vue/lib/vc-table/interface';
 
 export const generateColumns = (columns: ColumnConfig[]) =>
-  columns.map(item => ({
-    ...item,
-    dataIndex: item.dataIndex || item.key,
-    align: 'center',
-    slots: { customRender: item.key },
-  }));
+  columns.map(item => {
+    const align: AlignType = 'center';
+    const result = {
+      ...item,
+      dataIndex: item.dataIndex || item.key,
+      align,
+    };
+
+    return result;
+  });
 
 export const spliceItems = <T>(arr: T[], indexArr: number[]) => {
   const selectedItems = indexArr.map(index => arr[index]);

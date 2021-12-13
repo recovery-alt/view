@@ -153,7 +153,7 @@ export function useTimeline(drawer: Drawer, modal: Modal) {
 export function useTable() {
   const board = useBoardStore();
   const { t } = useI18n({ useScope: 'local', messages });
-  const table = reactive<{ data: Array<Data>; columns: Data<any> }>({
+  const table = reactive<{ data: Array<Data>; columns: ReturnType<typeof generateColumns> }>({
     data: [],
     columns: generateColumns([
       {

@@ -1,4 +1,5 @@
 import { page, Page } from '@/mongoose/page';
+import { UpdateQuery } from 'mongoose';
 
 class PageService {
   get(id?: string) {
@@ -13,7 +14,7 @@ class PageService {
     return page.create(record);
   }
 
-  update(record: Page) {
+  update(record: UpdateQuery<Page>) {
     return page.updateOne({ _id: record._id }, record);
   }
 }

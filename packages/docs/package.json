@@ -7,6 +7,6 @@
     "docs:build": "vitepress build ."
   },
   "devDependencies": {
-    "vitepress": "^0.20.1"
+    "vitepress": "^0.20.5"
   }
 }

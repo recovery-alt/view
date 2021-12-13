@@ -2,6 +2,7 @@ import Router from '@koa/router';
 import { pageService } from '@/service';
 import { Page } from '@/mongoose';
 import { ResponseEnum } from '@/enum';
+import { UpdateQuery } from 'mongoose';
 
 const router = new Router();
 
@@ -20,7 +21,7 @@ router.post('/', async ctx => {
 });
 
 router.put('/', async ctx => {
-  const body = ctx.request.body as unknown as Page;
+  const body = ctx.request.body as unknown as UpdateQuery<Page>;
   await pageService.update(body);
   ctx.body = ResponseEnum.SUCCESS;
 });
