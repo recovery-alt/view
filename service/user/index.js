@@ -8,7 +8,7 @@ class UserService {
         return await user_1.user.find();
     }
     async changePassword(id, password, newPassword) {
-        const record = await user_1.user.findById(id);
+        const record = (await user_1.user.findById(id));
         if (!record) {
             return Promise.resolve(enum_1.ResponseEnum.CANNOT_FIND_USER);
         }
