@@ -38,7 +38,7 @@ export const useBoardStore = defineStore('board', {
       this.data.push(...componentArr);
       this.selected = selected;
     },
-    append({ top = 0, left = 0, type = '' }) {
+    append({ top = 0, left = 0, type = '', label = '' }) {
       const gallery = useGalleryStore();
       const cloneGallery = gallery.getGallery(type);
       if (!cloneGallery) throw new Error('获取不到该组件信息');
@@ -55,8 +55,8 @@ export const useBoardStore = defineStore('board', {
         ...config.defaultComponentSize,
         ...defaultStyle,
       };
-      const label = cloneGallery.name;
-      this.rawAppend({ id, component, label, propsData, style, data });
+      const mergedLabel = label || cloneGallery.name;
+      this.rawAppend({ id, component, label: mergedLabel, propsData, style, data });
     },
     del() {
       if (this.selected.length > 0) {
@@ -119,19 +119,20 @@ export const useBoardStore = defineStore('board', {
     moveUp(moveTop = false) {
       const { data, selected } = this;
       const len = data.length;
-      if (selected.length === 0) {
-        return;
-      } else if (selected.length > 1) {
+      if (selected.length === 0) return;
+      if (selected.length > 1) {
         message.error('多选无法移动');
       } else if (selected[0] === len - 1) {
         message.error('已经是最顶层！');
       } else {
         const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
         [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+        this.selected = selected.map(index => len - index - 1);
       }
     },
     moveDown(moveBottom = false) {
       const { data, selected } = this;
+      const len = data.length;
       if (selected.length === 0) {
         return;
       } else if (selected.length > 1) {
@@ -141,6 +142,7 @@ export const useBoardStore = defineStore('board', {
       } else {
         const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
         [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+        this.selected = selected.map(index => len - index - 1);
       }
     },
     // 根据矩形计算选中的组件

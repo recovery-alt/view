@@ -1,3 +1,3 @@
-import LayerPanel from './layer-panel';
+import LayerPanel from './layer-panel.vue';
 
 export { LayerPanel };

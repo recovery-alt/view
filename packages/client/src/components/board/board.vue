@@ -149,9 +149,10 @@ const handleDrop = (e: DragEvent) => {
   e.preventDefault();
   e.stopPropagation();
   const type = e.dataTransfer?.getData('type');
+  const label = e.dataTransfer?.getData('label');
   if (!type || !canvasWrapperRef.value) return;
   const { offsetX: left, offsetY: top } = e;
-  board.append({ type, left, top });
+  board.append({ type, label, left, top });
   canvasWrapperRef.value.click();
 };
 

@@ -13,10 +13,9 @@ import {
 } from '@ant-design/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { layerPanel as messages } from '@/locales';
-import { Tooltip } from 'ant-design-vue';
-import classNames from 'classnames';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { judgeCancelGroupDisabled, judgeGroupDisabled } from '@/utils';
+import { Data } from '@/typings';
 
 export function useToolBar() {
   const board = useBoardStore();
@@ -44,18 +43,7 @@ export function useToolBar() {
     },
   ];
 
-  function renderToolBarItems() {
-    return moveActions.map(item => (
-      <Tooltip key={item.icon.name} placement="bottom" title={item.tip}>
-        <item.icon
-          onClick={item.event}
-          class={classNames({ '--disable': board.selected.length === 0 })}
-        />
-      </Tooltip>
-    ));
-  }
-
-  return { renderToolBarItems };
+  return { moveActions };
 }
 
 export function useFooter() {
@@ -93,23 +81,7 @@ export function useFooter() {
     return result;
   });
 
-  function renderFooterTooltip() {
-    return operations.map((item, i) => {
-      const action = operationActions.value[i];
-
-      return (
-        <Tooltip key={item.icon.name} placement="bottom" title={item.tip}>
-          <item.icon
-            key={item.icon.name}
-            onClick={action?.disable ? undefined : item.event}
-            class={classNames({ '--disable': action?.disable })}
-          />
-        </Tooltip>
-      );
-    });
-  }
-
-  return { renderFooterTooltip };
+  return { operations, operationActions };
 }
 
 export function useMode() {
@@ -126,4 +98,25 @@ export function useMode() {
   }
 
   return { mode, modeList, switchMode };
+}
+
+export function useToggle() {
+  const board = useBoardStore();
+  const toggleState = reactive<Data<boolean>>({});
+  board.data.forEach(item => {
+    if (item?.group?.length) toggleState[item.id] = false;
+  });
+
+  return { toggleState };
+}
+
+export function useReverse() {
+  const board = useBoardStore();
+  const reverseBoard = computed(() => {
+    const data = [...board.data].reverse();
+    const selected = board.selected.map(index => data.length - index - 1);
+
+    return { data, selected };
+  });
+  return { reverseBoard };
 }

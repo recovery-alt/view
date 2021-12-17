@@ -1,9 +1,9 @@
 <template>
   <section class="right-panel" :style="{ width }">
-    <Tabs v-if="board.curCom" v-model="activeTab" type="card" size="small">
-      <TabPane v-for="item in tabs" :key="item.title">
+    <Tabs v-if="board.curCom" v-model:activeKey="activeTab" type="card" size="small">
+      <TabPane v-for="item in tabs" :key="item.key">
         <template #tab>
-          <span>{{ item.title }}</span>
+          <span>{{ t(item.key) }}</span>
         </template>
         <template v-if="cloneGallery">
           <h2 class="right-panel__title">{{ gt(`gallery.${cloneGallery.name}`) }}</h2>
@@ -37,8 +37,8 @@ const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
 
 const cloneGallery = ref<Gallery>();
-const tabs = ref<Array<{ title: string; component: Component }>>();
-const activeTab = ref(tabs.value?.[0].title);
+const tabs = ref<Array<{ key: string; component: Component }>>([]);
+const activeTab = ref(tabs.value[0]?.key);
 const width = computed(() => (panel.config ? '332px' : '0'));
 
 watchEffect(() => {
@@ -50,9 +50,9 @@ watchEffect(() => {
 watchEffect(() => {
   if (!cloneGallery.value) return;
   const tabsData = [
-    { title: t('config'), component: AttrPanel },
-    { title: t('data'), component: DataPanel },
-    { title: t('animation'), component: AnimatePanel },
+    { key: 'config', component: AttrPanel },
+    { key: 'data', component: DataPanel },
+    { key: 'animation', component: AnimatePanel },
   ];
   cloneGallery.value.dataConfig || tabsData.splice(1, 1);
   tabs.value = tabsData;

@@ -3,6 +3,7 @@
     class="component-panel"
     :class="{ 'component-panel--hide': !panel.component }"
     @dragstart="handleDragStart"
+    @click="handleClick"
   >
     <header class="component-panel__header">
       <div>{{ t('componentList') }}</div>
@@ -27,13 +28,14 @@
         <ul class="component-panel__list">
           <li
             v-for="item in tab.list"
-            :key="item.type"
+            :key="item.name"
             draggable="true"
             class="component-panel__item"
-            :data-type="item.type"
+            :data-type="item.name"
+            :data-label="gt(`gallery.${item.name}`)"
           >
             <header>{{ gt(`gallery.${item.name}`) }}</header>
-            <img :src="getImgSrc(item.type)" />
+            <img :src="getImgSrc(item.name)" />
           </li>
         </ul>
       </TabPane>
@@ -44,7 +46,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
-import { usePanelStore, useGalleryStore } from '@/store';
+import { usePanelStore, useGalleryStore, useBoardStore } from '@/store';
 import DefaultIcon from '@/assets/img/gallery/default.png';
 import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -55,13 +57,30 @@ const { t: gt } = useI18n({ useScope: 'global' });
 const activeTab = ref(t('basic'));
 const panel = usePanelStore();
 const gallery = useGalleryStore();
+const board = useBoardStore();
 
-const handleDragStart = (e: DragEvent) => {
+function handleDragStart(e: DragEvent) {
   const target = e.target as HTMLDataListElement;
-  if (target.dataset.type) {
-    e.dataTransfer?.setData('type', target.dataset.type);
+  const { type, label } = target.dataset;
+  if (type && label) {
+    e.dataTransfer?.setData('type', type);
+    e.dataTransfer?.setData('label', label);
   }
-};
+}
+
+function handleClick(e: MouseEvent) {
+  const target = e.target as HTMLDataListElement;
+  const { type, label } = target.dataset;
+  let top = 100;
+  let left = 100;
+  if (board.curCom?.style) {
+    top = board.curCom.style.top;
+    left = board.curCom.style.left;
+  }
+  top = top + 20;
+  left = left + 20;
+  board.append({ type, label, left, top });
+}
 
 const searchComponent = () => {
   // TODO: 查询组件
