@@ -1,1 +1,0 @@
-import{_ as e}from"./index.0aa95df3.js";import{cY as r,cV as t}from"./vendor.ec269a17.js";import"./ant-design-vue.a2b6f06b.js";import"./lodash.f14311af.js";import"./node-forge.38760642.js";import"./echarts.abad894d.js";import"./prettier.97963628.js";const a={};function o(s,c){return t(),r("div",null,"\u6A21\u677F")}var l=e(a,[["render",o]]);export{l as default};
