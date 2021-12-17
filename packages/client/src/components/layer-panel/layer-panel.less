@@ -79,7 +79,8 @@
     height: calc(100% - 30px);
     overflow-x: hidden;
     overflow-y: auto;
-    li {
+
+    &-item {
       position: relative;
       width: 100%;
       padding-left: 8px;
@@ -91,11 +92,11 @@
       &:hover {
         background-color: @item-hover-bg;
       }
+    }
 
-      &.--active {
-        color: @white;
-        background-color: @primary-color;
-      }
+    .--active {
+      color: @white;
+      background-color: @primary-color;
     }
 
     .--item {
@@ -162,4 +163,14 @@
       color: @text-color-inverse;
     }
   }
+}
+
+.toggle-enter-active,
+.toggle-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.toggle-enter-from,
+.toggle-leave-to {
+  transform: translateY(0);
 }

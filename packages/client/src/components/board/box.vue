@@ -13,7 +13,8 @@
 import type { Component } from '@/typings';
 import type { PropType, ComponentPublicInstance } from 'vue';
 import { computed, onMounted, defineComponent, shallowRef } from 'vue';
-import { playAnimations, splitStyleAndPatch, patchUnit } from '@/utils';
+import { playAnimations } from '@/utils/animation';
+import { splitStyleAndPatch, patchUnit } from '@/utils/style';
 
 export default defineComponent({
   name: 'board-box',
