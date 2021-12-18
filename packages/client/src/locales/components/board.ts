@@ -5,8 +5,8 @@ export const board = {
     right: '切换右侧面板',
   },
   en: {
-    layer: 'Switch Layer Panel',
-    component: 'Switch Component Panel',
-    right: 'Switch Right Panel',
+    layer: 'Layer Panel',
+    component: 'Component Panel',
+    right: 'Right Panel',
   },
 };

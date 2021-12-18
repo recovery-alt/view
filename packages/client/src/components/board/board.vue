@@ -13,19 +13,31 @@
             :width="screenShotSize[getUnit(item.direction)] * 2"
             :style="{ width: screenShotSize[getUnit(item.direction)] + 'px' }"
             @click="addMarkline($event, item.marklineDct)"
+            @mousemove="handleRulerMouseMove($event, item.marklineDct)"
+            @mouseout="handleRulerMouseOut(item.marklineDct)"
           />
+          <template v-if="showMarkline">
+            <div
+              v-for="(markline, i) in item.marklines"
+              :key="markline"
+              :class="`markline --${item.marklineDct}`"
+              :style="{ left: markline + 'px' }"
+              @contextmenu.prevent="cancelMarkline(i, item.direction)"
+            >
+              <span>{{ Math.floor(markline) - 40 }}</span>
+            </div>
+          </template>
           <div
-            v-for="(markline, i) in item.marklines"
-            :key="markline"
-            :class="`markline --${item.marklineDct}`"
-            :style="{ left: markline + 'px' }"
-            @contextmenu.prevent="cancelMarkline(i, item.direction)"
+            v-if="item.hoverline"
+            :class="['markline', `--${item.marklineDct}`, '--dashed']"
+            :style="{ left: item.hoverline + 'px' }"
           >
-            <span>{{ Math.floor(markline) - 40 }}</span>
+            <span>{{ Math.floor(item.hoverline) - 40 }}</span>
           </div>
         </div>
         <div class="guide-line__controller">
-          <EyeInvisibleOutlined />
+          <EyeInvisibleOutlined v-if="showMarkline" @click="switchMarklineDisplay" />
+          <EyeOutlined v-else @click="switchMarklineDisplay" />
         </div>
       </div>
 
@@ -118,7 +130,12 @@ import {
   useBoardKeydown,
 } from './hooks/board';
 import { patchUnit, splitStyleAndPatch } from '@/utils';
-import { EyeInvisibleOutlined, BlockOutlined, MacCommandOutlined } from '@ant-design/icons-vue';
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  BlockOutlined,
+  MacCommandOutlined,
+} from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
 import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -178,7 +195,17 @@ const handleScroll = (e: Event) => {
   });
 };
 
-const { rulerData, getStyle, getUnit, addMarkline, cancelMarkline } = useRuler();
+const {
+  showMarkline,
+  rulerData,
+  getStyle,
+  getUnit,
+  addMarkline,
+  handleRulerMouseMove,
+  handleRulerMouseOut,
+  switchMarklineDisplay,
+  cancelMarkline,
+} = useRuler();
 
 useBoardKeydown();
 
@@ -268,6 +295,10 @@ onMounted(() => {
     justify-content: center;
     display: flex;
     background-color: @component-background;
+
+    &:hover {
+      color: @primary-color;
+    }
   }
 }
 
@@ -342,9 +373,8 @@ onMounted(() => {
 
 .markline {
   position: absolute;
-  background-color: @primary-color;
-
-  width: 1px;
+  width: 0;
+  border-left: 1px solid @primary-color;
 
   &.--x {
     top: 20px;
@@ -361,6 +391,11 @@ onMounted(() => {
     span {
       top: 15px;
     }
+  }
+
+  &.--dashed {
+    border-left-style: dashed;
+    pointer-events: none;
   }
 
   span {

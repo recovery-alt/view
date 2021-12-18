@@ -15,6 +15,7 @@ export const global = {
       radar: '雷达图',
       scatter: '散点图',
       tree: '树图',
+      group: '组容器',
     },
   },
   en: {
@@ -33,6 +34,7 @@ export const global = {
       radar: 'Radar',
       scatter: 'Scatter',
       tree: 'Tree',
+      group: 'Group',
     },
   },
 };

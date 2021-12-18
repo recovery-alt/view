@@ -310,36 +310,73 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
 };
 
 export const useRuler = () => {
-  type Ruler = { direction: Direction; marklineDct: Direction; marklines: Array<number> };
+  type Ruler = {
+    direction: Direction;
+    marklineDct: Direction;
+    marklines: Array<number>;
+    hoverline?: number;
+  };
 
   const rulerData = reactive<Array<Ruler>>([
     { direction: Direction.X, marklineDct: Direction.Y, marklines: [] },
     { direction: Direction.Y, marklineDct: Direction.X, marklines: [] },
   ]);
 
-  const addMarkline = (e: MouseEvent, direction: Direction) => {
+  const showMarkline = ref(true);
+
+  function calcMarklinePosition(e: MouseEvent, direction: Direction) {
     const { clientX, clientY } = e;
     const target = e.target as HTMLElement;
     const { left, top } = target.getBoundingClientRect();
-    const [position, index] = direction === Direction.X ? [clientY - top, 1] : [clientX - left, 0];
+    return direction === Direction.X ? [clientY - top, 1] : [clientX - left, 0];
+  }
 
+  function addMarkline(e: MouseEvent, direction: Direction) {
+    if (!showMarkline.value) return;
+    const [position, index] = calcMarklinePosition(e, direction);
     rulerData[index].marklines.push(position);
-  };
+  }
 
-  const cancelMarkline = (i: number, direction: Direction) => {
+  function handleRulerMouseMove(e: MouseEvent, direction: Direction) {
+    const [position, index] = calcMarklinePosition(e, direction);
+    rulerData[index].hoverline = position;
+  }
+
+  function handleRulerMouseOut(direction: Direction) {
+    const index = direction === Direction.X ? 1 : 0;
+    rulerData[index].hoverline = 0;
+  }
+
+  function switchMarklineDisplay() {
+    showMarkline.value = !showMarkline.value;
+  }
+
+  function cancelMarkline(i: number, direction: Direction) {
     const index = direction === Direction.X ? 0 : 1;
     rulerData[index].marklines.splice(i, 1);
-  };
+  }
 
-  const getStyle = (direction: Direction, position: { left: number; top: number }) => {
+  function getStyle(direction: Direction, position: { left: number; top: number }) {
     const rotate = direction === Direction.Y ? ' rotate(90deg)' : '';
     const leftOrTop = direction === Direction.Y ? 'top' : 'left';
     return `transform:${rotate} translateX(${position[leftOrTop]}px)`;
+  }
+
+  function getUnit(direction: Direction) {
+    return direction === Direction.X ? 'width' : 'height';
+  }
+
+  return {
+    rulerData,
+    showMarkline,
+    getStyle,
+    getUnit,
+    addMarkline,
+    handleRulerMouseMove,
+    handleRulerMouseOut,
+    switchMarklineDisplay,
+    cancelMarkline,
   };
-
-  const getUnit = (direction: Direction) => (direction === Direction.X ? 'width' : 'height');
-
-  return { rulerData, getStyle, getUnit, addMarkline, cancelMarkline };
 };
 
 export const useBoardKeydown = () => {

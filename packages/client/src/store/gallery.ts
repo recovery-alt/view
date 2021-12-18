@@ -1,6 +1,7 @@
 import { Gallery, GalleryGroup } from '@/typings';
 import { defineStore } from 'pinia';
 import cloneDeep from 'lodash/cloneDeep';
+import Group from '@/gallery/group.vue';
 
 export const useGalleryStore = defineStore('gallery', {
   state() {
@@ -17,6 +18,15 @@ export const useGalleryStore = defineStore('gallery', {
       this.list = list;
     },
     getGallery(name: string) {
+      if (name === 'group') {
+        const result: Gallery = {
+          type: 'group',
+          name: 'group',
+          version: '1.0.0',
+          component: Group,
+        };
+        return result;
+      }
       const gallery = this.list.find(val => val.type === name);
       if (gallery) return cloneDeep(gallery);
     },
