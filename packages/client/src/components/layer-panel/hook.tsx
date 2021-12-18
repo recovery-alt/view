@@ -49,11 +49,12 @@ export function useToolBar() {
 export function useFooter() {
   const board = useBoardStore();
   const { t } = useI18n({ useScope: 'local', messages });
+  const { t: gt } = useI18n({ useScope: 'global' });
   const operations = [
     {
       tip: t('group'),
       icon: FolderOutlined,
-      event: () => board.group(),
+      event: () => board.group(gt('gallery.group')),
     },
     {
       tip: t('cancelGroup'),

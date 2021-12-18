@@ -29,18 +29,15 @@
         </Tooltip>
       </header>
       <ul v-if="reverseBoard.data.length" class="layer-panel__box">
-        <li
-          v-for="(item, index) in reverseBoard.data"
-          :key="item.id"
-          @contextmenu="handleRightClick($event, index)"
-          @mouseup="changeSelected($event, index)"
-        >
+        <li v-for="(item, index) in reverseBoard.data" :key="item.id">
           <div
             :class="[
               'layer-panel__box-item',
               `--${mode}`,
               { '--active': reverseBoard.selected.includes(index) },
             ]"
+            @contextmenu="handleRightClick($event, index)"
+            @mouseup="changeSelected($event, index)"
           >
             <component
               :is="item.locked ? LockOutlined : EyeInvisibleOutlined"
@@ -48,25 +45,25 @@
               class="--icon"
               @click="unlockOrShow($event, index, item.locked)"
             />
-            <RightOutlined
+            <CaretRightOutlined
               v-if="item.group?.length"
               class="--animated"
               :style="{ transform: toggleState[item.id] ? 'rotate(90deg)' : 'rotate(0deg)' }"
               @click="toggleState[item.id] = !toggleState[item.id]"
             />
             <DatabaseOutlined v-else-if="mode === 'item'" />
-            <img v-else :src="Logo" />
+            <img v-else :src="getImgSrc(item.component)" />
             <b>{{ item.label }}</b>
           </div>
           <transition name="toggle" mode="out-in">
-            <ul v-if="toggleState[item.id]">
+            <ul v-if="toggleState[item.id]" class="layer-panel__box-submenu">
               <li
                 v-for="child in item.group"
                 :key="child.id"
                 :class="['layer-panel__box-item', '--animated', `--${mode}`]"
               >
                 <DatabaseOutlined v-if="mode === 'item'" />
-                <img v-else :src="Logo" />
+                <img v-else :src="getImgSrc(item.component)" />
                 <b>{{ child.label }}</b>
               </li>
             </ul>
@@ -100,16 +97,16 @@ import {
   LeftOutlined,
   LockOutlined,
   EyeInvisibleOutlined,
-  RightOutlined,
+  CaretRightOutlined,
 } from '@ant-design/icons-vue';
 import { shallowRef } from 'vue';
 import { useBoardStore, useMenuStore, usePanelStore, MenuEnum } from '@/store';
 import { BoardMenu } from '@/components';
 import { Empty, Tooltip } from 'ant-design-vue';
-import Logo from '@/assets/img/logo.svg';
 import { useI18n } from 'vue-i18n';
 import { layerPanel as messages } from '@/locales';
 import { useFooter, useMode, useReverse, useToggle, useToolBar } from './hook';
+import { getImgSrc } from '@/gallery';
 
 const board = useBoardStore();
 const panel = usePanelStore();
@@ -238,6 +235,11 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
       overflow: hidden;
     }
 
+    &-submenu li {
+      pointer-events: none;
+      padding-left: 16px;
+    }
+
     &-item {
       position: relative;
       width: 100%;
@@ -245,7 +247,6 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
       padding-right: 6px;
       display: flex;
       align-items: center;
-      cursor: pointer;
       z-index: 1;
 
       &:hover {

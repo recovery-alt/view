@@ -39,3 +39,19 @@ export default async (app: App<Element>) => {
 
   return { list: galleryList, group: galleryGroup };
 };
+
+export function getImgSrc(type?: string) {
+  const modules = import.meta.globEager('/src/assets/img/gallery/*.png');
+  let Icon;
+
+  for (const key of Object.keys(modules)) {
+    const matcher = key.match(/gallery\/(.*)\.png/);
+    if (matcher?.[1] && type === matcher[1]) {
+      Icon = modules[key].default;
+      break;
+    }
+  }
+
+  const defaultKey = '/src/assets/img/gallery/default.png';
+  return Icon || modules[defaultKey].default;
+}

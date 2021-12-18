@@ -163,7 +163,7 @@ export const useBoardStore = defineStore('board', {
       });
       this.setIndex(needSelected);
     },
-    group() {
+    group(label: string) {
       const { selected, data } = this;
       const components = spliceItems(data, selected);
       const position = components.reduce(
@@ -191,7 +191,7 @@ export const useBoardStore = defineStore('board', {
       const group: Component = {
         id: uuid(),
         component: 'group',
-        label: '成组',
+        label,
         group: components,
         style: { top, left, width, height, rotate: 0, opacity: 1 },
       };

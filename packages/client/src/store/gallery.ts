@@ -30,5 +30,14 @@ export const useGalleryStore = defineStore('gallery', {
       const gallery = this.list.find(val => val.type === name);
       if (gallery) return cloneDeep(gallery);
     },
+    getFilterGroup(keyword: string) {
+      if (!keyword) return this.group;
+      return this.group.map(group => {
+        const { list: galleryList, ...rest } = group;
+        console.log(galleryList);
+        const list = galleryList.filter(item => new RegExp(keyword, 'i').test(item.name));
+        return { list, ...rest };
+      });
+    },
   },
 });

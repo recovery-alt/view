@@ -52,6 +52,7 @@ const props = defineProps({
 const board = useBoardStore();
 const menu = useMenuStore();
 const { t } = useI18n({ useScope: 'local', messages });
+const { t: gt } = useI18n({ useScope: 'global' });
 
 const menuRef = shallowRef<HTMLElement>();
 
@@ -83,7 +84,7 @@ const data = reactive<MenuList>([
     name: t('group'),
     icon: FolderOutlined,
     disable: false,
-    event: () => board.group(),
+    event: () => board.group(gt('gallery.group')),
   },
   {
     name: t('cancelGroup'),

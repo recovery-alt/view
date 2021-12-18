@@ -1,31 +1,28 @@
 <template>
-  <section
-    class="component-panel"
-    :class="{ 'component-panel--hide': !panel.component }"
-    @dragstart="handleDragStart"
-    @click="handleClick"
-  >
+  <section :class="['component-panel', { 'component-panel--hide': !panel.component }]">
     <header class="component-panel__header">
       <div>{{ t('componentList') }}</div>
       <LeftOutlined @click="panel.switchPanelShow('component')" />
     </header>
     <div class="component-panel__select-box">
       <InputSearch
-        v-show="panel.component"
+        size="small"
         enter-button
+        allow-clear
         :placeholder="t('placeholder')"
         @search="searchComponent"
       />
     </div>
     <Tabs v-model:activeKey="activeTab" tab-position="left">
-      <TabPane v-for="tab in gallery.group" :key="tab.groupName">
+      <TabPane v-for="tab in filterGroup" :key="tab.groupName">
         <template #tab>
           <div class="component-panel__label">
             <component :is="tab.icon" />
             <span>{{ t(tab.groupName) }}</span>
           </div>
         </template>
-        <ul class="component-panel__list">
+        <Empty v-if="tab.list.length === 0" :description="t('empty')" />
+        <ul v-else class="component-panel__list">
           <li
             v-for="item in tab.list"
             :key="item.name"
@@ -33,6 +30,8 @@
             class="component-panel__item"
             :data-type="item.name"
             :data-label="gt(`gallery.${item.name}`)"
+            @dragstart="handleDragStart"
+            @click="handleClick"
           >
             <header>{{ gt(`gallery.${item.name}`) }}</header>
             <img :src="getImgSrc(item.name)" />
@@ -46,18 +45,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
-import { usePanelStore, useGalleryStore, useBoardStore } from '@/store';
-import DefaultIcon from '@/assets/img/gallery/default.png';
-import { InputSearch, Tabs, TabPane } from 'ant-design-vue';
+import { usePanelStore, useBoardStore } from '@/store';
+import { InputSearch, Tabs, TabPane, Empty } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { componentPanel as messages } from '@/locales';
+import { getImgSrc } from '@/gallery';
+import { useSearch } from './hook';
 
 const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
 const activeTab = ref(t('basic'));
 const panel = usePanelStore();
-const gallery = useGalleryStore();
 const board = useBoardStore();
+const { filterGroup, searchComponent } = useSearch();
 
 function handleDragStart(e: DragEvent) {
   const target = e.target as HTMLDataListElement;
@@ -69,7 +69,7 @@ function handleDragStart(e: DragEvent) {
 }
 
 function handleClick(e: MouseEvent) {
-  const target = e.target as HTMLDataListElement;
+  const target = e.currentTarget as HTMLDataListElement;
   const { type, label } = target.dataset;
   let top = 100;
   let left = 100;
@@ -81,24 +81,6 @@ function handleClick(e: MouseEvent) {
   left = left + 20;
   board.append({ type, label, left, top });
 }
-
-const searchComponent = () => {
-  // TODO: 查询组件
-};
-
-const getImgSrc = (type?: string) => {
-  const modules = import.meta.globEager('/src/assets/img/gallery/*.png');
-  let Icon;
-
-  for (const key of Object.keys(modules)) {
-    const matcher = key.match(/gallery\/(.*)\.png/);
-    if (matcher?.[1] && type === matcher[1]) {
-      Icon = modules[key].default;
-      break;
-    }
-  }
-  return Icon || DefaultIcon;
-};
 </script>
 
 <style lang="less">
@@ -165,7 +147,6 @@ const getImgSrc = (type?: string) => {
   &__item {
     width: 80px;
     height: 80px;
-    cursor: pointer;
 
     header {
       height: 22px;
