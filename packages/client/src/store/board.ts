@@ -4,10 +4,11 @@ import { spliceItems } from '@/utils';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuid } from 'uuid';
 import config from '@/config';
-import { nextTick } from 'vue';
+import { createVNode, nextTick } from 'vue';
 import { useEchartsResize } from '@/components/board/hooks/board';
-import { message } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
 import { useGalleryStore } from './gallery';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export const useBoardStore = defineStore('board', {
   state: () => {
@@ -58,11 +59,17 @@ export const useBoardStore = defineStore('board', {
       const mergedLabel = label || cloneGallery.name;
       this.rawAppend({ id, component, label: mergedLabel, propsData, style, data });
     },
-    del() {
+    del(t: (key: string) => string) {
       if (this.selected.length > 0) {
-        spliceItems(this.data, this.selected);
-        this.selected = [];
-        message.success('删除成功！');
+        Modal.confirm({
+          title: () => t('confirm.warning'),
+          content: () => t('confirm.tip'),
+          icon: () => createVNode(ExclamationCircleOutlined),
+          onOk: () => {
+            spliceItems(this.data, this.selected);
+            this.selected = [];
+          },
+        });
       }
     },
     cancelSelected() {

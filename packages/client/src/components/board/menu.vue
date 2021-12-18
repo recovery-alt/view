@@ -113,7 +113,7 @@ const data = reactive<MenuList>([
   {
     name: t('delete'),
     icon: DeleteOutlined,
-    event: () => board.del(),
+    event: () => board.del(gt),
   },
 ]);
 

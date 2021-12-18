@@ -1,5 +1,9 @@
 export const global = {
   cn: {
+    confirm: {
+      warning: '警告',
+      tip: '是否要删除该组件？',
+    },
     placeholder: {
       select: '请选择',
     },
@@ -19,6 +23,10 @@ export const global = {
     },
   },
   en: {
+    confirm: {
+      warning: 'warning',
+      tip: 'Are you sure to delete this component?',
+    },
     placeholder: {
       select: 'Please Select',
     },

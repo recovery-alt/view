@@ -15,6 +15,7 @@ import { useBoardStore, usePageStore, usePanelStore } from '@/store';
 import { getInstanceByDom } from 'echarts';
 import debounce from 'lodash/debounce';
 import { Direction } from '@/enum';
+import { useI18n } from 'vue-i18n';
 
 export const useSelectMask = () => {
   const board = useBoardStore();
@@ -383,10 +384,11 @@ export const useBoardKeydown = () => {
   const page = usePageStore();
   const panel = usePanelStore();
   const board = useBoardStore();
+  const { t } = useI18n({ useScope: 'global' });
 
   // 快捷键事件策略
   const strategy: Data<(ctrl: boolean) => void> = {
-    Backspace: () => board.del(),
+    Backspace: () => board.del(t),
     a: ctrl => ctrl && board.selectAll(),
     s: ctrl => ctrl && page.savePage(),
     c: ctrl => ctrl && board.copy(),

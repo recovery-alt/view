@@ -6,6 +6,7 @@
     </header>
     <div class="component-panel__select-box">
       <InputSearch
+        v-show="panel.component"
         size="small"
         enter-button
         allow-clear

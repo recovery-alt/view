@@ -1,6 +1,7 @@
 <template>
   <div class="header-right">
     <Button size="small" @click="switchLocale?.()">{{ locale }}</Button>
+    <SkinOutlined class="theme-change" @click="theme.switchTheme()" />
     <Dropdown>
       <div class="exit-dropdown">
         <Avatar>
@@ -20,7 +21,6 @@
         </Menu>
       </template>
     </Dropdown>
-    <SkinOutlined class="theme-change" @click="theme.switchTheme()" />
   </div>
   <Modal
     v-model:visible="visible"
