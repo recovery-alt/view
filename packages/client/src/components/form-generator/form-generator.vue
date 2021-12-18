@@ -1,5 +1,16 @@
 <template>
-  <ColorPicker v-if="field.type === FormEnum.COLOR_PICKER" v-model="model[field.model]" />
+  <Input
+    v-if="field.type === FormEnum.COLOR_PICKER"
+    v-model:value="model[field.model]"
+    size="small"
+    type="color"
+  >
+    <template #suffix>
+      <span class="ant-input-suffix">
+        <CloseCircleFilled class="ant-input-clear-icon" @click="model[field.model] = ''" />
+      </span>
+    </template>
+  </Input>
   <template v-else-if="field.type === FormEnum.BTN_GROUP">
     <Tooltip v-for="item in field.data" :key="item.icon" :title="item.tip" placement="bottom">
       <Button
@@ -38,7 +49,6 @@
 <script lang="ts" setup>
 import type { FieldItem, Data } from '@/typings';
 import type { PropType } from 'vue';
-import { ColorPicker } from '../color-picker';
 import { FormEnum } from '@/enum';
 import {
   Tooltip,
@@ -55,6 +65,7 @@ import {
 } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { formGenerator as messages } from '@/locales';
+import { CloseCircleFilled } from '@ant-design/icons-vue';
 
 const map: Data = {
   radio: Radio,
@@ -64,7 +75,6 @@ const map: Data = {
   switch: Switch,
   slider: Slider,
   'input-number': InputNumber,
-  'color-picker': ColorPicker,
   textarea: Textarea,
 };
 
