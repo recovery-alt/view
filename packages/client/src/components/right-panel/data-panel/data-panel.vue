@@ -50,9 +50,9 @@
               <Switch v-model:checked="drawer.openFilter" @change="handleFilterChange" />
             </Col>
             <Col offset="2">
-              <Button type="primary" size="small" @click="modal.show = true">{{
-                t('configFilter')
-              }}</Button>
+              <Button type="primary" size="small" @click="modal.show = true">
+                {{ t('configFilter') }}
+              </Button>
             </Col>
           </Row>
         </FormItem>

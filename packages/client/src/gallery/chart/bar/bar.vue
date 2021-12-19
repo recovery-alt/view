@@ -1,51 +1,30 @@
 <template>
-  <div ref="bar" class="bar" />
+  <Chart class="bar" :option="option" />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import type { ComponentData } from '@/typings';
 import type { BarSeriesOption } from 'echarts/charts';
-import type { ComposeOption, ECharts } from 'echarts/core';
+import type { ComposeOption } from 'echarts/core';
 import type { PropType } from 'vue';
-import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
-import { use, init } from 'echarts/core';
-import { GridComponent } from 'echarts/components';
+import { computed } from 'vue';
+import { use } from 'echarts/core';
 import { BarChart } from 'echarts/charts';
-import { CanvasRenderer } from 'echarts/renderers';
+import Chart from '../chart.vue';
 
-export default defineComponent({
-  props: {
-    data: {
-      type: Object as PropType<ComponentData>,
-      default: () => ({ type: 'static', data: [] }),
-    },
-  },
-  setup(props) {
-    const bar = shallowRef<HTMLElement>();
-    const chart = shallowRef<ECharts>();
-
-    use([GridComponent, BarChart, CanvasRenderer]);
-
-    const setOption = () => {
-      if (!chart.value) return;
-      const option: ComposeOption<BarSeriesOption> = {
-        xAxis: { type: 'category' },
-        yAxis: { type: 'value' },
-        series: [{ type: 'bar' }],
-        dataset: { source: props.data.static },
-      };
-
-      chart.value.setOption(option);
-    };
-
-    onMounted(() => {
-      if (bar.value) {
-        chart.value = init(bar.value);
-        watchEffect(setOption);
-      }
-    });
-
-    return { bar };
+const props = defineProps({
+  data: {
+    type: Object as PropType<ComponentData>,
+    default: () => ({ type: 'static', static: [] }),
   },
 });
+
+use([BarChart]);
+
+const option = computed<ComposeOption<BarSeriesOption>>(() => ({
+  xAxis: { type: 'category' },
+  yAxis: { type: 'value' },
+  series: [{ type: 'bar' }],
+  dataset: { source: props.data.static },
+}));
 </script>

@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import type { Gallery } from '@/typings';
 import type { Component } from 'vue';
-import { ref, computed, watchEffect } from 'vue';
+import { shallowRef, ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { useBoardStore, usePanelStore, useGalleryStore } from '@/store';
 import { Tabs, TabPane } from 'ant-design-vue';
@@ -37,7 +37,7 @@ const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
 
 const cloneGallery = ref<Gallery>();
-const tabs = ref<Array<{ key: string; component: Component }>>([]);
+const tabs = shallowRef<Array<{ key: string; component: Component }>>([]);
 const activeTab = ref(tabs.value[0]?.key);
 const width = computed(() => (panel.config ? '332px' : '0'));
 

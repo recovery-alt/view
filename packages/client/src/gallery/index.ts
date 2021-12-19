@@ -1,5 +1,6 @@
 import type { Gallery, Data, GalleryGroup, Group } from '@/typings';
-import { App } from 'vue';
+import { EChartsOption } from 'echarts';
+import type { App, ReactiveEffect } from 'vue';
 import ComponentGroup from './group.vue';
 
 const modules = import.meta.glob('./*/index.ts');
@@ -54,4 +55,8 @@ export function getImgSrc(type?: string) {
 
   const defaultKey = '/src/assets/img/gallery/default.png';
   return Icon || modules[defaultKey].default;
+}
+
+export function useChart(options: ReactiveEffect<EChartsOption>) {
+  // TODO
 }

@@ -1,57 +1,36 @@
 <template>
-  <div ref="gauge" class="gauge" />
+  <Chart class="gauge" :option="option" />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import type { ComponentData } from '@/typings';
 import type { GaugeSeriesOption } from 'echarts/charts';
-import type { ComposeOption, ECharts } from 'echarts/core';
+import type { ComposeOption } from 'echarts/core';
 import type { PropType } from 'vue';
-import { onMounted, shallowRef, watchEffect, defineComponent } from 'vue';
-import { use, init } from 'echarts/core';
-import { GridComponent } from 'echarts/components';
+import { computed } from 'vue';
+import { use } from 'echarts/core';
 import { GaugeChart } from 'echarts/charts';
-import { CanvasRenderer } from 'echarts/renderers';
+import Chart from '../chart.vue';
 
-export default defineComponent({
-  props: {
-    data: {
-      type: Object as PropType<ComponentData>,
-      default: () => ({ type: 'static', data: [] }),
-    },
-  },
-  setup(props) {
-    const gauge = shallowRef<HTMLElement>();
-    const chart = shallowRef<ECharts>();
-
-    use([GridComponent, GaugeChart, CanvasRenderer]);
-
-    const setOption = () => {
-      if (!chart.value) return;
-      const option: ComposeOption<GaugeSeriesOption> = {
-        series: [
-          {
-            name: 'Pressure',
-            type: 'gauge',
-            detail: {
-              formatter: '{value}',
-            },
-          },
-        ],
-        dataset: { source: props.data.static },
-      };
-
-      chart.value.setOption(option);
-    };
-
-    onMounted(() => {
-      if (gauge.value) {
-        chart.value = init(gauge.value);
-        watchEffect(setOption);
-      }
-    });
-
-    return { gauge };
+const props = defineProps({
+  data: {
+    type: Object as PropType<ComponentData>,
+    default: () => ({ type: 'static', static: [] }),
   },
 });
+
+use([GaugeChart]);
+
+const option = computed<ComposeOption<GaugeSeriesOption>>(() => ({
+  series: [
+    {
+      name: 'Pressure',
+      type: 'gauge',
+      detail: {
+        formatter: '{value}',
+      },
+    },
+  ],
+  dataset: { source: props.data.static },
+}));
 </script>
