@@ -1,27 +1,14 @@
 <template>
-  <Chart class="funnel" :option="option" />
+  <BaseChart class="funnel" :plugins="FunnelChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>
-import type { ComponentData } from '@/typings';
-import type { FunnelSeriesOption } from 'echarts/charts';
-import type { ComposeOption } from 'echarts/core';
-import type { PropType } from 'vue';
-import { computed } from 'vue';
-import { use } from 'echarts/core';
+import type { EChartsOption } from 'echarts';
 import { FunnelChart } from 'echarts/charts';
-import Chart from '@/gallery/chart.vue';
+import BaseChart from '../base-chart.vue';
+import { reactive } from 'vue';
 
-const props = defineProps({
-  data: {
-    type: Object as PropType<ComponentData>,
-    default: () => ({ type: 'static', static: [] }),
-  },
-});
-
-use([FunnelChart]);
-
-const option = computed<ComposeOption<FunnelSeriesOption>>(() => ({
+const defaultOption = reactive<EChartsOption>({
   tooltip: {
     trigger: 'item',
     formatter: '{a} <br/>{b} : {c}%',
@@ -65,6 +52,5 @@ const option = computed<ComposeOption<FunnelSeriesOption>>(() => ({
       },
     },
   ],
-  dataset: { source: props.data.static },
-}));
+});
 </script>

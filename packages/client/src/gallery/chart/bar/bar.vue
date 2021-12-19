@@ -1,30 +1,16 @@
 <template>
-  <Chart class="bar" :option="option" />
+  <BaseChart class="bar" :plugins="BarChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>
-import type { ComponentData } from '@/typings';
-import type { BarSeriesOption } from 'echarts/charts';
-import type { ComposeOption } from 'echarts/core';
-import type { PropType } from 'vue';
-import { computed } from 'vue';
-import { use } from 'echarts/core';
+import type { EChartsOption } from 'echarts';
 import { BarChart } from 'echarts/charts';
-import Chart from '../chart.vue';
+import { reactive } from 'vue';
+import BaseChart from '../base-chart.vue';
 
-const props = defineProps({
-  data: {
-    type: Object as PropType<ComponentData>,
-    default: () => ({ type: 'static', static: [] }),
-  },
-});
-
-use([BarChart]);
-
-const option = computed<ComposeOption<BarSeriesOption>>(() => ({
+const defaultOption = reactive<EChartsOption>({
   xAxis: { type: 'category' },
   yAxis: { type: 'value' },
   series: [{ type: 'bar' }],
-  dataset: { source: props.data.static },
-}));
+});
 </script>

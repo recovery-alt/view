@@ -1,27 +1,14 @@
 <template>
-  <Chart class="pie" :option="option" />
+  <BaseChart class="pie" :plugins="PieChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>
-import type { ComponentData } from '@/typings';
-import type { PieSeriesOption } from 'echarts/charts';
-import type { ComposeOption } from 'echarts/core';
-import type { PropType } from 'vue';
-import { computed } from 'vue';
-import { use } from 'echarts/core';
+import type { EChartsOption } from 'echarts';
+import { reactive } from 'vue';
 import { PieChart } from 'echarts/charts';
-import Chart from '../chart.vue';
+import BaseChart from '../base-chart.vue';
 
-const props = defineProps({
-  data: {
-    type: Object as PropType<ComponentData>,
-    default: () => ({ type: 'static', static: [] }),
-  },
-});
-
-use([PieChart]);
-
-const option = computed<ComposeOption<PieSeriesOption>>(() => ({
+const defaultOption = reactive<EChartsOption>({
   series: [
     {
       type: 'pie',
@@ -48,6 +35,5 @@ const option = computed<ComposeOption<PieSeriesOption>>(() => ({
       },
     },
   ],
-  dataset: { source: props.data.static },
-}));
+});
 </script>
