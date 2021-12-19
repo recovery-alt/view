@@ -1,5 +1,5 @@
 <template>
-  <BaseChart class="pie" :plugins="PieChart" :default-option="defaultOption" />
+  <BaseChart :plugins="PieChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>

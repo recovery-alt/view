@@ -1,5 +1,5 @@
 <template>
-  <BaseChart class="funnel" :plugins="FunnelChart" :default-option="defaultOption" />
+  <BaseChart :plugins="FunnelChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>

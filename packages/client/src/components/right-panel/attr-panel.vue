@@ -69,7 +69,7 @@
 
 <script lang="ts" setup>
 import type { Gallery, Field, SchemaItem, FieldItem, Data } from '@/typings';
-import { ref, shallowRef, watchEffect } from 'vue';
+import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useBoardStore, useGalleryStore } from '@/store';
 import {
   AlignCenterOutlined,
@@ -106,7 +106,7 @@ const rotate = (reverse = false) => {
 
 const cloneGallery = shallowRef<Gallery>();
 
-const basicField: Array<Field> = [
+const basicField = computed<Array<Field>>(() => [
   {
     label: t('size'),
     extra: [t('width'), t('height')],
@@ -130,9 +130,9 @@ const basicField: Array<Field> = [
       { type: FormEnum.INPUT_NUMBER, model: 'opacity', propsData: { min: 0, max: 1, step: 0.1 } },
     ],
   },
-];
+]);
 
-const schema: Array<SchemaItem> = [
+const schema = computed<Array<SchemaItem>>(() => [
   {
     title: t('borderAndRadius'),
     fields: [
@@ -145,30 +145,23 @@ const schema: Array<SchemaItem> = [
       },
       {
         label: t('border'),
-        extra: [t('width'), t('color')],
+        extra: [t('width'), t('borderStyle')],
         item: [
           {
             type: FormEnum.INPUT_NUMBER,
             model: 'borderWidth',
           },
           {
-            type: FormEnum.COLOR_PICKER,
-            model: 'borderColor',
+            type: FormEnum.SELECT,
+            model: 'borderStyle',
+            data: [
+              { id: 'none', label: t('none') },
+              { id: 'dotted', label: t('dotted') },
+              { id: 'dashed', label: t('dashed') },
+              { id: 'solid', label: t('solid') },
+            ],
           },
         ],
-      },
-      {
-        label: t('borderStyle'),
-        item: {
-          type: FormEnum.SELECT,
-          model: 'borderStyle',
-          data: [
-            { id: 'none', label: t('none') },
-            { id: 'dotted', label: t('dotted') },
-            { id: 'dashed', label: t('dashed') },
-            { id: 'solid', label: t('solid') },
-          ],
-        },
       },
     ],
   },
@@ -182,9 +175,12 @@ const schema: Array<SchemaItem> = [
           { model: 'fontSize', type: FormEnum.INPUT_NUMBER, default: 14 },
           {
             model: 'fontWeight',
-            type: FormEnum.INPUT_NUMBER,
-            default: 500,
-            propsData: { step: 100, min: 100, max: 900 },
+            type: FormEnum.SELECT,
+            data: [
+              { id: 'normal', label: t('normal') },
+              { id: 'lighter', label: t('lighter') },
+              { id: 'bold', label: t('bold') },
+            ],
           },
         ],
       },
@@ -223,22 +219,20 @@ const schema: Array<SchemaItem> = [
     title: t('color'),
     fields: [
       {
-        label: t('color'),
-        extra: [t('fontColor'), t('background')],
-        item: [
-          {
-            model: 'color',
-            type: FormEnum.COLOR_PICKER,
-          },
-          {
-            model: 'backgroundColor',
-            type: FormEnum.COLOR_PICKER,
-          },
-        ],
+        label: t('fontColor'),
+        item: { model: 'color', type: FormEnum.COLOR_PICKER },
+      },
+      {
+        label: t('background'),
+        item: { model: 'backgroundColor', type: FormEnum.COLOR_PICKER },
+      },
+      {
+        label: t('borderColor'),
+        item: { type: FormEnum.COLOR_PICKER, model: 'borderColor' },
       },
     ],
   },
-];
+]);
 
 const setDefaultVal = (val: FieldItem | Array<FieldItem>, data: Data<string | number>) => {
   const setVal = (val: FieldItem) => {
@@ -252,7 +246,7 @@ const setDefaultVal = (val: FieldItem | Array<FieldItem>, data: Data<string | nu
 watchEffect(() => {
   if (board.selected.length === 1) {
     const { style } = board.data[board.selected[0]];
-    schema.forEach(val => {
+    schema.value.forEach(val => {
       val.fields.forEach(field => {
         const { item } = field;
         setDefaultVal(item, style as unknown as Data<string | number>);

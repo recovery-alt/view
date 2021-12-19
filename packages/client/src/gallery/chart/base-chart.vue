@@ -1,5 +1,5 @@
 <template>
-  <VChart class="chart" :option="mergedOption" />
+  <VChart class="base-chart" :option="mergedOption" />
 </template>
 
 <script lang="ts" setup>

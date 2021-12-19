@@ -1,5 +1,5 @@
 <template>
-  <BaseChart class="gauge" :plugins="GaugeChart" :default-option="defaultOption" />
+  <BaseChart :plugins="GaugeChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>

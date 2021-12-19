@@ -1,5 +1,5 @@
 <template>
-  <BaseChart class="line" :plugins="LineChart" :default-option="defaultOption" />
+  <BaseChart :plugins="LineChart" :default-option="defaultOption" />
 </template>
 
 <script lang="ts" setup>

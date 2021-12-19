@@ -32,7 +32,7 @@ export const dataPanel = {
     key: 'key',
     mapping: 'mapping',
     status: 'status',
-    matchSuccess: 'matchSuccess',
+    matchSuccess: 'Match Success',
     dataFilter: 'Data @:filter',
     addFilter: 'Add @:filter',
     result: 'Result (readonly)',

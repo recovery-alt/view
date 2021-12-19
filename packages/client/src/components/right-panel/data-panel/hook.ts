@@ -1,5 +1,5 @@
 import type { Data } from '@/typings';
-import { onMounted, reactive, Ref, watchEffect } from 'vue';
+import { computed, onMounted, reactive, Ref, watchEffect } from 'vue';
 import type { DataSourceKey } from '@/config';
 import { EditorView } from '@codemirror/basic-setup';
 import { shallowReactive } from 'vue';
@@ -111,7 +111,7 @@ export function useModal(drawer: Drawer) {
 export function useTimeline(drawer: Drawer, modal: Modal) {
   const board = useBoardStore();
   const { t } = useI18n({ useScope: 'local', messages });
-  const timeline = reactive([
+  const timeline = computed(() => [
     {
       actived: true,
       text: t(board.curCom!.data!.type),
@@ -142,8 +142,8 @@ export function useTimeline(drawer: Drawer, modal: Modal) {
     if (!board.curCom) return;
     const { data } = board.curCom;
     if (data) {
-      timeline[0].text = t(data!.type);
-      timeline[1].actived = !!data.filter;
+      timeline.value[0].text = t(data!.type);
+      timeline.value[1].actived = !!data.filter;
     }
   });
 

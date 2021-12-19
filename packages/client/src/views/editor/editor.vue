@@ -158,7 +158,7 @@ const buttonGroup = computed<Array<ButtonItem>>(() => [
 ]);
 
 const interceptor = (e: BeforeUnloadEvent) => {
-  if (page.isModified()) e.returnValue = false;
+  if (page.isModified() && import.meta.env.PROD) e.returnValue = false;
 };
 
 onMounted(async () => {
