@@ -1,0 +1,1 @@
+import{d as o,B as p,eb as s,cY as l,c$ as n}from"./vendor.9e5eac67.js";const c=o({props:{propsData:{type:Object,default:()=>({value:""})}},setup(e){return(r,t)=>p((l(),n("input",{"onUpdate:modelValue":t[0]||(t[0]=a=>e.propsData.value=a)},null,512)),[[s,e.propsData.value]])}});export{c as default};
