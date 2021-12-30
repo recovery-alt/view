@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/cq360767996/view/compare/v0.4.0...v0.4.1) (2021-12-30)
+
+### Features
+
+- 补充 locale 内容 ([0a7be43](https://github.com/cq360767996/view/commit/0a7be43b53c55e356c674ad8da1faad9fd4b4e92))
+- 解耦 gallery ([5bd672a](https://github.com/cq360767996/view/commit/5bd672a1122ead8b5758cb14829981ca55015ec2))
+- 迁移至 pinia ([8114264](https://github.com/cq360767996/view/commit/811426402c7dc10d80cb714ed65ee86d09f7d421))
+- 完善 ii18n ([8210113](https://github.com/cq360767996/view/commit/8210113904405b65b98d6f3af4be88c888944b8b))
+- 完整的 i18n 实践 ([954aada](https://github.com/cq360767996/view/commit/954aada40418ce6186710838e31bf9d037219b4a))
+- 新增组件查询功能 ([5061d6f](https://github.com/cq360767996/view/commit/5061d6fb0f276f2e0bd74195e032d110575b5ef3))
+- 新增 base-chart ([c3f26d5](https://github.com/cq360767996/view/commit/c3f26d520e56c8d1524b88ecfb945bcbe477dbda))
+- 新增 i18n ([d318d27](https://github.com/cq360767996/view/commit/d318d27e6855f63f5a94a89907701fe25a2f0461))
+- **layer-panel:** 调整图层顺序 ([bd1450b](https://github.com/cq360767996/view/commit/bd1450b3cf6f8f80eb7f74fbe9c54f77a3dacd6c))
+- **ruler:** 新增标尺开关和悬停标尺 ([ad723f6](https://github.com/cq360767996/view/commit/ad723f6457b48c89cfec1ae3bb8d177a4af31a7f))
+
+### Bug Fixes
+
+- 修复图层面板选中错误 ([5220989](https://github.com/cq360767996/view/commit/52209895fae0b69d8ca24a14448fe16eaa511b68))
+- 修复 i18n 问题 ([bc08cae](https://github.com/cq360767996/view/commit/bc08caea5e23042cc8286b1ba150f5b5d474e860))
+- 修复 table 组件类型问题 ([3d884f2](https://github.com/cq360767996/view/commit/3d884f2629803f4293fb3323fd9c14d46e011524))
+- 优化删除功能 ([dbac3a2](https://github.com/cq360767996/view/commit/dbac3a290e5de0dd7a38a3bfb6662f0b12d293a7))
+- **color-picker:** 改为 type='color' ([781e21b](https://github.com/cq360767996/view/commit/781e21bcbd7519608eda1cc5103887b424ccafd5))
+- **type:** 修复类型问题 ([969bac1](https://github.com/cq360767996/view/commit/969bac1a1c2fd3e705fa7c4cd8da5a8e01afd3e2))
+
 ## 0.4.0 (2021-11-08)
 
 ### Features
