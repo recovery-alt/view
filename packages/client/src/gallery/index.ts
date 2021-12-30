@@ -34,7 +34,7 @@ export default async (app: App<Element>) => {
     galleryGroup[order] = { groupName, icon, list };
   }
 
-  app.component('cq-group', ComponentGroup);
+  app.component('CqGroup', ComponentGroup);
   for (const key in groups) await resolveGroup(groups[key]);
 
   return { list: galleryList, group: galleryGroup };
