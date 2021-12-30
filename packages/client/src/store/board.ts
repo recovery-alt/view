@@ -126,31 +126,28 @@ export const useBoardStore = defineStore('board', {
     moveUp(moveTop = false) {
       const { data, selected } = this;
       const len = data.length;
-      if (selected.length === 0) return;
+      if (selected.length === 0 || selected[0] === len - 1) return;
       if (selected.length > 1) {
         message.error('多选无法移动');
-      } else if (selected[0] === len - 1) {
-        message.error('已经是最顶层！');
-      } else {
-        const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
-        [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
-        this.selected = selected.map(index => len - index - 1);
+        return;
       }
+
+      const exchangeIndex = moveTop ? len - 1 : selected[0] + 1;
+      [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+      this.selected[0] = exchangeIndex;
     },
     moveDown(moveBottom = false) {
       const { data, selected } = this;
-      const len = data.length;
-      if (selected.length === 0) {
-        return;
-      } else if (selected.length > 1) {
+      if (selected.length === 0 || selected[0] === 0) return;
+
+      if (selected.length > 1) {
         message.error('多选无法移动');
-      } else if (selected[0] === 0) {
-        message.error('已经是最底层！');
-      } else {
-        const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
-        [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
-        this.selected = selected.map(index => len - index - 1);
+        return;
       }
+
+      const exchangeIndex = moveBottom ? 0 : selected[0] - 1;
+      [data[selected[0]], data[exchangeIndex]] = [data[exchangeIndex], data[selected[0]]];
+      this.selected[0] = exchangeIndex;
     },
     // 根据矩形计算选中的组件
     calcSelectedByRect(size: CSSStyleDataWithSize) {
