@@ -58,7 +58,12 @@
           :z-index="index"
           :style="splitStyleAndPatch(item.style)"
         >
-          <BoardBox :ref="setBoardRefs" class="board__component" :data="item" editor-mode />
+          <BoardBox
+            :ref="(el: any) => el && board.pushRef(el.$el)"
+            class="board__component"
+            :data="item"
+            editor-mode
+          />
         </BoardShape>
 
         <div v-show="selectMask.show" class="board__mask" :style="patchUnit(selectMask.style)" />
@@ -97,7 +102,7 @@
         size="small"
         :min="30"
         :max="150"
-        :formatter="sliderFormatter"
+        :formatter="value => `${value}%`"
       />
     </Col>
     <Col span="4" class="edit-slider__col">
@@ -107,7 +112,7 @@
         :min="30"
         :max="150"
         :step="10"
-        :tip-formatter="sliderFormatter"
+        :tip-formatter="value => `${value}%`"
         @change="handleSliderChange"
       />
     </Col>
@@ -156,12 +161,6 @@ const pageStyle = computed(() => {
   return { width, height, backgroundColor, scale };
 });
 
-/* eslint-disable-next-line @typescript-eslint/ban-types */
-const setBoardRefs = (el: object | null) => {
-  // @ts-expect-error cannot infer the $el's type
-  el && board.pushRef(el.$el);
-};
-
 const handleDrop = (e: DragEvent) => {
   e.preventDefault();
   e.stopPropagation();
@@ -173,8 +172,7 @@ const handleDrop = (e: DragEvent) => {
   canvasWrapperRef.value.click();
 };
 
-const { sliderFormatter, handleSliderChange, screenShotSize, rulerKey } =
-  useEditSlider(canvasWrapperRef);
+const { handleSliderChange, screenShotSize, rulerKey } = useEditSlider(canvasWrapperRef);
 
 const {
   viewportSize,

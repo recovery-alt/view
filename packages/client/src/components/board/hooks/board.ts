@@ -283,8 +283,6 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
   const screenShotSize = reactive({ width: 0, height: 0 });
   const rulerKey = ref(0);
 
-  const sliderFormatter = (value?: number) => value + '%';
-
   const resizeScreenShot = () => {
     if (!canvasWrapperRef.value) return;
     const { width: minW, height: minH } = canvasWrapperRef.value.getBoundingClientRect();
@@ -307,7 +305,7 @@ export const useEditSlider = (canvasWrapperRef: Ref<HTMLElement | undefined>) =>
     });
   });
 
-  return { sliderFormatter, handleSliderChange, screenShotSize, rulerKey };
+  return { handleSliderChange, screenShotSize, rulerKey };
 };
 
 export const useRuler = () => {
