@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { mongoUri } from '@/config';
-import chalk from 'chalk';
+import pc from 'picocolors';
 
 export * from './user';
 export * from './page';
@@ -8,7 +8,7 @@ export * from './page';
 export const initMongoose = () => {
   mongoose.connect(mongoUri);
   mongoose.connection.on('connected', () => {
-    console.log(chalk.green('Mongoose connection success'));
+    console.log(pc.green('Mongoose connection success'));
   });
   mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 

@@ -11,8 +11,8 @@ export const login = {
       password: '请输入@:user.password',
     },
     notify: {
-      success: '登录成功！',
-      fail: '登录失败！',
+      success: '登录成功!',
+      fail: '登录失败!',
     },
   },
   en: {

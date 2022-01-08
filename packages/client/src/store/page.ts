@@ -42,7 +42,7 @@ export const usePageStore = defineStore('page', {
       const board = useBoardStore();
       const router = useRouter();
       if (board.data.length === 0) {
-        message.error('尚未添加任何组件！');
+        message.error('尚未添加任何组件!');
         return;
       }
       // TODO: 校验表单
@@ -52,13 +52,13 @@ export const usePageStore = defineStore('page', {
       if (_id) {
         const res = await updatePage(toRaw(page));
         if (res.code === 0) {
-          message.success('保存成功！');
+          message.success('保存成功!');
           this.updateCache();
         }
       } else {
         const res = await addPage<Page>({ ...resConfig });
         if (res.code === 0) {
-          message.success('创建成功！');
+          message.success('创建成功!');
           this.config._id = res.data._id;
           this.updateCache();
           router.push(`/editor/${res.data._id}`);

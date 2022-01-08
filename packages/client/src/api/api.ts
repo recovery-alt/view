@@ -33,7 +33,7 @@ const statusStrategy = (status: number) => {
     0: `连接出错(${status})!`,
   };
   const message = statusEnum[status] || statusEnum[0];
-  return `${message}，请检查网络或联系管理员！`;
+  return `${message}，请检查网络或联系管理员!`;
 };
 
 const service = axios.create({

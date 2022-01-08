@@ -44,7 +44,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       if (this.data.length > config.maxSnapshot) {
         this.data.shift();
       }
-      message.success('保存成功！');
+      message.success('保存成功!');
     },
     recordSnapshot() {
       const page = usePageStore();

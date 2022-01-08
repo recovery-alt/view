@@ -2,7 +2,7 @@ process.env.TS_NODE_DEV || require('module-alias/register');
 import Koa from 'koa';
 import { port } from '@/config';
 import { useRouter, wrapResponse, verifyToken } from '@/middleware';
-import chalk from 'chalk';
+import pc from 'picocolors';
 import { initMongoose } from '@/mongoose';
 import logger from 'koa-logger';
 import cors from '@koa/cors';
@@ -34,15 +34,15 @@ app.use(parser());
 initMongoose();
 
 app.on('error', err => {
-  console.error(chalk.red('server error: '), err);
+  console.error(pc.red('server error: '), err);
 });
 
 app.listen(port, () => {
-  const addr = chalk.cyan(`http://localhost:${port}/`);
+  const addr = pc.cyan(`http://localhost:${port}/`);
   console.log(`> local:    ${addr}`);
   const ip = getIPAdress();
   if (ip) {
-    const addr = chalk.cyan(`http://${ip}:${port}/`);
+    const addr = pc.cyan(`http://${ip}:${port}/`);
     console.log(`> Network:  ${addr}`);
   }
 });
