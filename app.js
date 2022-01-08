@@ -5,7 +5,7 @@ process.env.TS_NODE_DEV || require('module-alias/register');
 const koa_1 = (0, tslib_1.__importDefault)(require("koa"));
 const config_1 = require("@/config");
 const middleware_1 = require("@/middleware");
-const chalk_1 = (0, tslib_1.__importDefault)(require("chalk"));
+const picocolors_1 = (0, tslib_1.__importDefault)(require("picocolors"));
 const mongoose_1 = require("@/mongoose");
 const koa_logger_1 = (0, tslib_1.__importDefault)(require("koa-logger"));
 const cors_1 = (0, tslib_1.__importDefault)(require("@koa/cors"));
@@ -34,14 +34,14 @@ app.use((0, koa_bodyparser_1.default)());
 // 初始化连接mongoose
 (0, mongoose_1.initMongoose)();
 app.on('error', err => {
-    console.error(chalk_1.default.red('server error: '), err);
+    console.error(picocolors_1.default.red('server error: '), err);
 });
 app.listen(config_1.port, () => {
-    const addr = chalk_1.default.cyan(`http://localhost:${config_1.port}/`);
+    const addr = picocolors_1.default.cyan(`http://localhost:${config_1.port}/`);
     console.log(`> local:    ${addr}`);
     const ip = (0, utils_1.getIPAdress)();
     if (ip) {
-        const addr = chalk_1.default.cyan(`http://${ip}:${config_1.port}/`);
+        const addr = picocolors_1.default.cyan(`http://${ip}:${config_1.port}/`);
         console.log(`> Network:  ${addr}`);
     }
 });
