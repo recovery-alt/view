@@ -7,4 +7,4 @@ ls:
     .less: kebab-case
 
   scripts:
-    .js: kebab-case
+    .mjs: kebab-case

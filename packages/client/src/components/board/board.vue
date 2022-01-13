@@ -300,13 +300,80 @@ onMounted(() => {
   }
 }
 
+.thumbnail {
+  position: absolute;
+  right: 5px;
+  bottom: 70px;
+  transition: 0.3s transform @ease-in-out;
+
+  &__canvas {
+    width: 190px;
+    height: 110px;
+    background-color: rgb(0 0 0 / 30%);
+  }
+
+  span {
+    position: absolute;
+    outline: 1px solid @white;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    cursor: move;
+    width: 64px;
+    height: 48px;
+  }
+}
+
+.fixed-wrapper {
+  position: fixed;
+  z-index: 1;
+}
+
+.markline {
+  position: absolute;
+  width: 0;
+  border-left: 1px solid @primary-color;
+
+  span {
+    position: absolute;
+    left: 5px;
+    background-color: @primary-color;
+    color: @white;
+    padding: 0 3px;
+  }
+
+  &.--x {
+    top: 20px;
+    height: 100vw;
+    transform: translateY(-100%);
+
+    span {
+      bottom: 15px;
+    }
+  }
+
+  &.--y {
+    top: 0;
+    height: 100vh;
+
+    span {
+      top: 15px;
+    }
+  }
+
+  &.--dashed {
+    border-left-style: dashed;
+    pointer-events: none;
+  }
+}
+
 .edit-slider {
+  width: 100%;
+  height: 30px;
   position: absolute;
   right: 0;
   bottom: 40px;
   background-color: @modal-footer-border-color-split;
-  height: 30px;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -337,71 +404,6 @@ onMounted(() => {
     span:last-child {
       margin-left: 20px;
     }
-  }
-}
-
-.fixed-wrapper {
-  position: fixed;
-  z-index: 1;
-}
-
-.thumbnail {
-  position: absolute;
-  right: 5px;
-  bottom: 70px;
-  transition: 0.3s transform @ease-in-out;
-
-  &__canvas {
-    width: 190px;
-    height: 110px;
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-
-  span {
-    position: absolute;
-    outline: 1px solid @white;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    cursor: move;
-    width: 64px;
-    height: 48px;
-  }
-}
-
-.markline {
-  position: absolute;
-  width: 0;
-  border-left: 1px solid @primary-color;
-
-  &.--x {
-    top: 20px;
-    height: 100vw;
-    transform: translateY(-100%);
-    span {
-      bottom: 15px;
-    }
-  }
-
-  &.--y {
-    top: 0;
-    height: 100vh;
-    span {
-      top: 15px;
-    }
-  }
-
-  &.--dashed {
-    border-left-style: dashed;
-    pointer-events: none;
-  }
-
-  span {
-    position: absolute;
-    left: 5px;
-    background-color: @primary-color;
-    color: @white;
-    padding: 0 3px;
   }
 }
 </style>

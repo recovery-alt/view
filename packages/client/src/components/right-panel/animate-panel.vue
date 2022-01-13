@@ -145,10 +145,12 @@ function playAll() {
       margin-right: 10px;
     }
   }
+
   &-box {
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
+
     &__item {
       width: 120px;
       margin-left: 20px;
@@ -157,6 +159,7 @@ function playAll() {
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
       div {
         display: block;
         content: '';
@@ -175,6 +178,7 @@ function playAll() {
     display: flex;
     align-items: center;
     justify-content: center;
+
     li {
       margin-top: 10px;
     }

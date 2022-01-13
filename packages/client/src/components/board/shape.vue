@@ -254,6 +254,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
       border-top: 1px solid @primary-color;
       height: 0;
     }
+
     &.--y {
       left: -1px;
       border-left: 1px solid @primary-color;

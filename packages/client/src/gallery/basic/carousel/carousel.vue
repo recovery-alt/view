@@ -19,6 +19,7 @@ import { Carousel } from 'ant-design-vue';
     .ant-carousel {
       height: 100%;
     }
+
     .slick-slide {
       text-align: center;
       height: 100%;
@@ -30,6 +31,7 @@ import { Carousel } from 'ant-design-vue';
     .slick-slider {
       height: 100%;
     }
+
     .slick-slide h3 {
       color: #fff;
     }

@@ -163,6 +163,7 @@ const logout = () => {
 
 .theme-change {
   margin-left: 10px;
+
   &:hover {
     color: @primary-color;
   }

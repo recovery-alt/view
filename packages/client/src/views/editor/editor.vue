@@ -240,7 +240,7 @@ onBeforeRouteLeave((to, from) => {
     transform: translate(-50%, -50%);
     font-size: 16px;
 
-    span:before {
+    span::before {
       margin-left: 5px;
       content: '-';
     }

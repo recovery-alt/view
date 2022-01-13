@@ -5,31 +5,40 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
+    "stylelint": "stylelint --fix packages/**/*.{less,vue}",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx,.vue packages",
     "release:patch": "standard-version -r patch",
     "release:minor": "standard-version -r minor",
     "release:major": "standard-version -r major",
-    "postinstall": "husky install"
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.0.1",
+    "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
     "@ls-lint/ls-lint": "^1.10.0",
-    "@typescript-eslint/eslint-plugin": "^5.9.0",
-    "@typescript-eslint/parser": "^5.9.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
     "concurrently": "^7.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.2.0",
+    "eslint-plugin-vue": "^8.3.0",
     "execa": "^6.0.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.7",
     "picocolors": "^1.0.0",
+    "postcss-html": "^1.3.0",
+    "postcss-less": "^6.0.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.3.2"
+    "standard-version": "^9.3.2",
+    "stylelint": "^14.2.0",
+    "stylelint-config-html": "^1.0.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^24.0.0",
+    "stylelint-order": "^5.0.0",
+    "stylelint-prettier": "^2.0.0"
   }
 }

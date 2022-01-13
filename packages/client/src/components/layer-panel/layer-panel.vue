@@ -173,6 +173,52 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
     border: 0;
   }
 
+  &__toolbar {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 27px;
+    border-bottom: 1px solid @border-color-base;
+    background-color: @component-background;
+
+    span {
+      padding: 3px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @primary-color;
+        color: @white;
+      }
+    }
+  }
+
+  &__footer {
+    height: 30px;
+    border-top: 1px solid @border-color-base;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 50px;
+
+    span {
+      padding: 3px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @primary-color;
+        color: @white;
+      }
+    }
+
+    .--icon {
+      background-color: @primary-color;
+      color: @text-color-inverse;
+    }
+  }
+
   &__header {
     height: 30px;
     background-color: @layout-body-background;
@@ -203,27 +249,6 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
 
   &__wrapper {
     height: calc(100% - 60px);
-  }
-
-  &__toolbar {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 27px;
-    border-bottom: 1px solid @border-color-base;
-    background-color: @component-background;
-
-    span {
-      padding: 3px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: @primary-color;
-        color: @white;
-      }
-    }
   }
 
   &__box {
@@ -296,31 +321,6 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
       position: absolute;
       right: 5px;
       top: 5px;
-    }
-  }
-
-  &__footer {
-    height: 30px;
-    border-top: 1px solid @border-color-base;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 50px;
-
-    span {
-      padding: 3px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: @primary-color;
-        color: @white;
-      }
-    }
-
-    .--icon {
-      background-color: @primary-color;
-      color: @text-color-inverse;
     }
   }
 }
