@@ -25,6 +25,7 @@
     "module-alias": "^2.2.2",
     "mongoose": "^6.1.6",
     "node-forge": "^1.2.1",
+    "picocolors": "^1.0.0",
     "pm2": "^5.1.2",
     "tslib": "^2.3.1",
     "uuid": "^8.3.2"
@@ -38,7 +39,6 @@
     "@types/koa__cors": "^3.1.1",
     "@types/koa__router": "^8.0.11",
     "@types/node-forge": "^1.0.0",
-    "picocolors": "^1.0.0",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^3.12.0",
