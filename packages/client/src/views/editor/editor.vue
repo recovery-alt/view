@@ -1,8 +1,14 @@
 <template>
   <header class="header">
-    <img width="40" height="40" src="/src/assets/img/logo.svg" @click="$router.push('/')" />
-    <div class="header__wrapper">
-      <div class="header__panel-box">
+    <img
+      class="cursor-pointer"
+      width="40"
+      height="40"
+      src="/src/assets/img/logo.svg"
+      @click="$router.push('/')"
+    />
+    <div class="flex-1 flex items-center justify-between">
+      <div class="ml-40px">
         <Button
           v-for="item in panelStatus"
           :key="item.key"
@@ -30,18 +36,18 @@
       </div>
     </div>
 
-    <div class="header__title">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-16px">
       <FundProjectionScreenOutlined />
-      <span>{{ page.config.title }}</span>
+      <span class="before:ml-5px before:content--">{{ page.config.title }}</span>
     </div>
   </header>
-  <main class="main-container">
+  <main class="h-[calc(100%-41px)] flex">
     <LayerPanel />
     <ComponentPanel />
     <section class="mid-panel">
       <header class="mid-panel__toolbar"></header>
-      <div class="mid-panel__wrapper">
-        <section class="canvas-main">
+      <div class="relative h-full overflow-hidden">
+        <section class="relative h-full">
           <Board />
         </section>
       </div>
@@ -202,84 +208,23 @@ onBeforeRouteLeave((to, from) => {
 
 <style lang="less">
 .header {
-  height: 41px;
   border-bottom: 1px solid @border-color-base;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 0 20px;
-  position: relative;
-  z-index: 100;
   background-color: @component-background;
-
-  img {
-    cursor: pointer;
-  }
-
-  &__wrapper {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__panel-box {
-    margin-left: 40px;
-  }
+  @apply h-41px flex-shrink-0 flex items-center box-border px-20px relative z-100;
 
   &__button {
-    margin-left: 5px;
-    width: 40px;
+    @apply ml-5px w-40px;
   }
-
-  &__title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-
-    span::before {
-      margin-left: 5px;
-      content: '-';
-    }
-  }
-}
-
-.main-container {
-  height: calc(100% - 41px);
-  display: flex;
 }
 
 .mid-panel {
-  flex: 1;
-  height: 100%;
   background-color: @layout-body-background;
-  box-sizing: border-box;
-  overflow: hidden;
+  @apply flex-1 h-full box-border overflow-hidden;
 
   &__toolbar {
-    position: relative;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding-left: 30px;
     border-bottom: 1px solid @border-color-base;
-    z-index: 10;
     background-color: @component-background;
+    @apply relative h-40px flex items-center box-border pl-30px z-10;
   }
-
-  &__wrapper {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
-}
-
-.canvas-main {
-  position: relative;
-  height: 100%;
 }
 </style>

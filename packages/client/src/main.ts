@@ -1,3 +1,4 @@
+import 'virtual:windi.css';
 import { createApp, App } from 'vue';
 import Entry from './app.vue';
 import router from '@/router';

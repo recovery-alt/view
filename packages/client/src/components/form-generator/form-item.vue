@@ -16,8 +16,8 @@
       </Col>
     </Row>
     <template v-if="field.extra" #extra>
-      <div class="form-item__extra">
-        <span v-for="extra in field.extra" :key="extra">{{ extra }}</span>
+      <div class="w-full flex">
+        <span v-for="extra in field.extra" :key="extra" class="flex-1 text-12px">{{ extra }}</span>
       </div>
     </template>
   </FormItem>
@@ -51,17 +51,3 @@ const multiOffset = (item: FieldItem, i: number) => {
   return i > 0 ? 2 : 0;
 };
 </script>
-
-<style lang="less">
-.form-item {
-  &__extra {
-    width: 100%;
-    display: flex;
-
-    span {
-      font-size: 12px;
-      flex: 1;
-    }
-  }
-}
-</style>

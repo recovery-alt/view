@@ -14,7 +14,7 @@
         @click="handleClick($event, item.disable, item.event)"
       >
         <component :is="item.icon" />
-        <span>{{ item.name }}</span>
+        <span class="ml-5px">{{ item.name }}</span>
       </li>
     </ul>
   </div>
@@ -146,22 +146,17 @@ onMounted(() => {
 
 <style lang="less">
 .board-menu {
-  position: absolute;
-  z-index: 2;
   color: @text-color;
+  @apply absolute z-2;
 
   ul {
     background-color: @layout-body-background;
-    border-radius: 5px;
     box-shadow: @box-shadow-base;
-    padding: 5px 0;
+    @apply rounded-5px py-5px;
   }
 
   li {
-    padding: 0 10px;
-    margin-top: 5px;
-    cursor: default;
-    padding-right: 3em;
+    @apply px-10px mt-5px cursor-default pr-3em;
 
     &:hover {
       background-color: @primary-color;
@@ -174,18 +169,13 @@ onMounted(() => {
     }
 
     &.--disable {
-      cursor: not-allowed;
-      opacity: 0.3;
+      @apply cursor-not-allowed opacity-30;
 
       &:hover {
         color: @text-color;
         background-color: @item-hover-bg;
       }
     }
-  }
-
-  span {
-    margin-left: 5px;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div ref="layerRef" class="layer-panel" :class="{ '--hide': !panel.layer }">
+  <div ref="layerRef" :class="['layer-panel', panel.layer ? 'w-200px' : 'w-0 border-0']">
     <header class="layer-panel__header">
       <div>{{ t('layer') }}</div>
-      <section>
+      <section class="flex">
         <component
           :is="item.icon"
           v-for="item in modeList"
@@ -13,7 +13,7 @@
         <LeftOutlined @click="panel.switchPanelShow('layer')" />
       </section>
     </header>
-    <section class="layer-panel__wrapper">
+    <section class="h-[calc(100%-60px)]">
       <header class="layer-panel__toolbar">
         <Tooltip
           v-for="item in moveActions"
@@ -23,12 +23,15 @@
         >
           <component
             :is="item.icon"
-            :class="{ '--disable': reverseBoard.selected.length === 0 }"
+            :class="{ 'opacity-30': reverseBoard.selected.length === 0 }"
             @click="item.event"
           />
         </Tooltip>
       </header>
-      <ul v-if="reverseBoard.data.length" class="layer-panel__box">
+      <ul
+        v-if="reverseBoard.data.length"
+        class="layer-panel__box h-[calc(100%-30px)] overflow-x-hidden overflow-y-auto"
+      >
         <li v-for="(item, index) in reverseBoard.data" :key="item.id">
           <div
             :class="[
@@ -70,7 +73,7 @@
           </transition>
         </li>
       </ul>
-      <Empty v-else :description="t('tip')" />
+      <Empty v-else class="mt-20px" :description="t('tip')" />
       <BoardMenu v-if="menu.layer.show" :menu-type="MenuEnum.LAYER" :container="layerRef" />
     </section>
     <footer class="layer-panel__footer">
@@ -83,7 +86,7 @@
         <component
           :is="item.icon"
           :key="item.icon.name"
-          :class="{ '--disable': operationActions[i]?.disable }"
+          :class="{ 'opacity-30': operationActions[i]?.disable }"
           @click="operationActions[i]?.disable || item.event()"
         />
       </Tooltip>
@@ -150,42 +153,18 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
 
 <style lang="less">
 .layer-panel {
-  position: relative;
-  width: 200px;
-  height: 100%;
   border-right: 1px solid @border-color-base;
   transition: width 0.3s @ease-in-out;
-  z-index: 4;
-  overflow: hidden;
-  white-space: nowrap;
   background-color: @component-background;
-
-  .ant-empty {
-    margin-top: 20px;
-  }
-
-  .--disable {
-    opacity: 0.3;
-  }
-
-  &.--hide {
-    width: 0;
-    border: 0;
-  }
+  @apply relative h-full z-4 overflow-hidden whitespace-normal;
 
   &__toolbar {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 27px;
     border-bottom: 1px solid @border-color-base;
     background-color: @component-background;
+    @apply h-30px flex items-center justify-between box-border px-27px;
 
     span {
-      padding: 3px;
-      cursor: pointer;
+      @apply p-3px cursor-pointer;
 
       &:hover {
         background-color: @primary-color;
@@ -195,17 +174,11 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
   }
 
   &__footer {
-    height: 30px;
     border-top: 1px solid @border-color-base;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 50px;
+    @apply h-30px flex items-center justify-between box-border px-50px;
 
     span {
-      padding: 3px;
-      cursor: pointer;
+      @apply p-3px cursor-pointer;
 
       &:hover {
         background-color: @primary-color;
@@ -220,22 +193,11 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
   }
 
   &__header {
-    height: 30px;
     background-color: @layout-body-background;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 10px;
-
-    section {
-      display: flex;
-    }
+    @apply h-30px flex items-center justify-between box-border px-10px;
 
     span {
-      margin-left: 5px;
-      cursor: pointer;
-      font-size: 16px;
+      @apply text-16px ml-5px cursor-pointer;
 
       &:hover {
         color: @primary-color;
@@ -247,32 +209,17 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
     }
   }
 
-  &__wrapper {
-    height: calc(100% - 60px);
-  }
-
   &__box {
-    height: calc(100% - 30px);
-    overflow-x: hidden;
-    overflow-y: auto;
-
     li {
-      overflow: hidden;
+      @apply overflow-hidden;
     }
 
     &-submenu li {
-      pointer-events: none;
-      padding-left: 16px;
+      @apply pointer-events-none pl-16px;
     }
 
     &-item {
-      position: relative;
-      width: 100%;
-      padding-left: 8px;
-      padding-right: 6px;
-      display: flex;
-      align-items: center;
-      z-index: 1;
+      @apply relative w-full pl-8px pr-6px flex items-center z-1;
 
       &:hover {
         background-color: @item-hover-bg;
@@ -285,31 +232,24 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
     }
 
     .--item {
-      line-height: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
+      @apply h-32px leading-32px flex items-center;
 
       b {
-        margin-left: 5px;
-        font-weight: normal;
+        @apply ml-5px font-normal;
       }
     }
 
     .--thumbail {
-      height: 48px;
-      line-height: 48px;
+      @apply h-48px leading-48px;
 
       img {
-        width: 51px;
-        height: 34px;
         border: 1px solid @border-color-base;
         background-color: @body-background;
+        @apply w-51px h-34px;
       }
 
       b {
-        margin-left: 5px;
-        font-weight: normal;
+        @apply ml-5px font-normal;
       }
     }
 
@@ -318,9 +258,7 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
     }
 
     .--icon {
-      position: absolute;
-      right: 5px;
-      top: 5px;
+      @apply absolute right-5px top-5px;
     }
   }
 }

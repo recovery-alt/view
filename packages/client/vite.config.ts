@@ -7,6 +7,7 @@ import styleImport from 'vite-plugin-style-import';
 import visualizer from 'rollup-plugin-visualizer';
 import { configThemePlugin } from './build/theme';
 import { generateModifyVars } from './build';
+import windiCSS from 'vite-plugin-windicss';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -16,6 +17,7 @@ const plugins = [
   vue(),
   jsx(),
   eslintPlugin(),
+  windiCSS(),
   ...themePlugins,
   styleImport({
     libs: [

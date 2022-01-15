@@ -1,29 +1,29 @@
 html,
 body {
-  height: 100%;
-  overflow: hidden;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     '微软雅黑', Arial, sans-serif;
   color: @text-color;
+  @apply h-full overflow-hidden;
 }
 
 #app {
-  height: 100%;
-  user-select: none;
+  @apply h-full select-none;
 }
 
 ul,
 li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  @apply list-none m-0 p-0;
 }
 
 // collapse
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-  padding: 4px 18px;
+  @apply px-18px py-4px;
 }
 
 .ant-input.ant-input-sm[type='color'] {
-  height: auto;
+  @apply h-auto;
+}
+
+.ant-drawer-body .ant-divider-inner-text span:hover {
+  color: @primary-color;
 }

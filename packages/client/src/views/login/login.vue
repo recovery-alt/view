@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-box">
-      <span>{{ t('user.login') }}</span>
+      <span class="ml-20px">{{ t('user.login') }}</span>
       <Form
         hide-required-mark
         label-align="left"
@@ -66,25 +66,12 @@ const submitLogin = async () => {
 
 <style lang="less" scoped>
 .login {
-  height: 100%;
   background-color: @layout-body-background;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply h-full flex items-center justify-center;
 
   &-box {
-    box-sizing: border-box;
-    padding: 20px;
     background-color: @component-background;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-
-    span {
-      margin-bottom: 20px;
-    }
+    @apply box-border p-20px flex flex-col items-center justify-center rounded-3px;
   }
 }
 </style>

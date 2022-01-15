@@ -61,62 +61,45 @@ watchEffect(() => {
 
 <style lang="less">
 .right-panel {
-  position: relative;
   border-left: 1px solid @border-color-base;
-  box-sizing: border-box;
   box-shadow: @box-shadow-base;
   transition: width 0.3s @ease-in-out;
-  overflow: auto;
-  z-index: 90;
   background-color: @component-background;
   color: @text-color;
+  @apply relative box-border overflow-auto z-90;
 
   &__title {
-    font-size: 14px;
-    padding-bottom: 3px;
-    padding-left: 10px;
-    padding-right: 5px;
-    margin-bottom: 0;
     color: @text-color;
+    @apply text-14px pb-3px pl-10px pr-5px mb-0;
   }
 
   &__subtitle {
-    font-size: 12px;
     color: @text-color-secondary;
-    font-weight: normal;
-    padding-left: 10px;
-    padding-right: 5px;
-    margin-bottom: 5px;
+    @apply text-12px font-normal pl-10px pr-5px mb-5px;
   }
 
   .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    padding-left: 18px;
+    @apply pl-18px;
   }
 
   .ant-collapse-content > .ant-collapse-content-box {
-    padding: 0;
+    @apply p-0;
   }
 
   .ant-input-number {
-    width: 100%;
+    @apply w-full;
   }
 
   .ant-form-item {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 
   .ant-tabs-nav-list {
-    width: 100%;
-    display: flex;
+    @apply w-full flex;
 
     .ant-tabs-tab {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 0;
       border-top: 2px solid @layout-body-background;
-      border-radius: 0;
+      @apply flex-1 flex items-center justify-center mr-0 rounded-none;
 
       &.ant-tabs-tab-active {
         border-top: 2px solid @primary-color;

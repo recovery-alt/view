@@ -1,6 +1,6 @@
 <template>
-  <div class="animation-btn_group">
-    <Button type="primary" @click="drawer.show = true">
+  <div class="mb-10px flex items-center justify-center">
+    <Button class="mr-10px" type="primary" @click="drawer.show = true">
       <template #icon><PlusOutlined /></template>
       {{ t('add') }}
     </Button>
@@ -9,18 +9,13 @@
       {{ t('preview') }}
     </Button>
   </div>
-  <Collapse
-    v-if="board.curCom?.animations?.length"
-    v-model="active"
-    class="animation-wrapper"
-    accordion
-  >
+  <Collapse v-if="board.curCom?.animations?.length" v-model="active" class="animation" accordion>
     <CollapsePanel v-for="(animation, i) in board.curCom?.animations" :key="animation.id">
       <template #header>
-        <div class="animation-title">
-          <span class="animation-title__left">{{ animation.label }}</span>
-          <div class="animation-title__right">
-            <Button size="small" type="primary" @click.stop="play(i)">
+        <div class="w-full flex justify-between">
+          <span>{{ animation.label }}</span>
+          <div>
+            <Button class="mr-10px" size="small" type="primary" @click.stop="play(i)">
               <template #icon><PlayCircleOutlined /></template>
             </Button>
             <Button size="small" type="primary" @click.stop="del(i)">
@@ -48,16 +43,16 @@
     <Tabs v-model="drawer.selected" size="small">
       <TabPane v-for="item in drawer.data" :key="item.title" :label="item.title">
         <template #tab>{{ item.title }}</template>
-        <ul class="animation-box">
+        <ul class="flex flex-wrap overflow-auto">
           <li
             v-for="animation in item.data"
             :key="animation"
-            class="animation-box__item"
+            class="w-120px ml-20px mt-20px flex items-center justify-center flex-col"
             @mouseover="handleMouseover(animation)"
             @mouseleave="handleMouseleave"
             @click="addAnimation({ name: animation, label: t(`animations.${animation}`) })"
           >
-            <div :class="getAnimationClass(animation)" />
+            <div class="animation-box" :class="getAnimationClass(animation)" />
             {{ t(`animations.${animation}`) }}
           </li>
         </ul>
@@ -130,69 +125,14 @@ function playAll() {
 
 <style lang="less">
 .animation {
-  &-wrapper.ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &-title {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    &__right button:first-child {
-      margin-right: 10px;
-    }
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    @apply flex justify-between items-center;
   }
 
   &-box {
-    display: flex;
-    flex-wrap: wrap;
-    overflow: auto;
+    @apply block w-0 h-0 border-20px border-transparent mb-10px;
 
-    &__item {
-      width: 120px;
-      margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      div {
-        display: block;
-        content: '';
-        width: 0;
-        height: 0;
-        border-left: 20px solid transparent;
-        border-right: 20px solid transparent;
-        border-bottom: 40px solid @primary-color;
-        margin-bottom: 10px;
-      }
-    }
-  }
-
-  &-list {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    li {
-      margin-top: 10px;
-    }
-  }
-
-  &-btn_group {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    button:first-child {
-      margin-right: 10px;
-    }
+    border-bottom: 40px solid @primary-color;
   }
 }
 </style>

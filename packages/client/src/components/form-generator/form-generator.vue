@@ -14,7 +14,7 @@
   <template v-else-if="field.type === FormEnum.BTN_GROUP">
     <Tooltip v-for="item in field.data" :key="item.icon" :title="item.tip" placement="bottom">
       <Button
-        class="form-generator__btn"
+        class="ml-10px first:ml-0"
         size="small"
         :type="model[field.model] === item.value ? 'primary' : 'default'"
         @click="model[field.model] = item.value"
@@ -91,15 +91,3 @@ defineProps({
 
 const { t } = useI18n({ useScope: 'local', messages });
 </script>
-
-<style lang="less">
-.form-generator {
-  &__btn {
-    margin-left: 10px;
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
-}
-</style>

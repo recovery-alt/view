@@ -1,7 +1,7 @@
 <template>
   <div ref="canvasWrapperRef" tabindex="-1" class="canvas-wrapper" @scroll="handleScroll">
     <div ref="screenShotRef" class="screen-shot" :style="patchUnit(screenShotSize)">
-      <div class="fixed-wrapper">
+      <div class="fixed z-1">
         <div
           v-for="item in rulerData"
           :key="item.direction"
@@ -283,16 +283,8 @@ onMounted(() => {
   &__controller {
     border-right: 1px solid @border-color-base;
     border-bottom: 1px solid @border-color-base;
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-    cursor: pointer;
-    position: fixed;
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    display: flex;
     background-color: @component-background;
+    @apply w-20px h-20px text-14px cursor-pointer fixed z-999 items-center justify-center flex;
 
     &:hover {
       color: @primary-color;
@@ -301,95 +293,64 @@ onMounted(() => {
 }
 
 .thumbnail {
-  position: absolute;
-  right: 5px;
-  bottom: 70px;
   transition: 0.3s transform @ease-in-out;
+  @apply absolute right-5px bottom-70px;
 
   &__canvas {
-    width: 190px;
-    height: 110px;
-    background-color: rgb(0 0 0 / 30%);
+    @apply w-190px h-110px bg-black bg-opacity-30;
   }
 
   span {
-    position: absolute;
     outline: 1px solid @white;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    cursor: move;
-    width: 64px;
-    height: 48px;
+    @apply absolute z-2 top-0 left-0 cursor-move w-64px h-48px;
   }
-}
-
-.fixed-wrapper {
-  position: fixed;
-  z-index: 1;
 }
 
 .markline {
-  position: absolute;
-  width: 0;
   border-left: 1px solid @primary-color;
+  @apply absolute w-0;
 
   span {
-    position: absolute;
-    left: 5px;
     background-color: @primary-color;
     color: @white;
-    padding: 0 3px;
+    @apply absolute left-5px px-3px;
   }
 
   &.--x {
-    top: 20px;
-    height: 100vw;
-    transform: translateY(-100%);
+    @apply top-20px h-screen transform -translate-y-full;
 
     span {
-      bottom: 15px;
+      @apply bottom-15px;
     }
   }
 
   &.--y {
-    top: 0;
-    height: 100vh;
+    @apply top-0 h-screen;
 
     span {
-      top: 15px;
+      @apply top-15px;
     }
   }
 
   &.--dashed {
-    border-left-style: dashed;
-    pointer-events: none;
+    @apply border-dashed pointer-events-none;
   }
 }
 
 .edit-slider {
-  width: 100%;
-  height: 30px;
-  position: absolute;
-  right: 0;
-  bottom: 40px;
   background-color: @modal-footer-border-color-split;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  z-index: 99;
+  @apply w-full h-30px absolute right-0 bottom-40px flex items-center justify-end z-99;
 
   .ant-input-number {
-    width: auto;
+    @apply w-auto;
   }
 
   &__col {
-    margin-left: 10px;
-    font-size: 16px;
+    @apply ml-10px text-16px;
   }
 
   &__icon {
-    cursor: pointer;
+    @apply cursor-pointer;
 
     &:hover {
       color: @text-color;
@@ -397,12 +358,10 @@ onMounted(() => {
   }
 
   &__text {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @apply flex items-center justify-between;
 
     span:last-child {
-      margin-left: 20px;
+      @apply ml-20px;
     }
   }
 }

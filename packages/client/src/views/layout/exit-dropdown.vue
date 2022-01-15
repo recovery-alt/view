@@ -9,7 +9,7 @@
             <UserOutlined />
           </template>
         </Avatar>
-        <span class="header-right_span">{{ userInfo.name }}</span>
+        <span class="ml-5px">{{ userInfo.name }}</span>
       </div>
       <template #overlay>
         <Menu>
@@ -139,11 +139,8 @@ const logout = () => {
 
 <style lang="less">
 .exit-dropdown {
-  padding: 0 8px;
-  font-size: 16px;
   color: @text-color;
-  cursor: pointer;
-  margin-left: 20px;
+  @apply px-8px text-16px cursor-pointer ml-20px;
 
   &:hover {
     background-color: @item-hover-bg;
@@ -151,18 +148,12 @@ const logout = () => {
 }
 
 .header-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: @text-color;
-
-  &_span {
-    margin-left: 5px;
-  }
+  @apply flex justify-center items-center;
 }
 
 .theme-change {
-  margin-left: 10px;
+  @apply ml-10px;
 
   &:hover {
     color: @primary-color;

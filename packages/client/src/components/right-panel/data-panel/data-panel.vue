@@ -1,13 +1,13 @@
 <template>
   <div class="data-panel">
-    <div class="timeline-wrapper">
+    <div class="box-border pt-10px px-10px">
       <Timeline>
         <TimelineItem
           v-for="item in timeline"
           :key="item.text"
           :color="item.actived ? 'blue' : 'gray'"
         >
-          <div class="timeline-wrapper__item">
+          <div class="flex items-center justify-between">
             <span>{{ item.text }}</span>
             <Button v-if="item.btnText" type="primary" size="small" @click="item.event">
               {{ item.btnText }}
@@ -17,7 +17,7 @@
         </TimelineItem>
       </Timeline>
     </div>
-    <CodeMirror v-model:viewer="viewer" :doc="dataStringify" class="code-box" readonly />
+    <CodeMirror v-model:viewer="viewer" :doc="dataStringify" class="mx-10px" readonly />
     <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <Drawer
       v-if="board.curCom?.data"
@@ -127,42 +127,5 @@ const { table } = useTable();
 <style lang="less">
 .data-panel {
   background-color: @component-background;
-
-  &__drawer {
-    &-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    &-input {
-      flex: 1;
-    }
-  }
-
-  &__label {
-    margin-right: 5px;
-  }
-
-  .timeline-wrapper {
-    box-sizing: border-box;
-    padding: 0 10px;
-    padding-top: 10px;
-
-    &__item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  .code-box {
-    margin: 0 10px;
-  }
-}
-
-.ant-drawer-body .ant-divider-inner-text span:hover {
-  color: @primary-color;
 }
 </style>

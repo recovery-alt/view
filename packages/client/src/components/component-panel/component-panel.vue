@@ -1,10 +1,10 @@
 <template>
-  <section :class="['component-panel', { 'component-panel--hide': !panel.component }]">
+  <section :class="['component-panel', panel.component ? 'w-233px' : 'w-0 border-0']">
     <header class="component-panel__header">
       <div>{{ t('componentList') }}</div>
-      <LeftOutlined @click="panel.switchPanelShow('component')" />
+      <LeftOutlined class="cursor-pointer" @click="panel.switchPanelShow('component')" />
     </header>
-    <div class="component-panel__select-box">
+    <div class="p-5px">
       <InputSearch
         v-show="panel.component"
         size="small"
@@ -23,7 +23,7 @@
           </div>
         </template>
         <Empty v-if="tab.list.length === 0" :description="t('empty')" />
-        <ul v-else class="component-panel__list">
+        <ul v-else class="box-border p-5px grid grid-cols-2 mb-0">
           <li
             v-for="item in tab.list"
             :key="item.name"
@@ -35,7 +35,10 @@
             @click="handleClick"
           >
             <header>{{ gt(`gallery.${item.name}`) }}</header>
-            <img :src="getImgSrc(item.name)" />
+            <img
+              class="w-full pointer-events-none h-[calc(100%-22px)]"
+              :src="getImgSrc(item.name)"
+            />
           </li>
         </ul>
       </TabPane>
@@ -86,96 +89,55 @@ function handleClick(e: MouseEvent) {
 
 <style lang="less">
 .component-panel {
-  width: 233px;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  z-index: 4;
   background-color: @component-background;
   transition: width 0.3s @ease-in-out;
-  white-space: nowrap;
   border-right: 1px solid @border-color-base;
+  @apply flex-shrink-0 box-border z-4 whitespace-nowrap;
 
   .ant-tabs {
     &.ant-tabs-left {
-      height: 100%;
+      @apply h-full;
 
       > .ant-tabs-nav .ant-tabs-tab {
+        @apply px-10px py-4px;
+
         padding: 4px 10px;
       }
 
       > .ant-tabs-content-holder > .ant-tabs-content {
-        height: 100%;
+        @apply h-full;
 
         > .ant-tabs-tabpane {
-          padding-left: 0;
-          overflow-y: auto;
+          @apply pl-0 overflow-y-auto;
         }
       }
     }
   }
 
-  &--hide {
-    width: 0;
-    border: 0;
-  }
-
   &__header {
-    height: 30px;
     background-color: @layout-body-background;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 10px;
-
-    span {
-      cursor: pointer;
-    }
-  }
-
-  &__select-box {
-    padding: 5px;
-  }
-
-  &__list {
-    box-sizing: border-box;
-    padding: 5px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-bottom: 0;
+    @apply h-30px flex items-center justify-between box-border px-10px;
   }
 
   &__item {
-    width: 80px;
-    height: 80px;
+    @apply w-80px h-80px;
 
     header {
-      height: 22px;
-      box-sizing: border-box;
-      padding: 0 5px;
       background-color: @layout-body-background;
-      text-align: center;
       border-bottom: 1px solid @border-color-base;
+      @apply h-22px box-border px-5px text-center;
     }
 
     img {
-      width: 100%;
       background-color: @background-color-light;
-      pointer-events: none;
-      height: calc(100% - 22px);
     }
   }
 
   &__label {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @apply flex flex-col justify-center items-center;
 
     .anticon {
-      margin-right: 0;
-      margin-top: 6px;
-      font-size: 16px;
+      @apply mr-0 mt-6px text-16px;
     }
   }
 }

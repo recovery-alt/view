@@ -75,18 +75,16 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .code-mirror {
-  overflow: auto;
-  height: 200px;
-  margin-bottom: 5px;
   border: 1px solid @border-color-base;
+  @apply overflow-auto h-200px mb-5px;
 
   :deep {
     .cm-editor {
-      height: 100%;
+      @apply h-full;
     }
 
     .ͼ1.cm-focused {
-      outline: none;
+      @apply outline-none;
     }
   }
 }

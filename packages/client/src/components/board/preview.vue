@@ -6,16 +6,16 @@
           {{ page.config.title }}
           <CloseSquareOutlined class="preview__close" @click="handleClose" />
         </div>
-        <div class="preview__container">
-          <div :style="patchUnit(pageStyle)">
+        <div class="flex-1 overflow-auto">
+          <div class="relative" :style="patchUnit(pageStyle)">
             <div
               v-for="(item, index) in board.data"
               :key="item.id"
-              class="board-wrapper"
+              class="absolute box-border"
               :z-index="index"
               :style="splitStyleAndPatch(item.style)"
             >
-              <BoardBox :data="item" class="board-component" />
+              <BoardBox :data="item" class="h-full first:absolute w-1f h-full" />
             </div>
           </div>
         </div>
@@ -51,72 +51,28 @@ const handleClose = () => {
 <style lang="less">
 .preview {
   &__mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgb(0 0 0 / 70%);
-    z-index: 1000;
+    @apply absolute top-0 left-0 bottom-0 right-0 bg-dark-300 z-1000;
   }
 
   &__box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 80vw;
-    max-height: 80vh;
-    overflow: hidden;
     color: @black;
-    display: flex;
-    flex-direction: column;
+    @apply absolute top-1/2 left-1/2 max-w-80vw max-h-80vh overflow-hidden flex flex-col;
   }
 
   &__title {
-    position: relative;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
     background-color: @modal-header-bg;
     color: @text-color;
     border-bottom: 1px solid @border-color-base;
+    @apply relative h-50px leading-50px text-center;
   }
 
   &__close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 20px;
-    cursor: pointer;
+    @apply absolute right-20px top-20px text-20px cursor-pointer;
 
     &:hover {
       color: @primary-color;
     }
-  }
-
-  &__container {
-    flex: 1;
-    overflow: auto;
-
-    & > div {
-      position: relative;
-    }
-  }
-}
-
-.board-wrapper {
-  position: absolute;
-  box-sizing: border-box;
-
-  & > *:first-child {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  .board-component {
-    height: 100%;
   }
 }
 </style>

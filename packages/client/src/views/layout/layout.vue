@@ -1,5 +1,5 @@
 <template>
-  <Layout class="container">
+  <Layout class="flex h-full">
     <LayoutSider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo">
         <img width="40" height="40" src="/src/assets/img/logo.svg" />
@@ -42,41 +42,24 @@ const { t } = useI18n({ useScope: 'local', messages });
 </script>
 
 <style lang="less" scoped>
-.container {
-  display: flex;
-  height: 100%;
-}
-
 .main {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
   background-color: @layout-body-background;
+  @apply flex flex-col flex-1;
 }
 
 .logo {
   color: @text-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
+  @apply flex justify-center items-center p-8px;
 }
 
 .layout-header {
   background: @component-background;
-  padding: 10px;
-  font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   color: @text-color;
+  @apply p-10px text-20px flex justify-between items-center;
 }
 
 .layout-content {
-  flex: 1;
   background: @component-background;
-  margin: 24px 16px;
-  padding: 24px;
-  min-height: 280px;
+  @apply flex-1 mx-16px my-24px p-24px min-h-280px;
 }
 </style>

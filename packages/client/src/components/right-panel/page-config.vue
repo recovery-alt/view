@@ -1,7 +1,7 @@
 <template>
-  <div class="page-config">
+  <div>
     <header class="page-config__header">{{ t('setting') }}</header>
-    <section class="page-config__wrapper">
+    <section class="h-[calc(100%-30px)] overflow-auto">
       <Form
         :model="page.config"
         hide-required-mark
@@ -83,26 +83,8 @@ const fields = computed<Array<Field>>(() => [
 </script>
 
 <style lang="less">
-.page-config {
-  &__header {
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    background-color: @layout-body-background;
-  }
-
-  &__wrapper {
-    height: calc(100% - 30px);
-    overflow: auto;
-  }
-
-  &__extra {
-    width: 100%;
-    display: flex;
-
-    span {
-      flex: 1;
-    }
-  }
+.page-config__header {
+  background-color: @layout-body-background;
+  @apply h-30px leading-30px text-center;
 }
 </style>
