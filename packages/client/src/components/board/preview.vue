@@ -55,6 +55,7 @@ const handleClose = () => {
   }
 
   &__box {
+    background-color: @component-background;
     transform: translate(-50%, -50%);
     color: @black;
     @apply absolute top-1/2 left-1/2 max-w-80vw max-h-80vh overflow-hidden flex flex-col;
@@ -64,7 +65,7 @@ const handleClose = () => {
     background-color: @modal-header-bg;
     color: @text-color;
     border-bottom: 1px solid @border-color-base;
-    @apply relative h-50px leading-50px text-center;
+    @apply relative h-50px leading-50px text-center flex-shrink-0;
   }
 
   &__close {
