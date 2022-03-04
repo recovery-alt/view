@@ -58,7 +58,7 @@ import { useSearch } from './hook';
 
 const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
-const activeTab = ref(t('basic'));
+const activeTab = ref('basic');
 const panel = usePanelStore();
 const board = useBoardStore();
 const { filterGroup, searchComponent } = useSearch();

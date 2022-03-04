@@ -34,7 +34,6 @@ export const useGalleryStore = defineStore('gallery', {
       if (!keyword) return this.group;
       return this.group.map(group => {
         const { list: galleryList, ...rest } = group;
-        console.log(galleryList);
         const list = galleryList.filter(item => new RegExp(keyword, 'i').test(item.name));
         return { list, ...rest };
       });
