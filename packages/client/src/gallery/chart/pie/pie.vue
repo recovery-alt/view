@@ -4,11 +4,10 @@
 
 <script lang="ts" setup>
 import type { EChartsOption } from 'echarts';
-import { reactive } from 'vue';
 import { PieChart } from 'echarts/charts';
 import BaseChart from '../base-chart.vue';
 
-const defaultOption = reactive<EChartsOption>({
+const defaultOption: EChartsOption = {
   series: [
     {
       type: 'pie',
@@ -35,5 +34,5 @@ const defaultOption = reactive<EChartsOption>({
       },
     },
   ],
-});
+};
 </script>

@@ -4,11 +4,10 @@
 
 <script lang="ts" setup>
 import type { EChartsOption } from 'echarts';
-import { reactive } from 'vue';
 import { GaugeChart } from 'echarts/charts';
 import BaseChart from '../base-chart.vue';
 
-const defaultOption = reactive<EChartsOption>({
+const defaultOption: EChartsOption = {
   series: [
     {
       name: 'Pressure',
@@ -18,5 +17,5 @@ const defaultOption = reactive<EChartsOption>({
       },
     },
   ],
-});
+};
 </script>

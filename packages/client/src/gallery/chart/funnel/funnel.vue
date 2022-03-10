@@ -6,9 +6,8 @@
 import type { EChartsOption } from 'echarts';
 import { FunnelChart } from 'echarts/charts';
 import BaseChart from '../base-chart.vue';
-import { reactive } from 'vue';
 
-const defaultOption = reactive<EChartsOption>({
+const defaultOption: EChartsOption = {
   tooltip: {
     trigger: 'item',
     formatter: '{a} <br/>{b} : {c}%',
@@ -52,5 +51,5 @@ const defaultOption = reactive<EChartsOption>({
       },
     },
   ],
-});
+};
 </script>
