@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const router_1 = (0, tslib_1.__importDefault)(require("@koa/router"));
+const router_1 = tslib_1.__importDefault(require("@koa/router"));
 const service_1 = require("@/service");
 const fs_1 = require("fs");
 const path_1 = require("path");

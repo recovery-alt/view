@@ -2,17 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 process.env.TS_NODE_DEV || require('module-alias/register');
-const koa_1 = (0, tslib_1.__importDefault)(require("koa"));
+const koa_1 = tslib_1.__importDefault(require("koa"));
 const config_1 = require("@/config");
 const middleware_1 = require("@/middleware");
-const picocolors_1 = (0, tslib_1.__importDefault)(require("picocolors"));
+const picocolors_1 = tslib_1.__importDefault(require("picocolors"));
 const mongoose_1 = require("@/mongoose");
-const koa_logger_1 = (0, tslib_1.__importDefault)(require("koa-logger"));
-const cors_1 = (0, tslib_1.__importDefault)(require("@koa/cors"));
-const koa_bodyparser_1 = (0, tslib_1.__importDefault)(require("koa-bodyparser"));
-const koa_static_1 = (0, tslib_1.__importDefault)(require("koa-static"));
+const koa_logger_1 = tslib_1.__importDefault(require("koa-logger"));
+const cors_1 = tslib_1.__importDefault(require("@koa/cors"));
+const koa_bodyparser_1 = tslib_1.__importDefault(require("koa-bodyparser"));
+const koa_static_1 = tslib_1.__importDefault(require("koa-static"));
 const path_1 = require("path");
-const koa2_connect_history_api_fallback_1 = (0, tslib_1.__importDefault)(require("koa2-connect-history-api-fallback"));
+const koa2_connect_history_api_fallback_1 = tslib_1.__importDefault(require("koa2-connect-history-api-fallback"));
 const utils_1 = require("@/utils");
 const app = new koa_1.default();
 // 处理history模式中间件
