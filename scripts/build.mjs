@@ -2,7 +2,9 @@ import rimraf from 'rimraf';
 import { execaSync } from 'execa';
 import { resolve } from 'path';
 import pc from 'picocolors';
-import { copySync } from 'fs-extra';
+import fs from 'fs-extra';
+
+const { copySync } = fs;
 
 const getPath = (path = '', workspace = 'server') => resolve(`packages/${workspace}/${path}`);
 
