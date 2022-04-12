@@ -1,1 +1,0 @@
-import{_ as t}from"./base-chart.f9af6ee3.js";import{d as a}from"./echarts.e9de6ed0.js";import{d as o,cY as r,cZ as s,u as n}from"./vendor.03390643.js";import"./lodash.53dfd457.js";const _=o({setup(p){const e={series:[{name:"Pressure",type:"gauge",detail:{formatter:"{value}"}}]};return(i,u)=>(r(),s(t,{plugins:n(a),"default-option":e},null,8,["plugins"]))}});export{_ as default};
