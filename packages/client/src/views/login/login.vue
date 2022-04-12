@@ -24,7 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { UserInfo } from '@/typings';
+import type { Data, UserInfo } from '@/typings';
+import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import { reactive } from 'vue';
 import { login } from '@/api';
 import { message, Form, FormItem, Button, Input } from 'ant-design-vue';
@@ -39,7 +40,7 @@ const props = defineProps({ redirect: { type: String, default: () => '' } });
 const { t } = useI18n({ useScope: 'local', messages });
 
 const form = reactive({ name: 'ccq', password: 'a123456' });
-const rules = reactive({
+const rules = reactive<Data<RuleObject[]>>({
   name: [{ required: true, message: t('validator.username'), trigger: 'blur' }],
   password: [{ required: true, message: t('validator.password'), trigger: 'blur' }],
 });

@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import jsx from '@vitejs/plugin-vue-jsx';
 import eslintPlugin from 'vite-plugin-eslint';
-import styleImport from 'vite-plugin-style-import';
+import { createStyleImportPlugin, AndDesignVueResolve } from 'vite-plugin-style-import';
 import visualizer from 'rollup-plugin-visualizer';
 import { configThemePlugin } from './build/theme';
 import { generateModifyVars } from './build';
@@ -19,7 +19,8 @@ const plugins = [
   eslintPlugin(),
   windiCSS(),
   ...themePlugins,
-  styleImport({
+  createStyleImportPlugin({
+    resolves: [AndDesignVueResolve()],
     libs: [
       {
         libraryName: 'ant-design-vue',
