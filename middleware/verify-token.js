@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
-const path_1 = require("path");
-const fs_1 = require("fs");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const enum_1 = require("@/enum");
 const utils_1 = require("@/utils");
+const key_1 = require("@/key");
 const verifyToken = async (ctx, next) => {
     const token = ctx.request.header.authorization;
     if (!token) {
@@ -18,8 +17,7 @@ const verifyToken = async (ctx, next) => {
         return;
     }
     try {
-        const publicKey = (0, fs_1.readFileSync)((0, path_1.resolve)(__dirname, '../key/rsa-public-key.pem'));
-        const result = (0, jsonwebtoken_1.verify)(token, publicKey, { algorithms: ['RS256'] });
+        const result = (0, jsonwebtoken_1.verify)(token, key_1.publicKey, { algorithms: ['RS256'] });
         const { exp, data } = result;
         const now = Math.floor(Date.now() / 1000);
         // 不在有效期内

@@ -1,0 +1,1 @@
+import{_ as e}from"./base-chart.39063abf.js";import{i as o}from"./echarts.45e47cdd.js";import{d as s,d5 as a,d6 as r,u as n}from"./vendor.2226048c.js";import"./lodash.39fce032.js";const _=s({setup(p){const t={xAxis:{type:"category"},yAxis:{type:"value"},series:[{type:"bar"}]};return(i,l)=>(a(),r(e,{plugins:n(o),"default-option":t},null,8,["plugins"]))}});export{_ as default};
