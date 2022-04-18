@@ -1,9 +1,8 @@
 import { Middleware } from 'koa';
-import { resolve } from 'path';
-import { readFileSync } from 'fs';
 import { verify } from 'jsonwebtoken';
 import { ResponseEnum } from '@/enum';
 import { wrapError } from '@/utils';
+import { publicKey } from '@/key';
 
 export const verifyToken: Middleware = async (ctx, next) => {
   const token = ctx.request.header.authorization;
@@ -16,7 +15,6 @@ export const verifyToken: Middleware = async (ctx, next) => {
     return;
   }
   try {
-    const publicKey = readFileSync(resolve(__dirname, '../key/rsa-public-key.pem'));
     const result = verify(token, publicKey, { algorithms: ['RS256'] });
     const { exp, data } = result as { exp: number; data: string };
     const now = Math.floor(Date.now() / 1000);

@@ -1,4 +1,4 @@
------BEGIN RSA PRIVATE KEY-----
+export const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAsY5F3PhCnLewFmZBYki2U3OAgQt1NL+7rtguZfVSJq1Feo5L
 WbSigR4/CxPNYq4uyHqYDlDveg2oKe1Hzzhw9Y3mCypje1Pnmv5UXBZ/Wk9aE+f2
 uhTx3e3UEHuml6+H+CsZbavA4o4W5Picv4hNCmQpbIvsgMOMBaZnaA8gbfc4wUOY
@@ -24,4 +24,14 @@ apW40bxl4OuTpWMJslcFr0JToUTlJfLWfn9kSZpLtOSzhmB/8e9fyDbnV/GVE19b
 L9ORAoGAAaHilfvX9/eQmG4WXRBnapfMfK0BaO/llQ5H58mjFSfKFH8E+AqKn5Wz
 UH91iX58QluFV9m2IBOFWqLpKjt6GOTWnaTRmJDk+Xx4124vZrhupKnvMiSVEw4N
 2ZXnX2iHdNVRWdlGu/kX/k5wT/ZHeao4CsQcIy8JI+GZtwfafek=
------END RSA PRIVATE KEY-----
+-----END RSA PRIVATE KEY-----`;
+
+export const publicKey = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsY5F3PhCnLewFmZBYki2
+U3OAgQt1NL+7rtguZfVSJq1Feo5LWbSigR4/CxPNYq4uyHqYDlDveg2oKe1Hzzhw
+9Y3mCypje1Pnmv5UXBZ/Wk9aE+f2uhTx3e3UEHuml6+H+CsZbavA4o4W5Picv4hN
+CmQpbIvsgMOMBaZnaA8gbfc4wUOYd2Mik68tzhm0Y4+z/NkoGRyQujtpL/Dxanzn
+S6pkzqLmGgWiw9skKDhHxsbk93/Hps2pvGzyynftnpsZKpFKirfhhfZAZrzV2vdw
+1yTDx9E91d7wBFJvo4mElf9bBYQXWegnFaVl2A8sSMkvu8HUHNoRqx07ACwvMom5
+SQIDAQAB
+-----END PUBLIC KEY-----`;

@@ -14,7 +14,6 @@ rimraf.sync(getPath('dist', 'client'));
 
 execaSync('pnpm', ['build', '--filter', './packages/server'], { stdio: 'inherit' });
 
-copySync(getPath('src/key'), getPath('dist/key'));
 copySync(getPath('src/public'), getPath('dist/public'));
 copySync(getPath('package.json'), resolve('dist/package.json'));
 copySync(getPath('dist'), resolve('dist'));
