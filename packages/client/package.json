@@ -49,7 +49,7 @@
     "vite-plugin-eslint": "^1.4.0",
     "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-windicss": "^1.8.4",
-    "vue-tsc": "^0.34.7",
+    "vue-tsc": "^0.37.3",
     "windicss": "^3.5.1"
   }
 }

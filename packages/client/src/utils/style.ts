@@ -1,4 +1,5 @@
 import type { Data, CSSStyleDataWithRotate } from '@/typings';
+import { StyleValue } from 'vue';
 
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false;
@@ -62,9 +63,11 @@ export const patchUnit = (style: Data | CSSStyleDataWithRotate) => {
     'borderWidth',
     'borderRadius',
   ];
-  const result: Data = {};
-  for (const [key, value] of Object.entries(style)) {
+  const result: StyleValue = {};
+  for (const [rawWey, value] of Object.entries(style)) {
     if (!value) continue;
+
+    const key = rawWey as keyof StyleValue;
 
     // rotate特殊处理
     if (key === 'rotate') {
