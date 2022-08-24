@@ -2,10 +2,6 @@ import { execaSync } from 'execa';
 
 execaSync(
   'pnpm',
-  [
-    'concurrently',
-    '"pnpm dev --filter ./packages/client"',
-    '"pnpm dev --filter ./packages/server"',
-  ],
+  ['concurrently', '"npm run dev -C packages/client"', '"npm run dev -C packages/server"'],
   { stdio: 'inherit' }
 );
