@@ -23,7 +23,7 @@
     </Dropdown>
   </div>
   <Modal
-    v-model:visible="visible"
+    v-model:open="visible"
     :title="t('dialog.modify')"
     :after-close="resetFields"
     @ok="submitPasswordChange"

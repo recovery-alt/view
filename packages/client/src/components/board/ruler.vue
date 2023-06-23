@@ -3,13 +3,12 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
+import { nextTick, onMounted, shallowRef, watchEffect } from 'vue';
 import { wrapScale } from '@/utils';
 import { useThemeStore } from '@/store';
 import { theme } from 'ant-design-vue';
 
 const canvas = shallowRef<HTMLCanvasElement>();
-const color = ref<string>('');
 const themeStore = useThemeStore();
 const { token } = theme.useToken();
 
@@ -25,13 +24,13 @@ const reRenderCanvas = () => {
     ctx.moveTo(...begin);
     ctx.lineTo(...end);
     ctx.lineWidth = width;
-    ctx.strokeStyle = color.value;
+    ctx.strokeStyle = token.value.colorText;
     ctx.stroke();
   };
 
   const fillText = (x: number, y: number, text: string | number) => {
     ctx.font = '18px Arial';
-    ctx.fillStyle = color.value;
+    ctx.fillStyle = token.value.colorText;
     ctx.fillText(text + '', x, y);
   };
 
@@ -50,7 +49,6 @@ onMounted(() => {
 
   watchEffect(() => {
     if (themeStore.value) {
-      color.value = themeStore.value === 'dark' ? '#c9d1d9' : '#000';
       reRenderCanvas();
     }
   });
@@ -59,7 +57,7 @@ onMounted(() => {
 
 <style lang="less">
 .board-ruler {
-  background-color: v-bind('token.colorBgTextHover');
+  background-color: v-bind('token.colorBgContainer');
   @apply h-20px;
 }
 </style>

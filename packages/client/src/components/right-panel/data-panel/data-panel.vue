@@ -21,7 +21,7 @@
     <Table :data-source="table.data" :columns="table.columns" :pagination="false" />
     <Drawer
       v-if="board.curCom?.data"
-      v-model:visible="drawer.show"
+      v-model:open="drawer.show"
       placement="right"
       :title="t('configDataSource')"
       :width="400"
@@ -73,7 +73,7 @@
       <CodeMirror v-model:viewer="drawer.readonlyViewer" :doc="dataStringify" readonly />
     </Drawer>
     <Modal
-      v-model:visible="modal.show"
+      v-model:open="modal.show"
       :title="t('filter')"
       :z-index="1001"
       @ok="handleFilterChange(true)"

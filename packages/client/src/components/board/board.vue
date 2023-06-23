@@ -228,9 +228,10 @@ onMounted(() => {
   transform-origin: 0 0;
   transition: 0.2s all v-bind('token.motionEaseInOut');
   background-size: cover, contain;
+  background-color: #fff;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
-  box-shadow: v-bind('token.boxShadow');
+  box-shadow: v-bind('token.boxShadowSecondary');
   color: v-bind('token.colorText');
 
   &__component {
@@ -258,8 +259,7 @@ onMounted(() => {
 }
 
 .screen-shot {
-  background-image: linear-gradient(90deg, transparent 50%, v-bind('token.colorBgTextActive')) 50%,
-    linear-gradient(180deg, v-bind('token.colorBgTextHover')) 50%, transparent 50%;
+  background-color: v-bind('token.colorBgTextHover');
   background-size: 10px 10px;
 }
 
