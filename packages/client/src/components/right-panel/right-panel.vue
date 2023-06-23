@@ -26,7 +26,7 @@ import type { Component } from 'vue';
 import { shallowRef, ref, computed, watchEffect } from 'vue';
 import { AttrPanel, AnimatePanel, DataPanel, PageConfig } from '@/components';
 import { useBoardStore, usePanelStore, useGalleryStore } from '@/store';
-import { Tabs, TabPane } from 'ant-design-vue';
+import { Tabs, TabPane, theme } from 'ant-design-vue';
 import { rightPanel as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
 
@@ -35,6 +35,7 @@ const panel = usePanelStore();
 const gallery = useGalleryStore();
 const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
+const { token } = theme.useToken();
 
 const cloneGallery = ref<Gallery>();
 const tabs = shallowRef<Array<{ key: string; component: Component }>>([]);
@@ -61,20 +62,20 @@ watchEffect(() => {
 
 <style lang="less">
 .right-panel {
-  border-left: 1px solid @border-color-base;
-  box-shadow: @box-shadow-base;
-  transition: width 0.3s @ease-in-out;
-  background-color: @component-background;
-  color: @text-color;
+  border-left: 1px solid v-bind('token.colorBorder');
+  box-shadow: v-bind('token.boxShadow');
+  transition: width 0.3s v-bind('token.motionEaseInOut');
+  background-color: v-bind('token.colorBgBase');
+  color: v-bind('token.colorText');
   @apply relative box-border overflow-auto z-90;
 
   &__title {
-    color: @text-color;
+    color: v-bind('token.colorText');
     @apply text-14px pb-3px pl-10px pr-5px mb-0;
   }
 
   &__subtitle {
-    color: @text-color-secondary;
+    color: v-bind('token.colorText')-secondary;
     @apply text-12px font-normal pl-10px pr-5px mb-5px;
   }
 
@@ -98,11 +99,11 @@ watchEffect(() => {
     @apply w-full flex;
 
     .ant-tabs-tab {
-      border-top: 2px solid @layout-body-background;
+      border-top: 2px solid v-bind('token.colorBgBase');
       @apply flex-1 flex items-center justify-center mr-0 rounded-none;
 
       &.ant-tabs-tab-active {
-        border-top: 2px solid @primary-color;
+        border-top: 2px solid v-bind('token.colorPrimary');
       }
     }
   }

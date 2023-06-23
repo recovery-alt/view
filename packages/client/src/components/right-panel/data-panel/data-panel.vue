@@ -106,6 +106,7 @@ import {
   Divider,
   Table,
   Input,
+  theme,
 } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { dataPanel as messages } from '@/locales';
@@ -122,10 +123,12 @@ const { modal, handleFilterChange } = useModal(drawer);
 const { timeline } = useTimeline(drawer, modal);
 
 const { table } = useTable();
+
+const { token } = theme.useToken();
 </script>
 
 <style lang="less">
 .data-panel {
-  background-color: @component-background;
+  background-color: v-bind('token.colorBgBase');
 }
 </style>

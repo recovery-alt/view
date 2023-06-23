@@ -3,58 +3,19 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import jsx from '@vitejs/plugin-vue-jsx';
 import eslintPlugin from 'vite-plugin-eslint';
-import { createStyleImportPlugin, AndDesignVueResolve } from 'vite-plugin-style-import';
-import visualizer from 'rollup-plugin-visualizer';
-import { configThemePlugin } from './build/theme';
-import { generateModifyVars } from './build';
 import windiCSS from 'vite-plugin-windicss';
+// import { theme } from 'ant-design-vue/lib';
+// import convertLegacyToken from 'ant-design-vue/lib/theme/convertLegacyToken';
 
-const isProd = process.env.NODE_ENV === 'production';
+// const { defaultAlgorithm, defaultSeed, darkAlgorithm } = theme;
 
-const themePlugins = configThemePlugin(isProd);
+// const mapToken = defaultAlgorithm(defaultSeed);
+// const mapTokenDark = darkAlgorithm(defaultSeed);
+// const v3Token = convertLegacyToken(mapToken);
+// const v3TokenDark = convertLegacyToken(mapTokenDark);
 
-const plugins = [
-  vue(),
-  jsx(),
-  eslintPlugin(),
-  windiCSS(),
-  ...themePlugins,
-  createStyleImportPlugin({
-    resolves: [AndDesignVueResolve()],
-    libs: [
-      {
-        libraryName: 'ant-design-vue',
-        esModule: true,
-        resolveStyle: name => {
-          const exclude = [
-            'select-option',
-            'form-item',
-            'collapse-panel',
-            'tab-pane',
-            'timeline-item',
-            'menu-item',
-            'input-search',
-            'layout-sider',
-            'layout-header',
-            'layout-content',
-            'textarea',
-          ];
-          return exclude.includes(name) ? '' : `ant-design-vue/es/${name}/style/index`;
-        },
-      },
-    ],
-  }),
-];
+const plugins = [vue(), jsx(), eslintPlugin(), windiCSS()];
 
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(
-    visualizer({
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    })
-  );
-}
 export default defineConfig({
   plugins,
   server: { port: 8080 },
@@ -90,7 +51,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        modifyVars: generateModifyVars(),
+        // modifyVars: v3Token,
         javascriptEnabled: true,
       },
     },

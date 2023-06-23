@@ -105,7 +105,7 @@ import {
 import { shallowRef } from 'vue';
 import { useBoardStore, useMenuStore, usePanelStore, MenuEnum } from '@/store';
 import { BoardMenu } from '@/components';
-import { Empty, Tooltip } from 'ant-design-vue';
+import { Empty, Tooltip, theme } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { layerPanel as messages } from '@/locales';
 import { useFooter, useMode, useReverse, useToggle, useToolBar } from './hook';
@@ -114,6 +114,7 @@ import { getImgSrc } from '@/gallery';
 const board = useBoardStore();
 const panel = usePanelStore();
 const menu = useMenuStore();
+const { token } = theme.useToken();
 const layerRef = shallowRef<HTMLElement>();
 const { t } = useI18n({ useScope: 'local', messages });
 const { moveActions } = useToolBar();
@@ -153,58 +154,59 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
 
 <style lang="less">
 .layer-panel {
-  border-right: 1px solid @border-color-base;
-  transition: width 0.3s @ease-in-out;
-  background-color: @component-background;
+  border-right: 1px solid v-bind('token.colorBorder');
+  transition: width 0.3s v-bind('token.motionEaseInOut');
+  background-color: v-bind('token.colorBgBase');
+  color: v-bind('token.colorText');
   @apply relative h-full z-4 overflow-hidden whitespace-normal;
 
   &__toolbar {
-    border-bottom: 1px solid @border-color-base;
-    background-color: @component-background;
+    border-bottom: 1px solid v-bind('token.colorBorder');
+    background-color: v-bind('token.colorBgBase');
     @apply h-30px flex items-center justify-between box-border px-27px;
 
     span {
       @apply p-3px cursor-pointer;
 
       &:hover {
-        background-color: @primary-color;
-        color: @white;
+        background-color: v-bind('token.colorPrimary');
+        color: v-bind('token.colorWhite');
       }
     }
   }
 
   &__footer {
-    border-top: 1px solid @border-color-base;
+    border-top: 1px solid v-bind('token.colorBorder');
     @apply h-30px flex items-center justify-between box-border px-50px;
 
     span {
       @apply p-3px cursor-pointer;
 
       &:hover {
-        background-color: @primary-color;
-        color: @white;
+        background-color: v-bind('token.colorPrimary');
+        color: v-bind('token.colorWhite');
       }
     }
 
     .--icon {
-      background-color: @primary-color;
-      color: @text-color-inverse;
+      background-color: v-bind('token.colorPrimary');
+      color: v-bind('token.colorText')-inverse;
     }
   }
 
   &__header {
-    background-color: @layout-body-background;
+    background-color: v-bind('token.colorBgLayout');
     @apply h-30px flex items-center justify-between box-border px-10px;
 
     span {
       @apply text-16px ml-5px cursor-pointer;
 
       &:hover {
-        color: @primary-color;
+        color: v-bind('token.colorPrimary');
       }
 
       &.--active {
-        color: @primary-color;
+        color: v-bind('token.colorPrimary');
       }
     }
   }
@@ -222,13 +224,13 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
       @apply relative w-full pl-8px pr-6px flex items-center z-1;
 
       &:hover {
-        background-color: @item-hover-bg;
+        background-color: v-bind('token.colorBgTextHover');
       }
     }
 
     .--active {
-      color: @white;
-      background-color: @primary-color;
+      color: v-bind('token.colorWhite');
+      background-color: v-bind('token.colorPrimary');
     }
 
     .--item {
@@ -243,8 +245,8 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
       @apply h-48px leading-48px;
 
       img {
-        border: 1px solid @border-color-base;
-        background-color: @body-background;
+        border: 1px solid v-bind('token.colorBorder');
+        background-color: v-bind('token.colorInfoBg');
         @apply w-51px h-34px;
       }
 
@@ -254,7 +256,7 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
     }
 
     .--animated {
-      transition: transform 0.3s @ease-in-out;
+      transition: transform 0.3s v-bind('token.motionEaseInOut');
     }
 
     .--icon {
@@ -265,7 +267,7 @@ function handleRightClick(e: MouseEvent, reverseIndex: number) {
 
 .toggle-enter-active,
 .toggle-leave-active {
-  transition: transform 0.3s @ease-in-out;
+  transition: transform 0.3s v-bind('token.motionEaseInOut');
 }
 
 .toggle-enter-from,

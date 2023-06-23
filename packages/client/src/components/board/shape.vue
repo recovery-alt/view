@@ -32,6 +32,7 @@ import { on, off, patchUnit, wrapScale } from '@/utils';
 import throttle from 'lodash/throttle';
 import { computed } from 'vue';
 import { RedoOutlined } from '@ant-design/icons-vue';
+import { theme } from 'ant-design-vue';
 
 const props = defineProps({
   index: { type: Number, default: () => 0 },
@@ -40,6 +41,7 @@ const props = defineProps({
 
 const board = useBoardStore();
 const menu = useMenuStore();
+const { token } = theme.useToken();
 
 const { handleEchartsResize } = useEchartsResize();
 
@@ -216,7 +218,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   box-sizing: border-box;
 
   &:hover {
-    outline: 1px dashed @outline-color;
+    outline: 1px dashed v-bind('token.colorPrimary');
   }
 
   & > *:first-child {
@@ -231,7 +233,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
 
   .shape-rotate {
     position: absolute;
-    color: @primary-color;
+    color: v-bind('token.colorPrimary');
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
@@ -243,7 +245,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
   }
 
   &.--active {
-    outline: 1px solid @outline-color;
+    outline: 1px solid v-bind('token.colorPrimary');
   }
 
   &__graticule {
@@ -251,13 +253,13 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
 
     &.--x {
       top: -1px;
-      border-top: 1px solid @primary-color;
+      border-top: 1px solid v-bind('token.colorPrimary');
       height: 0;
     }
 
     &.--y {
       left: -1px;
-      border-left: 1px solid @primary-color;
+      border-left: 1px solid v-bind('token.colorPrimary');
       width: 0;
     }
   }
@@ -268,7 +270,7 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     left: -5px;
     font-size: 16px;
     font-weight: bold;
-    color: @primary-color;
+    color: v-bind('token.colorPrimary');
     transform: translate(-100%, -100%);
   }
 
@@ -276,10 +278,10 @@ const handleMousedownOnRotate = (e: MouseEvent) => {
     position: absolute;
     width: @radius * 2;
     height: @radius * 2;
-    border: 1px solid @primary-color;
+    border: 1px solid v-bind('token.colorPrimary');
     box-sizing: border-box;
     border-radius: 50%;
-    background-color: @white;
+    background-color: v-bind('token.colorWhite');
     z-index: 1;
   }
 

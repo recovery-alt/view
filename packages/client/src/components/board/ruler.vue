@@ -6,10 +6,12 @@
 import { nextTick, onMounted, ref, shallowRef, watchEffect } from 'vue';
 import { wrapScale } from '@/utils';
 import { useThemeStore } from '@/store';
+import { theme } from 'ant-design-vue';
 
 const canvas = shallowRef<HTMLCanvasElement>();
 const color = ref<string>('');
-const theme = useThemeStore();
+const themeStore = useThemeStore();
+const { token } = theme.useToken();
 
 const reRenderCanvas = () => {
   if (!canvas.value) return;
@@ -47,8 +49,8 @@ onMounted(() => {
   nextTick(reRenderCanvas);
 
   watchEffect(() => {
-    if (theme.value) {
-      color.value = theme.value === 'dark' ? '#c9d1d9' : '#000';
+    if (themeStore.value) {
+      color.value = themeStore.value === 'dark' ? '#c9d1d9' : '#000';
       reRenderCanvas();
     }
   });
@@ -57,7 +59,7 @@ onMounted(() => {
 
 <style lang="less">
 .board-ruler {
-  background-color: @body-background;
+  background-color: v-bind('token.colorBgTextHover');
   @apply h-20px;
 }
 </style>

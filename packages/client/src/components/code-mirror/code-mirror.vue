@@ -15,6 +15,7 @@ import parserBabel from 'prettier/parser-babel';
 import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark';
 import { defaultHighlightStyle } from '@codemirror/highlight';
 import { useThemeStore } from '@/store';
+import { theme } from 'ant-design-vue';
 
 const props = defineProps({
   viewer: {
@@ -36,7 +37,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:viewer']);
-const theme = useThemeStore();
+const themeStore = useThemeStore();
+const { token } = theme.useToken();
 
 const themeExtensions = {
   light: [defaultHighlightStyle],
@@ -61,7 +63,7 @@ watchEffect(() => {
       basicSetup,
       language.of(lang),
       EditorView.editable.of(!props.readonly),
-      ...themeExtensions[theme.value],
+      ...themeExtensions[themeStore.value],
     ],
   });
   props.viewer.setState(state);
@@ -75,7 +77,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .code-mirror {
-  border: 1px solid @border-color-base;
+  border: 1px solid v-bind('token.colorBorder');
   @apply overflow-auto h-200px mb-5px;
 
   :deep {

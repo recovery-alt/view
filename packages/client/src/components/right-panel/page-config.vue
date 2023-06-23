@@ -27,12 +27,13 @@ import {
   StopOutlined,
 } from '@ant-design/icons-vue';
 import { FormItem as Item } from '@/components';
-import { Form } from 'ant-design-vue';
+import { Form, theme } from 'ant-design-vue';
 import { pageConfig as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
 const page = usePageStore();
+const { token } = theme.useToken();
 const { t } = useI18n({ useScope: 'local', messages });
 
 const fields = computed<Array<Field>>(() => [
@@ -84,7 +85,7 @@ const fields = computed<Array<Field>>(() => [
 
 <style lang="less">
 .page-config__header {
-  background-color: @layout-body-background;
+  background-color: v-bind('token.colorBgLayout');
   @apply h-30px leading-30px text-center;
 }
 </style>

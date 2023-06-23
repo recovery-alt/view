@@ -30,6 +30,7 @@ import { useBoardStore, usePageStore } from '@/store';
 import { CloseSquareOutlined } from '@ant-design/icons-vue';
 import { splitStyleAndPatch, patchUnit } from '@/utils';
 import BoardBox from './box.vue';
+import { theme } from 'ant-design-vue';
 
 defineProps({ modelValue: Boolean });
 
@@ -37,6 +38,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const board = useBoardStore();
 const page = usePageStore();
+const { token } = theme.useToken();
 
 const pageStyle = computed(() => {
   const { width, height, backgroundColor } = page.config;
@@ -55,16 +57,16 @@ const handleClose = () => {
   }
 
   &__box {
-    background-color: @component-background;
+    background-color: v-bind('token.colorBgBase');
     transform: translate(-50%, -50%);
-    color: @black;
+    color: v-bind('token.colorSuccess');
     @apply absolute top-1/2 left-1/2 max-w-80vw max-h-80vh overflow-hidden flex flex-col;
   }
 
   &__title {
-    background-color: @modal-header-bg;
-    color: @text-color;
-    border-bottom: 1px solid @border-color-base;
+    background-color: v-bind('token.colorBgElevated');
+    color: v-bind('token.colorText');
+    border-bottom: 1px solid v-bind('token.colorBorder');
     @apply relative h-50px leading-50px text-center flex-shrink-0;
   }
 
@@ -72,7 +74,7 @@ const handleClose = () => {
     @apply absolute right-20px top-20px text-20px cursor-pointer;
 
     &:hover {
-      color: @primary-color;
+      color: v-bind('token.colorPrimary');
     }
   }
 }

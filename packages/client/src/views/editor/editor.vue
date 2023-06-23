@@ -88,7 +88,7 @@ import {
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { getPage } from '@/api';
 import cloneDeep from 'lodash/cloneDeep';
-import { Modal, Button, Tooltip } from 'ant-design-vue';
+import { Modal, Button, Tooltip, theme } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { editor as messages } from '@/locales';
 
@@ -97,9 +97,10 @@ const snapshot = useSnapshotStore();
 const board = useBoardStore();
 const page = usePageStore();
 const router = useRouter();
-const theme = useThemeStore();
+const themeStore = useThemeStore();
 const panel = usePanelStore();
 const { t } = useI18n({ useScope: 'local', messages });
+const { token } = theme.useToken();
 const { locale } = useI18n({ useScope: 'global' });
 const switchLocale = inject<() => void>('switchLocale');
 
@@ -159,7 +160,7 @@ const buttonGroup = computed<Array<ButtonItem>>(() => [
   {
     name: t('theme'),
     icon: SkinOutlined,
-    event: () => theme.switchTheme(),
+    event: () => themeStore.switchTheme(),
   },
 ]);
 
@@ -208,8 +209,9 @@ onBeforeRouteLeave((to, from) => {
 
 <style lang="less">
 .header {
-  border-bottom: 1px solid @border-color-base;
-  background-color: @component-background;
+  border-bottom: 1px solid v-bind('token.colorBorder');
+  color: v-bind('token.colorText');
+  background-color: v-bind('token.colorBgBase');
   @apply h-41px flex-shrink-0 flex items-center box-border px-20px relative z-100;
 
   &__button {
@@ -218,12 +220,12 @@ onBeforeRouteLeave((to, from) => {
 }
 
 .mid-panel {
-  background-color: @layout-body-background;
+  background-color: v-bind('token.colorBgBase');
   @apply flex-1 h-full box-border overflow-hidden;
 
   &__toolbar {
-    border-bottom: 1px solid @border-color-base;
-    background-color: @component-background;
+    border-bottom: 1px solid v-bind('token.colorBorder');
+    background-color: v-bind('token.colorBgBase');
     @apply relative h-40px flex items-center box-border pl-30px z-10;
   }
 }

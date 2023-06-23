@@ -142,7 +142,7 @@ import {
   MacCommandOutlined,
 } from '@ant-design/icons-vue';
 import { computed, onBeforeUpdate, onMounted, reactive, shallowRef } from 'vue';
-import { Col, Tooltip, InputNumber, Slider } from 'ant-design-vue';
+import { Col, Tooltip, InputNumber, Slider, theme } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { board as messages } from '@/locales';
 
@@ -155,6 +155,7 @@ const screenShotRef = shallowRef<HTMLElement>();
 const canvasWrapperRef = shallowRef<HTMLElement>();
 const boardDom = shallowRef<HTMLElement>();
 const { t } = useI18n({ useScope: 'local', messages });
+const { token } = theme.useToken();
 
 const pageStyle = computed(() => {
   const { width, height, backgroundColor, scale } = page.config;
@@ -222,16 +223,15 @@ onMounted(() => {
 <style lang="less">
 .board {
   position: absolute;
-  background-color: @component-background;
   top: 60px;
   left: 60px;
   transform-origin: 0 0;
-  transition: 0.2s all @ease-in-out;
+  transition: 0.2s all v-bind('token.motionEaseInOut');
   background-size: cover, contain;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
-  box-shadow: @box-shadow-base;
-  color: @black;
+  box-shadow: v-bind('token.boxShadow');
+  color: v-bind('token.colorText');
 
   &__component {
     pointer-events: none;
@@ -240,8 +240,8 @@ onMounted(() => {
   &__mask {
     position: absolute;
     opacity: 0.5;
-    background-color: @primary-1;
-    border: 1px solid @border-color-base;
+    background-color: v-bind("token['blue-1']");
+    border: 1px solid v-bind('token.colorBorder');
   }
 }
 
@@ -253,13 +253,13 @@ onMounted(() => {
 
   &:focus {
     outline: none;
-    box-shadow: @box-shadow-base;
+    box-shadow: v-bind('token.boxShadow');
   }
 }
 
 .screen-shot {
-  background-image: linear-gradient(90deg, transparent 50%, @component-background) 50%,
-    linear-gradient(180deg, @component-background) 50%, transparent 50%;
+  background-image: linear-gradient(90deg, transparent 50%, v-bind('token.colorBgTextActive')) 50%,
+    linear-gradient(180deg, v-bind('token.colorBgTextHover')) 50%, transparent 50%;
   background-size: 10px 10px;
 }
 
@@ -281,19 +281,19 @@ onMounted(() => {
 
 .guide-line {
   &__controller {
-    border-right: 1px solid @border-color-base;
-    border-bottom: 1px solid @border-color-base;
-    background-color: @component-background;
+    border-right: 1px solid v-bind('token.colorBorder');
+    border-bottom: 1px solid v-bind('token.colorBorder');
+    background-color: v-bind('token.colorBgBase');
     @apply w-20px h-20px text-14px cursor-pointer fixed z-999 items-center justify-center flex;
 
     &:hover {
-      color: @primary-color;
+      color: v-bind('token.colorPrimary');
     }
   }
 }
 
 .thumbnail {
-  transition: 0.3s transform @ease-in-out;
+  transition: 0.3s transform v-bind('token.motionEaseInOut');
   @apply absolute right-5px bottom-70px;
 
   &__canvas {
@@ -301,18 +301,18 @@ onMounted(() => {
   }
 
   span {
-    outline: 1px solid @white;
+    outline: 1px solid v-bind('token.colorWhite');
     @apply absolute z-2 top-0 left-0 cursor-move w-64px h-48px;
   }
 }
 
 .markline {
-  border-left: 1px solid @primary-color;
+  border-left: 1px solid v-bind('token.colorPrimary');
   @apply absolute w-0;
 
   span {
-    background-color: @primary-color;
-    color: @white;
+    background-color: v-bind('token.colorPrimary');
+    color: v-bind('token.colorWhite');
     @apply absolute left-5px px-3px;
   }
 
@@ -338,7 +338,7 @@ onMounted(() => {
 }
 
 .edit-slider {
-  background-color: @modal-footer-border-color-split;
+  background-color: v-bind('token.colorBgBase');
   @apply w-full h-30px absolute right-0 bottom-40px flex items-center justify-end z-99;
 
   .ant-input-number {
@@ -353,7 +353,7 @@ onMounted(() => {
     @apply cursor-pointer;
 
     &:hover {
-      color: @text-color;
+      color: v-bind('token.colorText');
     }
   }
 

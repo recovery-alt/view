@@ -40,6 +40,7 @@ import {
 import { reactive, onMounted, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { menu as messages } from '@/locales';
+import { theme } from 'ant-design-vue';
 
 const props = defineProps({
   menuType: {
@@ -51,6 +52,7 @@ const props = defineProps({
 
 const board = useBoardStore();
 const menu = useMenuStore();
+const { token } = theme.useToken();
 const { t } = useI18n({ useScope: 'local', messages });
 const { t: gt } = useI18n({ useScope: 'global' });
 
@@ -146,12 +148,12 @@ onMounted(() => {
 
 <style lang="less">
 .board-menu {
-  color: @text-color;
+  color: v-bind('token.colorText');
   @apply absolute z-2;
 
   ul {
-    background-color: @layout-body-background;
-    box-shadow: @box-shadow-base;
+    background-color: v-bind('token.colorBgBase');
+    box-shadow: v-bind('token.boxShadow');
     @apply rounded-5px py-5px;
   }
 
@@ -159,21 +161,21 @@ onMounted(() => {
     @apply px-10px mt-5px cursor-default pr-3em;
 
     &:hover {
-      background-color: @primary-color;
-      color: @text-color-inverse;
+      background-color: v-bind('token.colorPrimary');
+      color: v-bind('token.colorText')-inverse;
     }
 
     &:nth-child(4),
     &:nth-child(8) {
-      border-bottom: 1px solid @border-color-base;
+      border-bottom: 1px solid v-bind('token.colorBorder');
     }
 
     &.--disable {
       @apply cursor-not-allowed opacity-30;
 
       &:hover {
-        color: @text-color;
-        background-color: @item-hover-bg;
+        color: v-bind('token.colorText');
+        background-color: v-bind('token.colorInfoBgHover');
       }
     }
   }

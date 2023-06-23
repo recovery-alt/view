@@ -28,7 +28,7 @@ import type { Data, UserInfo } from '@/typings';
 import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import { reactive } from 'vue';
 import { login } from '@/api';
-import { message, Form, FormItem, Button, Input } from 'ant-design-vue';
+import { message, Form, FormItem, Button, Input, theme } from 'ant-design-vue';
 import { encrypt, to } from '@/utils';
 import { useRouter } from 'vue-router';
 import { local } from '@/utils';
@@ -38,6 +38,7 @@ import { login as messages } from '@/locales';
 
 const props = defineProps({ redirect: { type: String, default: () => '' } });
 const { t } = useI18n({ useScope: 'local', messages });
+const { token } = theme.useToken();
 
 const form = reactive({ name: 'ccq', password: 'a123456' });
 const rules = reactive<Data<RuleObject[]>>({
@@ -67,11 +68,11 @@ const submitLogin = async () => {
 
 <style lang="less" scoped>
 .login {
-  background-color: @layout-body-background;
+  background-color: v-bind('token.colorBgBase');
   @apply h-full flex items-center justify-center;
 
   &-box {
-    background-color: @component-background;
+    background-color: v-bind('token.colorBgBase');
     @apply box-border p-20px flex flex-col items-center justify-center rounded-3px;
   }
 }

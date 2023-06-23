@@ -32,34 +32,44 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import ExitDropdown from './exit-dropdown.vue';
 import { ref } from 'vue';
 import { routeList } from '@/router';
-import { Layout, LayoutSider, Menu, MenuItem, LayoutHeader, LayoutContent } from 'ant-design-vue';
+import {
+  Layout,
+  LayoutSider,
+  Menu,
+  MenuItem,
+  LayoutHeader,
+  LayoutContent,
+  theme,
+} from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { layout as messages } from '@/locales';
 
 const selectedKeys = ref(['page']);
 const collapsed = ref(false);
 const { t } = useI18n({ useScope: 'local', messages });
+const { token } = theme.useToken();
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .main {
-  background-color: @layout-body-background;
+  background-color: v-bind('token.colorBgBase');
+  color: v-bind('token.colorText');
   @apply flex flex-col flex-1;
 }
 
 .logo {
-  color: @text-color;
+  color: v-bind('token.colorText');
   @apply flex justify-center items-center p-8px;
 }
 
 .layout-header {
-  background: @component-background;
-  color: @text-color;
+  background: v-bind('token.colorBgBase');
+  color: v-bind('token.colorText');
   @apply p-10px text-20px flex justify-between items-center;
 }
 
 .layout-content {
-  background: @component-background;
+  background: v-bind('token.colorBgBase');
   @apply flex-1 mx-16px my-24px p-24px min-h-280px;
 }
 </style>

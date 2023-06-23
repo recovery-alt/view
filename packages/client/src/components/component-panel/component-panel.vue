@@ -50,7 +50,7 @@
 import { ref } from 'vue';
 import { LeftOutlined } from '@ant-design/icons-vue';
 import { usePanelStore, useBoardStore } from '@/store';
-import { InputSearch, Tabs, TabPane, Empty } from 'ant-design-vue';
+import { InputSearch, Tabs, TabPane, Empty, theme } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { componentPanel as messages } from '@/locales';
 import { getImgSrc } from '@/gallery';
@@ -61,6 +61,7 @@ const { t: gt } = useI18n({ useScope: 'global' });
 const activeTab = ref('basic');
 const panel = usePanelStore();
 const board = useBoardStore();
+const { token } = theme.useToken();
 const { filterGroup, searchComponent } = useSearch();
 
 function handleDragStart(e: DragEvent) {
@@ -89,9 +90,10 @@ function handleClick(e: MouseEvent) {
 
 <style lang="less">
 .component-panel {
-  background-color: @component-background;
-  transition: width 0.3s @ease-in-out;
-  border-right: 1px solid @border-color-base;
+  background-color: v-bind('token.colorBgBase');
+  transition: width 0.3s v-bind('token.motionEaseInOut');
+  color: v-bind('token.colorText');
+  border-right: 1px solid v-bind('token.colorBorder');
   @apply flex-shrink-0 box-border z-4 whitespace-nowrap;
 
   .ant-tabs {
@@ -115,7 +117,7 @@ function handleClick(e: MouseEvent) {
   }
 
   &__header {
-    background-color: @layout-body-background;
+    background-color: v-bind('token.colorBgLayout');
     @apply h-30px flex items-center justify-between box-border px-10px;
   }
 
@@ -123,13 +125,13 @@ function handleClick(e: MouseEvent) {
     @apply w-80px h-80px;
 
     header {
-      background-color: @layout-body-background;
-      border-bottom: 1px solid @border-color-base;
+      background-color: v-bind('token.colorBgBase');
+      border-bottom: 1px solid v-bind('token.colorBorder');
       @apply h-22px box-border px-5px text-center;
     }
 
     img {
-      background-color: @background-color-light;
+      background-color: v-bind('token.colorInfoBg');
     }
   }
 

@@ -78,6 +78,7 @@ import {
   Tabs,
   TabPane,
   Form,
+  theme,
 } from 'ant-design-vue';
 import { animatePanel as messages } from '@/locales';
 import { useI18n } from 'vue-i18n';
@@ -86,6 +87,7 @@ import { playAnimation, playAnimations } from '@/utils';
 const active = ref('');
 const board = useBoardStore();
 const { t } = useI18n({ useScope: 'local', messages });
+const { token } = theme.useToken();
 
 const fields: Array<Field> = [
   {
@@ -132,7 +134,7 @@ function playAll() {
   &-box {
     @apply block w-0 h-0 border-20px border-transparent mb-10px;
 
-    border-bottom: 40px solid @primary-color;
+    border-bottom: 40px solid v-bind('token.colorPrimary');
   }
 }
 </style>

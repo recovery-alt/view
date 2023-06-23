@@ -3,7 +3,6 @@ import { createApp, App } from 'vue';
 import Entry from './app.vue';
 import router from '@/router';
 import useGallery from '@/gallery';
-import '@/assets/style/index.less';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import { global as messages } from '@/locales';

@@ -6,4 +6,4 @@ export default {
 
 export const DataSource = ['url', 'static'] as const;
 
-export type DataSourceKey = typeof DataSource[number];
+export type DataSourceKey = (typeof DataSource)[number];

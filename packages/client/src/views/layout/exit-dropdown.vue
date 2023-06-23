@@ -1,7 +1,7 @@
 <template>
   <div class="header-right">
     <Button size="small" @click="switchLocale?.()">{{ locale }}</Button>
-    <SkinOutlined class="theme-change" @click="theme.switchTheme()" />
+    <SkinOutlined class="theme-change" @click="themeStore.switchTheme()" />
     <Dropdown>
       <div class="exit-dropdown">
         <Avatar>
@@ -62,6 +62,7 @@ import {
   FormItem,
   Input,
   Button,
+  theme,
 } from 'ant-design-vue';
 import { useThemeStore } from '@/store';
 import { useI18n } from 'vue-i18n';
@@ -71,7 +72,8 @@ const userInfoStr = local.get(LocalKeys.USER_INFO);
 const userInfo = userInfoStr ? json.parse(userInfoStr) : {};
 const router = useRouter();
 const route = useRoute();
-const theme = useThemeStore();
+const themeStore = useThemeStore();
+const { token } = theme.useToken();
 const { locale } = useI18n({ useScope: 'global' });
 const { t } = useI18n({ useScope: 'local', messages });
 const visible = ref(false);
@@ -139,16 +141,16 @@ const logout = () => {
 
 <style lang="less">
 .exit-dropdown {
-  color: @text-color;
+  color: v-bind('token.colorText');
   @apply px-8px text-16px cursor-pointer ml-20px;
 
   &:hover {
-    background-color: @item-hover-bg;
+    background-color: v-bind('token.colorBgTextHover');
   }
 }
 
 .header-right {
-  color: @text-color;
+  color: v-bind('token.colorText');
   @apply flex justify-center items-center;
 }
 
@@ -156,7 +158,7 @@ const logout = () => {
   @apply ml-10px;
 
   &:hover {
-    color: @primary-color;
+    color: v-bind('token.colorPrimary');
   }
 }
 </style>
