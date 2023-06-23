@@ -30,7 +30,6 @@ onMounted(async () => {
 </script>
 
 <style lang="less">
-@import 'normalize.css';
 @import 'animate.css';
 
 ::-webkit-scrollbar {

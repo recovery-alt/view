@@ -4,15 +4,6 @@ import { resolve } from 'path';
 import jsx from '@vitejs/plugin-vue-jsx';
 import eslintPlugin from 'vite-plugin-eslint';
 import windiCSS from 'vite-plugin-windicss';
-// import { theme } from 'ant-design-vue/lib';
-// import convertLegacyToken from 'ant-design-vue/lib/theme/convertLegacyToken';
-
-// const { defaultAlgorithm, defaultSeed, darkAlgorithm } = theme;
-
-// const mapToken = defaultAlgorithm(defaultSeed);
-// const mapTokenDark = darkAlgorithm(defaultSeed);
-// const v3Token = convertLegacyToken(mapToken);
-// const v3TokenDark = convertLegacyToken(mapTokenDark);
 
 const plugins = [vue(), jsx(), eslintPlugin(), windiCSS()];
 
@@ -51,7 +42,6 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        // modifyVars: v3Token,
         javascriptEnabled: true,
       },
     },
