@@ -11,7 +11,7 @@ export const local = {
   get(key: string) {
     const now = Date.now();
     const expired = localStorage.getItem(`${key}__expires__`) || now + 1;
-    if (now >= expired) {
+    if (now >= Number(expired)) {
       this.remove(key);
       return;
     }

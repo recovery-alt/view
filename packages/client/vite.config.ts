@@ -2,10 +2,9 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import jsx from '@vitejs/plugin-vue-jsx';
-import eslintPlugin from 'vite-plugin-eslint';
 import windiCSS from 'vite-plugin-windicss';
 
-const plugins = [vue(), jsx(), eslintPlugin(), windiCSS()];
+const plugins = [vue(), jsx(), windiCSS()];
 
 export default defineConfig({
   plugins,

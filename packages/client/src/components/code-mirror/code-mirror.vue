@@ -10,12 +10,11 @@ import { language, LRLanguage } from '@codemirror/language';
 import { jsonLanguage } from '@codemirror/lang-json';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
 import { onMounted, watchEffect, shallowRef } from 'vue';
-import { format } from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
 import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark';
 import { defaultHighlightStyle } from '@codemirror/highlight';
 import { useThemeStore } from '@/store';
 import { theme } from 'ant-design-vue';
+import { format } from '@/utils';
 
 const props = defineProps({
   viewer: {
@@ -52,10 +51,10 @@ const strategy: Data<LRLanguage> = {
   javascript: javascriptLanguage,
 };
 
-const parser = props.type === 'json' ? 'json' : 'babel';
+const parser = props.type === 'json' ? 'json5' : 'babel';
 
-watchEffect(() => {
-  const doc = format(props.doc, { parser, plugins: [parserBabel] });
+watchEffect(async () => {
+  const doc = await format(props.doc, parser);
   const lang = strategy[props.type] || strategy.json;
   const state = EditorState.create({
     doc,

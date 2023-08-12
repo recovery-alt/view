@@ -8,3 +8,4 @@ export * from './promise';
 export * from './reg-exp';
 export * from './number';
 export * from './animation';
+export * from './prettier';

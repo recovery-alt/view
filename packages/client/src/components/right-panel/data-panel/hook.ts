@@ -5,9 +5,7 @@ import { EditorView } from '@codemirror/basic-setup';
 import { shallowReactive } from 'vue';
 import json from 'json5';
 import { DataSource } from '@/config';
-import { isUrl, callFilter, generateColumns } from '@/utils';
-import { format } from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
+import { isUrl, callFilter, generateColumns, format } from '@/utils';
 import { useBoardStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 import { dataPanel as messages } from '@/locales';
@@ -44,19 +42,13 @@ export function useDrawer(dataStringify: Ref<string | undefined>) {
       return new Promise<void>((resolve, reject) => {
         fetch(url)
           .then(res => res.json())
-          .then(res => {
-            dataStringify.value = format(JSON.stringify(res), {
-              parser: 'json5',
-              plugins: [parserBabel],
-            });
+          .then(async res => {
+            dataStringify.value = await format(JSON.stringify(res), 'json5');
             resolve();
           })
-          .catch(() => {
+          .catch(async () => {
             reject();
-            dataStringify.value = format('{code: 1, msg: "接口请求错误"}', {
-              parser: 'json5',
-              plugins: [parserBabel],
-            });
+            dataStringify.value = await format('{code: 1, msg: "接口请求错误"}', 'json5');
           });
       });
     }
