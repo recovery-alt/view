@@ -1,9 +1,11 @@
 import type { Data, Gallery } from '@/typings';
 import { BankOutlined } from '@ant-design/icons-vue';
 
-const components: Data<() => Promise<{ [key: string]: Gallery }>> = {};
+type Module = { [key: string]: Gallery };
 
-const modules = import.meta.glob('./*/index.ts');
+const components: Data<() => Promise<Module>> = {};
+
+const modules = import.meta.glob<Module>('./*/index.ts');
 
 for (const [key, module] of Object.entries(modules)) {
   const matcher = key.match(/\.\/(.*)\/index\.ts/);

@@ -41,7 +41,9 @@ export default async (app: App<Element>) => {
 };
 
 export function getImgSrc(type?: string) {
-  const modules = import.meta.globEager('/src/assets/img/gallery/*.png');
+  const modules = import.meta.glob<{ default: string }>('/src/assets/img/gallery/*.png', {
+    eager: true,
+  });
   let Icon;
 
   for (const key of Object.keys(modules)) {

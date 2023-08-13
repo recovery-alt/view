@@ -2,8 +2,6 @@
   <RouterView />
 </template>
 
-<script lang="ts" setup></script>
-
 <style lang="less">
 html,
 body {
